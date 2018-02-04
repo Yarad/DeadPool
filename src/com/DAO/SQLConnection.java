@@ -6,10 +6,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Connection;
 
-
 public class SQLConnection implements IConnection {
 
-    private String url = "jdbc:mysql://localhost:3306/test";
+    private String url = "jdbc:mysql://localhost:3306/DeadPoolDB";
     private String user = "root";
     private String password = "root";
 
@@ -17,7 +16,9 @@ public class SQLConnection implements IConnection {
     private static Statement stmt;
     private static ResultSet rs;
 
-    SQLConnection(String url, String userName,String password)
+    public SQLConnection(){/*оставлю пустой конструктор, дабы можно было оставить изначально инициализированные значения*/}
+
+    public SQLConnection(String url, String userName,String password)
     {
         this.url = url;
         this.user = userName;
