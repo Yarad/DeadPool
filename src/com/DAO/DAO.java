@@ -20,13 +20,13 @@ public abstract class DAO {
         }
         else {
             currConnection = connectionToUse;
-            return currConnection.Connect();
+            return currConnection.connect();
         }
     }
 
     public void finalize()
     {
-        currConnection.Disconnect();
+        currConnection.disconnect();
     }
 
 }

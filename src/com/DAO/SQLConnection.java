@@ -28,9 +28,9 @@ public class SQLConnection implements IConnection {
         this.password = password;
     }
 
-    public List<List<Object>> query(String queryString) {
+    public List<HashMap<String,Object>> query(String queryString) {
 
-        List<List<Object>> list = new ArrayList<List<Object>>();
+        List<HashMap<String,Object>> list = new ArrayList<HashMap<String,Object>>();
         try {
             // opening database connection to MySQL server
 
@@ -39,11 +39,14 @@ public class SQLConnection implements IConnection {
 
             //надо ещё разобраться, как эта байда работает
             int amountOfColumns = rs.getMetaData().getColumnCount();
+            String currColumnName;
 
             while (rs.next()) {
-                List<Object> columnList = new ArrayList<Object>();
-                for(int i=1;i<=amountOfColumns;i++)
-                    columnList.add(rs.getObject(i));
+                HashMap<String,Object> columnList = new HashMap<String,Object>();
+                for(int i=1;i<=amountOfColumns;i++) {
+                    currColumnName = rs.getMetaData().getColumnName(i);
+                    columnList.put(currColumnName, rs.getObject(i));
+                }
                 list.add(columnList);
             }
 
@@ -64,7 +67,7 @@ public class SQLConnection implements IConnection {
         return list;
     }
 
-    public boolean Connect() {
+    public boolean connect() {
         boolean retValue = true;
 
         try {
@@ -79,7 +82,7 @@ public class SQLConnection implements IConnection {
         return retValue;
     }
 
-    public void Disconnect() {
+    public void disconnect() {
         //close connection ,stmt and resultset here
         try {
             con.close();
