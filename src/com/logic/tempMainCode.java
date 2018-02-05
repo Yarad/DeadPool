@@ -9,6 +9,7 @@ public class tempMainCode {
         DAODetective newDetectiveDao = new DAODetective();
         //устанавливаем способ соединения (это паттерн)
         newDetectiveDao.setConnectionToUse(new SQLConnection());
+        Detective myDetective = newDetectiveDao.getDetectiveById(1);
 
     }
 }

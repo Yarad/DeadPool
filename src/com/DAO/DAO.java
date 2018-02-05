@@ -6,8 +6,7 @@ package com.DAO;
 public abstract class DAO {
 
     //ссылка на используемое подключение
-    private IConnection currConnection;
-
+    protected IConnection currConnection;
 
     DAO()
     {
@@ -20,9 +19,14 @@ public abstract class DAO {
             return false;
         }
         else {
-            return connectionToUse.Connect();
+            currConnection = connectionToUse;
+            return currConnection.Connect();
         }
     }
 
+    public void finalize()
+    {
+        currConnection.Disconnect();
+    }
 
 }

@@ -1,5 +1,11 @@
 package com.DAO;
 
-public class DAODetective extends DAO {
+import com.logic.Detective;
 
+public class DAODetective extends DAOMan {
+    public Detective getDetectiveById(int id)
+    {
+        getManById(id);
+        return new Detective();
+    }
 }

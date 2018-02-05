@@ -8,4 +8,5 @@ import com.sun.org.apache.xpath.internal.operations.Bool;
 для того чтобы достать данные из  БД*/
 public interface IConnection {
     boolean Connect();
+    void Disconnect();
 }
