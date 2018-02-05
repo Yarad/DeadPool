@@ -41,7 +41,7 @@ public class Detective extends Man {
     }
 
     private boolean ifPasswordValid(String password) {
-        Pattern p = Pattern.compile("[a-z]+");
+        Pattern p = Pattern.compile("[a-z0-9]+");
         Matcher m = p.matcher(password);
         return m.matches();
     }

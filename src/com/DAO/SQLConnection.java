@@ -28,9 +28,9 @@ public class SQLConnection implements IConnection {
         this.password = password;
     }
 
-    public List<HashMap<String,Object>> query(String queryString) {
+    public List<HashMap<String, Object>> queryFind(String queryString) {
 
-        List<HashMap<String,Object>> list = new ArrayList<HashMap<String,Object>>();
+        List<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
         try {
             // opening database connection to MySQL server
 
@@ -42,8 +42,8 @@ public class SQLConnection implements IConnection {
             String currColumnName;
 
             while (rs.next()) {
-                HashMap<String,Object> columnList = new HashMap<String,Object>();
-                for(int i=1;i<=amountOfColumns;i++) {
+                HashMap<String, Object> columnList = new HashMap<String, Object>();
+                for (int i = 1; i <= amountOfColumns; i++) {
                     currColumnName = rs.getMetaData().getColumnName(i);
                     columnList.put(currColumnName, rs.getObject(i));
                 }
@@ -55,16 +55,39 @@ public class SQLConnection implements IConnection {
         } finally {
             //close connection ,stmt and resultset here
             try {
-                con.close();
-            } catch (SQLException se) { /*can't do anything  */}
-            try {
-                stmt.close();
-            } catch (SQLException se) { /*can't do anything  */}
-            try {
                 rs.close();
             } catch (SQLException se) { /*can't do anything  */}
         }
         return list;
+    }
+
+    public boolean queryDataEdit(String queryString) {
+        boolean retValue = false;
+        try {
+            // opening database connection to MySQL server
+
+            // executing SELECT query
+            retValue = stmt.execute(queryString, Statement.RETURN_GENERATED_KEYS);
+
+            //надо ещё разобраться, как эта байда работает
+
+        } catch (SQLException sqlEx) {
+            sqlEx.printStackTrace();
+        } finally {
+            //close connection ,stmt and resultset here
+        }
+        return retValue;
+    }
+
+    public int getLastAddedId() {
+        int ret = -1;
+        try {
+            ResultSet rs = stmt.getGeneratedKeys();
+            if (rs.next())
+                ret = rs.getInt(1);
+        } catch (Exception e) {
+        }
+        return ret;
     }
 
     public boolean connect() {

@@ -1,14 +1,23 @@
 package com.logic;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 public abstract class Man {
+    protected int manId = -1;
     protected String name = "NoName";
     protected String surname = "NoSurname";
-    protected String middleName = "NoMiddleName";
     protected LocalDate birthDay = LocalDate.parse("08.09.1998", ProjectConstants.myDateTimeFormatter);
     protected String homeAddress = "NoHomeAddress";
+
+    public int getManId() {
+        return manId;
+    }
+
+    public void setManId(int manId) {
+        this.manId = Math.abs(manId);
+    }
 
     public String getName() {
         return name;
@@ -30,17 +39,6 @@ public abstract class Man {
             this.surname = "NoSurname";
         else
             this.surname = surname;
-    }
-
-    public String getMiddleName() {
-        return middleName;
-    }
-
-    public void setMiddleName(String middleName) {
-        if (middleName.equals(""))
-            this.middleName = "NoMiddleName";
-        else
-            this.middleName = middleName;
     }
 
     public LocalDate getBirthDay() {
