@@ -1,7 +1,8 @@
 package com.logic;
 
 public enum ParticipantStatus {
-    KILLER,
-    NOT_A_KILLER,
-    ADMIN
+    SUSPECTED, //подозоеваемый
+    WITNESS,   //просто опросили (свидетель)
+    VICTIM,    //потерпевший
+    SPECTATOR  //очевидец
 }

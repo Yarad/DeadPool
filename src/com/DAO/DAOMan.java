@@ -1,5 +1,6 @@
 package com.DAO;
 
+import com.DAO.interfaces.IDAOMan;
 import com.logic.Man;
 
 import java.sql.Date;
@@ -7,8 +8,8 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 
-public class DAOMan extends DAO {
-    protected boolean addMan(Man manToAdd) {
+public class DAOMan extends DAO implements IDAOMan{
+    public boolean addMan(Man manToAdd) {
         return currConnection.queryDataEdit("INSERT INTO `man`( `name`, `home_address`, `birthday`, `surname`) VALUES (" +
                 "'" + manToAdd.getName() + "'," +
                 "'" + manToAdd.getHomeAddress() + "'," +

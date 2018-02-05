@@ -1,9 +1,18 @@
 package com.logic;
 
 public class Participant extends Man {
+    private int crimeId = -1;
     private String alibi = "NoAlibi";
     private String witnessReport = "NoWitnessReport";
-    public  ParticipantStatus participantStatus = ParticipantStatus.ADMIN;
+    public  ParticipantStatus participantStatus = ParticipantStatus.SUSPECTED;
+
+    public int getCrimeId() {
+        return crimeId;
+    }
+
+    public void setCrimeId(int crimeId) {
+        this.crimeId = crimeId;
+    }
 
     public String getAlibi() {
         return alibi;

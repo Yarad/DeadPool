@@ -1,6 +1,7 @@
 package com.DAO;
 
-import javax.management.Query;
+import com.DAO.interfaces.IConnection;
+
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -1,30 +1,36 @@
 package com.DAO;
 
+import com.DAO.interfaces.IDAODetective;
 import com.logic.Detective;
 
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 
-public class DAODetective extends DAOMan {
+public class DAODetective extends DAOMan implements IDAODetective {
 
     public Detective getDetectiveById(int id) {
 
         Detective retDetectiveRecord = new Detective();
 
-        fillInfoFromManTableById(id, retDetectiveRecord);
-        fillInfoFromDetectiveTableById(id, retDetectiveRecord);
+        boolean b1 = fillInfoFromManTableById(id, retDetectiveRecord);
 
-        return retDetectiveRecord;
+        if (b1)
+            b1 = b1 && fillInfoFromDetectiveTableById(id, retDetectiveRecord);
+
+        if (b1)
+            return retDetectiveRecord;
+        else
+            return null;
     }
 
     public boolean addDetective(Detective detectiveToAdd) {
-        boolean retValue = addMan(detectiveToAdd);
+        boolean retValue;
         detectiveToAdd.setManId(currConnection.getLastAddedId());
         retValue = currConnection.queryDataEdit("INSERT INTO `detective`(`login`, `password_hash`, `man_id`) VALUES (" +
                 "'" + detectiveToAdd.getLogin() + "'," +
                 "'" + detectiveToAdd.getPassword() + "'," +
-                "'" + detectiveToAdd.getManId() + "')") && retValue;
+                "'" + detectiveToAdd.getManId() + "')") && addMan(detectiveToAdd);
         return retValue;
     }
 

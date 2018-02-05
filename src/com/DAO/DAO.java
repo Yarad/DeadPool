@@ -1,5 +1,7 @@
 package com.DAO;
 
+import com.DAO.interfaces.IConnection;
+
 /*Классы-наследники этого класса соответствуют
 сущностям БД. Суть состоит в том, чтобы абстрагировать
 БД от самих объектов, коим и так не будет числа*/
@@ -20,13 +22,14 @@ public abstract class DAO {
         }
         else {
             currConnection = connectionToUse;
-            return currConnection.connect();
+            //return currConnection.connect();
+            return true;
         }
     }
 
     public void finalize()
     {
-        currConnection.disconnect();
+        //currConnection.disconnect();
     }
 
 }
