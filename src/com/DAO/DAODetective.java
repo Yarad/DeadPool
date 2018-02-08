@@ -3,6 +3,9 @@ package com.DAO;
 import com.DAO.interfaces.IDAODetective;
 import com.logic.Detective;
 
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -25,17 +28,34 @@ public class DAODetective extends DAOMan implements IDAODetective {
     }
 
     public boolean addDetective(Detective detectiveToAdd) {
-        boolean retValue;
-        detectiveToAdd.setManId(currConnection.getLastAddedId());
-        retValue = currConnection.queryDataEdit("INSERT INTO `detective`(`login`, `password_hash`, `man_id`) VALUES (" +
-                "'" + detectiveToAdd.getLogin() + "'," +
-                "'" + detectiveToAdd.getPassword() + "'," +
-                "'" + detectiveToAdd.getManId() + "')") && addMan(detectiveToAdd);
-        return retValue;
+        if (!addMan(detectiveToAdd))
+            return false;
+
+        PreparedStatement preparedStatement = currConnection.prepareStatement("INSERT INTO `detective`(`login`, `password_hash`, `man_id`) VALUES (?,?,?)");
+        try {
+            preparedStatement.setString(1, detectiveToAdd.getLogin());
+            preparedStatement.setString(2, detectiveToAdd.getPassword());
+            preparedStatement.setInt(3, detectiveToAdd.getManId());
+        } catch (SQLException e) {
+            DAOLog.log(e.toString());
+            return false;
+        }
+
+        return currConnection.queryDataEdit(preparedStatement);
     }
 
     private boolean fillInfoFromDetectiveTableById(int id, Detective objectToFill) {
-        List<HashMap<String, Object>> retArray = currConnection.queryFind("SELECT * FROM `detective` WHERE `man_id` = " + id);
+
+        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM `detective` WHERE `man_id` = ?");
+        try {
+            preparedStatement.setInt(1, id);
+        } catch (SQLException e) {
+            DAOLog.log(e.toString());
+            return false;
+        }
+
+        List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
+
         if (retArray.isEmpty()) return false;
 
         if (retArray.get(0).containsKey("login"))

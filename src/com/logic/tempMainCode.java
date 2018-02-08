@@ -18,14 +18,14 @@ public class tempMainCode {
 
         //дообавление детектива
         Detective newDetective = new Detective();
-        newDetective.setName("Andrew");
+        newDetective.setName("Andr");
         newDetective.setSurname("Zhlobich");
-        newDetective.setLogin("login");
+        newDetective.setLogin("log897");
         newDetective.setPassword("password");
         newDetective.setBirthDay(LocalDate.now());
         newDetective.setHomeAddress("Osipovichi");
 
-        MainDAOMaster.addDetective(newDetective);
+        boolean is_added = MainDAOMaster.addDetective(newDetective);
 
 
         //добавление участника(crime остётся чисто по номеру (решено общим голосованием))

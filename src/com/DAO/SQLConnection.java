@@ -2,11 +2,7 @@ package com.DAO;
 
 import com.DAO.interfaces.IConnection;
 
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Connection;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,14 +25,14 @@ public class SQLConnection implements IConnection {
         this.password = password;
     }
 
-    public List<HashMap<String, Object>> queryFind(String queryString) {
+    public List<HashMap<String, Object>> queryFind(PreparedStatement queryPrepared) {
 
         List<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
         try {
             // opening database connection to MySQL server
 
             // executing SELECT query
-            rs = stmt.executeQuery(queryString);
+            rs = queryPrepared.executeQuery();
 
             //надо ещё разобраться, как эта байда работает
             int amountOfColumns = rs.getMetaData().getColumnCount();
@@ -62,14 +58,15 @@ public class SQLConnection implements IConnection {
         return list;
     }
 
-    public boolean queryDataEdit(String queryString) {
+    public boolean queryDataEdit(PreparedStatement queryPrepared) {
         boolean retValue = false;
         try {
             // opening database connection to MySQL server
 
             // executing SELECT query
-            retValue = stmt.execute(queryString, Statement.RETURN_GENERATED_KEYS);
-
+            //retValue = stmt.execute(queryString);
+            //Statement.RETURN_GENERATED_KEYS задётся в preparStatement
+            retValue = queryPrepared.executeUpdate() != 0;
             //надо ещё разобраться, как эта байда работает
 
         } catch (SQLException sqlEx) {
@@ -80,13 +77,14 @@ public class SQLConnection implements IConnection {
         return retValue;
     }
 
-    public int getLastAddedId() {
+    public int getLastAddedId(PreparedStatement preparedStatement) {
         int ret = -1;
         try {
-            ResultSet rs = stmt.getGeneratedKeys();
+            ResultSet rs = preparedStatement.getGeneratedKeys();
             if (rs.next())
                 ret = rs.getInt(1);
         } catch (Exception e) {
+            DAOLog.log(e.toString());
         }
         return ret;
     }
@@ -116,5 +114,20 @@ public class SQLConnection implements IConnection {
             stmt.close();
         } catch (Exception se) {
         }
+    }
+
+    @Override
+    public PreparedStatement prepareStatement(String sql) {
+        PreparedStatement retValue = null;
+        try {
+            //в этом месте я немножко схалявил
+            //по-хорошему Statement.RETURN_GENERATED_KEYS должен быть вариативным
+            //но примем, будто он нужен всегда
+            retValue = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+        } catch (SQLException e) {
+            DAOLog.log(e.toString());
+        }
+
+        return retValue;
     }
 }

@@ -1,5 +1,7 @@
 package com.DAO.interfaces;
 
+
+import java.sql.PreparedStatement;
 import java.util.HashMap;
 import java.util.List;
 
@@ -13,7 +15,9 @@ public interface IConnection {
 
     void disconnect();
 
-    List<HashMap<String, Object>> queryFind(String queryString);
-    boolean queryDataEdit(String queryString);
-    int getLastAddedId();
+    PreparedStatement prepareStatement(String sql);
+
+    List<HashMap<String, Object>> queryFind(PreparedStatement queryPrepared);
+    boolean queryDataEdit(PreparedStatement queryPrepared);
+    int getLastAddedId(PreparedStatement preparedStatement);
 }
