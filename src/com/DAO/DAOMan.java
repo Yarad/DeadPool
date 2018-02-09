@@ -50,8 +50,10 @@ public class DAOMan extends DAO implements IDAOMan {
         //ProjectConstants.fillObjectFieldByArrayOfValues(objectToFill, retArray);
         if (retArray.get(0).containsKey("bithday") && (LocalDate) retArray.get(0).get("bithday") != null)
             objectToFill.setBirthDay((LocalDate) retArray.get(0).get("bithday"));
+
         if (retArray.get(0).containsKey("name") && retArray.get(0).get("name") != null)
             objectToFill.setName(retArray.get(0).get("name").toString());
+
         if (retArray.get(0).containsKey("surname") && retArray.get(0).get("surname") != null)
             objectToFill.setSurname(retArray.get(0).get("surname").toString());
         if (retArray.get(0).containsKey("home_address") && retArray.get(0).get("home_address") != null)

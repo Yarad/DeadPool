@@ -16,6 +16,13 @@ public class tempMainCode {
 
         Detective myDetective = MainDAOMaster.getDetectiveById(1);
 
+        //добавление crimimalCase
+        CriminalCase criminalCase = new CriminalCase();
+        criminalCase.setDetectiveId(32);
+        criminalCase.setCriminalCaseNumber("какой-то номер дела");
+        MainDAOMaster.addCriminalCase(criminalCase);
+
+        /*
         //дообавление детектива
         Detective newDetective = new Detective();
         newDetective.setName("Andr");
@@ -40,7 +47,6 @@ public class tempMainCode {
         participantToAdd.setBirthDay(LocalDate.now());
         participantToAdd.setWitnessReport("WitnessReportasd klsak lskdl sakds lksal");
 
-        newParticipantDao.addParticipant(participantToAdd);
-
+        newParticipantDao.addParticipant(participantToAdd);*/
     }
 }
