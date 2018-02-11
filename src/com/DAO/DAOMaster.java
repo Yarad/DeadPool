@@ -77,6 +77,12 @@ public class DAOMaster implements IDAOMaster {
     }
 
     @Override
+    public CriminalCase getCriminalCaseById(int id) {
+        provideDAOCriminalCaseExist();
+        return masterDAOCriminalCase.getCriminalCaseById(id);
+    }
+
+    @Override
     public boolean addMan(Man manToAdd) {
         provideDAOManExist();
         return masterDAOMan.addMan(manToAdd);

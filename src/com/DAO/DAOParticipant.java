@@ -62,12 +62,12 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
             objectToFill.setWitnessReport(retArray.get(0).get("witness_report").toString());
         if (retArray.get(0).containsKey("participant_status_id")) {
             int participantStatusId = Integer.parseInt(retArray.get(0).get("participant_status_id").toString());
-            fillParticipantStatusById(participantStatusId, objectToFill);
+            //fillParticipantStatusById(participantStatusId, objectToFill);
         }
 
         return true;
     }
-
+/*
     private boolean fillParticipantStatusById(int participantStatusId, Participant participantObject) {
         try {
             PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT `name` FROM `participant_status_id` WHERE `participant_status_id` = ?");
@@ -86,5 +86,5 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
             return false;
         }
         return true;
-    }
+    }*/
 }

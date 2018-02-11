@@ -2,6 +2,7 @@ package com.DAO;
 
 import com.DAO.interfaces.IDAODetective;
 import com.logic.Detective;
+import com.logic.ProjectFunctions;
 
 
 import java.sql.PreparedStatement;
@@ -15,11 +16,11 @@ public class DAODetective extends DAOMan implements IDAODetective {
     public Detective getDetectiveById(int id) {
 
         Detective retDetectiveRecord = new Detective();
+        retDetectiveRecord.setManId(id);
 
         boolean b1 = fillInfoFromManTableById(id, retDetectiveRecord);
 
-        if (b1)
-            b1 = b1 && fillInfoFromDetectiveTableById(id, retDetectiveRecord);
+        b1 = b1 && fillInfoFromDetectiveTableById(id, retDetectiveRecord);
 
         if (b1)
             return retDetectiveRecord;
@@ -58,9 +59,11 @@ public class DAODetective extends DAOMan implements IDAODetective {
 
         if (retArray.isEmpty()) return false;
 
-        if (retArray.get(0).containsKey("login"))
+        //if (retArray.get(0).containsKey("login"))
+        if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0),"login"))
             objectToFill.setLogin(retArray.get(0).get("login").toString());
-        if (retArray.get(0).containsKey("password_hash"))
+        //if (retArray.get(0).containsKey("password_hash"))
+        if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0),"password_hash"))
             objectToFill.setPassword(retArray.get(0).get("password_hash").toString());
 
         return true;

@@ -2,6 +2,7 @@ package com.DAO;
 
 import com.DAO.interfaces.IDAOMan;
 import com.logic.Man;
+import com.logic.ProjectFunctions;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -48,15 +49,20 @@ public class DAOMan extends DAO implements IDAOMan {
         if (retArray.isEmpty()) return false;
 
         //ProjectConstants.fillObjectFieldByArrayOfValues(objectToFill, retArray);
-        if (retArray.get(0).containsKey("bithday") && (LocalDate) retArray.get(0).get("bithday") != null)
+        //if (retArray.get(0).containsKey("bithday") && (LocalDate) retArray.get(0).get("bithday") != null)
+        if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0),"birthday"))
             objectToFill.setBirthDay((LocalDate) retArray.get(0).get("bithday"));
 
-        if (retArray.get(0).containsKey("name") && retArray.get(0).get("name") != null)
+        //if (retArray.get(0).containsKey("name") && retArray.get(0).get("name") != null)
+        if(ProjectFunctions.ifDbObjectContainsKey(retArray.get(0),"name"))
             objectToFill.setName(retArray.get(0).get("name").toString());
 
-        if (retArray.get(0).containsKey("surname") && retArray.get(0).get("surname") != null)
+        //if (retArray.get(0).containsKey("surname") && retArray.get(0).get("surname") != null)
+        if(ProjectFunctions.ifDbObjectContainsKey(retArray.get(0),"surname"))
             objectToFill.setSurname(retArray.get(0).get("surname").toString());
-        if (retArray.get(0).containsKey("home_address") && retArray.get(0).get("home_address") != null)
+
+        //if (retArray.get(0).containsKey("home_address") && retArray.get(0).get("home_address") != null)
+        if(ProjectFunctions.ifDbObjectContainsKey(retArray.get(0),"home_address"))
             objectToFill.setHomeAddress(retArray.get(0).get("home_address").toString());
         //LogicLog.log(list.toString());
         return true;

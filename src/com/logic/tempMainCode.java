@@ -14,7 +14,7 @@ public class tempMainCode {
         DAOMaster MainDAOMaster = DAOMaster.getInstance();
         MainDAOMaster.setCommomConnectionToUse(new SQLConnection());
 
-        Detective myDetective = MainDAOMaster.getDetectiveById(1);
+        Detective myDetective = MainDAOMaster.getDetectiveById(17);
 
         //добавление crimimalCase
         CriminalCase criminalCase = new CriminalCase();
