@@ -3,6 +3,7 @@ package com.logic;
 import java.time.LocalDate;
 
 public class CriminalCase {
+    private int criminalCaseId = -1;
     private boolean closed = false;
     private int detectiveId = -1;
     private String criminalCaseNumber = "NoCriminalCaseNumber";
@@ -47,5 +48,13 @@ public class CriminalCase {
 
     public void setCloseDate(LocalDate closeDate) {
         this.closeDate = closeDate;
+    }
+
+    public int getCriminalCaseId() {
+        return criminalCaseId;
+    }
+
+    public void setCriminalCaseId(int criminalCaseId) {
+        this.criminalCaseId = Math.abs(criminalCaseId);
     }
 }

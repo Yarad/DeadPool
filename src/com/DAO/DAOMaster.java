@@ -22,7 +22,6 @@ public class DAOMaster implements IDAOMaster {
     }
     //конец реализации singleton
 
-
     private IConnection connectionToUse;
     private DAOMan masterDAOMan;
     private DAODetective masterDAODetective;

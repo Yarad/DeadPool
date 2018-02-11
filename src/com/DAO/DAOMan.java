@@ -35,14 +35,12 @@ public class DAOMan extends DAO implements IDAOMan {
     protected boolean fillInfoFromManTableById(int id, Man objectToFill) {
         //List<HashMap<String, Object>> retArray = currConnection.queryFind("SELECT * FROM `Man` WHERE `man_id` = " + id);
         PreparedStatement preparedQuery = currConnection.prepareStatement("SELECT * FROM `Man` WHERE `man_id` = ?");
-        try{
-            preparedQuery.setInt(1,id);
-        }catch (SQLException e)
-        {
+        try {
+            preparedQuery.setInt(1, id);
+        } catch (SQLException e) {
             DAOLog.log(e.toString());
             return false;
         }
-
 
         List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedQuery);
 
@@ -50,19 +48,19 @@ public class DAOMan extends DAO implements IDAOMan {
 
         //ProjectConstants.fillObjectFieldByArrayOfValues(objectToFill, retArray);
         //if (retArray.get(0).containsKey("bithday") && (LocalDate) retArray.get(0).get("bithday") != null)
-        if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0),"birthday"))
+        if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "birthday"))
             objectToFill.setBirthDay((LocalDate) retArray.get(0).get("bithday"));
 
         //if (retArray.get(0).containsKey("name") && retArray.get(0).get("name") != null)
-        if(ProjectFunctions.ifDbObjectContainsKey(retArray.get(0),"name"))
+        if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "name"))
             objectToFill.setName(retArray.get(0).get("name").toString());
 
         //if (retArray.get(0).containsKey("surname") && retArray.get(0).get("surname") != null)
-        if(ProjectFunctions.ifDbObjectContainsKey(retArray.get(0),"surname"))
+        if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "surname"))
             objectToFill.setSurname(retArray.get(0).get("surname").toString());
 
         //if (retArray.get(0).containsKey("home_address") && retArray.get(0).get("home_address") != null)
-        if(ProjectFunctions.ifDbObjectContainsKey(retArray.get(0),"home_address"))
+        if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "home_address"))
             objectToFill.setHomeAddress(retArray.get(0).get("home_address").toString());
         //LogicLog.log(list.toString());
         return true;
