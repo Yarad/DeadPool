@@ -2,6 +2,8 @@ package com.logic;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
+import java.util.Set;
 
 public class Crime {
     private int crimeId = -1;
@@ -9,6 +11,7 @@ public class Crime {
     private String crimePlace = "noAddress";
     private LocalDate crimeDate = LocalDate.now();
     private LocalTime crimeTime = null;
+    private CriminalCase parentCriminalCase;
 
     public int getCrimeId() {
         return crimeId;

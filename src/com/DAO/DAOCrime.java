@@ -58,6 +58,8 @@ public class DAOCrime extends DAO implements IDAOCrime {
         Crime retCrime = new Crime();
         retCrime.setCrimeId(crimeId);
 
+        ProjectFunctions.tryFillObjectByDbArray(retCrime, retArray.get(0));
+/*
         if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "crime_place"))
             retCrime.setCrimePlace(retArray.get(0).get("crime_place").toString());
         if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "crime_date"))
@@ -66,7 +68,8 @@ public class DAOCrime extends DAO implements IDAOCrime {
             retCrime.setCrimeTime(((Time) retArray.get(0).get("crime_time")).toLocalTime());
         if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "criminal_case_id"))
             retCrime.setCriminalCaseId(Integer.valueOf(retArray.get(0).get("criminal_case_id").toString()));
-
+*/
         return retCrime;
     }
+
 }

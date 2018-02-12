@@ -59,13 +59,15 @@ public class DAODetective extends DAOMan implements IDAODetective {
 
         if (retArray.isEmpty()) return false;
 
+        ProjectFunctions.tryFillObjectByDbArray(objectToFill,retArray.get(0));
+        /*
         //if (retArray.get(0).containsKey("login"))
         if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0),"login"))
             objectToFill.setLogin(retArray.get(0).get("login").toString());
         //if (retArray.get(0).containsKey("password_hash"))
         if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0),"password_hash"))
             objectToFill.setPassword(retArray.get(0).get("password_hash").toString());
-
+*/
         return true;
     }
 }

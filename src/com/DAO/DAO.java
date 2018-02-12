@@ -22,8 +22,8 @@ public abstract class DAO {
         }
         else {
             currConnection = connectionToUse;
-            //return currConnection.connect();
-            return true;
+            return currConnection.connect();
+            //return true;
         }
     }
 

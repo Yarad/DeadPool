@@ -1,8 +1,12 @@
 package com.logic;
 
+import com.mysql.jdbc.StringUtils;
+
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+
+import static com.mysql.jdbc.StringUtils.isNullOrEmpty;
 
 public abstract class Man {
     protected int manId = -1;
@@ -24,7 +28,7 @@ public abstract class Man {
     }
 
     public void setName(String name) {
-        if (name.equals(""))
+        if (isNullOrEmpty(name))  // почему это плохо?
             this.name = "NoName";
         else
             this.name = name;

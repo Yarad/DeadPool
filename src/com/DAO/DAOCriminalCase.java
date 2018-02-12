@@ -51,7 +51,8 @@ public class DAOCriminalCase extends DAO implements IDAOCriminalCase {
         CriminalCase retCriminalCase = new CriminalCase();
         retCriminalCase.setCriminalCaseId(id);
 
-        if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "detective_id"))
+        ProjectFunctions.tryFillObjectByDbArray(retCriminalCase, retArray.get(0));
+/*        if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "detective_id"))
             retCriminalCase.setDetectiveId(Integer.parseInt(retArray.get(0).get("detective_id").toString()));
 
         if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "criminal_case_number"))
@@ -65,6 +66,7 @@ public class DAOCriminalCase extends DAO implements IDAOCriminalCase {
 
         if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "closed"))
             retCriminalCase.setClosed(Boolean.valueOf(retArray.get(0).get("closed").toString()));
+            */
         return retCriminalCase;
     }
 }

@@ -25,7 +25,7 @@ public class Detective extends Man {
         return password;
     }
 
-    public boolean setPassword(String password) {
+    public boolean setHashOfPassword(String password) {
         if (ifPasswordValid(password)) {
             this.password = password;
             return true;
@@ -33,7 +33,7 @@ public class Detective extends Man {
             return false;
         }
     }
-
+    // [S]olid
     private boolean ifLoginValid(String login) {
         Pattern p = Pattern.compile("[a-z]+[a-z0-9]+");
         Matcher m = p.matcher(login);

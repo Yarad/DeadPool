@@ -1,18 +1,23 @@
 package com.logic;
 
-import com.DAO.DAOMaster;
+import com.DAO.DAOParticipant;
 import com.DAO.SQLConnection;
+
+import java.util.List;
 
 public class tempMainCode {
     public static void main(String[] args) {
-        //создаём объект, благодаря которому будем доставать инфу о детективах
-        DAOMaster MainDAOMaster = DAOMaster.getInstance();
-        MainDAOMaster.setCommomConnectionToUse(new SQLConnection());
+        DAOParticipant daoParticipant = new DAOParticipant();
+        daoParticipant.setConnectionToUse(new SQLConnection());
 
-        Participant participant = MainDAOMaster.getParticipantById(17,15);
-/*        Participant participant = new Participant();
-        participant.setManId(17);
-        participant.setCrimeId(15);
+        CriminalCase criminalCase = new CriminalCase();
+        criminalCase.setDetectiveId(1);
+        List<Participant> participantInCrimes = daoParticipant.getParticipantInCrimesByManId(2);
+        /*
+        //Participant participant = MainDAOMaster.getParticipantById(17,15);
+        Participant participant = new Participant();
+        participant.setManId(2);
+        participant.setCrimeId(3);
         participant.setWitnessReport("SomeReportInfo");
 
         //com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Duplicate entry '15' for key 'PRIMARY
