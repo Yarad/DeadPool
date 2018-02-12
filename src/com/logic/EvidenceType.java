@@ -1,5 +1,5 @@
 package com.logic;
 
 public enum EvidenceType {
-    FINGERPRINTS // отпечатки пальцев
+    FINGERPRINTS // отпечатки пальцев //1
 }
