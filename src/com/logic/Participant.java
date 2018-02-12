@@ -5,7 +5,16 @@ public class Participant extends Man {
     private int crimeId = -1;
     private String alibi;
     private String witnessReport;
-    public  ParticipantStatus participantStatus = ParticipantStatus.SUSPECTED;
+    public ParticipantStatus participantStatus = ParticipantStatus.SUSPECTED;
+    private Crime parentCrime;
+
+    public void setCrime(Crime crime) {
+        this.parentCrime = crime;
+    }
+
+    public Crime getCrime() {
+        return parentCrime;
+    }
 
     public int getCrimeId() {
         return crimeId;
