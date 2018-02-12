@@ -1,10 +1,9 @@
 package com.logic;
 
 public class Participant extends Man {
-    private int manId = -1;
     private int crimeId = -1;
-    private String alibi;
-    private String witnessReport;
+    private String alibi = "NoAlibi";
+    private String witnessReport = "NoWitnessReport";
     public  ParticipantStatus participantStatus = ParticipantStatus.SUSPECTED;
 
     public int getCrimeId() {
@@ -29,15 +28,5 @@ public class Participant extends Man {
 
     public void setWitnessReport(String witnessReport) {
         this.witnessReport = witnessReport;
-    }
-
-    @Override
-    public int getManId() {
-        return manId;
-    }
-
-    @Override
-    public void setManId(int manId) {
-        this.manId = Math.abs(manId);
     }
 }

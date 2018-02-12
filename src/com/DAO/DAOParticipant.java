@@ -3,7 +3,7 @@ package com.DAO;
 import com.DAO.interfaces.IDAOParticipant;
 import com.logic.Participant;
 import com.logic.ParticipantStatus;
-import com.logic.ProjectFunctions;
+
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -13,54 +13,78 @@ import java.util.List;
 public class DAOParticipant extends DAOMan implements IDAOParticipant {
     public Participant getParticipantById(int manId, int crimeId) {
 
-        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM `participant` WHERE `crime_id` = ? AND `man_id` = ?");
-
-        try {
-            preparedStatement.setInt(1, crimeId);
-            preparedStatement.setInt(2, manId);
-        } catch (SQLException e) {
-            DAOLog.log(e.toString());
-            return null;
-        }
-        List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
-
-        if (retArray.isEmpty()) return null;
         Participant retParticipantRecord = new Participant();
-        retParticipantRecord.setManId(manId);
-        retParticipantRecord.setCrimeId(crimeId);
 
-        if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "alibi"))
-            retParticipantRecord.setAlibi(retArray.get(0).get("alibi").toString());
-        if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "witness_report"))
-            retParticipantRecord.setAlibi(retArray.get(0).get("witness_report").toString());
-        if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "participant_status"))
-            retParticipantRecord.participantStatus = ParticipantStatus.valueOf(retArray.get(0).get("participant_status").toString());
+        fillInfoFromManTableById(manId, retParticipantRecord);
+        fillInfoFromParticipantTableById(manId, crimeId, retParticipantRecord);
+
         return retParticipantRecord;
     }
 
     public boolean addParticipant(Participant participantToAdd) {
-        if (participantToAdd == null) return false;
+        /*boolean retValue = addMan(participantToAdd);
+        if(!retValue) return false;
 
-        PreparedStatement preparedStatement = currConnection.prepareStatement("INSERT INTO `participant`(`crime_id`, `man_id`, `alibi`, `witness_report`, `participant_status`) VALUES (?,?,?,?,?)");
+        //здеь не будет работать автоматическое добавление, ибо нужно просто в лоб задавать ключи crime_id и man_id! REDO!!!!
+        PreparedStatement preparedQuery = currConnection.prepareStatement("INSERT INTO `participant`(`crime_id`, `man_id`, `alibi`, `witness_report`, `participant_status_id`) VALUES ([value-1],[value-2],[value-3],[value-4],[value-5])")
+        currConnection.queryDataEdit("INSERT INTO `participant`(`" +
+                "crime_id`, `man_id`, `alibi`, `witness_report`, `participant_status_id`) VALUES (" +
+                +participantToAdd.getCrimeId() + "," +
+                +participantToAdd.getManId() + "," +
+                "'" + participantToAdd.getAlibi() + "'," +
+                "'" + participantToAdd.getWitnessReport() + "'," +
+                participantToAdd.participantStatus.ordinal() + ")");
+
+        return retValue;
+        */
+        return false;
+    }
+
+    private boolean fillInfoFromParticipantTableById(int manID, int crimeId, Participant objectToFill) {
+        // List<HashMap<String, Object>> retArray = currConnection.queryFind("SELECT * FROM `participant` WHERE `man_id` = ? AND `crime_id ` = ?");
+        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM `participant` WHERE `man_id` = ? AND `crime_id ` = ?");
+
         try {
-            preparedStatement.setInt(1, participantToAdd.getCrimeId());
-            preparedStatement.setInt(2, participantToAdd.getManId());
-
-            if (participantToAdd.getAlibi() != null)
-                preparedStatement.setString(3, participantToAdd.getAlibi());
-            else
-                preparedStatement.setNull(3, 0);
-
-            if (participantToAdd.getWitnessReport() != null)
-                preparedStatement.setString(4, participantToAdd.getWitnessReport());
-            else
-                preparedStatement.setNull(4, 0);
-            preparedStatement.setString(5, participantToAdd.participantStatus.toString());
+            preparedStatement.setInt(1, manID);
+            preparedStatement.setInt(2, crimeId);
         } catch (SQLException e) {
             DAOLog.log(e.toString());
             return false;
         }
 
-        return currConnection.queryDataEdit(preparedStatement);
+        List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
+
+        if (retArray.isEmpty()) return false;
+
+        if (retArray.get(0).containsKey("alibi"))
+            objectToFill.setAlibi(retArray.get(0).get("alibi").toString());
+        if (retArray.get(0).containsKey("witness_report"))
+            objectToFill.setWitnessReport(retArray.get(0).get("witness_report").toString());
+        if (retArray.get(0).containsKey("participant_status_id")) {
+            int participantStatusId = Integer.parseInt(retArray.get(0).get("participant_status_id").toString());
+            //fillParticipantStatusById(participantStatusId, objectToFill);
+        }
+
+        return true;
     }
+/*
+    private boolean fillParticipantStatusById(int participantStatusId, Participant participantObject) {
+        try {
+            PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT `name` FROM `participant_status_id` WHERE `participant_status_id` = ?");
+            try {
+                preparedStatement.setInt(1, participantStatusId);
+            } catch (SQLException e) {
+                DAOLog.log(e.toString());
+                return false;
+            }
+            List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
+
+            if (retArray.isEmpty()) return false;
+            participantObject.participantStatus = ParticipantStatus.valueOf(retArray.get(0).toString());
+        } catch (Exception e) {
+            DAOLog.log(e.toString());
+            return false;
+        }
+        return true;
+    }*/
 }
