@@ -9,15 +9,26 @@ public class tempMainCode {
         DAOMaster MainDAOMaster = DAOMaster.getInstance();
         MainDAOMaster.setCommomConnectionToUse(new SQLConnection());
 
+        Participant participant = MainDAOMaster.getParticipantById(17,15);
+/*        Participant participant = new Participant();
+        participant.setManId(17);
+        participant.setCrimeId(15);
+        participant.setWitnessReport("SomeReportInfo");
+
+        //com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Duplicate entry '15' for key 'PRIMARY
+        //неправильно настроенная БД!!! Должно быть ВОЗМОЖНО добавить несколько участников к преступлению.
+        //и НЕЛЬЗЯ добавить участника по несуществующему crime
+
+        boolean b1 = MainDAOMaster.addParticipant(participant);
 
         /*Crime crime = new Crime();
         crime.setCriminalCaseId(2);
         crime.setCrimePlace("mesto");
         crime.setCrimeTime(null);
         boolean b1 = MainDAOMaster.addCrime(crime);
-*/
+
         Crime crime = MainDAOMaster.getCrimeById(1);
-/*
+
 
         Detective myDetective = MainDAOMaster.getDetectiveById(17);
         //добавление crimimalCase
