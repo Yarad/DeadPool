@@ -7,7 +7,6 @@ import com.logic.ProjectFunctions;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 
@@ -30,7 +29,7 @@ public class DAOCriminalCase extends DAO implements IDAOCriminalCase {
             DAOLog.log(e.toString());
             return false;
         }
-
+        criminalCase.setCriminalCaseId(currConnection.getLastAddedId(preparedStatement));
         return currConnection.queryDataEdit(preparedStatement);
     }
 
@@ -52,10 +51,6 @@ public class DAOCriminalCase extends DAO implements IDAOCriminalCase {
         CriminalCase retCriminalCase = new CriminalCase();
         retCriminalCase.setCriminalCaseId(id);
 
-        /*if (retArray.get(0).containsKey("bithday") && (LocalDate) retArray.get(0).get("bithday") != null)
-            objectToFill.setBirthDay((LocalDate) retArray.get(0).get("bithday"));
-            TODO://дописать
-        */
         if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "detective_id"))
             retCriminalCase.setDetectiveId(Integer.parseInt(retArray.get(0).get("detective_id").toString()));
 

@@ -1,23 +1,30 @@
 package com.logic;
 
-import com.DAO.DAODetective;
 import com.DAO.DAOMaster;
-import com.DAO.DAOParticipant;
 import com.DAO.SQLConnection;
-
-import java.time.LocalDate;
 
 public class tempMainCode {
     public static void main(String[] args) {
         //создаём объект, благодаря которому будем доставать инфу о детективах
-
         DAOMaster MainDAOMaster = DAOMaster.getInstance();
         MainDAOMaster.setCommomConnectionToUse(new SQLConnection());
 
+
+        /*Crime crime = new Crime();
+        crime.setCriminalCaseId(2);
+        crime.setCrimePlace("mesto");
+        crime.setCrimeTime(null);
+        boolean b1 = MainDAOMaster.addCrime(crime);
+*/
+        Crime crime = MainDAOMaster.getCrimeById(1);
+/*
+
         Detective myDetective = MainDAOMaster.getDetectiveById(17);
+        //добавление crimimalCase
+        CriminalCase criminalCase = MainDAOMaster.getCriminalCaseById(1);
 
         //добавление crimimalCase
-        CriminalCase criminalCase = new CriminalCase();
+        //CriminalCase criminalCase = new CriminalCase();
         criminalCase.setDetectiveId(32);
         criminalCase.setCriminalCaseNumber("какой-то номер дела");
         MainDAOMaster.addCriminalCase(criminalCase);

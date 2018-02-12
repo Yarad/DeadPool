@@ -1,10 +1,7 @@
 package com.DAO;
 
 import com.DAO.interfaces.*;
-import com.logic.CriminalCase;
-import com.logic.Detective;
-import com.logic.Man;
-import com.logic.Participant;
+import com.logic.*;
 
 public class DAOMaster implements IDAOMaster {
 
@@ -27,6 +24,14 @@ public class DAOMaster implements IDAOMaster {
     private DAODetective masterDAODetective;
     private DAOParticipant masterDAOParticipant;
     private DAOCriminalCase masterDAOCriminalCase;
+    private DAOCrime masterDAOCrime;
+
+    private void provideDAOCrimeExist() {
+        if (masterDAOCrime == null) {
+            masterDAOCrime = new DAOCrime();
+            masterDAOCrime.setConnectionToUse(connectionToUse);
+        }
+    }
 
     private void provideDAOCriminalCaseExist() {
         if (masterDAOCriminalCase == null) {
@@ -116,5 +121,17 @@ public class DAOMaster implements IDAOMaster {
         provideDAOCriminalCaseExist();
 
         return masterDAOCriminalCase.addCriminalCase(criminalCase);
+    }
+
+    @Override
+    public boolean addCrime(Crime crimeToAdd) {
+        provideDAOCrimeExist();
+        return masterDAOCrime.addCrime(crimeToAdd);
+    }
+
+    @Override
+    public Crime getCrimeById(int crimeId) {
+        provideDAOCrimeExist();
+        return masterDAOCrime.getCrimeById(crimeId);
     }
 }
