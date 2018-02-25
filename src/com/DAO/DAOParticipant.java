@@ -142,12 +142,13 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
 
     //возвращает пустой массив или массив щаполненный данными, а не NULL
     @Override
-    public List<Participant> getAllParticipantsByCrime(long participantId) {
-        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT `criminal_case`.`criminal_case_number`, `criminal_case`.`closed`, `crime`.`crime_id`, `crime`.`description`, `crime`.`crime_date`, `participant`.`participant_status`, `participant`.`alibi`, `participant`.`witness_report` FROM `participant`, `crime`, `criminal_case` WHERE `participant`.`man_id` = ? AND `participant`.`crime_id` = `crime`.`crime_id` AND `crime`.`criminal_case_id` = `criminal_case`.`criminal_case_id`");
+    public List<Participant> getAllParticipantsByCrime(long crimeId) {
+        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM participant JOIN man USING(man_id) WHERE participant.crime_id = ?");
+        //PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT `criminal_case`.`criminal_case_number`, `criminal_case`.`closed`, `crime`.`crime_id`, `crime`.`description`, `crime`.`crime_date`, `participant`.`participant_status`, `participant`.`alibi`, `participant`.`witness_report` FROM `participant`, `crime`, `criminal_case` WHERE `participant`.`man_id` = ? AND `participant`.`crime_id` = `crime`.`crime_id` AND `crime`.`criminal_case_id` = `criminal_case`.`criminal_case_id`");
         List<Participant> retParticipantCrimesArray = new ArrayList<>();
 
         try {
-            preparedStatement.setLong(1, participantId);
+            preparedStatement.setLong(1, crimeId);
         } catch (SQLException e) {
             DAOLog.log(e.toString());
             return retParticipantCrimesArray;
@@ -163,6 +164,6 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
             retParticipantCrimesArray.add(participant);
         }
 
-        return null;
+        return retParticipantCrimesArray;
     }
 }
