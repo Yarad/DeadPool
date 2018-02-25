@@ -2,8 +2,6 @@ package com.logic;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
-import java.util.Set;
 
 public class Crime {
     private int crimeId = -1;
@@ -21,6 +19,14 @@ public class Crime {
         this.crimeId = Math.abs(crimeId);
     }
 
+    public void setCrimeId(Object crimeId) {
+        try {
+            this.crimeId = Math.abs(Integer.parseInt(crimeId.toString()));
+        } catch (Exception e) {
+            LogicLog.log(e.toString());
+        }
+    }
+
     public int getCriminalCaseId() {
         return criminalCaseId;
     }
@@ -29,8 +35,20 @@ public class Crime {
         this.criminalCaseId = Math.abs(criminalCaseId);
     }
 
+    public void setCriminalCaseId(Object criminalCaseId) {
+        try {
+            this.criminalCaseId = Math.abs(Integer.parseInt(criminalCaseId.toString()));
+        } catch (Exception e) {
+            LogicLog.log(e.toString());
+        }
+    }
+
     public String getCrimePlace() {
         return crimePlace;
+    }
+
+    public void setCrimePlace(Object crimePlace) {
+        this.crimePlace = crimePlace.toString();
     }
 
     public void setCrimePlace(String crimePlace) {
@@ -45,11 +63,27 @@ public class Crime {
         this.crimeDate = crimeDate;
     }
 
+    public void setCrimeDate(Object crimeDate) throws Exception {
+        try {
+            this.crimeDate = LocalDate.parse(crimeDate.toString());
+        } catch (Exception e) {
+            LogicLog.log(e.toString());
+        }
+    }
+
     public LocalTime getCrimeTime() {
         return crimeTime;
     }
 
     public void setCrimeTime(LocalTime crimeTime) {
         this.crimeTime = crimeTime;
+    }
+
+    public void setCrimeTime(Object crimeTime) {
+        try {
+            this.crimeTime = LocalTime.parse(crimeTime.toString());
+        } catch (Exception e) {
+            LogicLog.log(e.toString());
+        }
     }
 }

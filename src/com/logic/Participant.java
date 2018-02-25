@@ -12,6 +12,14 @@ public class Participant extends Man {
         this.parentCrime = crime;
     }
 
+    public void setCrime(Object crime) {
+        try {
+            this.parentCrime = (Crime) crime;
+        } catch (Exception e) {
+            LogicLog.log(e.toString());
+        }
+    }
+
     public Crime getCrime() {
         return parentCrime;
     }
@@ -24,12 +32,24 @@ public class Participant extends Man {
         this.crimeId = crimeId;
     }
 
+    public void setCrimeId(Object crimeId) {
+        try {
+            this.crimeId = Integer.parseInt(crimeId.toString());
+        } catch (Exception e) {
+            LogicLog.log(e.toString());
+        }
+    }
+
     public String getAlibi() {
         return alibi;
     }
 
     public void setAlibi(String alibi) {
         this.alibi = alibi;
+    }
+
+    public void setAlibi(Object alibi) {
+        this.alibi = alibi.toString();
     }
 
     public String getWitnessReport() {
@@ -40,6 +60,10 @@ public class Participant extends Man {
         this.witnessReport = witnessReport;
     }
 
+    public void setWitnessReport(Object witnessReport) {
+        this.witnessReport = witnessReport.toString();
+    }
+
     @Override
     public int getManId() {
         return manId;
@@ -48,5 +72,13 @@ public class Participant extends Man {
     @Override
     public void setManId(int manId) {
         this.manId = Math.abs(manId);
+    }
+
+    public void setManId(Object manId) {
+        try {
+            this.manId = Math.abs(Integer.parseInt(manId.toString()));
+        } catch (Exception e) {
+            LogicLog.log(e.toString());
+        }
     }
 }

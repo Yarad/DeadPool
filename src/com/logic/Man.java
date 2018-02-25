@@ -1,8 +1,5 @@
 package com.logic;
 
-import com.mysql.jdbc.StringUtils;
-
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
@@ -23,6 +20,14 @@ public abstract class Man {
         this.manId = Math.abs(manId);
     }
 
+    public void setManId(Object manId) {
+        try {
+            this.manId = Math.abs(Integer.parseInt(manId.toString()));
+        } catch (Exception e) {
+            LogicLog.log(e.toString());
+        }
+    }
+
     public String getName() {
         return name;
     }
@@ -34,6 +39,10 @@ public abstract class Man {
             this.name = name;
     }
 
+    public void setName(Object name) {
+        setName(name.toString());
+    }
+
     public String getSurname() {
         return surname;
     }
@@ -43,6 +52,10 @@ public abstract class Man {
             this.surname = "NoSurname";
         else
             this.surname = surname;
+    }
+
+    public void setSurname(Object surname) {
+        setSurname(surname.toString());
     }
 
     public LocalDate getBirthDay() {
@@ -61,11 +74,20 @@ public abstract class Man {
         }
     }
 
+    public void setBirthDay(Object birthDay) {
+        setBirthDay(birthDay.toString());
+    }
+
     public String getHomeAddress() {
         return homeAddress;
     }
+
     public void setHomeAddress(String homeAddress) {
         if (!homeAddress.isEmpty())
             this.homeAddress = homeAddress;
+    }
+
+    public void setHomeAddress(Object homeAddress) {
+        setHomeAddress(homeAddress.toString());
     }
 }
