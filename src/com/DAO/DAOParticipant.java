@@ -4,7 +4,6 @@ import com.DAO.interfaces.IDAOParticipant;
 import com.logic.Participant;
 import com.logic.ProjectFunctions;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -44,12 +43,6 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
                 "`alibi`=?," + //nullable
                 "`witness_report`=? " + //nullable
                 "WHERE man_id = ?");
-        PreparedStatement preparedStatement2 = currConnection.prepareStatement("UPDATE `man` SET " +
-                "`name`=?," +
-                "`surname`=?," +
-                "`birthday`=?," + //nullable
-                "`home_address`=? " + //nullable
-                "WHERE man_id = ?");
         try {
             preparedStatement.setString(1, participantToUpdate.participantStatus.toString());
 
@@ -68,28 +61,8 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
             return false;
         }
 
-        try {
-
-            preparedStatement2.setString(1, participantToUpdate.getName());
-            preparedStatement2.setString(2, participantToUpdate.getSurname());
-
-            if (participantToUpdate.getBirthDay() != null)
-                preparedStatement2.setDate(3, Date.valueOf(participantToUpdate.getBirthDay()));
-            else
-                preparedStatement2.setNull(3, 0);
-
-            if (participantToUpdate.getHomeAddress() != null)
-                preparedStatement2.setString(4, participantToUpdate.getHomeAddress());
-            else
-                preparedStatement2.setNull(4, 0);
-
-            preparedStatement2.setLong(5, participantToUpdate.getManId());
-        } catch (Exception e) {
-            DAOLog.log(e.toString());
-        }
-
         boolean res1 = currConnection.queryDataEdit(preparedStatement);
-        boolean res2 = currConnection.queryDataEdit(preparedStatement2);
+        boolean res2 = updateMan(participantToUpdate);
         return res1 && res2;
     }
 
