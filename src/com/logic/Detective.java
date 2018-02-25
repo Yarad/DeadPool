@@ -1,8 +1,7 @@
 package com.logic;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
-
-import java.util.regex.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Detective extends Man {
     private String login;
@@ -25,7 +24,7 @@ public class Detective extends Man {
         return password;
     }
 
-    public boolean setPassword(String password) {
+    public boolean setHashOfPassword(String password) {
         if (ifPasswordValid(password)) {
             this.password = password;
             return true;
@@ -34,6 +33,7 @@ public class Detective extends Man {
         }
     }
 
+    // [S]olid
     private boolean ifLoginValid(String login) {
         Pattern p = Pattern.compile("[a-z]+[a-z0-9]+");
         Matcher m = p.matcher(login);

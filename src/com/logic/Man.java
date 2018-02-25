@@ -1,21 +1,22 @@
 package com.logic;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
+import static com.mysql.jdbc.StringUtils.isNullOrEmpty;
+
 public abstract class Man {
-    protected int manId = -1;
+    protected long manId = -1;
     protected String name = "NoName";
     protected String surname = "NoSurname";
     protected LocalDate birthDay = LocalDate.parse("08.09.1998", ProjectConstants.myDateTimeFormatter);
     protected String homeAddress = "NoHomeAddress";
 
-    public int getManId() {
+    public long getManId() {
         return manId;
     }
 
-    public void setManId(int manId) {
+    public void setManId(long manId) {
         this.manId = Math.abs(manId);
     }
 
@@ -24,7 +25,7 @@ public abstract class Man {
     }
 
     public void setName(String name) {
-        if (name.equals(""))
+        if (isNullOrEmpty(name))  // почему это плохо?
             this.name = "NoName";
         else
             this.name = name;
@@ -60,6 +61,7 @@ public abstract class Man {
     public String getHomeAddress() {
         return homeAddress;
     }
+
     public void setHomeAddress(String homeAddress) {
         if (!homeAddress.isEmpty())
             this.homeAddress = homeAddress;

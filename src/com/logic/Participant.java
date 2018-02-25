@@ -1,17 +1,25 @@
 package com.logic;
 
 public class Participant extends Man {
-    private int manId = -1;
-    private int crimeId = -1;
+    private long crimeId = -1; //временно
     private String alibi;
     private String witnessReport;
-    public  ParticipantStatus participantStatus = ParticipantStatus.SUSPECTED;
+    public ParticipantStatus participantStatus = ParticipantStatus.SUSPECTED;
+    private Crime parentCrime;
 
-    public int getCrimeId() {
+    public void setCrime(Crime crime) {
+        this.parentCrime = crime;
+    }
+
+    public Crime getCrime() {
+        return parentCrime;
+    }
+
+    public long getCrimeId() {
         return crimeId;
     }
 
-    public void setCrimeId(int crimeId) {
+    public void setCrimeId(long crimeId) {
         this.crimeId = crimeId;
     }
 
@@ -32,12 +40,12 @@ public class Participant extends Man {
     }
 
     @Override
-    public int getManId() {
+    public long getManId() {
         return manId;
     }
 
     @Override
-    public void setManId(int manId) {
+    public void setManId(long manId) {
         this.manId = Math.abs(manId);
     }
 }

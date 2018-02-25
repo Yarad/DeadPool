@@ -24,7 +24,7 @@ public class DAOCriminalCase extends DAO implements IDAOCriminalCase {
             else
                 preparedStatement.setDate(3, Date.valueOf(criminalCase.getCloseDate()));
             preparedStatement.setBoolean(4, criminalCase.isClosed());
-            preparedStatement.setInt(5, criminalCase.getDetectiveId());
+            preparedStatement.setLong(5, criminalCase.getDetectiveId());
         } catch (SQLException e) {
             DAOLog.log(e.toString());
             return false;
@@ -34,11 +34,11 @@ public class DAOCriminalCase extends DAO implements IDAOCriminalCase {
     }
 
     @Override
-    public CriminalCase getCriminalCaseById(int id) {
+    public CriminalCase getCriminalCaseById(long id) {
         PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM `criminal_case` WHERE `criminal_case_id` = ?");
 
         try {
-            preparedStatement.setInt(1, id);
+            preparedStatement.setLong(1, id);
         } catch (SQLException e) {
             DAOLog.log(e.toString());
             return null;
@@ -51,20 +51,42 @@ public class DAOCriminalCase extends DAO implements IDAOCriminalCase {
         CriminalCase retCriminalCase = new CriminalCase();
         retCriminalCase.setCriminalCaseId(id);
 
-        if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "detective_id"))
-            retCriminalCase.setDetectiveId(Integer.parseInt(retArray.get(0).get("detective_id").toString()));
-
-        if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "criminal_case_number"))
-            retCriminalCase.setCriminalCaseNumber(retArray.get(0).get("criminal_case_number").toString());
-
-        if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "create_date"))
-            retCriminalCase.setCreateDate(((Date) retArray.get(0).get("create_date")).toLocalDate());
-
-        if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "close_date"))
-            retCriminalCase.setCreateDate(((Date) retArray.get(0).get("close_date")).toLocalDate());
-
-        if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "closed"))
-            retCriminalCase.setClosed(Boolean.valueOf(retArray.get(0).get("closed").toString()));
+        ProjectFunctions.tryFillObjectByDbArray(retCriminalCase, retArray.get(0));
         return retCriminalCase;
+    }
+//TODO
+    @Override
+    public boolean updateCriminalCase(CriminalCase criminalCaseToUpdate) {
+        return false;
+    }
+
+    @Override
+    public CriminalCase getCriminalCaseWithDetective(long caseID) {
+        return null;
+    }
+
+    @Override
+    public List<CriminalCase> getAllCrimes() {
+        return null;
+    }
+
+    @Override
+    public List<CriminalCase> getAllClosedSolvedCrimes() {
+        return null;
+    }
+
+    @Override
+    public List<CriminalCase> getAllClosedUnsolvedCrimes() {
+        return null;
+    }
+
+    @Override
+    public List<CriminalCase> getAllOpenCrimes() {
+        return null;
+    }
+
+    @Override
+    public List<CriminalCase> getAllCrimesOfDetective(long detectiveID) {
+        return null;
     }
 }

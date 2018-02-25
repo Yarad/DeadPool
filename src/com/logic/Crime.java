@@ -4,25 +4,26 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Crime {
-    private int crimeId = -1;
-    private int criminalCaseId = -1;
+    private long crimeId = -1;
+    private long criminalCaseId = -1;
     private String crimePlace = "noAddress";
     private LocalDate crimeDate = LocalDate.now();
     private LocalTime crimeTime = null;
+    private CriminalCase parentCriminalCase;
 
-    public int getCrimeId() {
+    public long getCrimeId() {
         return crimeId;
     }
 
-    public void setCrimeId(int crimeId) {
+    public void setCrimeId(long crimeId) {
         this.crimeId = Math.abs(crimeId);
     }
 
-    public int getCriminalCaseId() {
+    public long getCriminalCaseId() {
         return criminalCaseId;
     }
 
-    public void setCriminalCaseId(int criminalCaseId) {
+    public void setCriminalCaseId(long criminalCaseId) {
         this.criminalCaseId = Math.abs(criminalCaseId);
     }
 

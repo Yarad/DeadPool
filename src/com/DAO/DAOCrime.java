@@ -28,7 +28,7 @@ public class DAOCrime extends DAO implements IDAOCrime {
             else
                 preparedStatement.setNull(3, 0);
 
-            preparedStatement.setInt(4, crimeToAdd.getCriminalCaseId());
+            preparedStatement.setLong(4, crimeToAdd.getCriminalCaseId());
         } catch (SQLException e) {
             DAOLog.log(e.toString());
             return false;
@@ -41,11 +41,11 @@ public class DAOCrime extends DAO implements IDAOCrime {
     }
 
     @Override
-    public Crime getCrimeById(int crimeId) {
+    public Crime getCrimeById(long crimeId) {
         PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM `crime` WHERE `crime_id` = ?");
 
         try {
-            preparedStatement.setInt(1, crimeId);
+            preparedStatement.setLong(1, crimeId);
         } catch (SQLException e) {
             DAOLog.log(e.toString());
             return null;
@@ -58,6 +58,8 @@ public class DAOCrime extends DAO implements IDAOCrime {
         Crime retCrime = new Crime();
         retCrime.setCrimeId(crimeId);
 
+        ProjectFunctions.tryFillObjectByDbArray(retCrime, retArray.get(0));
+/*
         if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "crime_place"))
             retCrime.setCrimePlace(retArray.get(0).get("crime_place").toString());
         if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "crime_date"))
@@ -66,7 +68,34 @@ public class DAOCrime extends DAO implements IDAOCrime {
             retCrime.setCrimeTime(((Time) retArray.get(0).get("crime_time")).toLocalTime());
         if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "criminal_case_id"))
             retCrime.setCriminalCaseId(Integer.valueOf(retArray.get(0).get("criminal_case_id").toString()));
-
+*/
         return retCrime;
     }
+
+    //TODO
+    @Override
+    public boolean updateCrime(Crime crimeToUpdate) {
+        return false;
+    }
+
+    @Override
+    public List<Crime> getAllCrimes() {
+        return null;
+    }
+
+    @Override
+    public List<Crime> getCrimesBetweenDates(String dateStart, String dateEnd) {
+        return null;
+    }
+
+    @Override
+    public Crime getCrimeWithCriminalCase(long crimeId) {
+        return null;
+    }
+
+    @Override
+    public List<Crime> getCrimesByCriminalCase(long caseId) {
+        return null;
+    }
+
 }

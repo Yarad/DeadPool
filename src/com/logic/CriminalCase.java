@@ -3,9 +3,9 @@ package com.logic;
 import java.time.LocalDate;
 
 public class CriminalCase {
-    private int criminalCaseId = -1;
+    private long criminalCaseId = -1;
     private boolean closed = false;
-    private int detectiveId = -1;
+    private long detectiveId = -1;
     private String criminalCaseNumber = "NoCriminalCaseNumber";
     private LocalDate createDate = LocalDate.now();
     private LocalDate closeDate = null;
@@ -18,11 +18,11 @@ public class CriminalCase {
         this.closed = closed;
     }
 
-    public int getDetectiveId() {
+    public long getDetectiveId() {
         return detectiveId;
     }
 
-    public void setDetectiveId(int detectiveId) {
+    public void setDetectiveId(long detectiveId) {
         this.detectiveId = detectiveId;
     }
 
@@ -50,11 +50,11 @@ public class CriminalCase {
         this.closeDate = closeDate;
     }
 
-    public int getCriminalCaseId() {
+    public long getCriminalCaseId() {
         return criminalCaseId;
     }
 
-    public void setCriminalCaseId(int criminalCaseId) {
+    public void setCriminalCaseId(long criminalCaseId) {
         this.criminalCaseId = Math.abs(criminalCaseId);
     }
 }

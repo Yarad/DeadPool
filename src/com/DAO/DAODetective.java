@@ -13,7 +13,7 @@ import java.util.List;
 
 public class DAODetective extends DAOMan implements IDAODetective {
 
-    public Detective getDetectiveById(int id) {
+    public Detective getDetectiveById(long id) {
 
         Detective retDetectiveRecord = new Detective();
         retDetectiveRecord.setManId(id);
@@ -36,7 +36,7 @@ public class DAODetective extends DAOMan implements IDAODetective {
         try {
             preparedStatement.setString(1, detectiveToAdd.getLogin());
             preparedStatement.setString(2, detectiveToAdd.getPassword());
-            preparedStatement.setInt(3, detectiveToAdd.getManId());
+            preparedStatement.setLong(3, detectiveToAdd.getManId());
         } catch (SQLException e) {
             DAOLog.log(e.toString());
             return false;
@@ -45,11 +45,18 @@ public class DAODetective extends DAOMan implements IDAODetective {
         return currConnection.queryDataEdit(preparedStatement);
     }
 
-    private boolean fillInfoFromDetectiveTableById(int id, Detective objectToFill) {
+    //TODO
+    @Override
+    public boolean updateDetective(Detective detectiveToUpdate) {
+        return false;
+    }
 
-        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM `detective` WHERE `man_id` = ?");
+    private boolean fillInfoFromDetectiveTableById(long id, Detective objectToFill) {
+
+        //TODO Join
+        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM `detective` WHERE `detective_id` = ?");
         try {
-            preparedStatement.setInt(1, id);
+            preparedStatement.setLong(1, id);
         } catch (SQLException e) {
             DAOLog.log(e.toString());
             return false;
@@ -59,13 +66,15 @@ public class DAODetective extends DAOMan implements IDAODetective {
 
         if (retArray.isEmpty()) return false;
 
+        ProjectFunctions.tryFillObjectByDbArray(objectToFill,retArray.get(0));
+        /*
         //if (retArray.get(0).containsKey("login"))
         if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0),"login"))
             objectToFill.setLogin(retArray.get(0).get("login").toString());
         //if (retArray.get(0).containsKey("password_hash"))
         if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0),"password_hash"))
             objectToFill.setPassword(retArray.get(0).get("password_hash").toString());
-
+*/
         return true;
     }
 }

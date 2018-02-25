@@ -32,11 +32,11 @@ public class DAOMan extends DAO implements IDAOMan {
         return queryIsOk;
     }
 
-    protected boolean fillInfoFromManTableById(int id, Man objectToFill) {
+    protected boolean fillInfoFromManTableById(long id, Man objectToFill) {
         //List<HashMap<String, Object>> retArray = currConnection.queryFind("SELECT * FROM `Man` WHERE `man_id` = " + id);
         PreparedStatement preparedQuery = currConnection.prepareStatement("SELECT * FROM `Man` WHERE `man_id` = ?");
         try {
-            preparedQuery.setInt(1, id);
+            preparedQuery.setLong(1, id);
         } catch (SQLException e) {
             DAOLog.log(e.toString());
             return false;
@@ -46,8 +46,10 @@ public class DAOMan extends DAO implements IDAOMan {
 
         if (retArray.isEmpty()) return false;
 
+        ProjectFunctions.tryFillObjectByDbArray(objectToFill,retArray.get(0));
         //ProjectConstants.fillObjectFieldByArrayOfValues(objectToFill, retArray);
         //if (retArray.get(0).containsKey("bithday") && (LocalDate) retArray.get(0).get("bithday") != null)
+        /*
         if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "birthday"))
             objectToFill.setBirthDay((LocalDate) retArray.get(0).get("bithday"));
 
@@ -63,6 +65,7 @@ public class DAOMan extends DAO implements IDAOMan {
         if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "home_address"))
             objectToFill.setHomeAddress(retArray.get(0).get("home_address").toString());
         //LogicLog.log(list.toString());
+        */
         return true;
     }
 }
