@@ -4,10 +4,8 @@ import com.DAO.interfaces.IDAODetective;
 import com.logic.Detective;
 import com.logic.ProjectFunctions;
 
-
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 
@@ -48,7 +46,18 @@ public class DAODetective extends DAOMan implements IDAODetective {
     //TODO
     @Override
     public boolean updateDetective(Detective detectiveToUpdate) {
-        return false;
+        if (detectiveToUpdate == null) return false;
+        PreparedStatement preparedStatement = currConnection.prepareStatement("UPDATE `detective` SET `login`=?,`hash_of_password`=? WHERE `detective_id` = ?");
+        try {
+            preparedStatement.setString(1, detectiveToUpdate.getLogin());
+            preparedStatement.setString(2, detectiveToUpdate.getPassword());
+            preparedStatement.setLong(3, detectiveToUpdate.getManId());
+        } catch (Exception e) {
+            DAOLog.log(e.toString());
+        }
+        boolean res1 = currConnection.queryDataEdit(preparedStatement);
+        boolean res2 = updateMan(detectiveToUpdate);
+        return res1 && res2;
     }
 
     private boolean fillInfoFromDetectiveTableById(long id, Detective objectToFill) {
@@ -66,7 +75,7 @@ public class DAODetective extends DAOMan implements IDAODetective {
 
         if (retArray.isEmpty()) return false;
 
-        ProjectFunctions.tryFillObjectByDbArray(objectToFill,retArray.get(0));
+        ProjectFunctions.tryFillObjectByDbArray(objectToFill, retArray.get(0));
         /*
         //if (retArray.get(0).containsKey("login"))
         if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0),"login"))
