@@ -6,26 +6,18 @@ import java.time.format.DateTimeParseException;
 import static com.mysql.jdbc.StringUtils.isNullOrEmpty;
 
 public abstract class Man {
-    protected int manId = -1;
+    protected long manId = -1;
     protected String name = "NoName";
     protected String surname = "NoSurname";
     protected LocalDate birthDay = LocalDate.parse("08.09.1998", ProjectConstants.myDateTimeFormatter);
     protected String homeAddress = "NoHomeAddress";
 
-    public int getManId() {
+    public long getManId() {
         return manId;
     }
 
-    public void setManId(int manId) {
+    public void setManId(long manId) {
         this.manId = Math.abs(manId);
-    }
-
-    public void setManId(Object manId) {
-        try {
-            this.manId = Math.abs(Integer.parseInt(manId.toString()));
-        } catch (Exception e) {
-            LogicLog.log(e.toString());
-        }
     }
 
     public String getName() {
@@ -39,10 +31,6 @@ public abstract class Man {
             this.name = name;
     }
 
-    public void setName(Object name) {
-        setName(name.toString());
-    }
-
     public String getSurname() {
         return surname;
     }
@@ -52,10 +40,6 @@ public abstract class Man {
             this.surname = "NoSurname";
         else
             this.surname = surname;
-    }
-
-    public void setSurname(Object surname) {
-        setSurname(surname.toString());
     }
 
     public LocalDate getBirthDay() {
@@ -74,10 +58,6 @@ public abstract class Man {
         }
     }
 
-    public void setBirthDay(Object birthDay) {
-        setBirthDay(birthDay.toString());
-    }
-
     public String getHomeAddress() {
         return homeAddress;
     }
@@ -85,9 +65,5 @@ public abstract class Man {
     public void setHomeAddress(String homeAddress) {
         if (!homeAddress.isEmpty())
             this.homeAddress = homeAddress;
-    }
-
-    public void setHomeAddress(Object homeAddress) {
-        setHomeAddress(homeAddress.toString());
     }
 }

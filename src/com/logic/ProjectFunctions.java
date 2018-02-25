@@ -1,6 +1,7 @@
 package com.logic;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +32,9 @@ public class ProjectFunctions {
 
             if (methodToRun != null) {
                 try {
-                    methodToRun.invoke(object, item.getValue());
+                    Type setValueType = methodToRun.getGenericParameterTypes()[0];
+
+                    methodToRun.invoke(object,  item.getValue());
                 } catch (Exception e) {
                     avoidedElementsOfArray.put(item.getKey(), item.getValue());
                 }

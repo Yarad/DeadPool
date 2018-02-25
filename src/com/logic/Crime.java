@@ -4,51 +4,31 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Crime {
-    private int crimeId = -1;
-    private int criminalCaseId = -1;
+    private long crimeId = -1;
+    private long criminalCaseId = -1;
     private String crimePlace = "noAddress";
     private LocalDate crimeDate = LocalDate.now();
     private LocalTime crimeTime = null;
     private CriminalCase parentCriminalCase;
 
-    public int getCrimeId() {
+    public long getCrimeId() {
         return crimeId;
     }
 
-    public void setCrimeId(int crimeId) {
+    public void setCrimeId(long crimeId) {
         this.crimeId = Math.abs(crimeId);
     }
 
-    public void setCrimeId(Object crimeId) {
-        try {
-            this.crimeId = Math.abs(Integer.parseInt(crimeId.toString()));
-        } catch (Exception e) {
-            LogicLog.log(e.toString());
-        }
-    }
-
-    public int getCriminalCaseId() {
+    public long getCriminalCaseId() {
         return criminalCaseId;
     }
 
-    public void setCriminalCaseId(int criminalCaseId) {
+    public void setCriminalCaseId(long criminalCaseId) {
         this.criminalCaseId = Math.abs(criminalCaseId);
-    }
-
-    public void setCriminalCaseId(Object criminalCaseId) {
-        try {
-            this.criminalCaseId = Math.abs(Integer.parseInt(criminalCaseId.toString()));
-        } catch (Exception e) {
-            LogicLog.log(e.toString());
-        }
     }
 
     public String getCrimePlace() {
         return crimePlace;
-    }
-
-    public void setCrimePlace(Object crimePlace) {
-        this.crimePlace = crimePlace.toString();
     }
 
     public void setCrimePlace(String crimePlace) {
@@ -63,27 +43,11 @@ public class Crime {
         this.crimeDate = crimeDate;
     }
 
-    public void setCrimeDate(Object crimeDate) throws Exception {
-        try {
-            this.crimeDate = LocalDate.parse(crimeDate.toString());
-        } catch (Exception e) {
-            LogicLog.log(e.toString());
-        }
-    }
-
     public LocalTime getCrimeTime() {
         return crimeTime;
     }
 
     public void setCrimeTime(LocalTime crimeTime) {
         this.crimeTime = crimeTime;
-    }
-
-    public void setCrimeTime(Object crimeTime) {
-        try {
-            this.crimeTime = LocalTime.parse(crimeTime.toString());
-        } catch (Exception e) {
-            LogicLog.log(e.toString());
-        }
     }
 }

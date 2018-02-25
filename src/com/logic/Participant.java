@@ -1,8 +1,7 @@
 package com.logic;
 
 public class Participant extends Man {
-    private int manId = -1;
-    private int crimeId = -1;
+    private long crimeId = -1; //временно
     private String alibi;
     private String witnessReport;
     public ParticipantStatus participantStatus = ParticipantStatus.SUSPECTED;
@@ -12,32 +11,16 @@ public class Participant extends Man {
         this.parentCrime = crime;
     }
 
-    public void setCrime(Object crime) {
-        try {
-            this.parentCrime = (Crime) crime;
-        } catch (Exception e) {
-            LogicLog.log(e.toString());
-        }
-    }
-
     public Crime getCrime() {
         return parentCrime;
     }
 
-    public int getCrimeId() {
+    public long getCrimeId() {
         return crimeId;
     }
 
-    public void setCrimeId(int crimeId) {
+    public void setCrimeId(long crimeId) {
         this.crimeId = crimeId;
-    }
-
-    public void setCrimeId(Object crimeId) {
-        try {
-            this.crimeId = Integer.parseInt(crimeId.toString());
-        } catch (Exception e) {
-            LogicLog.log(e.toString());
-        }
     }
 
     public String getAlibi() {
@@ -48,10 +31,6 @@ public class Participant extends Man {
         this.alibi = alibi;
     }
 
-    public void setAlibi(Object alibi) {
-        this.alibi = alibi.toString();
-    }
-
     public String getWitnessReport() {
         return witnessReport;
     }
@@ -60,25 +39,13 @@ public class Participant extends Man {
         this.witnessReport = witnessReport;
     }
 
-    public void setWitnessReport(Object witnessReport) {
-        this.witnessReport = witnessReport.toString();
-    }
-
     @Override
-    public int getManId() {
+    public long getManId() {
         return manId;
     }
 
     @Override
-    public void setManId(int manId) {
+    public void setManId(long manId) {
         this.manId = Math.abs(manId);
-    }
-
-    public void setManId(Object manId) {
-        try {
-            this.manId = Math.abs(Integer.parseInt(manId.toString()));
-        } catch (Exception e) {
-            LogicLog.log(e.toString());
-        }
     }
 }

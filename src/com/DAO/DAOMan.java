@@ -32,11 +32,11 @@ public class DAOMan extends DAO implements IDAOMan {
         return queryIsOk;
     }
 
-    protected boolean fillInfoFromManTableById(int id, Man objectToFill) {
+    protected boolean fillInfoFromManTableById(long id, Man objectToFill) {
         //List<HashMap<String, Object>> retArray = currConnection.queryFind("SELECT * FROM `Man` WHERE `man_id` = " + id);
         PreparedStatement preparedQuery = currConnection.prepareStatement("SELECT * FROM `Man` WHERE `man_id` = ?");
         try {
-            preparedQuery.setInt(1, id);
+            preparedQuery.setLong(1, id);
         } catch (SQLException e) {
             DAOLog.log(e.toString());
             return false;

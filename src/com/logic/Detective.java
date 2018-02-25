@@ -20,11 +20,6 @@ public class Detective extends Man {
         }
     }
 
-    public boolean setLogin(Object login) {
-        return this.setLogin(login.toString());
-    }
-
-
     public String getPassword() {
         return password;
     }
@@ -36,10 +31,6 @@ public class Detective extends Man {
         } else {
             return false;
         }
-    }
-
-    public boolean setHashOfPassword(Object password) {
-        return this.setHashOfPassword(password.toString());
     }
 
     // [S]olid
