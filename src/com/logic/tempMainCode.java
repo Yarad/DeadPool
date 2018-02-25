@@ -4,6 +4,7 @@ import com.DAO.DAODetective;
 import com.DAO.DAOParticipant;
 import com.DAO.SQLConnection;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class tempMainCode {
@@ -15,7 +16,15 @@ public class tempMainCode {
         daoDetective.setConnectionToUse(new SQLConnection());
 
         Participant participant = daoParticipant.getParticipantById(1,3);
-        Detective detective = daoDetective.getDetectiveById(1);
+
+        participant.setWitnessReport(participant.getWitnessReport() + "new");
+        participant.setName(participant.getName() + "new");
+        participant.setSurname(participant.getSurname() + "new");
+        participant.setBirthDay(LocalDate.now());
+
+        boolean res = daoParticipant.updateParticipant(participant);
+
+        /*Detective detective = daoDetective.getDetectiveById(1);
 
         List<Participant> participants = daoParticipant.getAllParticipantsByMan(1);
 

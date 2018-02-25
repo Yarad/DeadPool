@@ -7,7 +7,6 @@ import com.logic.ProjectFunctions;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 
@@ -46,7 +45,7 @@ public class DAOMan extends DAO implements IDAOMan {
 
         if (retArray.isEmpty()) return false;
 
-        ProjectFunctions.tryFillObjectByDbArray(objectToFill,retArray.get(0));
+        ProjectFunctions.tryFillObjectByDbArray(objectToFill, retArray.get(0));
         //ProjectConstants.fillObjectFieldByArrayOfValues(objectToFill, retArray);
         //if (retArray.get(0).containsKey("bithday") && (LocalDate) retArray.get(0).get("bithday") != null)
         /*

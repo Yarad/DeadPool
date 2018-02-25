@@ -4,6 +4,7 @@ import com.DAO.interfaces.IDAOParticipant;
 import com.logic.Participant;
 import com.logic.ProjectFunctions;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -36,7 +37,60 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
 
     @Override
     public boolean updateParticipant(Participant participantToUpdate) {
-        return false;
+        if (participantToUpdate == null) return false;
+
+        PreparedStatement preparedStatement = currConnection.prepareStatement("UPDATE `participant` SET " +
+                "`participant_status`=?," +
+                "`alibi`=?," + //nullable
+                "`witness_report`=? " + //nullable
+                "WHERE man_id = ?");
+        PreparedStatement preparedStatement2 = currConnection.prepareStatement("UPDATE `man` SET " +
+                "`name`=?," +
+                "`surname`=?," +
+                "`birthday`=?," + //nullable
+                "`home_address`=? " + //nullable
+                "WHERE man_id = ?");
+        try {
+            preparedStatement.setString(1, participantToUpdate.participantStatus.toString());
+
+            if (participantToUpdate.getAlibi() != null)
+                preparedStatement.setString(2, participantToUpdate.getAlibi());
+            else
+                preparedStatement.setNull(2, 0);
+
+            if (participantToUpdate.getWitnessReport() != null)
+                preparedStatement.setString(3, participantToUpdate.getWitnessReport());
+            else
+                preparedStatement.setNull(3, 0);
+            preparedStatement.setLong(4, participantToUpdate.getManId());
+        } catch (SQLException e) {
+            DAOLog.log(e.toString());
+            return false;
+        }
+
+        try {
+
+            preparedStatement2.setString(1, participantToUpdate.getName());
+            preparedStatement2.setString(2, participantToUpdate.getSurname());
+
+            if (participantToUpdate.getBirthDay() != null)
+                preparedStatement2.setDate(3, Date.valueOf(participantToUpdate.getBirthDay()));
+            else
+                preparedStatement2.setNull(3, 0);
+
+            if (participantToUpdate.getHomeAddress() != null)
+                preparedStatement2.setString(4, participantToUpdate.getHomeAddress());
+            else
+                preparedStatement2.setNull(4, 0);
+
+            preparedStatement2.setLong(5, participantToUpdate.getManId());
+        } catch (Exception e) {
+            DAOLog.log(e.toString());
+        }
+
+        boolean res1 = currConnection.queryDataEdit(preparedStatement);
+        boolean res2 = currConnection.queryDataEdit(preparedStatement2);
+        return res1 && res2;
     }
 
     @Override
@@ -85,7 +139,6 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
 
         return currConnection.queryDataEdit(preparedStatement);
     }
-
 
     //возвращает пустой массив или массив щаполненный данными, а не NULL
     @Override
