@@ -1,5 +1,6 @@
 package com.logic;
 
+import com.DAO.DAOCriminalCase;
 import com.DAO.DAODetective;
 import com.DAO.DAOParticipant;
 import com.DAO.SQLConnection;
@@ -15,15 +16,33 @@ public class tempMainCode {
         DAODetective daoDetective = new DAODetective();
         daoDetective.setConnectionToUse(new SQLConnection());
 
-        Participant participant = daoParticipant.getParticipantById(1,3);
+        DAOCriminalCase daoCriminalCase = new DAOCriminalCase();
+        daoCriminalCase.setConnectionToUse(new SQLConnection());
+
+        CriminalCase criminalCase = daoCriminalCase.getCriminalCaseById(3);
+        criminalCase.setCloseDate(LocalDate.now());
+        criminalCase.setCriminalCaseNumber("new criminal case number");
+        daoCriminalCase.updateCriminalCase(criminalCase);
+/*
+        Detective detective = daoDetective.getDetectiveById(1);
+        detective.setLogin("newlogin");
+        detective.setHashOfPassword("newhash");
+        detective.setName("Holms");
+        boolean res = daoDetective.updateDetective(detective);
+
+        /*
+        Participant participant = daoParticipant.getParticipantById(1, 3);
 
         participant.setWitnessReport(participant.getWitnessReport() + "new");
         participant.setName(participant.getName() + "new");
         participant.setSurname(participant.getSurname() + "new");
         participant.setBirthDay(LocalDate.now());
 
+        //List<Participant> participants = daoParticipant.getAllParticipantsByCrime(3);
+/*
         boolean res = daoParticipant.updateParticipant(participant);
 
+        /*
         /*Detective detective = daoDetective.getDetectiveById(1);
 
         List<Participant> participants = daoParticipant.getAllParticipantsByMan(1);

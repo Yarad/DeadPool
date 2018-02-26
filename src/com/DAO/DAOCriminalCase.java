@@ -54,10 +54,31 @@ public class DAOCriminalCase extends DAO implements IDAOCriminalCase {
         ProjectFunctions.tryFillObjectByDbArray(retCriminalCase, retArray.get(0));
         return retCriminalCase;
     }
-//TODO
+
     @Override
     public boolean updateCriminalCase(CriminalCase criminalCaseToUpdate) {
-        return false;
+        if (criminalCaseToUpdate == null) return false;
+        PreparedStatement preparedStatement = currConnection.prepareStatement("UPDATE `criminal_case` SET " +
+                "`criminal_case_number`=?," +
+                "`create_date`=?," +
+                "`close_date`=?," + //nullable
+                "`closed`=?" +
+                " WHERE `criminal_case_id` = ?");
+        try {
+            preparedStatement.setString(1, criminalCaseToUpdate.getCriminalCaseNumber());
+            preparedStatement.setDate(2, Date.valueOf(criminalCaseToUpdate.getCreateDate()));
+
+            if (criminalCaseToUpdate.getCloseDate() != null)
+                preparedStatement.setDate(3, Date.valueOf(criminalCaseToUpdate.getCloseDate()));
+            else
+                preparedStatement.setNull(3, 0);
+
+            preparedStatement.setBoolean(4, criminalCaseToUpdate.isClosed());
+            preparedStatement.setLong(5, criminalCaseToUpdate.getCriminalCaseId());
+        } catch (Exception e) {
+            DAOLog.log(e.toString());
+        }
+        return currConnection.queryDataEdit(preparedStatement);
     }
 
     @Override
