@@ -5,7 +5,6 @@ import com.DAO.DAODetective;
 import com.DAO.DAOParticipant;
 import com.DAO.SQLConnection;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public class tempMainCode {
@@ -19,7 +18,8 @@ public class tempMainCode {
         DAOCriminalCase daoCriminalCase = new DAOCriminalCase();
         daoCriminalCase.setConnectionToUse(new SQLConnection());
 
-        CriminalCase criminalCase = daoCriminalCase.getCriminalCaseById(3);
+        List<CriminalCase> criminalCases = daoCriminalCase.getAllCrimesOfDetective(0);
+        /*CriminalCase criminalCase = daoCriminalCase.getCriminalCaseById(3);
         criminalCase.setCloseDate(LocalDate.now());
         criminalCase.setCriminalCaseNumber("new criminal case number");
         daoCriminalCase.updateCriminalCase(criminalCase);

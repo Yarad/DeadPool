@@ -7,6 +7,7 @@ import com.logic.ProjectFunctions;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -81,33 +82,109 @@ public class DAOCriminalCase extends DAO implements IDAOCriminalCase {
         return currConnection.queryDataEdit(preparedStatement);
     }
 
+
+    //что?? Какой with detective? обсудить!!!TODO
     @Override
     public CriminalCase getCriminalCaseWithDetective(long caseID) {
         return null;
     }
 
     @Override
-    public List<CriminalCase> getAllCrimes() {
-        return null;
+    public List<CriminalCase> getAllCriminalCases() {
+        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM `criminal_case`");
+        List<CriminalCase> criminalCases = new ArrayList<>();
+
+        List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
+
+        if (retArray.isEmpty()) return criminalCases;
+
+        for (int i = 0; i < retArray.size(); i++) {
+            CriminalCase retCriminalCase = new CriminalCase();
+            ProjectFunctions.tryFillObjectByDbArray(retCriminalCase, retArray.get(i));
+            criminalCases.add(retCriminalCase);
+            //пардон за названия
+        }
+        return criminalCases;
     }
 
     @Override
     public List<CriminalCase> getAllClosedSolvedCrimes() {
-        return null;
+        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM `criminal_case` WHERE `closed` = 1");
+        List<CriminalCase> criminalCases = new ArrayList<>();
+
+        List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
+
+        if (retArray.isEmpty()) return criminalCases;
+
+        for (int i = 0; i < retArray.size(); i++) {
+            CriminalCase retCriminalCase = new CriminalCase();
+            ProjectFunctions.tryFillObjectByDbArray(retCriminalCase, retArray.get(i));
+            criminalCases.add(retCriminalCase);
+            //пардон за названия
+        }
+        return criminalCases;
     }
 
     @Override
     public List<CriminalCase> getAllClosedUnsolvedCrimes() {
-        return null;
+        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM `criminal_case` WHERE `closed` = 0 AND `close_date` IS NOT NULL ");
+        List<CriminalCase> criminalCases = new ArrayList<>();
+
+        List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
+
+        if (retArray.isEmpty()) return criminalCases;
+
+        for (int i = 0; i < retArray.size(); i++) {
+            CriminalCase retCriminalCase = new CriminalCase();
+            ProjectFunctions.tryFillObjectByDbArray(retCriminalCase, retArray.get(i));
+            criminalCases.add(retCriminalCase);
+            //пардон за названия
+        }
+        return criminalCases;
     }
 
     @Override
     public List<CriminalCase> getAllOpenCrimes() {
-        return null;
+        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM `criminal_case` WHERE `closed` = 0");
+        List<CriminalCase> criminalCases = new ArrayList<>();
+
+        List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
+
+        if (retArray.isEmpty()) return criminalCases;
+
+        for (int i = 0; i < retArray.size(); i++) {
+            CriminalCase retCriminalCase = new CriminalCase();
+            ProjectFunctions.tryFillObjectByDbArray(retCriminalCase, retArray.get(i));
+            criminalCases.add(retCriminalCase);
+            //пардон за названия
+        }
+        return criminalCases;
     }
 
     @Override
     public List<CriminalCase> getAllCrimesOfDetective(long detectiveID) {
-        return null;
+
+        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM `criminal_case` WHERE `detective_id` = ?");
+        List<CriminalCase> criminalCases = new ArrayList<>();
+
+        try{
+            preparedStatement.setLong(1,detectiveID);
+        } catch (Exception e)
+        {
+            DAOLog.log(e.toString());
+            return criminalCases;
+        }
+
+        List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
+
+        if (retArray.isEmpty()) return criminalCases;
+
+        for (int i = 0; i < retArray.size(); i++) {
+            CriminalCase retCriminalCase = new CriminalCase();
+            ProjectFunctions.tryFillObjectByDbArray(retCriminalCase, retArray.get(i));
+            criminalCases.add(retCriminalCase);
+            //пардон за названия
+        }
+        return criminalCases;
     }
 }
