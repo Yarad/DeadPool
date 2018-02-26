@@ -22,7 +22,7 @@ public interface IDAOCriminalCase {
     /*
     * Получить вообще все дела. Для вывода на экран в соотв. разделе сайта
     */
-    List<CriminalCase> getAllCrimes();
+    List<CriminalCase> getAllCriminalCases();
 
     /*
      * Получить все дела закрытые и раскрытые (Generate report by status of criminal cases)

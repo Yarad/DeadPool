@@ -9,6 +9,7 @@ public class CriminalCase {
     private String criminalCaseNumber = "NoCriminalCaseNumber";
     private LocalDate createDate = LocalDate.now();
     private LocalDate closeDate = null;
+    private Detective parentDetective = null;
 
     public boolean isClosed() {
         return closed;

@@ -7,7 +7,6 @@ import com.logic.ProjectFunctions;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,6 +31,37 @@ public class DAOMan extends DAO implements IDAOMan {
         return queryIsOk;
     }
 
+    public boolean updateMan(Man manToUpdate) {
+        if (manToUpdate == null) return false;
+        PreparedStatement preparedStatement2 = currConnection.prepareStatement("UPDATE `man` SET " +
+                "`name`=?," +
+                "`surname`=?," +
+                "`birthday`=?," + //nullable
+                "`home_address`=? " + //nullable
+                "WHERE man_id = ?");
+        try {
+
+            preparedStatement2.setString(1, manToUpdate.getName());
+            preparedStatement2.setString(2, manToUpdate.getSurname());
+
+            if (manToUpdate.getBirthDay() != null)
+                preparedStatement2.setDate(3, Date.valueOf(manToUpdate.getBirthDay()));
+            else
+                preparedStatement2.setNull(3, 0);
+
+            if (manToUpdate.getHomeAddress() != null)
+                preparedStatement2.setString(4, manToUpdate.getHomeAddress());
+            else
+                preparedStatement2.setNull(4, 0);
+
+            preparedStatement2.setLong(5, manToUpdate.getManId());
+        } catch (Exception e) {
+            DAOLog.log(e.toString());
+        }
+
+        return currConnection.queryDataEdit(preparedStatement2);
+    }
+
     protected boolean fillInfoFromManTableById(long id, Man objectToFill) {
         //List<HashMap<String, Object>> retArray = currConnection.queryFind("SELECT * FROM `Man` WHERE `man_id` = " + id);
         PreparedStatement preparedQuery = currConnection.prepareStatement("SELECT * FROM `Man` WHERE `man_id` = ?");
@@ -46,7 +76,7 @@ public class DAOMan extends DAO implements IDAOMan {
 
         if (retArray.isEmpty()) return false;
 
-        ProjectFunctions.tryFillObjectByDbArray(objectToFill,retArray.get(0));
+        ProjectFunctions.tryFillObjectByDbArray(objectToFill, retArray.get(0));
         //ProjectConstants.fillObjectFieldByArrayOfValues(objectToFill, retArray);
         //if (retArray.get(0).containsKey("bithday") && (LocalDate) retArray.get(0).get("bithday") != null)
         /*
