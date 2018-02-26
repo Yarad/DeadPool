@@ -142,4 +142,10 @@ public class DAOCrime extends DAO implements IDAOCrime {
         }
         return crimes;
     }
+
+    @Override
+    public List<Crime> getCrimesWhereEvidenceExists(long evidenceId) {
+        //TODO
+        return null;
+    }
 }
