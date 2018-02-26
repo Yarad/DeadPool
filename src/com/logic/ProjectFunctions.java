@@ -25,7 +25,8 @@ public class ProjectFunctions {
             Method methodToRun = null;
 
             for (int i = 0; i < existingSetters.size(); i++)
-                if (existingSetters.get(i).getName().toLowerCase().equals("set".concat(tempStr))) {
+                if (existingSetters.get(i).getName().toLowerCase().equals("set".concat(tempStr)) /* && existingSetters.get(i).getGenericParameterTypes()[0] == item.getClass()*/) {
+                    //TODO: починить LocalDate initialization
                     methodToRun = existingSetters.get(i);
                     break;
                 }
@@ -34,7 +35,7 @@ public class ProjectFunctions {
                 try {
                     Type setValueType = methodToRun.getGenericParameterTypes()[0];
 
-                    methodToRun.invoke(object,  item.getValue());
+                    methodToRun.invoke(object, item.getValue());
                 } catch (Exception e) {
                     avoidedElementsOfArray.put(item.getKey(), item.getValue());
                 }

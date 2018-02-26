@@ -36,7 +36,34 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
 
     @Override
     public boolean updateParticipant(Participant participantToUpdate) {
-        return false;
+        if (participantToUpdate == null) return false;
+
+        PreparedStatement preparedStatement = currConnection.prepareStatement("UPDATE `participant` SET " +
+                "`participant_status`=?," +
+                "`alibi`=?," + //nullable
+                "`witness_report`=? " + //nullable
+                "WHERE man_id = ?");
+        try {
+            preparedStatement.setString(1, participantToUpdate.participantStatus.toString());
+
+            if (participantToUpdate.getAlibi() != null)
+                preparedStatement.setString(2, participantToUpdate.getAlibi());
+            else
+                preparedStatement.setNull(2, 0);
+
+            if (participantToUpdate.getWitnessReport() != null)
+                preparedStatement.setString(3, participantToUpdate.getWitnessReport());
+            else
+                preparedStatement.setNull(3, 0);
+            preparedStatement.setLong(4, participantToUpdate.getManId());
+        } catch (SQLException e) {
+            DAOLog.log(e.toString());
+            return false;
+        }
+
+        boolean res1 = currConnection.queryDataEdit(preparedStatement);
+        boolean res2 = updateMan(participantToUpdate);
+        return res1 && res2;
     }
 
     @Override
@@ -86,15 +113,15 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
         return currConnection.queryDataEdit(preparedStatement);
     }
 
-
     //возвращает пустой массив или массив щаполненный данными, а не NULL
     @Override
-    public List<Participant> getAllParticipantsByCrime(long participantId) {
-        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT `criminal_case`.`criminal_case_number`, `criminal_case`.`closed`, `crime`.`crime_id`, `crime`.`description`, `crime`.`crime_date`, `participant`.`participant_status`, `participant`.`alibi`, `participant`.`witness_report` FROM `participant`, `crime`, `criminal_case` WHERE `participant`.`man_id` = ? AND `participant`.`crime_id` = `crime`.`crime_id` AND `crime`.`criminal_case_id` = `criminal_case`.`criminal_case_id`");
+    public List<Participant> getAllParticipantsByCrime(long crimeId) {
+        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM participant JOIN man USING(man_id) WHERE participant.crime_id = ?");
+        //PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT `criminal_case`.`criminal_case_number`, `criminal_case`.`closed`, `crime`.`crime_id`, `crime`.`description`, `crime`.`crime_date`, `participant`.`participant_status`, `participant`.`alibi`, `participant`.`witness_report` FROM `participant`, `crime`, `criminal_case` WHERE `participant`.`man_id` = ? AND `participant`.`crime_id` = `crime`.`crime_id` AND `crime`.`criminal_case_id` = `criminal_case`.`criminal_case_id`");
         List<Participant> retParticipantCrimesArray = new ArrayList<>();
 
         try {
-            preparedStatement.setLong(1, participantId);
+            preparedStatement.setLong(1, crimeId);
         } catch (SQLException e) {
             DAOLog.log(e.toString());
             return retParticipantCrimesArray;
@@ -110,6 +137,6 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
             retParticipantCrimesArray.add(participant);
         }
 
-        return null;
+        return retParticipantCrimesArray;
     }
 }
