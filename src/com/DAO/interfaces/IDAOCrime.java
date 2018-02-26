@@ -35,4 +35,7 @@ public interface IDAOCrime {
      * SELECT `crime`.`crime_id`, `crime`.`description`, `crime`.`crime_date`, `crime`.`crime_time`, `crime`.`crime_place` FROM `crime` WHERE `crime`.`criminal_case_id` = 2
      */
     List<Crime> getCrimesByCriminalCase(long caseId);
+
+    //получить инфу о всех преступлениях, в которых упоминалась улика
+    List<Crime> getCrimesWhereEvidenceExists(long evidenceId);
 }
