@@ -9,7 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,17 +18,18 @@ public class DAOCrime extends DAO implements IDAOCrime {
     public boolean addCrime(Crime crimeToAdd) {
         if (crimeToAdd == null) return false;
 
-        PreparedStatement preparedStatement = currConnection.prepareStatement("INSERT INTO `crime`(`crime_place`, `crime_date`, `crime_time`, `criminal_case_id`) VALUES (?,?,?,?)");
+        PreparedStatement preparedStatement = currConnection.prepareStatement("INSERT INTO `crime`(`criminal_case_id`, `description`, `crime_date`, `crime_time`, `crime_place`) VALUES (?,?,?,?,?)");
         try {
-            preparedStatement.setString(1, crimeToAdd.getCrimePlace());
-            preparedStatement.setDate(2, Date.valueOf(crimeToAdd.getCrimeDate()));
+            preparedStatement.setLong(1, crimeToAdd.getCriminalCaseId());
+            preparedStatement.setString(2, crimeToAdd.getDescription());
+            preparedStatement.setDate(3, Date.valueOf(crimeToAdd.getCrimeDate()));
 
             if (crimeToAdd.getCrimeTime() != null)
-                preparedStatement.setTime(3, Time.valueOf(crimeToAdd.getCrimeTime()));
+                preparedStatement.setTime(4, Time.valueOf(crimeToAdd.getCrimeTime()));
             else
-                preparedStatement.setNull(3, 0);
+                preparedStatement.setNull(4, 0);
+            preparedStatement.setString(5, crimeToAdd.getCrimePlace());
 
-            preparedStatement.setLong(4, crimeToAdd.getCriminalCaseId());
         } catch (SQLException e) {
             DAOLog.log(e.toString());
             return false;
@@ -59,43 +60,92 @@ public class DAOCrime extends DAO implements IDAOCrime {
         retCrime.setCrimeId(crimeId);
 
         ProjectFunctions.tryFillObjectByDbArray(retCrime, retArray.get(0));
-/*
-        if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "crime_place"))
-            retCrime.setCrimePlace(retArray.get(0).get("crime_place").toString());
-        if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "crime_date"))
-            retCrime.setCrimeDate(((Date) retArray.get(0).get("crime_date")).toLocalDate());
-        if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "crime_time"))
-            retCrime.setCrimeTime(((Time) retArray.get(0).get("crime_time")).toLocalTime());
-        if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "criminal_case_id"))
-            retCrime.setCriminalCaseId(Integer.valueOf(retArray.get(0).get("criminal_case_id").toString()));
-*/
         return retCrime;
     }
 
-    //TODO
     @Override
     public boolean updateCrime(Crime crimeToUpdate) {
-        return false;
+        if (crimeToUpdate == null) return false;
+        PreparedStatement preparedStatement = currConnection.prepareStatement("UPDATE `crime` SET `description`=?,`crime_date`=?,`crime_time`=?,`crime_place`=? WHERE `crime_id` = ?");
+        try {
+            preparedStatement.setString(1, crimeToUpdate.getDescription());
+            preparedStatement.setDate(2, Date.valueOf(crimeToUpdate.getCrimeDate()));
+            preparedStatement.setTime(3, Time.valueOf(crimeToUpdate.getCrimeTime()));
+            preparedStatement.setString(4, crimeToUpdate.getCrimePlace());
+            preparedStatement.setLong(5, crimeToUpdate.getCrimeId());
+        } catch (Exception e) {
+            DAOLog.log(e.toString());
+        }
+        return currConnection.queryDataEdit(preparedStatement);
     }
 
     @Override
     public List<Crime> getAllCrimes() {
-        return null;
+        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM crime");
+        List<Crime> crimes = new ArrayList<Crime>();
+        List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
+
+        for (int i = 0; i < retArray.size(); i++) {
+            Crime retCrimeRecord = new Crime();
+            ProjectFunctions.tryFillObjectByDbArray(retCrimeRecord, retArray.get(i));
+            crimes.add(retCrimeRecord);
+        }
+        return crimes;
     }
 
     @Override
-    public List<Crime> getCrimesBetweenDates(String dateStart, String dateEnd) {
-        return null;
+    public List<Crime> getCrimesBetweenDates(LocalDate dateStart, LocalDate dateEnd) {
+        List<Crime> crimes = new ArrayList<Crime>();
+        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM crime WHERE `crime_date` BETWEEN ? AND ? ");
+
+        try {
+            preparedStatement.setDate(1, Date.valueOf(dateStart));
+            preparedStatement.setDate(2, Date.valueOf(dateEnd));
+        } catch (Exception e) {
+            DAOLog.log(e.toString());
+            return crimes;
+        }
+
+        List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
+
+        for (int i = 0; i < retArray.size(); i++) {
+            Crime retCrimeRecord = new Crime();
+            ProjectFunctions.tryFillObjectByDbArray(retCrimeRecord, retArray.get(i));
+            crimes.add(retCrimeRecord);
+        }
+        return crimes;
     }
 
     @Override
+    //потом
     public Crime getCrimeWithCriminalCase(long crimeId) {
         return null;
     }
 
     @Override
     public List<Crime> getCrimesByCriminalCase(long caseId) {
-        return null;
+        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM crime WHERE criminal_case_id = ?");
+        List<Crime> crimes = new ArrayList<Crime>();
+
+        try {
+            preparedStatement.setLong(1, caseId);
+        } catch (Exception e) {
+            DAOLog.log(e.toString());
+        }
+
+        List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
+
+        for (int i = 0; i < retArray.size(); i++) {
+            Crime retCrimeRecord = new Crime();
+            ProjectFunctions.tryFillObjectByDbArray(retCrimeRecord, retArray.get(i));
+            crimes.add(retCrimeRecord);
+        }
+        return crimes;
     }
 
+    @Override
+    public List<Crime> getCrimesWhereEvidenceExists(long evidenceId) {
+        //TODO
+        return null;
+    }
 }

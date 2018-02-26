@@ -82,7 +82,6 @@ public class DAOCriminalCase extends DAO implements IDAOCriminalCase {
         return currConnection.queryDataEdit(preparedStatement);
     }
 
-
     //что?? Какой with detective? обсудить!!!TODO
     @Override
     public CriminalCase getCriminalCaseWithDetective(long caseID) {

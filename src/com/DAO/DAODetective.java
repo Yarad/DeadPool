@@ -39,7 +39,7 @@ public class DAODetective extends DAOMan implements IDAODetective {
             DAOLog.log(e.toString());
             return false;
         }
-
+        //TODO
         return currConnection.queryDataEdit(preparedStatement);
     }
 

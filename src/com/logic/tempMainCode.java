@@ -1,10 +1,10 @@
 package com.logic;
 
-import com.DAO.DAOCriminalCase;
-import com.DAO.DAODetective;
+import com.DAO.DAOCrime;
 import com.DAO.DAOParticipant;
 import com.DAO.SQLConnection;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class tempMainCode {
@@ -12,14 +12,14 @@ public class tempMainCode {
         DAOParticipant daoParticipant = new DAOParticipant();
         daoParticipant.setConnectionToUse(new SQLConnection());
 
-        DAODetective daoDetective = new DAODetective();
-        daoDetective.setConnectionToUse(new SQLConnection());
+        DAOCrime daoCrime = new DAOCrime();
+        daoCrime.setConnectionToUse(new SQLConnection());
 
-        DAOCriminalCase daoCriminalCase = new DAOCriminalCase();
-        daoCriminalCase.setConnectionToUse(new SQLConnection());
+        List<Crime> crimes = daoCrime.getCrimesByCriminalCase(2);
+        List<Crime> crimes2 = daoCrime.getCrimesByCriminalCase(0);
 
-        List<CriminalCase> criminalCases = daoCriminalCase.getAllCrimesOfDetective(0);
-        /*CriminalCase criminalCase = daoCriminalCase.getCriminalCaseById(3);
+        /*
+        CriminalCase criminalCase = daoCriminalCase.getCriminalCaseById(3);
         criminalCase.setCloseDate(LocalDate.now());
         criminalCase.setCriminalCaseNumber("new criminal case number");
         daoCriminalCase.updateCriminalCase(criminalCase);
