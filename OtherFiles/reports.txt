@@ -1,0 +1,28 @@
+interface "ReportGenerator":
++ generateByCrime
++ generateByCrimminalCase
++ generateByEvidence
+...
+
+Class "PDFReportGenerator" implements "ReportGenerator":
++ generateByCrime
++ generateByCrimminalCase
++ generateByEvidence
+...
+
+Class "CSVReportGenerator" implements "ReportGenerator":
++ generateByCrime
++ generateByCrimminalCase
++ generateByEvidence
+...
+
+------------------
+
+interface "IEvidenceReport"
++ generateByEvidence
+
+Class "PDFEvidenceReport" implements "IEvidenceReport"
++ generateByEvidence
+
+Class "CSVEvidenceReport" implements "IEvidenceReport"
++ generateByEvidence
