@@ -49,4 +49,25 @@ public class DAOEvidenceOfCrime extends DAO implements IDAOEvidenceOfCrime {
         ProjectFunctions.tryFillObjectByDbArray(evidenceOfCrime, retArray.get(0));
         return evidenceOfCrime;
     }
+
+    //TODO: Реализовать
+	@Override
+	public List<EvidenceOfCrime> getAllEvidencesOfCrime() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	//TODO: Реализовать
+	@Override
+	public List<EvidenceOfCrime> getAllEvidencesOfCrimeByCrimeId(long crimeId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	//TODO: Реализовать
+	@Override
+	public List<EvidenceOfCrime> getAllEvidencesOfCrimeByEvidenceId(long crimeId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

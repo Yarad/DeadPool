@@ -139,4 +139,11 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
 
         return retParticipantCrimesArray;
     }
+
+    //TODO Реализовать.
+	@Override
+	public long getAmountOfCrimesWithMan(long manId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

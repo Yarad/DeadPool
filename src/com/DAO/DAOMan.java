@@ -98,4 +98,17 @@ public class DAOMan extends DAO implements IDAOMan {
         */
         return true;
     }
+
+    // TODO Надо реализовать
+	@Override
+	public List<Man> getAllManWhoTookParticipantInCrimes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Man getFullManInfo(long manId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

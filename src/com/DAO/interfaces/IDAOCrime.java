@@ -38,4 +38,9 @@ public interface IDAOCrime {
 
     //получить инфу о всех преступлениях, в которых упоминалась улика
     List<Crime> getCrimesWhereEvidenceExists(long evidenceId);
+    
+    /*
+     * Получить число преступлений, относящихся к делу с ппереданным идентификатором
+     */
+    
 }
