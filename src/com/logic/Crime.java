@@ -7,6 +7,16 @@ public class Crime {
     private long crimeId = -1;
     private long criminalCaseId = -1;
     private String crimePlace = "noAddress";
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    private String description = "noDescription";
     private LocalDate crimeDate = LocalDate.now();
     private LocalTime crimeTime = null;
     private CriminalCase parentCriminalCase;

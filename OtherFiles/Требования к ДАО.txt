@@ -1,0 +1,71 @@
+﻿0) Обновить все объекты и связанные с ними методы ДАО там, где изменилась БД.
+
+Изменения БД:
+- добавлено: дата добавления evidence_of_crime
+- добавлено: дата добавления participant
+- добавлено: тип преступления crime
+
+Ну и напомню изменения от понедельника:
+
+- добавлено: email для detective
+- добавлено: фото у man
+- изменение: evidence_type перенесено от evidence к evidence_of_crime
+
+Ну и дописать для классов методы работы с полями-"родительскими" (сейчас, к примеру: The value of the field Crime.parentCriminalCase is not used)
+
+1-4) DAOCriminalCase.getAllCriminalCases()
+
+Сейчас возвращается без вложенного детектива. Нужна также в каждое дело вложить инфу о детективе. В детективе нам нажно будет только id, имя и фамилия
+SELECT *
+FROM `criminal_case`
+LEFT JOIN `man` WHERE `detective_id` = `man_id`
+
+Это же относится к методам:
+DAOCriminalCase.getAllOpenCrimes()
+DAOCriminalCase.getAllClosedUnsolvedCrimes()
+DAOCriminalCase.getAllClosedSolvedCrimes()
+
+Если я правильно помню/понимаю, ко всем запросам в БД надо добавить:
+LEFT JOIN `man` WHERE `detective_id` = `man_id`
+
+5) DAOCrime.getAllCrimes()
+
+Сейчас возвращается без вложенного дела, к которому относится. Нужно с делом. В деле нужно id, номер, closed, closed_date
+
+SELECT *
+FROM `crime`
+LEFT JOIN `criminal_case` USING (`criminal_case_id`)
+
+6) Замечание по коду ДАО.
+DAOMan - есть public метод updateMan()
+IDAOMan - нет метода updateMan()
+Намёк, надеюсь, понятен. Добавил в интерфейс сам, но практика наличие в реализации интерфейса новых public методов мне не очень нравится.
+Так как я буду работать через интерфейс IDAOMan, я не уверен, что этот метод updateMan() мне будет виден.
+
+7) IDAOMan. Добавил в интерфейс метод getAllManWhoTookParticipantInCrimes(). Реализовать. Комментарии, что должен делать, есть в интерфейсе
+
+SELECT DISTINCT `man_id`, `name`, `surname`, `photo_path`
+FROM `man`
+JOIN `participant` USING (`man_id`)
+
+8) IDAOParticipant. Добавил в интерфейс метод getAllManWhoTookParticipantInCrimes(). Реализовать. Комментарии, что должен делать, есть в интерфейсе
+
+SELECT COUNT(*) AS `count`
+FROM `participant` WHERE `man_id` = 1
+
+9) IDAOEvidenceOfCrime. Добавил метод getAllEvidencesOfCrime(). Комментарии в интерфейсе. Обязательно заполнить CriminalCase в объекте Crime.
+Надо - напишу запрос.
+
+10) DAOCriminalCase. Метод: getCriminalCaseById(). Надо возвращать в заполненным полем parentDetective. 
+
+11) DAOCrime. Метод: getCrimeById(). Надо возвращать с заполенным полем parentCriminalCase. У дела должен быть заполнен parentDetective.
+
+12) IDAOEvidenceOfCrime. Добавил методы getAllEvidencesOfCrimeByCrimeId(), getAllEvidencesOfCrimeByEvidenceId(). Комментарии в интерфейсе.
+
+13) IDAOParticipant. Метод getParticipantById. Надо заполнить вложенную структуру Crime, а в ней - CriminalCase
+
+14) IDAOEvidenceOfCrime. Метод getEvidenceOfCrime. Надо заполнять поля EvidenceType, Evidence, Crime. У Crime - Criminal Case
+
+15) IDAOParticipant. Метод getAllParticipantsByMan. Надо заполнять Crime, а у него - CriminalCase. Данные человека получать необязательно (можно убрать JOIN `man`)
+
+16) IDAOMan. Метод getFullManInfo. Реализовать. Просто личные данные человека.
