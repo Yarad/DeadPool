@@ -6,7 +6,7 @@ import com.logic.CriminalCase;
 
 public interface IDAOCriminalCase {
     boolean addCriminalCase(CriminalCase criminalCase);
-    CriminalCase getCriminalCaseById(int id);
+    CriminalCase getCriminalCaseById(long id);
     
     /*
      * По сути: обновить все остальные поля в БД у дела с указанным id

@@ -26,10 +26,4 @@ public abstract class DAO {
             //return true;
         }
     }
-
-    public void finalize()
-    {
-        //currConnection.disconnect();
-    }
-
 }
