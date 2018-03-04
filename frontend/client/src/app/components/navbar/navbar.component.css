@@ -1,3 +1,8 @@
 .navbar{
     margin-bottom: 40px;
 }
+
+.breadcrumb{
+    background-color: #F3969A;
+    margin: 0px 0px 0px 0px;
+}

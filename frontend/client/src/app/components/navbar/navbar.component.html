@@ -1,6 +1,10 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="#">DEADPOOL</a>
 
+  <ol class="breadcrumb">
+    <li *ngFor="let breadcrumb of breadcrumbs" class="breadcrumb-item"><a routerLink="{{breadcrumb.link}}">{{breadcrumb.name}}</a></li>
+  </ol>
+
   <div class="collapse navbar-collapse" id="navbarColor01">
     <ul class="navbar-nav mr-auto">
     </ul>
@@ -8,8 +12,8 @@
       <ul class="nav navbar-nav">
         <li class="dropdown"  dropdown *ngIf="username"> 
           <a dropdown-open  id="user-menu" >{{username}}</a>             
-        <li *ngIf='currentUser == null'><button type="submit" id="btn-sign-in" routerLink="/login" class="btn btn-default">Войти</button></li>
-        <li *ngIf='currentUser != null'><button type="submit" id="btn-exit" (click)="logout($event)" class="btn btn-default">Выйти</button></li>
+        <li *ngIf='currentUser == null'><button type="submit" id="btn-sign-in" routerLink="/login" class="btn btn-secondary">Войти</button></li>
+        <li *ngIf='currentUser != null'><button type="submit" id="btn-exit" (click)="logout($event)" class="btn btn-secondary">Выйти</button></li>
       </ul>
     </form>
   </div>

@@ -1,0 +1,28 @@
+<app-navbar></app-navbar> 
+<div class="container">
+  <form>
+    <fieldset>
+      <legend><h2>Новая улика</h2></legend>
+      <div class="form-group row">
+        <label for="criminal-case-number" class="col-sm-2 col-form-label">Дело</label>
+        <div class="col-sm-10">
+          <input type="text" readonly="" class="form-control-plaintext" id="criminal-case-number" value="{{crime.criminalCase.number}}"
+            routerLink="/criminal_case/{{crime.criminalCase.id}}">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="criminal-case-number" class="col-sm-2 col-form-label">Преступление</label>
+        <div class="col-sm-10">
+          <input type="text" readonly="" class="form-control-plaintext" id="criminal-case-number" value="{{crime.name}}"
+            routerLink="/criminal_case/{{crime.criminalCase.id}}">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="open-date" class="col-sm-2 col-form-label">Дата нахождения улики</label>
+        <div class="col-sm-2">
+          <input type="text" readonly="" class="form-control-plaintext" id="open-date" value="{{evidence.date}}">
+        </div>
+      </div>
+    </fieldset>    
+  </form>
+</div>

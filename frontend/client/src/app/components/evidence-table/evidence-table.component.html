@@ -1,0 +1,16 @@
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Фото</th>
+      <th scope="col">Название</th>
+      <th scope="col">Тип улики</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let evidence of evidences">
+      <th scope="row"> <img class="img" src="{{evidence.photoPath}}" alt=""></th>
+      <td>{{evidence.name}}</td>
+      <td>{{evidence.type}}</td>
+    </tr>
+  </tbody>
+</table> 

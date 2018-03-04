@@ -1,0 +1,34 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <div class="form-horizontal">
+    <fieldset>
+      <legend class="my-3"><h2>Новое дело</h2></legend>
+      <div class="form-group row">
+        <label for="criminal-case-number" class="col-sm-2 col-form-label" required>Номер дела</label>
+        <div class="col-sm-2">
+          <input type="text" id="criminal-case-number" class="form-control" [(ngModel)]="criminalCase.number"
+            [ngClass]="{'is-invalid':(!criminalCase.number)}">          
+          <!--div class="invalid-feedback">Введите номер дела</div-->
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="detective" class="col-sm-2 col-form-label">Детектив</label>
+        <select class="form-control col-sm-3 ml-3" id="detective" (change)="changeSelectedDetective($event)">
+          <option *ngFor="let detective of detectives" value="{{detective.id}}">{{detective.name}} {{detective.surname}}</option>
+        </select>
+      </div>
+      <div class="form-group row">
+        <label for="create-date" class="col-sm-2 col-form-label">Дата открытия</label>
+        <div class="col-sm-2">
+          <input id="create-date" class="form-control" type="date" [(ngModel)]="criminalCase.createDate"
+          [ngClass]="{'is-invalid':(!criminalCase.createDate)}">                 
+          <!--div class="invalid-feedback">Введите дату</div-->
+        </div>
+      </div> 
+    </fieldset>
+    <div class="pt-3">
+      <button type="submit" role="submit" class="btn btn-secondary" (click)="addNewCriminalCase()">Добавить</button>
+      <button type="submit" class="btn btn-secondary ml-5" routerLink="/">Отмена</button>
+    </div>
+  </div>
+</div>

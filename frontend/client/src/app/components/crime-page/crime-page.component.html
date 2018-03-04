@@ -1,0 +1,73 @@
+<app-navbar></app-navbar> 
+<div class="container">
+  <div class="row">
+    <div class="col-lg-3" >
+      <div class="list-group" id="menu">
+        <h3 class="list-group-item bg-dark">
+          Действия
+        </h3>
+        <p class="list-group-item list-group-item-action" routerLink="/crime/{{crime.id}}/add_evidence">Добавить улику</p>
+        <p class="list-group-item list-group-item-action" >Добавить участника</p>
+        <p class="list-group-item list-group-item-action" >Редактировать данные</p>
+        <p class="list-group-item list-group-item-action" >Удалить преступление</p>
+      </div>
+    </div>
+    
+    <div class="col-lg-offset-3 col-lg-8">
+      <form>
+        <fieldset>
+          <legend><h2>Преступление</h2></legend>
+          <div class="form-group row">
+            <label for="criminal-case-number" class="col-sm-2 col-form-label">Дело</label>
+            <div class="col-sm-10">
+              <input type="text" readonly="" class="form-control-plaintext" id="criminal-case-number" value="{{crime.criminalCase.number}}"
+                routerLink="/criminal_case/{{crime.criminalCase.id}}">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="detective" class="col-sm-2 col-form-label">Детектив</label>
+            <div class="col-sm-10">
+              <input type="text" readonly="" class="form-control-plaintext" id="detective" value="{{crime.detective.name}} {{crime.detective.surname}}">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="status" class="col-sm-2 col-form-label">Статус</label>
+            <div class="col-sm-10">
+              <input type="text" readonly="" class="form-control-plaintext" id="status" value="{{crime.criminalCase.status}}">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="open-date" class="col-sm-2 col-form-label">Дата преступления</label>
+            <div class="col-sm-2">
+              <input type="text" readonly="" class="form-control-plaintext" id="open-date" value="{{crime.date}}">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="open-date" class="col-sm-2 col-form-label">Место преступления</label>
+            <div class="col-sm-2">
+              <input type="text" readonly="" class="form-control-plaintext" id="open-date" value="{{crime.place}}">
+            </div>
+          </div>    
+        </fieldset>
+        <tabset class=" col-md-12" (onSelect)="tabSelect($event)">     
+          <tab class="" title="" [active]="true">
+            <span *tabHeading>
+              Улики
+            </span>
+            <div class="">
+              <app-evidence-table [evidences]="crime.evidences"></app-evidence-table>
+            </div>      
+          </tab>  
+          <tab title="">
+            <span *tabHeading>
+              Участники
+            </span>
+            <div >
+              <app-participants-table [participants]="crime.participants" [tableType]="crimePage"></app-participants-table>                  
+            </div>
+          </tab>         
+        </tabset>
+      </form>
+    </div> 
+  </div>
+</div>

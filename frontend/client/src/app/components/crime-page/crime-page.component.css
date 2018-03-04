@@ -1,0 +1,12 @@
+#criminal-case-number{
+    cursor: pointer;
+    text-decoration-line: underline;
+}
+
+.list-group-item-action{
+    cursor: pointer;
+}
+
+#menu {
+   position: fixed;
+}

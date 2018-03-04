@@ -1,0 +1,99 @@
+<app-navbar></app-navbar> 
+<div class="container"> 
+  <div class="row">
+    <div class="col-lg-3">
+      <div class="list-group">
+        <h3 class="list-group-item bg-dark">
+          Категории
+        </h3>
+        <p class="list-group-item list-group-item-action" (click)="changeActiveCategory('0')">Дела</p>
+        <p class="list-group-item list-group-item-action" (click)="changeActiveCategory('1')">Преступления</p>
+        <p class="list-group-item list-group-item-action" (click)="changeActiveCategory('2')">Улики</p>
+        <p class="list-group-item list-group-item-action" (click)="changeActiveCategory('3')">Люди</p>
+      </div>
+    </div>
+    <div class="col-lg-9">
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2 col-sm-9 col-lg-10" type="text" placeholder="Поиск">
+        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Поиск</button>
+      </form>
+      <div style="height:40px">
+        
+      <div class="my-3">
+       <button class="btn btn-secondary" routerLink="/add_criminal_case">Добавить новое</button>
+      </div>
+
+      </div>
+      <table *ngIf="activeCategoryId==0" class="table table-hover">
+        <thead>
+          <tr>
+            <th class="col-lg-4" scope="col">Номер дела</th>
+            <th scope="col">Статус</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let criminalCase of  criminalCases"
+            [ngClass]="{'table-primary':(criminalCase.criminalCaseStatus ==='Закрыто')}"
+            routerLink="/criminal_case/{{criminalCase.criminalCaseId}}">
+            <th scope="row">{{criminalCase.criminalCaseNumber}}</th>
+            <td>{{criminalCase.criminalCaseStatus}}</td>
+          </tr>
+        </tbody>
+      </table> 
+
+      <table *ngIf="activeCategoryId==1" class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Номер дела</th>
+            <th scope="col">Дата преступления</th>
+            <th scope="col">Статус</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let crime of crimes" 
+            [ngClass]="{'table-primary':(crime.criminalCaseStatus ==='Закрыто')}"
+            routerLink="/crime/{{crime.id}}">
+            <th scope="row">{{crime.criminalCaseNumber}}</th>
+            <td>{{crime.crimeDate}}</td>
+            <td>{{crime.criminalCaseStatus}}</td>
+          </tr>
+        </tbody>
+      </table> 
+
+      <table *ngIf="activeCategoryId==2" class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Фото</th>
+            <th scope="col">Название</th>
+            <th scope="col">Номер дела</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let evidence of evidences">
+            <th scope="row"> <img class="img" src="{{evidence.photoPath}}" alt=""></th>
+            <td>{{evidence.name}}</td>
+            <td>{{evidence.criminalCaseNumber}}</td>
+          </tr>
+        </tbody>
+      </table> 
+
+      <table *ngIf="activeCategoryId==3" class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Фото</th>
+            <th scope="col">Имя</th>
+            <th scope="col">Количество дел</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let participant of participants">
+            <th scope="row"> <img class="img" src="{{participant.photoPath}}" alt=""></th>
+            <td>{{participant.name}} {{participant.surname}}</td>
+            <td>{{participant.crimes_part_amount}}</td>
+          </tr>
+        </tbody>
+      </table> 
+
+    </div>
+  </div>
+</div>
