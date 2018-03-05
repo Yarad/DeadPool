@@ -3,6 +3,7 @@ package com.DAO;
 import com.DAO.interfaces.IDAOCriminalCase;
 import com.logic.CriminalCase;
 import com.logic.ProjectFunctions;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@Repository
 public class DAOCriminalCase extends DAO implements IDAOCriminalCase {
     @Override
     public boolean addCriminalCase(CriminalCase criminalCase) {
@@ -80,12 +82,6 @@ public class DAOCriminalCase extends DAO implements IDAOCriminalCase {
             DAOLog.log(e.toString());
         }
         return currConnection.queryDataEdit(preparedStatement);
-    }
-
-    //что?? Какой with detective? обсудить!!!TODO
-    @Override
-    public CriminalCase getCriminalCaseWithDetective(long caseID) {
-        return null;
     }
 
     @Override
