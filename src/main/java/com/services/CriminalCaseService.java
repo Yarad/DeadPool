@@ -15,13 +15,42 @@ import java.util.List;
 public class CriminalCaseService implements ICriminalCaseService {
     private static final Logger LOGGER = Logger.getLogger(CriminalCaseService.class);
 
+    //TODO: change to better when Andrew will finish his work
     private DAOCriminalCase daoCriminalCase;
 
+    @Override
     public List<CriminalCase> getAllCrimes() {
         if (daoCriminalCase == null) {
             daoCriminalCase = new DAOCriminalCase();
             daoCriminalCase.setConnectionToUse(new SQLConnection());
         }
         return daoCriminalCase.getAllCriminalCases();
+    }
+
+    @Override
+    public List<CriminalCase> getAllSolvedCrimes() {
+        if (daoCriminalCase == null) {
+            daoCriminalCase = new DAOCriminalCase();
+            daoCriminalCase.setConnectionToUse(new SQLConnection());
+        }
+        return daoCriminalCase.getAllClosedSolvedCrimes();
+    }
+
+    @Override
+    public List<CriminalCase> getAllUnsolvedCrimes() {
+        if (daoCriminalCase == null) {
+            daoCriminalCase = new DAOCriminalCase();
+            daoCriminalCase.setConnectionToUse(new SQLConnection());
+        }
+        return daoCriminalCase.getAllClosedUnsolvedCrimes();
+    }
+
+    @Override
+    public List<CriminalCase> getAllOpenCrimes() {
+        if (daoCriminalCase == null) {
+            daoCriminalCase = new DAOCriminalCase();
+            daoCriminalCase.setConnectionToUse(new SQLConnection());
+        }
+        return daoCriminalCase.getAllOpenCrimes();
     }
 }
