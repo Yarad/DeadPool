@@ -9,10 +9,8 @@ public class CriminalCaseObjectDTO {
     private String number;
     private String type;
 
-    @JsonFormat(shape=JsonFormat.Shape.STRING)
     private LocalDate createDate;
 
-    @JsonFormat(shape=JsonFormat.Shape.STRING)
     private LocalDate closeDate;
 
     private DetectivePersonDTO detective;
