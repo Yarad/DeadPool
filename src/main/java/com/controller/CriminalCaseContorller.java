@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@SpringBootApplication(scanBasePackages={"com.*"})
+@SpringBootApplication(scanBasePackages={"com", "com.controller", "com.services.*"})
 @RestController
 @RequestMapping(value = "/criminal_cases")
 public class CriminalCaseContorller {
@@ -28,7 +28,7 @@ public class CriminalCaseContorller {
 
     @RequestMapping(method = RequestMethod.GET)
     public ListCriminalCasesDTO getAllCrimes() {
-        List<CriminalCase> inputCrimeCases = crimeCasesService.getAllCrimes();
+        List<CriminalCase> inputCrimeCases = crimeCasesService.getAllCriminalCases();
         List<CriminalCaseObjectDTO> results = inputCrimeCases.stream()
                 .map(cc -> CriminalCaseParser.parseCriminalCase(cc))
                 .collect(Collectors.toList());
@@ -37,7 +37,7 @@ public class CriminalCaseContorller {
 
     @RequestMapping(path = "/solved", method = RequestMethod.GET)
     public ListCriminalCasesDTO getAllSolvedCrimes() {
-        List<CriminalCase> inputCrimeCases = crimeCasesService.getAllSolvedCrimes();
+        List<CriminalCase> inputCrimeCases = crimeCasesService.getAllSolvedCriminalCases();
         List<CriminalCaseObjectDTO> results = inputCrimeCases.stream()
                 .map(cc -> CriminalCaseParser.parseCriminalCase(cc))
                 .collect(Collectors.toList());
@@ -46,7 +46,7 @@ public class CriminalCaseContorller {
 
     @RequestMapping(path = "/unsolved", method = RequestMethod.GET)
     public ListCriminalCasesDTO getAllUnsolvedCrimes() {
-        List<CriminalCase> inputCrimeCases = crimeCasesService.getAllUnsolvedCrimes();
+        List<CriminalCase> inputCrimeCases = crimeCasesService.getAllUnsolvedCriminalCases();
         List<CriminalCaseObjectDTO> results = inputCrimeCases.stream()
                 .map(cc -> CriminalCaseParser.parseCriminalCase(cc))
                 .collect(Collectors.toList());
@@ -55,7 +55,7 @@ public class CriminalCaseContorller {
 
     @RequestMapping(path = "/open", method = RequestMethod.GET)
     public ListCriminalCasesDTO getAllOpenCrimes() {
-        List<CriminalCase> inputCrimeCases = crimeCasesService.getAllOpenCrimes();
+        List<CriminalCase> inputCrimeCases = crimeCasesService.getAllOpenCriminalCases();
         List<CriminalCaseObjectDTO> results = inputCrimeCases.stream()
                 .map(cc -> CriminalCaseParser.parseCriminalCase(cc))
                 .collect(Collectors.toList());

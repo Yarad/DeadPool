@@ -13,44 +13,31 @@ import java.util.List;
 
 @Service
 public class CriminalCaseService implements ICriminalCaseService {
-    private static final Logger LOGGER = Logger.getLogger(CriminalCaseService.class);
-
     //TODO: change to better when Andrew will finish his work
     private DAOCriminalCase daoCriminalCase;
 
+    public CriminalCaseService() {
+        daoCriminalCase = new DAOCriminalCase();
+        daoCriminalCase.setConnectionToUse(new SQLConnection());
+    }
+
     @Override
-    public List<CriminalCase> getAllCrimes() {
-        if (daoCriminalCase == null) {
-            daoCriminalCase = new DAOCriminalCase();
-            daoCriminalCase.setConnectionToUse(new SQLConnection());
-        }
+    public List<CriminalCase> getAllCriminalCases() {
         return daoCriminalCase.getAllCriminalCases();
     }
 
     @Override
-    public List<CriminalCase> getAllSolvedCrimes() {
-        if (daoCriminalCase == null) {
-            daoCriminalCase = new DAOCriminalCase();
-            daoCriminalCase.setConnectionToUse(new SQLConnection());
-        }
+    public List<CriminalCase> getAllSolvedCriminalCases() {
         return daoCriminalCase.getAllClosedSolvedCrimes();
     }
 
     @Override
-    public List<CriminalCase> getAllUnsolvedCrimes() {
-        if (daoCriminalCase == null) {
-            daoCriminalCase = new DAOCriminalCase();
-            daoCriminalCase.setConnectionToUse(new SQLConnection());
-        }
+    public List<CriminalCase> getAllUnsolvedCriminalCases() {
         return daoCriminalCase.getAllClosedUnsolvedCrimes();
     }
 
     @Override
-    public List<CriminalCase> getAllOpenCrimes() {
-        if (daoCriminalCase == null) {
-            daoCriminalCase = new DAOCriminalCase();
-            daoCriminalCase.setConnectionToUse(new SQLConnection());
-        }
+    public List<CriminalCase> getAllOpenCriminalCases() {
         return daoCriminalCase.getAllOpenCrimes();
     }
 }
