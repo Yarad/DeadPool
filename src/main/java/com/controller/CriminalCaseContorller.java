@@ -8,6 +8,7 @@ import com.services.interfaces.ICriminalCaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +27,7 @@ public class CriminalCaseContorller {
     @Autowired
     private ICriminalCaseService crimeCasesService;
 
+    @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
     public ListCriminalCasesDTO getAllCrimes() {
         List<CriminalCase> inputCrimeCases = crimeCasesService.getAllCriminalCases();
@@ -35,6 +37,7 @@ public class CriminalCaseContorller {
         return new ListCriminalCasesDTO(results);
     }
 
+    @CrossOrigin
     @RequestMapping(path = "/solved", method = RequestMethod.GET)
     public ListCriminalCasesDTO getAllSolvedCrimes() {
         List<CriminalCase> inputCrimeCases = crimeCasesService.getAllSolvedCriminalCases();
@@ -44,6 +47,7 @@ public class CriminalCaseContorller {
         return new ListCriminalCasesDTO(results);
     }
 
+    @CrossOrigin
     @RequestMapping(path = "/unsolved", method = RequestMethod.GET)
     public ListCriminalCasesDTO getAllUnsolvedCrimes() {
         List<CriminalCase> inputCrimeCases = crimeCasesService.getAllUnsolvedCriminalCases();
@@ -53,6 +57,7 @@ public class CriminalCaseContorller {
         return new ListCriminalCasesDTO(results);
     }
 
+    @CrossOrigin
     @RequestMapping(path = "/open", method = RequestMethod.GET)
     public ListCriminalCasesDTO getAllOpenCrimes() {
         List<CriminalCase> inputCrimeCases = crimeCasesService.getAllOpenCriminalCases();
