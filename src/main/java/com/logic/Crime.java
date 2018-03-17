@@ -8,15 +8,6 @@ public class Crime {
     private long criminalCaseId = -1;
     private String crimeType = "noType";
     private String crimePlace = "noAddress";
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     private String description = "noDescription";
     private LocalDate crimeDate = LocalDate.now();
     private LocalTime crimeTime = null;
@@ -52,6 +43,14 @@ public class Crime {
 
     public void setCrimePlace(String crimePlace) {
         this.crimePlace = crimePlace;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public LocalDate getCrimeDate() {

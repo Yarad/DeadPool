@@ -11,6 +11,7 @@ public abstract class Man {
     protected String surname = "NoSurname";
     protected LocalDate birthDay = LocalDate.parse("08.09.1998", ProjectConstants.myDateTimeFormatter);
     protected String homeAddress = "NoHomeAddress";
+    protected String photoPath = "NoPhotoPath";
 
     public long getManId() {
         return manId;
@@ -65,5 +66,13 @@ public abstract class Man {
     public void setHomeAddress(String homeAddress) {
         if (!homeAddress.isEmpty())
             this.homeAddress = homeAddress;
+    }
+
+    public String getPhotoPath() {
+        return photoPath;
+    }
+
+    public void setPhotoPath(String photoPath) {
+        this.photoPath = photoPath;
     }
 }

@@ -11,10 +11,10 @@ public final class CrimeParser {
         if (crime != null) {
             return new CrimeObjectDTO(
                     crime.getCrimeId(),
-                    CriminalCaseParser.parseShortedCriminalCase(crime.getParentCriminalCase()),
                     crime.getCrimeType(),
                     crime.getCrimeDate(),
-                    crime.getCrimePlace()
+                    crime.getCrimePlace(),
+                    CriminalCaseParser.parseShortedCriminalCase(crime.getParentCriminalCase())
             );
         } else {
             return null;

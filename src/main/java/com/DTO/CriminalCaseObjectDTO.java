@@ -4,18 +4,15 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
 
-public class CriminalCaseObjectDTO extends CriminalCaseShortedDTO {
+public class CriminalCaseObjectDTO extends CriminalCaseShortedWithDetectiveDTO {
     private LocalDate createDate;
     private LocalDate closeDate;
-    private DetectivePersonDTO detective;
 
-    public CriminalCaseObjectDTO(long id, String number, String type,
-                                 LocalDate createDate, LocalDate closeDate,
-                                 DetectivePersonDTO detective) {
-        super(id, number, type);
+    public CriminalCaseObjectDTO(long id, String number, String type, DetectivePersonDTO detective,
+                                 LocalDate createDate, LocalDate closeDate) {
+        super(id, number, type, detective);
         this.createDate = createDate;
         this.closeDate = closeDate;
-        this.detective = detective;
     }
 
     public LocalDate getCreateDate() {
@@ -32,13 +29,5 @@ public class CriminalCaseObjectDTO extends CriminalCaseShortedDTO {
 
     public void setCloseDate(LocalDate closeDate) {
         this.closeDate = closeDate;
-    }
-
-    public DetectivePersonDTO getDetective() {
-        return detective;
-    }
-
-    public void setDetective(DetectivePersonDTO detective) {
-        this.detective = detective;
     }
 }

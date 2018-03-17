@@ -73,16 +73,12 @@ public class CriminalCaseController {
         return new ListCriminalCasesDTO(results);
     }
 
-    /*
-    * Метод для получения конкретного дела
-    * DTO - CriminalCaseExtendedDTO
-    * */
     //TODO: изменить, чтобы принимал id из get-параметров
     @CrossOrigin
     @RequestMapping(path = "/id", method = RequestMethod.GET)
     public CriminalCaseExtendedDTO getCriminalCaseById() {
-        CriminalCase criminallCase = crimeCasesService.getCriminalCaseById(2);
+        CriminalCase criminalCase = crimeCasesService.getCriminalCaseById(2);
         List<Crime> crimes = crimeService.getCrimesByCriminalCase(2);
-        return CriminalCaseParser.parseExtendedCriminalCase(criminallCase, crimes);
+        return CriminalCaseParser.parseExtendedCriminalCase(criminalCase, crimes);
     }
 }

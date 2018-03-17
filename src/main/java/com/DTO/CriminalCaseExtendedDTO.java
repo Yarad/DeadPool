@@ -9,7 +9,7 @@ public class CriminalCaseExtendedDTO extends CriminalCaseObjectDTO {
     public CriminalCaseExtendedDTO(long id, String number, String type,
                                    LocalDate createDate, LocalDate closeDate,
                                    DetectivePersonDTO detective, List<CrimeShortedDTO> crimes) {
-        super(id, number, type, createDate, closeDate, detective);
+        super(id, number, type, detective, createDate, closeDate);
         this.crimes = crimes;
     }
 

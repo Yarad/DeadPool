@@ -41,9 +41,9 @@ public final class CriminalCaseParser {
                     crimeCase.getCriminalCaseId(),
                     crimeCase.getCriminalCaseNumber(),
                     getStatusAsString(crimeCase.isClosed(), crimeCase.getCloseDate()),
+                    DetectiveParser.parseDetectivePerson(crimeCase.getParentDetective()),
                     crimeCase.getCreateDate(),
-                    crimeCase.getCloseDate(),
-                    DetectiveParser.parseDetectivePerson(crimeCase.getParentDetective())
+                    crimeCase.getCloseDate()
             );
         } else {
             return null;

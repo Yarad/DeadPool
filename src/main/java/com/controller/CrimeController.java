@@ -21,10 +21,6 @@ public class CrimeController {
     @Autowired
     private ICrimeService crimeService;
 
-    public CrimeController() {
-        crimeService = new CrimeService();
-    }
-
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
     public ListCrimesDTO getAllCrimes() {
