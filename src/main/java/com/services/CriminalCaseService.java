@@ -1,6 +1,6 @@
 package com.services;
 
-import com.DAO.DAOCriminalCase;
+import com.DAO.interfaces.IDAOCriminalCase;
 import com.logic.CriminalCase;
 import com.services.interfaces.ICriminalCaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public class CriminalCaseService implements ICriminalCaseService {
     @Autowired
-    private DAOCriminalCase daoCriminalCase;
+    private IDAOCriminalCase daoCriminalCase;
 
     @Override
     public List<CriminalCase> getAllCriminalCases() {

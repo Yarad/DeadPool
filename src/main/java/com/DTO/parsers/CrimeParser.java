@@ -1,8 +1,14 @@
 package com.DTO.parsers;
 
+import com.DTO.CrimeExtendedDTO;
 import com.DTO.CrimeObjectDTO;
 import com.DTO.CrimeShortedDTO;
 import com.logic.Crime;
+import com.logic.EvidenceOfCrime;
+import com.logic.Participant;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public final class CrimeParser {
     private CrimeParser () {}
@@ -28,6 +34,29 @@ public final class CrimeParser {
                     crime.getCrimeType(),
                     crime.getCrimeDate(),
                     crime.getCrimePlace()
+            );
+        } else {
+            return null;
+        }
+    }
+
+    public static CrimeExtendedDTO parseCrimeFullInformation(Crime crime, List<Participant> participants,
+                                                             List<EvidenceOfCrime> evidencesOfCrime) {
+        if (crime != null) {
+            return new CrimeExtendedDTO(
+                    crime.getCrimeId(),
+                    crime.getCrimeType(),
+                    crime.getCrimeDate(),
+                    crime.getCrimePlace(),
+                    CriminalCaseParser.parseShortedCriminalCaseWithDetective(crime.getParentCriminalCase()),
+                    crime.getDescription(),
+                    crime.getCrimeTime(),
+                    participants.stream()
+                            .map(p -> ParticipantParser.parseParticipantByCrime(p))
+                            .collect(Collectors.toList()),
+                    evidencesOfCrime.stream()
+                            .map(ec -> EvidenceOfCrimeParser.parseEvidenceOfCrimeShorted(ec))
+                            .collect(Collectors.toList())
             );
         } else {
             return null;

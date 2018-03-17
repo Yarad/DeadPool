@@ -1,6 +1,7 @@
 package com.DAO;
 
 import com.DAO.interfaces.IDAOMan;
+import com.logic.Detective;
 import com.logic.Man;
 import com.logic.ProjectFunctions;
 import org.springframework.stereotype.Repository;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -101,16 +103,15 @@ public class DAOMan extends DAO implements IDAOMan {
         return true;
     }
 
-    // TODO Надо реализовать
 	@Override
 	public List<Man> getAllManWhoTookParticipantInCrimes() {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO Реализовать
+		return new ArrayList<>();
 	}
 
 	@Override
 	public Man getFullManInfo(long manId) {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO Реализовать
+		return new Detective();
 	}
 }

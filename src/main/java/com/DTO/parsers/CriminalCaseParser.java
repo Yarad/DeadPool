@@ -35,6 +35,19 @@ public final class CriminalCaseParser {
         }
     }
 
+    public static CriminalCaseShortedWithDetectiveDTO parseShortedCriminalCaseWithDetective(CriminalCase crimeCase) {
+        if (crimeCase != null) {
+            return new CriminalCaseShortedWithDetectiveDTO(
+                    crimeCase.getCriminalCaseId(),
+                    crimeCase.getCriminalCaseNumber(),
+                    getStatusAsString(crimeCase.isClosed(), crimeCase.getCloseDate()),
+                    DetectiveParser.parseDetectivePerson(crimeCase.getParentDetective())
+            );
+        } else {
+            return null;
+        }
+    }
+
     public static CriminalCaseObjectDTO parseCriminalCase(CriminalCase crimeCase) {
         if (crimeCase != null) {
             return new CriminalCaseObjectDTO(
