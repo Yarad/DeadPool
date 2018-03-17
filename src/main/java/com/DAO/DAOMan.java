@@ -3,6 +3,7 @@ package com.DAO;
 import com.DAO.interfaces.IDAOMan;
 import com.logic.Man;
 import com.logic.ProjectFunctions;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -10,6 +11,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
+@Repository
 public class DAOMan extends DAO implements IDAOMan {
     public boolean addMan(Man manToAdd) {
         PreparedStatement preparedQuery = currConnection.prepareStatement("INSERT INTO `man`( `name`, `home_address`, `birthday`, `surname`) VALUES (?,?,?,?)");

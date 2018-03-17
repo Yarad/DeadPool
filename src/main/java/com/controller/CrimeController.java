@@ -6,7 +6,6 @@ import com.DTO.parsers.CrimeParser;
 import com.logic.Crime;
 import com.services.CrimeService;
 import com.services.interfaces.ICrimeService;
-import com.sun.management.VMOption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,8 +18,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(value = "/crimes")
 public class CrimeController {
-    //@Autowired
-    //TODO: solve problem with Autowired
+    @Autowired
     private ICrimeService crimeService;
 
     public CrimeController() {

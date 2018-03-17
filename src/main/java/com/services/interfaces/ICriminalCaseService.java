@@ -9,4 +9,5 @@ public interface ICriminalCaseService {
     List<CriminalCase> getAllSolvedCriminalCases();
     List<CriminalCase> getAllUnsolvedCriminalCases();
     List<CriminalCase> getAllOpenCriminalCases();
+    CriminalCase getCriminalCaseById(long id);
 }

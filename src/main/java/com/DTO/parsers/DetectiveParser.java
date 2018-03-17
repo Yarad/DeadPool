@@ -7,7 +7,10 @@ public final class DetectiveParser {
     private DetectiveParser() {}
 
     public static DetectivePersonDTO parseDetectivePerson(Detective detective) {
-        return new DetectivePersonDTO(detective.getManId(),
-                detective.getName(), detective.getPassword());
+        if (detective != null) {
+            return new DetectivePersonDTO(detective.getManId(), detective.getName(), detective.getPassword());
+        } else {
+            return null;
+        }
     }
 }

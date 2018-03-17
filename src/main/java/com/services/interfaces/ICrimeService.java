@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface ICrimeService {
     List<Crime> getAllCrimes();
+    List<Crime> getCrimesByCriminalCase(long id);
 }

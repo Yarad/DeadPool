@@ -1,25 +1,17 @@
 package com.services;
 
 import com.DAO.DAOCriminalCase;
-import com.DAO.SQLConnection;
-import com.DAO.interfaces.IDAOCriminalCase;
 import com.logic.CriminalCase;
 import com.services.interfaces.ICriminalCaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.apache.log4j.Logger;
 
 import java.util.List;
 
 @Service
 public class CriminalCaseService implements ICriminalCaseService {
-    //TODO: change to better when Andrew will finish his work
+    @Autowired
     private DAOCriminalCase daoCriminalCase;
-
-    public CriminalCaseService() {
-        daoCriminalCase = new DAOCriminalCase();
-        daoCriminalCase.setConnectionToUse(new SQLConnection());
-    }
 
     @Override
     public List<CriminalCase> getAllCriminalCases() {
@@ -39,5 +31,10 @@ public class CriminalCaseService implements ICriminalCaseService {
     @Override
     public List<CriminalCase> getAllOpenCriminalCases() {
         return daoCriminalCase.getAllOpenCrimes();
+    }
+
+    @Override
+    public CriminalCase getCriminalCaseById(long id) {
+        return daoCriminalCase.getCriminalCaseById(id);
     }
 }

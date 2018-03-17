@@ -3,6 +3,7 @@ package com.DAO;
 import com.DAO.interfaces.IDAOParticipant;
 import com.logic.Participant;
 import com.logic.ProjectFunctions;
+import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@Repository
 public class DAOParticipant extends DAOMan implements IDAOParticipant {
     public Participant getParticipantById(long manId, long crimeId) {
 

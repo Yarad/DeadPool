@@ -1,21 +1,36 @@
 package com.DTO.parsers;
 
 import com.DTO.CrimeObjectDTO;
+import com.DTO.CrimeShortedDTO;
 import com.logic.Crime;
 
 public final class CrimeParser {
     private CrimeParser () {}
 
-    //TODO: replace checks on null for parent entities
     public static CrimeObjectDTO parseCrime(Crime crime) {
-        return new CrimeObjectDTO(
-                crime.getCrimeId(),
-                (crime.getParentCriminalCase() != null)
-                        ? CriminalCaseParser.parseShortedCriminalCase(crime.getParentCriminalCase())
-                        : null,
-                crime.getCrimeType(),
-                crime.getCrimeDate(),
-                crime.getCrimePlace()
-        );
+        if (crime != null) {
+            return new CrimeObjectDTO(
+                    crime.getCrimeId(),
+                    CriminalCaseParser.parseShortedCriminalCase(crime.getParentCriminalCase()),
+                    crime.getCrimeType(),
+                    crime.getCrimeDate(),
+                    crime.getCrimePlace()
+            );
+        } else {
+            return null;
+        }
+    }
+
+    public static CrimeShortedDTO parseShortedCrime(Crime crime) {
+        if (crime != null) {
+            return new CrimeShortedDTO(
+                    crime.getCrimeId(),
+                    crime.getCrimeType(),
+                    crime.getCrimeDate(),
+                    crime.getCrimePlace()
+            );
+        } else {
+            return null;
+        }
     }
 }
