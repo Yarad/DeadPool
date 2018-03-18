@@ -25,7 +25,6 @@ public class EvidenceOfCrimeController {
     @Autowired
     private IEvidenceService evidenceService;
 
-    //TODO: потестить с реальными данными
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
     public ListEvidenceOfCrimeShortedWithCrimeList getAllCrimes() {
