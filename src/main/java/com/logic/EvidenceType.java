@@ -1,5 +1,8 @@
 package com.logic;
 
 public enum EvidenceType {
-    //пока что пусто
+    CRIME_INSTRUMENT,               //орудие преступления
+    PRINT,                          //предмет с отпечатком (пальца/подошвы/др.)
+    OBJECT_FROM_CRIME_SCENE        //потерпевший
+    //TODO: дополнить
 }

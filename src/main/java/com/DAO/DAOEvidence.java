@@ -3,6 +3,7 @@ package com.DAO;
 import com.DAO.interfaces.IDAOEvidence;
 import com.logic.Evidence;
 import com.logic.ProjectFunctions;
+import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -10,7 +11,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@Repository
 public class DAOEvidence extends DAO implements IDAOEvidence {
+    public DAOEvidence() {
+        setConnectionToUse(new SQLConnection());
+    }
 
     @Override
     public Evidence getEvidenceById(long evidenceId) {

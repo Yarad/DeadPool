@@ -3,13 +3,18 @@ package com.DAO;
 import com.DAO.interfaces.IDAODetective;
 import com.logic.Detective;
 import com.logic.ProjectFunctions;
+import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
+@Repository
 public class DAODetective extends DAOMan implements IDAODetective {
+    public DAODetective() {
+        setConnectionToUse(new SQLConnection());
+    }
 
     public Detective getDetectiveById(long id) {
 

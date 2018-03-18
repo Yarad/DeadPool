@@ -58,4 +58,12 @@ public class CriminalCase {
     public void setCriminalCaseId(long criminalCaseId) {
         this.criminalCaseId = Math.abs(criminalCaseId);
     }
+
+    public Detective getParentDetective() {
+        return parentDetective;
+    }
+
+    public void setParentDetective(Detective parentDetective) {
+        this.parentDetective = parentDetective;
+    }
 }
