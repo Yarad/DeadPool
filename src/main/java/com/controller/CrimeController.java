@@ -12,10 +12,7 @@ import com.services.interfaces.ICrimeService;
 import com.services.interfaces.IEvidenceOfCrimeService;
 import com.services.interfaces.IParticipantService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,11 +41,11 @@ public class CrimeController {
 
     //TODO: изменить, чтобы принимал id из get-параметров
     @CrossOrigin
-    @RequestMapping(path = "/id", method = RequestMethod.GET)
-    public CrimeExtendedDTO getCrimeById() {
-        Crime crime = crimeService.getCrimeById(2);
-        List<Participant> participants = participantService.getParticipantsByCrimeId(2);
-        List<EvidenceOfCrime> evidencesOfCrime = evidenceOfCrimeService.getEvidencesOfCrimeByCrimeId(2);
+    @RequestMapping(path = "/{id}", method = RequestMethod.GET)
+    public CrimeExtendedDTO getCrimeById(@PathVariable("id") long id) {
+        Crime crime = crimeService.getCrimeById(id);
+        List<Participant> participants = participantService.getParticipantsByCrimeId(id);
+        List<EvidenceOfCrime> evidencesOfCrime = evidenceOfCrimeService.getEvidencesOfCrimeByCrimeId(id);
         return CrimeParser.parseCrimeFullInformation(crime, participants, evidencesOfCrime);
     }
 }
