@@ -11,10 +11,7 @@ import com.logic.EvidenceOfCrime;
 import com.services.interfaces.IEvidenceOfCrimeService;
 import com.services.interfaces.IEvidenceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,21 +36,22 @@ public class EvidenceOfCrimeController {
         return new ListEvidenceOfCrimeShortedWithCrimeList(results);
     }
 
-    //TODO: изменить, чтобы принимал id из get-параметров
     @CrossOrigin
-    @RequestMapping(path = "/evidence_id/crime_id", method = RequestMethod.GET)
-    public EvidenceOfCrimeExtendedDTO getEvidenceOfCrimeByEvidenceAndCrime() {
-        EvidenceOfCrime evidenceOfCrime = evidenceOfCrimeService.getEvidenceOfCrimeByEvidenceAndCrime(1, 3);
+    @RequestMapping(path = "/{evidence_id}/{crime_id}", method = RequestMethod.GET)
+    public EvidenceOfCrimeExtendedDTO getEvidenceOfCrimeByEvidenceAndCrime(
+            @PathVariable("evidence_id") long evidenceId,
+            @PathVariable("crime_id") long crimeId
+    ) {
+        EvidenceOfCrime evidenceOfCrime = evidenceOfCrimeService.getEvidenceOfCrimeByEvidenceAndCrime(evidenceId, crimeId);
         return EvidenceOfCrimeParser.parseEvidenceOfCrimeExtended(evidenceOfCrime);
     }
 
-    //TODO: изменить, чтобы принимал id из get-параметров
     //TODO: потестировать, когда будет реализован метод получения списка EvidenceOfCrime
     @CrossOrigin
-    @RequestMapping(path = "/evidence_id", method = RequestMethod.GET)
-    public EvidenceExtendedDTO getEvidenceById() {
-        Evidence evidence = evidenceService.getEvidenceById(1);
-        List<EvidenceOfCrime> evidencesOfCrime = evidenceOfCrimeService.getEvidencesOfCrimeByEvidenceId(1);
+    @RequestMapping(path = "/{evidence_id}", method = RequestMethod.GET)
+    public EvidenceExtendedDTO getEvidenceById(@PathVariable("evidence_id") long id) {
+        Evidence evidence = evidenceService.getEvidenceById(id);
+        List<EvidenceOfCrime> evidencesOfCrime = evidenceOfCrimeService.getEvidencesOfCrimeByEvidenceId(id);
         return EvidenceParser.parseEvidenceExtended(evidence, evidencesOfCrime);
     }
 }

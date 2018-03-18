@@ -11,10 +11,7 @@ import com.services.interfaces.ICriminalCaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -73,12 +70,11 @@ public class CriminalCaseController {
         return new ListCriminalCasesDTO(results);
     }
 
-    //TODO: изменить, чтобы принимал id из get-параметров
     @CrossOrigin
-    @RequestMapping(path = "/id", method = RequestMethod.GET)
-    public CriminalCaseExtendedDTO getCriminalCaseById() {
-        CriminalCase criminalCase = crimeCasesService.getCriminalCaseById(2);
-        List<Crime> crimes = crimeService.getCrimesByCriminalCase(2);
+    @RequestMapping(path = "/{id}", method = RequestMethod.GET)
+    public CriminalCaseExtendedDTO getCriminalCaseById(@PathVariable("id") long id) {
+        CriminalCase criminalCase = crimeCasesService.getCriminalCaseById(id);
+        List<Crime> crimes = crimeService.getCrimesByCriminalCase(id);
         return CriminalCaseParser.parseExtendedCriminalCase(criminalCase, crimes);
     }
 }
