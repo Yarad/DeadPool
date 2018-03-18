@@ -15,7 +15,7 @@ public class EvidenceOfCrimeShortedDTO {
         return evidence;
     }
 
-    public void setEvidence(EvidenceShortedDTO man) {
+    public void setEvidence(EvidenceShortedDTO evidence) {
         this.evidence = evidence;
     }
 

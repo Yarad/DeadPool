@@ -22,4 +22,14 @@ public class EvidenceOfCrimeService implements IEvidenceOfCrimeService {
     public List<EvidenceOfCrime> getAllEvidencesOfCrime() {
         return daoEvidenceOfCrime.getAllEvidencesOfCrime();
     }
+
+    @Override
+    public EvidenceOfCrime getEvidenceOfCrimeByEvidenceAndCrime(long evidenceId, long crimeId) {
+        return daoEvidenceOfCrime.getEvidenceOfCrime(crimeId, evidenceId);
+    }
+
+    @Override
+    public List<EvidenceOfCrime> getEvidencesOfCrimeByEvidenceId(long id) {
+        return daoEvidenceOfCrime.getAllEvidencesOfCrimeByEvidenceId(id);
+    }
 }

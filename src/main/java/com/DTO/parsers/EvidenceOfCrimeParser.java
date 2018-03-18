@@ -1,5 +1,7 @@
 package com.DTO.parsers;
 
+import com.DTO.EvidenceOfCrimeExtendedDTO;
+import com.DTO.EvidenceOfCrimeForListOfEvidenceDTO;
 import com.DTO.EvidenceOfCrimeShortedDTO;
 import com.DTO.EvidenceOfCrimeShortedWithCrimeDTO;
 import com.logic.EvidenceOfCrime;
@@ -26,6 +28,35 @@ public final class EvidenceOfCrimeParser {
                     evidenceOfCrime.evidenceType.toString(),
                     evidenceOfCrime.getPhotoPath(),
                     CrimeParser.parseShortedCrimeForOthers(evidenceOfCrime.parentCrime)
+            );
+        } else {
+            return null;
+        }
+    }
+
+    public static EvidenceOfCrimeForListOfEvidenceDTO parseEvidenceOfCrimeForList(EvidenceOfCrime evidenceOfCrime) {
+        if (evidenceOfCrime != null) {
+            return new EvidenceOfCrimeForListOfEvidenceDTO(
+                    CrimeParser.parseShortedCrimeForOthers(evidenceOfCrime.parentCrime),
+                    evidenceOfCrime.evidenceType.toString(),
+                    evidenceOfCrime.getPhotoPath(),
+                    evidenceOfCrime.getDateAdded(),
+                    evidenceOfCrime.getDetails()
+            );
+        } else {
+            return null;
+        }
+    }
+
+    public static EvidenceOfCrimeExtendedDTO parseEvidenceOfCrimeExtended(EvidenceOfCrime evidenceOfCrime) {
+        if (evidenceOfCrime != null) {
+            return new EvidenceOfCrimeExtendedDTO(
+                    EvidenceParser.parseEvidence(evidenceOfCrime.parentEvidence),
+                    CrimeParser.parseShortedCrimeForOthers(evidenceOfCrime.parentCrime),
+                    evidenceOfCrime.evidenceType.toString(),
+                    evidenceOfCrime.getPhotoPath(),
+                    evidenceOfCrime.getDateAdded(),
+                    evidenceOfCrime.getDetails()
             );
         } else {
             return null;

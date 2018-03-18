@@ -45,7 +45,7 @@ public class CrimeController {
     //TODO: изменить, чтобы принимал id из get-параметров
     @CrossOrigin
     @RequestMapping(path = "/id", method = RequestMethod.GET)
-    public CrimeExtendedDTO getCriminalCaseById() {
+    public CrimeExtendedDTO getCrimeById() {
         Crime crime = crimeService.getCrimeById(2);
         List<Participant> participants = participantService.getParticipantsByCrimeId(2);
         List<EvidenceOfCrime> evidencesOfCrime = evidenceOfCrimeService.getEvidencesOfCrimeByCrimeId(2);

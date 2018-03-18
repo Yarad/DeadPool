@@ -20,7 +20,7 @@ public class ParticipantController {
     //TODO: потестить
     @CrossOrigin
     @RequestMapping(path = "/man_id/crime_id", method = RequestMethod.GET)
-    public ParticipantFullInfoDTO getCriminalCaseById() {
+    public ParticipantFullInfoDTO getParticipantByManAndCrime() {
         Participant participant = participantService.getParticipantByCrimeAndMan(1, 2);
         return ParticipantParser.parseParticipantFullInfo(participant);
     }

@@ -67,7 +67,7 @@ public class DAOEvidenceOfCrime extends DAO implements IDAOEvidenceOfCrime {
 	}
 
 	@Override
-	public List<EvidenceOfCrime> getAllEvidencesOfCrimeByEvidenceId(long crimeId) {
+	public List<EvidenceOfCrime> getAllEvidencesOfCrimeByEvidenceId(long evidenceId) {
 		// TODO Реализовать
 		return new ArrayList<>();
 	}
