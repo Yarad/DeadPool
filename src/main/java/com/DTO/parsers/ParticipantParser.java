@@ -1,6 +1,7 @@
 package com.DTO.parsers;
 
 import com.DTO.ParticipantByCrimeDTO;
+import com.DTO.ParticipantByManDTO;
 import com.DTO.ParticipantFullInfoDTO;
 import com.logic.Participant;
 
@@ -11,6 +12,17 @@ public final class ParticipantParser {
         if (participant != null) {
             return new ParticipantByCrimeDTO(
                     ManParser.parseManShorted(participant),
+                    participant.participantStatus.toString()
+            );
+        } else {
+            return null;
+        }
+    }
+
+    public static ParticipantByManDTO parseParticipantByMan(Participant participant) {
+        if (participant != null) {
+            return new ParticipantByManDTO(
+                    CrimeParser.parseShortedCrimeForOthers(participant.getCrime()),
                     participant.participantStatus.toString()
             );
         } else {

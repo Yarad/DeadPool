@@ -9,21 +9,14 @@ import com.logic.CriminalCase;
 import com.services.interfaces.ICrimeService;
 import com.services.interfaces.ICriminalCaseService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-@SpringBootApplication(scanBasePackages={"com"})
 @RestController
 @RequestMapping(value = "/criminal_cases")
 public class CriminalCaseController {
-    public static void main(String[] args) {
-        SpringApplication.run(CriminalCaseController.class, args);
-    }
-
     @Autowired
     private ICriminalCaseService crimeCasesService;
 

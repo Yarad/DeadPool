@@ -2,6 +2,7 @@ package com.DAO.interfaces;
 
 import java.util.List;
 
+import com.logic.Man;
 import com.logic.Participant;
 
 public interface IDAOParticipant  {
@@ -27,5 +28,20 @@ public interface IDAOParticipant  {
      * SELECT COUNT(*) AS `count`
 		FROM `participant` WHERE `man_id` = 1
      */
+    //18.03.2018 ПОКА НЕ РЕАЛИЗУЙ!
     long getAmountOfCrimesWithMan(long manId);
+
+
+    /*
+     * Получить личные данных людей, которые указаны в преступлениях
+     * SELECT DISTINCT `man_id`, `name`, `surname`, `photo_path`
+         FROM `man`
+         JOIN `participant` USING (`man_id`)
+     */
+    List<Man> getAllManWhoTookParticipantInCrimes();
+
+    /*
+     * Личные данные человека по Id
+     */
+    Man getFullManInfo(long manId);
 }

@@ -106,16 +106,4 @@ public class DAOMan extends DAO implements IDAOMan {
         */
         return true;
     }
-
-	@Override
-	public List<Man> getAllManWhoTookParticipantInCrimes() {
-		// TODO Реализовать
-		return new ArrayList<>();
-	}
-
-	@Override
-	public Man getFullManInfo(long manId) {
-		// TODO Реализовать
-		return new Detective();
-	}
 }
