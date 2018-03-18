@@ -1,6 +1,7 @@
 package com.DTO.parsers;
 
 import com.DTO.CrimeExtendedDTO;
+import com.DTO.CrimeForOthersShortedDTO;
 import com.DTO.CrimeObjectDTO;
 import com.DTO.CrimeShortedDTO;
 import com.logic.Crime;
@@ -34,6 +35,18 @@ public final class CrimeParser {
                     crime.getCrimeType(),
                     crime.getCrimeDate(),
                     crime.getCrimePlace()
+            );
+        } else {
+            return null;
+        }
+    }
+
+    public static CrimeForOthersShortedDTO parseShortedCrimeForOthers(Crime crime) {
+        if (crime != null) {
+            return new CrimeForOthersShortedDTO(
+                    crime.getCrimeId(),
+                    crime.getCrimeType(),
+                    CriminalCaseParser.parseCriminalCaseOnlyNumber(crime.getParentCriminalCase())
             );
         } else {
             return null;

@@ -23,6 +23,16 @@ public final class CriminalCaseParser {
         }
     }
 
+    public static CriminalCaseOnlyNumberDTO parseCriminalCaseOnlyNumber(CriminalCase crimeCase) {
+        if (crimeCase != null) {
+            return new CriminalCaseOnlyNumberDTO(
+                    crimeCase.getCriminalCaseNumber()
+            );
+        } else {
+            return null;
+        }
+    }
+
     public static CriminalCaseShortedDTO parseShortedCriminalCase(CriminalCase crimeCase) {
         if (crimeCase != null) {
             return new CriminalCaseShortedDTO(

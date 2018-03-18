@@ -1,40 +1,11 @@
 package com.DTO;
 
-public class ManShortedDTO {
-    private long id;
-    private String name;
-    private String surname;
+public class ManShortedDTO extends ManOnlyPersonDTO {
     private String photoPath;
 
     public ManShortedDTO(long id, String name, String surname, String photoPath) {
-        this.id = id;
-        this.name = name;
-        this.surname = surname;
+        super(id, name, surname);
         this.photoPath = photoPath;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
     }
 
     public String getPhotoPath() {

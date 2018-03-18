@@ -15,6 +15,10 @@ import java.util.List;
 
 @Repository
 public class DAOMan extends DAO implements IDAOMan {
+    public DAOMan() {
+        setConnectionToUse(new SQLConnection());
+    }
+
     public boolean addMan(Man manToAdd) {
         PreparedStatement preparedQuery = currConnection.prepareStatement("INSERT INTO `man`( `name`, `home_address`, `birthday`, `surname`) VALUES (?,?,?,?)");
 

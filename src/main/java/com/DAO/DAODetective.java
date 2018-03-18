@@ -12,6 +12,9 @@ import java.util.List;
 
 @Repository
 public class DAODetective extends DAOMan implements IDAODetective {
+    public DAODetective() {
+        setConnectionToUse(new SQLConnection());
+    }
 
     public Detective getDetectiveById(long id) {
 

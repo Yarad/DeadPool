@@ -17,4 +17,9 @@ public class ParticipantService implements IParticipantService {
     public List<Participant> getParticipantsByCrimeId(long id) {
         return daoParticipant.getAllParticipantsByCrime(id);
     }
+
+    @Override
+    public Participant getParticipantByCrimeAndMan(long manId, long crimeId) {
+        return daoParticipant.getParticipantById(manId, crimeId);
+    }
 }

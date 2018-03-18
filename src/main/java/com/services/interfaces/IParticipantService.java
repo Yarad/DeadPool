@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface IParticipantService {
     List<Participant> getParticipantsByCrimeId(long id);
+    Participant getParticipantByCrimeAndMan(long manId, long crimeId);
 }
