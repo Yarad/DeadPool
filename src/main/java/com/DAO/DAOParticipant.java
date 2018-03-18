@@ -1,6 +1,7 @@
 package com.DAO;
 
 import com.DAO.interfaces.IDAOParticipant;
+import com.logic.Man;
 import com.logic.Participant;
 import com.logic.ProjectFunctions;
 import org.springframework.stereotype.Repository;
@@ -151,4 +152,16 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
 		// TODO Реализовать. А надо ли?!
 		return 0;
 	}
+
+    @Override
+    public List<Man> getAllManWhoTookParticipantInCrimes() {
+        // TODO Реализовать
+        return new ArrayList<>();
+    }
+
+    @Override
+    public Man getFullManInfo(long manId) {
+        // TODO Реализовать
+        return null;
+    }
 }
