@@ -13,7 +13,7 @@ public final class EvidenceOfCrimeParser {
         if (evidenceOfCrime != null) {
             return new EvidenceOfCrimeShortedDTO(
                     EvidenceParser.parseEvidenceShorted(evidenceOfCrime.parentEvidence),
-                    evidenceOfCrime.evidenceType.toString(),
+                    evidenceOfCrime.evidenceType.getName(),
                     evidenceOfCrime.getPhotoPath()
             );
         } else {
@@ -25,7 +25,7 @@ public final class EvidenceOfCrimeParser {
         if (evidenceOfCrime != null) {
             return new EvidenceOfCrimeShortedWithCrimeDTO(
                     EvidenceParser.parseEvidenceShorted(evidenceOfCrime.parentEvidence),
-                    evidenceOfCrime.evidenceType.toString(),
+                    evidenceOfCrime.evidenceType.getName(),
                     evidenceOfCrime.getPhotoPath(),
                     CrimeParser.parseShortedCrimeForOthers(evidenceOfCrime.parentCrime)
             );
@@ -38,7 +38,7 @@ public final class EvidenceOfCrimeParser {
         if (evidenceOfCrime != null) {
             return new EvidenceOfCrimeForListOfEvidenceDTO(
                     CrimeParser.parseShortedCrimeForOthers(evidenceOfCrime.parentCrime),
-                    evidenceOfCrime.evidenceType.toString(),
+                    evidenceOfCrime.evidenceType.getName(),
                     evidenceOfCrime.getPhotoPath(),
                     evidenceOfCrime.getDateAdded(),
                     evidenceOfCrime.getDetails()
@@ -53,7 +53,7 @@ public final class EvidenceOfCrimeParser {
             return new EvidenceOfCrimeExtendedDTO(
                     EvidenceParser.parseEvidence(evidenceOfCrime.parentEvidence),
                     CrimeParser.parseShortedCrimeForOthers(evidenceOfCrime.parentCrime),
-                    evidenceOfCrime.evidenceType.toString(),
+                    evidenceOfCrime.evidenceType.getName(),
                     evidenceOfCrime.getPhotoPath(),
                     evidenceOfCrime.getDateAdded(),
                     evidenceOfCrime.getDetails()

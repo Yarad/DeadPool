@@ -15,4 +15,21 @@ public class EvidenceService implements IEvidenceService {
     public Evidence getEvidenceById(long id) {
         return daoEvidence.getEvidenceById(id);
     }
+
+    @Override
+    public boolean addEvidence(String name, String description) {
+        Evidence evidence = new Evidence();
+        evidence.setName(name);
+        evidence.setDescription(description);
+        return daoEvidence.addEvidence(evidence);
+    }
+
+    @Override
+    public boolean updateEvidence(long id, String name, String description) {
+        Evidence evidence = new Evidence();
+        evidence.setEvidenceId(id);
+        evidence.setName(name);
+        evidence.setDescription(description);
+        return daoEvidence.updateEvidence(evidence);
+    }
 }

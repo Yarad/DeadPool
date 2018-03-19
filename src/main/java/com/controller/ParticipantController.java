@@ -1,7 +1,9 @@
 package com.controller;
 
 import com.DTO.ManExtendedDTO;
+import com.DTO.OperationResultDTO;
 import com.DTO.ParticipantFullInfoDTO;
+import com.DTO.ParticipantInputDTO;
 import com.DTO.parsers.ManParser;
 import com.DTO.parsers.ParticipantParser;
 import com.logic.Man;
@@ -17,6 +19,34 @@ import java.util.List;
 public class ParticipantController {
     @Autowired
     private IParticipantService participantService;
+
+    @CrossOrigin
+    @RequestMapping(path = "/add", method = RequestMethod.POST)
+    public OperationResultDTO addParticipant(@RequestBody ParticipantInputDTO participant) {
+        boolean result = participantService.addParticipant(
+                participant.getMan().getId(),
+                participant.getCrime().getId(),
+                participant.getStatus(),
+                participant.getDateAdded(),
+                participant.getAlibi(),
+                participant.getWitnessReport()
+        );
+        return new OperationResultDTO(result);
+    }
+
+    @CrossOrigin
+    @RequestMapping(path = "/update", method = RequestMethod.POST)
+    public OperationResultDTO updateParticipant(@RequestBody ParticipantInputDTO participant) {
+        boolean result = participantService.updateParticipant(
+                participant.getMan().getId(),
+                participant.getCrime().getId(),
+                participant.getStatus(),
+                participant.getDateAdded(),
+                participant.getAlibi(),
+                participant.getWitnessReport()
+        );
+        return new OperationResultDTO(result);
+    }
 
     //TODO: потестить
     @CrossOrigin

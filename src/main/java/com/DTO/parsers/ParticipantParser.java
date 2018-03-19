@@ -12,7 +12,7 @@ public final class ParticipantParser {
         if (participant != null) {
             return new ParticipantByCrimeDTO(
                     ManParser.parseManShorted(participant),
-                    participant.participantStatus.toString()
+                    participant.participantStatus.getName()
             );
         } else {
             return null;
@@ -23,7 +23,7 @@ public final class ParticipantParser {
         if (participant != null) {
             return new ParticipantByManDTO(
                     CrimeParser.parseShortedCrimeForOthers(participant.getCrime()),
-                    participant.participantStatus.toString()
+                    participant.participantStatus.getName()
             );
         } else {
             return null;
@@ -35,8 +35,9 @@ public final class ParticipantParser {
             return new ParticipantFullInfoDTO(
                     ManParser.parseManOnlyPerson(participant),
                     CrimeParser.parseShortedCrimeForOthers(participant.getCrime()),
-                    participant.participantStatus.toString(),
+                    participant.participantStatus.getName(),
                     participant.getPhotoPath(),
+                    participant.getDateAdded(),
                     participant.getAlibi(),
                     participant.getWitnessReport()
             );

@@ -71,4 +71,14 @@ public class DAOEvidenceOfCrime extends DAO implements IDAOEvidenceOfCrime {
 		// TODO Реализовать
 		return new ArrayList<>();
 	}
+
+    @Override
+    public boolean addEvidenceOfCrime(EvidenceOfCrime evidenceOfCrime) {
+        return false;
+    }
+
+    @Override
+    public boolean updateEvidenceOfCrime(EvidenceOfCrime evidenceOfCrime) {
+        return false;
+    }
 }
