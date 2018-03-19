@@ -50,49 +50,51 @@ public class CriminalCaseController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
-    public ListCriminalCasesDTO getAllCriminalCases() {
+    public GenericDTO<ListCriminalCasesDTO> getAllCriminalCases() {
         List<CriminalCase> inputCrimeCases = crimeCasesService.getAllCriminalCases();
         List<CriminalCaseObjectDTO> results = inputCrimeCases.stream()
                 .map(cc -> CriminalCaseParser.parseCriminalCase(cc))
                 .collect(Collectors.toList());
-        return new ListCriminalCasesDTO(results);
+        return new GenericDTO<ListCriminalCasesDTO>(false, new ListCriminalCasesDTO(results));
     }
 
     @CrossOrigin
     @RequestMapping(path = "/solved", method = RequestMethod.GET)
-    public ListCriminalCasesDTO getAllSolvedCriminalCases() {
+    public GenericDTO<ListCriminalCasesDTO> getAllSolvedCriminalCases() {
         List<CriminalCase> inputCrimeCases = crimeCasesService.getAllSolvedCriminalCases();
         List<CriminalCaseObjectDTO> results = inputCrimeCases.stream()
                 .map(cc -> CriminalCaseParser.parseCriminalCase(cc))
                 .collect(Collectors.toList());
-        return new ListCriminalCasesDTO(results);
+        return new GenericDTO<ListCriminalCasesDTO>(false, new ListCriminalCasesDTO(results));
     }
 
     @CrossOrigin
     @RequestMapping(path = "/unsolved", method = RequestMethod.GET)
-    public ListCriminalCasesDTO getAllUnsolvedCriminalCases() {
+    public GenericDTO<ListCriminalCasesDTO> getAllUnsolvedCriminalCases() {
         List<CriminalCase> inputCrimeCases = crimeCasesService.getAllUnsolvedCriminalCases();
         List<CriminalCaseObjectDTO> results = inputCrimeCases.stream()
                 .map(cc -> CriminalCaseParser.parseCriminalCase(cc))
                 .collect(Collectors.toList());
-        return new ListCriminalCasesDTO(results);
+        return new GenericDTO<ListCriminalCasesDTO>(false, new ListCriminalCasesDTO(results));
     }
 
     @CrossOrigin
     @RequestMapping(path = "/open", method = RequestMethod.GET)
-    public ListCriminalCasesDTO getAllOpenCriminalCases() {
+    public GenericDTO<ListCriminalCasesDTO> getAllOpenCriminalCases() {
         List<CriminalCase> inputCrimeCases = crimeCasesService.getAllOpenCriminalCases();
         List<CriminalCaseObjectDTO> results = inputCrimeCases.stream()
                 .map(cc -> CriminalCaseParser.parseCriminalCase(cc))
                 .collect(Collectors.toList());
-        return new ListCriminalCasesDTO(results);
+        return new GenericDTO<ListCriminalCasesDTO>(false, new ListCriminalCasesDTO(results));
     }
 
     @CrossOrigin
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
-    public CriminalCaseExtendedDTO getCriminalCaseById(@PathVariable("id") long id) {
+    public GenericDTO<CriminalCaseExtendedDTO> getCriminalCaseById(@PathVariable("id") long id) {
         CriminalCase criminalCase = crimeCasesService.getCriminalCaseById(id);
         List<Crime> crimes = crimeService.getCrimesByCriminalCase(id);
-        return CriminalCaseParser.parseExtendedCriminalCase(criminalCase, crimes);
+        return (criminalCase != null)
+                ? new GenericDTO<CriminalCaseExtendedDTO>(false, CriminalCaseParser.parseExtendedCriminalCase(criminalCase, crimes))
+                : new GenericDTO<CriminalCaseExtendedDTO>(true, null);
     }
 }

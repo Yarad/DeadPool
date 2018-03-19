@@ -73,30 +73,40 @@ public class EvidenceOfCrimeController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
-    public ListEvidenceOfCrimeShortedWithCrimeList getAllCrimes() {
+    public GenericDTO<ListEvidenceOfCrimeShortedWithCrimeList> getAllCrimes() {
         List<EvidenceOfCrime> inputEvidencesOfCrime = evidenceOfCrimeService.getAllEvidencesOfCrime();
         List<EvidenceOfCrimeShortedWithCrimeDTO> results = inputEvidencesOfCrime.stream()
                 .map(curEvidence -> EvidenceOfCrimeParser.parseEvidenceOfCrimeShortedWithCrime(curEvidence))
                 .collect(Collectors.toList());
-        return new ListEvidenceOfCrimeShortedWithCrimeList(results);
+        return new GenericDTO<ListEvidenceOfCrimeShortedWithCrimeList>(false, new ListEvidenceOfCrimeShortedWithCrimeList(results));
     }
 
     @CrossOrigin
     @RequestMapping(path = "/{evidence_id}/{crime_id}", method = RequestMethod.GET)
-    public EvidenceOfCrimeExtendedDTO getEvidenceOfCrimeByEvidenceAndCrime(
+    public GenericDTO<EvidenceOfCrimeExtendedDTO> getEvidenceOfCrimeByEvidenceAndCrime(
             @PathVariable("evidence_id") long evidenceId,
             @PathVariable("crime_id") long crimeId
     ) {
         EvidenceOfCrime evidenceOfCrime = evidenceOfCrimeService.getEvidenceOfCrimeByEvidenceAndCrime(evidenceId, crimeId);
-        return EvidenceOfCrimeParser.parseEvidenceOfCrimeExtended(evidenceOfCrime);
+        return (evidenceOfCrime != null)
+                ? new GenericDTO<EvidenceOfCrimeExtendedDTO>(false, EvidenceOfCrimeParser.parseEvidenceOfCrimeExtended(evidenceOfCrime))
+                : new GenericDTO<EvidenceOfCrimeExtendedDTO>(true, null);
     }
 
     //TODO: потестировать, когда будет реализован метод получения списка EvidenceOfCrime
     @CrossOrigin
     @RequestMapping(path = "/{evidence_id}", method = RequestMethod.GET)
-    public EvidenceExtendedDTO getEvidenceById(@PathVariable("evidence_id") long id) {
+    public GenericDTO<EvidenceExtendedDTO> getEvidenceById(@PathVariable("evidence_id") long id) {
         Evidence evidence = evidenceService.getEvidenceById(id);
         List<EvidenceOfCrime> evidencesOfCrime = evidenceOfCrimeService.getEvidencesOfCrimeByEvidenceId(id);
-        return EvidenceParser.parseEvidenceExtended(evidence, evidencesOfCrime);
+        return (evidence != null)
+                ? new GenericDTO<EvidenceExtendedDTO>(false, EvidenceParser.parseEvidenceExtended(evidence, evidencesOfCrime))
+                : new GenericDTO<EvidenceExtendedDTO>(true, null);
+    }
+
+    @CrossOrigin
+    @RequestMapping(path = "/types_list", method = RequestMethod.GET)
+    public ListEnumDTO getParticipantStatuses() {
+        return EvidenceOfCrimeParser.getEvidenceTypes();
     }
 }

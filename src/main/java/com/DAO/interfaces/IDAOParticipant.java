@@ -21,27 +21,4 @@ public interface IDAOParticipant  {
      * SELECT `criminal_case`.`criminal_case_id`, `criminal_case`.`criminal_case_number`, `criminal_case`.`closed`, `crime`.`crime_id`, `crime`.`description`, `crime`.`crime_date`, `participant`.`participant_status`, `participant`.`alibi`, `participant`.`witness_report` FROM `participant`, `crime`, `criminal_case`  WHERE `participant`.`man_id` = 3 AND `participant`.`crime_id` = `crime`.`crime_id` AND `crime`.`criminal_case_id` = `criminal_case`.`criminal_case_id`
      */
     List<Participant> getAllParticipantsByMan(long manId);
-    
-    /*
-     * Число преступлений, в которых указан человек с таким-то id
-     * Возарщаемый тип поставил long. Можешь менять на int, если надо. Фиолетово мне
-     * SELECT COUNT(*) AS `count`
-		FROM `participant` WHERE `man_id` = 1
-     */
-    //18.03.2018 ПОКА НЕ РЕАЛИЗУЙ!
-    long getAmountOfCrimesWithMan(long manId);
-
-
-    /*
-     * Получить личные данных людей, которые указаны в преступлениях
-     * SELECT DISTINCT `man_id`, `name`, `surname`, `photo_path`
-         FROM `man`
-         JOIN `participant` USING (`man_id`)
-     */
-    List<Man> getAllManWhoTookParticipantInCrimes();
-
-    /*
-     * Личные данные человека по Id
-     */
-    Man getFullManInfo(long manId);
 }

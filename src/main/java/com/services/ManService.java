@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Map;
 
 @Service
 public class ManService implements IManService {
@@ -37,5 +38,15 @@ public class ManService implements IManService {
         newMan.setHomeAddress(homeAddress);
         newMan.setPhotoPath(photoPath);
         return daoMan.updateMan(newMan);
+    }
+
+    @Override
+    public Map<Man, Long> getAllManWithCrimeAmount() {
+        return daoMan.getAllManWithCrimeAmount();
+    }
+
+    @Override
+    public Man getFullManInfo(long id) {
+        return daoMan.getFullManInfo(id);
     }
 }

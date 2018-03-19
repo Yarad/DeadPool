@@ -1,6 +1,7 @@
 package com.DTO.parsers;
 
 import com.DTO.ManExtendedDTO;
+import com.DTO.ManForListWithCrimesAmountDTO;
 import com.DTO.ManOnlyPersonDTO;
 import com.DTO.ManShortedDTO;
 import com.logic.Man;
@@ -28,7 +29,20 @@ public final class ManParser {
         }
     }
 
-    //ManExtendedDTO
+    public static ManForListWithCrimesAmountDTO parseManForList(Man man, long crimesPartAmount) {
+        if (man != null) {
+            return new ManForListWithCrimesAmountDTO(
+                    man.getManId(),
+                    man.getName(),
+                    man.getSurname(),
+                    man.getPhotoPath(),
+                    crimesPartAmount
+            );
+        } else {
+            return null;
+        }
+    }
+
     public static ManExtendedDTO parseManExtended(Man man, List<Participant> participants) {
         if (man != null) {
             return new ManExtendedDTO(
