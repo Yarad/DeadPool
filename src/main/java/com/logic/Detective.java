@@ -4,8 +4,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Detective extends Man {
-    private String login;
-    private String password;
+    private String login = "";
+    private String hashOfPassword = "";
+    private String email = "";
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getLogin() {
         return login;
@@ -20,17 +29,17 @@ public class Detective extends Man {
         }
     }
 
-    public String getPassword() {
-        return password;
+    public String getHashOfPassword() {
+        return hashOfPassword;
     }
 
-    public boolean setHashOfPassword(String password) {
-        if (ifPasswordValid(password)) {
-            this.password = password;
-            return true;
-        } else {
-            return false;
-        }
+    public void setHashOfPassword(String hashOfPassword) {
+        //if (ifPasswordValid(password)) {
+        this.hashOfPassword = hashOfPassword;
+        //return true;
+        //} else {
+        //    return false;
+        //}
     }
 
     // [S]olid

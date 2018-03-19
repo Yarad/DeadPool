@@ -73,10 +73,10 @@ public class DAOMan extends DAO implements IDAOMan {
     @Override
     public Man getFullManInfo(long manId) {
         Man man = new Man();
-        if (fillInfoFromManTableById(manId, man))
+        if(fillInfoFromManTableById(manId,man))
             return man;
         else
-            return null;
+        return null;
     }
 
     protected boolean fillInfoFromManTableById(long id, Man objectToFill) {
