@@ -7,4 +7,10 @@ import com.logic.Man;
 public interface IDAOMan {
    boolean addMan(Man manToAdd);
    boolean updateMan(Man manToUpdate);
+
+   /*
+    * Личные данные человека по Id
+    */
+   Man getFullManInfo(long manId);
+
 }

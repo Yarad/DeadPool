@@ -39,9 +39,4 @@ public interface IDAOParticipant  {
          JOIN `participant` USING (`man_id`)
      */
     List<Man> getAllManWhoTookParticipantInCrimes();
-
-    /*
-     * Личные данные человека по Id
-     */
-    Man getFullManInfo(long manId);
 }

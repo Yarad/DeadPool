@@ -1,6 +1,7 @@
 package com.logic;
 
 import com.DAO.DAOCrime;
+import com.DAO.DAOMan;
 import com.DAO.DAOParticipant;
 import com.DAO.SQLConnection;
 
@@ -9,6 +10,13 @@ import java.util.List;
 
 public class tempMainCode {
     public static void main(String[] args) {
+/*
+        DAOMan daoMan = new DAOMan();
+        Man man = daoMan.getFullManInfo(1);
+        man.setManId(1);
+
+        /*
+
         DAOParticipant daoParticipant = new DAOParticipant();
         daoParticipant.setConnectionToUse(new SQLConnection());
 
@@ -30,7 +38,8 @@ public class tempMainCode {
         detective.setName("Holms");
         boolean res = daoDetective.updateDetective(detective);
 
-        /*
+        /**/
+        DAOParticipant daoParticipant = new DAOParticipant();
         Participant participant = daoParticipant.getParticipantById(1, 3);
 
         participant.setWitnessReport(participant.getWitnessReport() + "new");

@@ -1,11 +1,23 @@
 package com.logic;
 
+import java.time.LocalDate;
+
 public class Participant extends Man {
     private long crimeId = -1; //временно
     private String alibi;
     private String witnessReport;
     public ParticipantStatus participantStatus = ParticipantStatus.SUSPECTED;
     private Crime parentCrime;
+
+    public LocalDate getDateAdded() {
+        return dateAdded;
+    }
+
+    public void setDateAdded(LocalDate dateAdded) {
+        this.dateAdded = dateAdded;
+    }
+
+    private LocalDate dateAdded = LocalDate.now();
 
     public void setCrime(Crime crime) {
         this.parentCrime = crime;

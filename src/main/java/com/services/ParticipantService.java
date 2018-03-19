@@ -31,6 +31,7 @@ public class ParticipantService implements IParticipantService {
 
     @Override
     public Man getFullManInfo(long id) {
-        return daoParticipant.getFullManInfo(id);
+        //TODO : return daoParticipant.getFullManInfo(id);
+        return null;
     }
 }

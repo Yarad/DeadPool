@@ -5,7 +5,7 @@ import java.time.format.DateTimeParseException;
 
 import static com.mysql.jdbc.StringUtils.isNullOrEmpty;
 
-public abstract class Man {
+public class Man {
     protected long manId = -1;
     protected String name = "NoName";
     protected String surname = "NoSurname";

@@ -6,6 +6,7 @@ import com.logic.Participant;
 import com.logic.ProjectFunctions;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
         setConnectionToUse(new SQLConnection());
     }
 
+    @Override
     public Participant getParticipantById(long manId, long crimeId) {
 
         PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM participant JOIN man USING(man_id) WHERE crime_id = ? AND participant.man_id = ? ");
@@ -49,6 +51,7 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
                 "`participant_status`=?," +
                 "`alibi`=?," + //nullable
                 "`witness_report`=? " + //nullable
+                "`date_added`=? " +
                 "WHERE man_id = ?");
         try {
             preparedStatement.setString(1, participantToUpdate.participantStatus.toString());
@@ -62,7 +65,8 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
                 preparedStatement.setString(3, participantToUpdate.getWitnessReport());
             else
                 preparedStatement.setNull(3, 0);
-            preparedStatement.setLong(4, participantToUpdate.getManId());
+            preparedStatement.setDate(4, Date.valueOf(participantToUpdate.getDateAdded()));
+            preparedStatement.setLong(5, participantToUpdate.getManId());
         } catch (SQLException e) {
             DAOLog.log(e.toString());
             return false;
@@ -94,10 +98,11 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
         return participants;
     }
 
+    @Override
     public boolean addParticipant(Participant participantToAdd) {
         if (participantToAdd == null) return false;
 
-        PreparedStatement preparedStatement = currConnection.prepareStatement("INSERT INTO `participant`(`crime_id`, `man_id`, `alibi`, `witness_report`, `participant_status`) VALUES (?,?,?,?,?)");
+        PreparedStatement preparedStatement = currConnection.prepareStatement("INSERT INTO `participant`(`crime_id`, `man_id`, `alibi`, `witness_report`, `participant_status`, `date_added`) VALUES (?,?,?,?,?,?)");
         try {
             preparedStatement.setLong(1, participantToAdd.getCrimeId());
             preparedStatement.setLong(2, participantToAdd.getManId());
@@ -112,6 +117,7 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
             else
                 preparedStatement.setNull(4, 0);
             preparedStatement.setString(5, participantToAdd.participantStatus.toString());
+            preparedStatement.setDate(6, Date.valueOf(participantToAdd.getDateAdded()));
         } catch (SQLException e) {
             DAOLog.log(e.toString());
             return false;
@@ -125,7 +131,7 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
     public List<Participant> getAllParticipantsByCrime(long crimeId) {
         PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM participant JOIN man USING(man_id) WHERE participant.crime_id = ?");
         //PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT `criminal_case`.`criminal_case_number`, `criminal_case`.`closed`, `crime`.`crime_id`, `crime`.`description`, `crime`.`crime_date`, `participant`.`participant_status`, `participant`.`alibi`, `participant`.`witness_report` FROM `participant`, `crime`, `criminal_case` WHERE `participant`.`man_id` = ? AND `participant`.`crime_id` = `crime`.`crime_id` AND `crime`.`criminal_case_id` = `criminal_case`.`criminal_case_id`");
-        List<Participant> retParticipantCrimesArray = new ArrayList<>();
+        List<Participant> retParticipantCrimesArray = new ArrayList<Participant>();
 
         try {
             preparedStatement.setLong(1, crimeId);
@@ -147,21 +153,15 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
         return retParticipantCrimesArray;
     }
 
-	@Override
-	public long getAmountOfCrimesWithMan(long manId) {
-		// TODO Реализовать. А надо ли?!
-		return 0;
-	}
+    @Override
+    public long getAmountOfCrimesWithMan(long manId) {
+        // TODO Реализовать. А надо ли?!
+        return 0;
+    }
 
     @Override
     public List<Man> getAllManWhoTookParticipantInCrimes() {
         // TODO Реализовать
         return new ArrayList<>();
-    }
-
-    @Override
-    public Man getFullManInfo(long manId) {
-        // TODO Реализовать
-        return null;
     }
 }
