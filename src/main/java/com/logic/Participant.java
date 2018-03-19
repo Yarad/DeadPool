@@ -6,6 +6,15 @@ public class Participant extends Man {
     private long crimeId = -1; //временно
     private String alibi;
     private String witnessReport;
+
+    public ParticipantStatus getParticipantStatus() {
+        return participantStatus;
+    }
+
+    public void setParticipantStatus(ParticipantStatus participantStatus) {
+        this.participantStatus = participantStatus;
+    }
+
     public ParticipantStatus participantStatus = ParticipantStatus.SUSPECTED;
     private Crime parentCrime;
 
