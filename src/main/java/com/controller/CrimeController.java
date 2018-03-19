@@ -27,6 +27,35 @@ public class CrimeController {
     private IEvidenceOfCrimeService evidenceOfCrimeService;
 
     @CrossOrigin
+    @RequestMapping(path = "/add", method = RequestMethod.POST)
+    public OperationResultDTO addCrime(@RequestBody CrimeInputDTO crime) {
+        boolean result = crimeService.addCrime(
+                crime.getCriminalCase().getId(),
+                crime.getType(),
+                crime.getDescription(),
+                crime.getDate(),
+                crime.getTime(),
+                crime.getPlace()
+        );
+        return new OperationResultDTO(result);
+    }
+
+    @CrossOrigin
+    @RequestMapping(path = "/update", method = RequestMethod.POST)
+    public OperationResultDTO updateCrime(@RequestBody CrimeInputWithIdDTO crime) {
+        boolean result = crimeService.updateCrime(
+                crime.getId(),
+                crime.getCriminalCase().getId(),
+                crime.getType(),
+                crime.getDescription(),
+                crime.getDate(),
+                crime.getTime(),
+                crime.getPlace()
+        );
+        return new OperationResultDTO(result);
+    }
+
+    @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
     public GenericDTO<ListCrimesDTO> getAllCrimes() {
         List<Crime> inputCrimes = crimeService.getAllCrimes();

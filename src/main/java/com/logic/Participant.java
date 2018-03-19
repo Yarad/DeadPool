@@ -1,9 +1,12 @@
 package com.logic;
 
+import java.time.LocalDateTime;
+
 public class Participant extends Man {
     private long crimeId = -1; //временно
     private String alibi;
     private String witnessReport;
+    private LocalDateTime dateAdded;
     public ParticipantStatus participantStatus = ParticipantStatus.SUSPECTED;
     private Crime parentCrime;
 
@@ -47,5 +50,13 @@ public class Participant extends Man {
     @Override
     public void setManId(long manId) {
         this.manId = Math.abs(manId);
+    }
+
+    public LocalDateTime getDateAdded() {
+        return dateAdded;
+    }
+
+    public void setDateAdded(LocalDateTime dateAdded) {
+        this.dateAdded = dateAdded;
     }
 }

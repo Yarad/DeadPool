@@ -23,7 +23,7 @@ public class CriminalCaseController {
 
     @CrossOrigin
     @RequestMapping(path = "/add", method = RequestMethod.POST)
-    public OperationResultDTO getEvidenceById(@RequestBody CriminalCaseInputDTO criminalCase) {
+    public OperationResultDTO addCriminalCase(@RequestBody CriminalCaseInputDTO criminalCase) {
         boolean result = crimeCasesService.addCriminalCase(
                 criminalCase.getDetective().getId(),
                 criminalCase.getNumber(),
@@ -36,7 +36,7 @@ public class CriminalCaseController {
 
     @CrossOrigin
     @RequestMapping(path = "/update", method = RequestMethod.POST)
-    public OperationResultDTO updateEvidenceById(@RequestBody CriminalCaseInputWithIdDTO criminalCase) {
+    public OperationResultDTO updateCriminalCase(@RequestBody CriminalCaseInputWithIdDTO criminalCase) {
         boolean result = crimeCasesService.updateCriminalCase(
                 criminalCase.getId(),
                 criminalCase.getDetective().getId(),

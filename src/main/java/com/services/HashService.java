@@ -2,8 +2,7 @@ package com.services;
 
 import org.springframework.stereotype.Service;
 
-//TODO:import
-//import javax.xml.bind.DatatypeConverter;
+import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -15,9 +14,7 @@ public class HashService {
         try {
             md = MessageDigest.getInstance("MD5");
             md.update(value.getBytes());
-            //TODO: change to the best
-            hashValue = value;
-            //hashValue = DatatypeConverter.printHexBinary(md.digest()).toLowerCase();
+            hashValue = DatatypeConverter.printHexBinary(md.digest()).toLowerCase();
         } catch (NoSuchAlgorithmException e) {
             //TODO: что возвращать?
             return "";

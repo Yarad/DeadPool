@@ -14,7 +14,7 @@ public class DetectiveController {
 
     @CrossOrigin
     @RequestMapping(path = "/add", method = RequestMethod.POST)
-    public OperationResultDTO getEvidenceById(@RequestBody DetectiveDTO detective) {
+    public OperationResultDTO addDetective(@RequestBody DetectiveDTO detective) {
         boolean result = detectiveService.addDetective(
                 detective.getMan().getId(),
                 detective.getLogin(),
@@ -26,7 +26,7 @@ public class DetectiveController {
 
     @CrossOrigin
     @RequestMapping(path = "/update", method = RequestMethod.POST)
-    public OperationResultDTO updateEvidenceById(@RequestBody DetectiveDTO detective) {
+    public OperationResultDTO updateDetective(@RequestBody DetectiveDTO detective) {
         boolean result = detectiveService.updateDetective(
                 detective.getMan().getId(),
                 detective.getLogin(),

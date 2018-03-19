@@ -26,4 +26,7 @@ public interface IDAOEvidenceOfCrime {
      * У Crime обязательно должен быть заполнен родительский CriminalCase.
      */
     List<EvidenceOfCrime> getAllEvidencesOfCrimeByEvidenceId(long evidenceId);
+
+    boolean addEvidenceOfCrime(EvidenceOfCrime evidenceOfCrime);
+    boolean updateEvidenceOfCrime(EvidenceOfCrime evidenceOfCrime);
 }

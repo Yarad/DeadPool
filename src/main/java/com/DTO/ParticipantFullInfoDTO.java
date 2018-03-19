@@ -1,19 +1,23 @@
 package com.DTO;
 
+import java.time.LocalDateTime;
+
 public class ParticipantFullInfoDTO {
     private ManOnlyPersonDTO man;
     private CrimeForOthersShortedDTO crime;
     private String status;
     private String photoPath;
+    private LocalDateTime dateAdded;
     private String alibi;
     private String witnessReport;
 
     public ParticipantFullInfoDTO(ManOnlyPersonDTO man, CrimeForOthersShortedDTO crime, String status,
-                                  String photoPath, String alibi, String witnessReport) {
+                                  String photoPath, LocalDateTime dateAdded, String alibi, String witnessReport) {
         this.man = man;
         this.crime = crime;
         this.status = status;
         this.photoPath = photoPath;
+        this.dateAdded = dateAdded;
         this.alibi = alibi;
         this.witnessReport = witnessReport;
     }
@@ -48,6 +52,14 @@ public class ParticipantFullInfoDTO {
 
     public void setPhotoPath(String photoPath) {
         this.photoPath = photoPath;
+    }
+
+    public LocalDateTime getDateAdded() {
+        return dateAdded;
+    }
+
+    public void setDateAdded(LocalDateTime dateAdded) {
+        this.dateAdded = dateAdded;
     }
 
     public String getAlibi() {

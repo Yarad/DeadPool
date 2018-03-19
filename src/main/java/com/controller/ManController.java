@@ -15,7 +15,7 @@ public class ManController {
 
     @CrossOrigin
     @RequestMapping(path = "/add", method = RequestMethod.POST)
-    public OperationResultDTO getEvidenceById(@RequestBody ManInfoWithoutIdDTO man) {
+    public OperationResultDTO addMan(@RequestBody ManInfoWithoutIdDTO man) {
         boolean result = manService.addMan(
                 man.getName(),
                 man.getSurname(),
@@ -28,7 +28,7 @@ public class ManController {
 
     @CrossOrigin
     @RequestMapping(path = "/update", method = RequestMethod.POST)
-    public OperationResultDTO updateEvidenceById(@RequestBody ManInfoDTO man) {
+    public OperationResultDTO updateMan(@RequestBody ManInfoDTO man) {
         boolean result = manService.updateMan(
                 man.getId(),
                 man.getName(),
