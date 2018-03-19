@@ -1,20 +1,20 @@
 package com.DTO;
 
 public class GenericDTO<T> {
-    private boolean success;
+    private boolean error;
     private T result;
 
-    public GenericDTO(boolean success, T result) {
-        this.success = success;
+    public GenericDTO(boolean error, T result) {
+        this.error = error;
         this.result = result;
     }
 
-    public boolean getSuccess() {
-        return success;
+    public boolean getError() {
+        return error;
     }
 
-    public void setSuccess(boolean success) {
-        this.success = success;
+    public void setError(boolean error) {
+        this.error = error;
     }
 
     public T getResult() {

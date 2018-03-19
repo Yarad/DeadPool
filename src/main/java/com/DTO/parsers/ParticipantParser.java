@@ -1,9 +1,11 @@
 package com.DTO.parsers;
 
-import com.DTO.ParticipantByCrimeDTO;
-import com.DTO.ParticipantByManDTO;
-import com.DTO.ParticipantFullInfoDTO;
+import com.DTO.*;
 import com.logic.Participant;
+import com.logic.ParticipantStatus;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public final class ParticipantParser {
     private ParticipantParser () {}
@@ -44,5 +46,14 @@ public final class ParticipantParser {
         } else {
             return null;
         }
+    }
+
+    public static ListEnumDTO getParticipantStatuses() {
+        ParticipantStatus[] types = ParticipantStatus.class.getEnumConstants();
+        List<EnumDTO> results = new ArrayList<>();
+        for(ParticipantStatus type: types) {
+            results.add(new EnumDTO(type.toString(), type.getName()));
+        }
+        return new ListEnumDTO(results);
     }
 }

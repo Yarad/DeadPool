@@ -62,8 +62,7 @@ public class CrimeController {
         List<CrimeObjectDTO> results = inputCrimes.stream()
                 .map(curCrime -> CrimeParser.parseCrime(curCrime))
                 .collect(Collectors.toList());
-        return new GenericDTO<ListCrimesDTO>(true, new ListCrimesDTO(results));
-       // return new ListCrimesDTO(results);
+        return new GenericDTO<ListCrimesDTO>(false, new ListCrimesDTO(results));
     }
 
     @CrossOrigin
@@ -73,8 +72,13 @@ public class CrimeController {
         List<Participant> participants = participantService.getParticipantsByCrimeId(id);
         List<EvidenceOfCrime> evidencesOfCrime = evidenceOfCrimeService.getEvidencesOfCrimeByCrimeId(id);
         return (crime != null)
-                ? new GenericDTO<CrimeExtendedDTO>(true, CrimeParser.parseCrimeFullInformation(crime, participants, evidencesOfCrime))
-                : new GenericDTO<CrimeExtendedDTO>(false, null);
-        //return CrimeParser.parseCrimeFullInformation(crime, participants, evidencesOfCrime);
+                ? new GenericDTO<CrimeExtendedDTO>(false, CrimeParser.parseCrimeFullInformation(crime, participants, evidencesOfCrime))
+                : new GenericDTO<CrimeExtendedDTO>(true, null);
+    }
+
+    @CrossOrigin
+    @RequestMapping(path = "/types_list", method = RequestMethod.GET)
+    public ListEnumDTO getParticipantStatuses() {
+        return CrimeParser.getEvidenceTypes();
     }
 }

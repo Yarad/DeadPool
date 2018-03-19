@@ -32,11 +32,6 @@ public class ParticipantService implements IParticipantService {
     }
 
     @Override
-    public Man getFullManInfo(long id) {
-        return daoParticipant.getFullManInfo(id);
-    }
-
-    @Override
     public boolean addParticipant(long manId, long crimeId, String status, LocalDateTime dateAdded, String alibi, String witnessReport) {
         Participant participant = new Participant();
         participant.setManId(manId);

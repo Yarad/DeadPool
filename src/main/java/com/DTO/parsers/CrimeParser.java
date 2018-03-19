@@ -1,13 +1,12 @@
 package com.DTO.parsers;
 
-import com.DTO.CrimeExtendedDTO;
-import com.DTO.CrimeForOthersShortedDTO;
-import com.DTO.CrimeObjectDTO;
-import com.DTO.CrimeShortedDTO;
+import com.DTO.*;
 import com.logic.Crime;
+import com.logic.CrimeType;
 import com.logic.EvidenceOfCrime;
 import com.logic.Participant;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -74,5 +73,14 @@ public final class CrimeParser {
         } else {
             return null;
         }
+    }
+
+    public static ListEnumDTO getEvidenceTypes() {
+        CrimeType[] types = CrimeType.class.getEnumConstants();
+        List<EnumDTO> results = new ArrayList<>();
+        for(CrimeType type: types) {
+            results.add(new EnumDTO(type.toString(), type.getName()));
+        }
+        return new ListEnumDTO(results);
     }
 }

@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class DAOMan extends DAO implements IDAOMan {
@@ -105,5 +106,17 @@ public class DAOMan extends DAO implements IDAOMan {
         //LogicLog.log(list.toString());
         */
         return true;
+    }
+
+    @Override
+    public Man getFullManInfo(long manId) {
+        // TODO Реализовать
+        return null;
+    }
+
+    //TODO: реализовать!!!
+    @Override
+    public Map<Man, Long> getAllManWithCrimeAmount() {
+        return new HashMap<>();
     }
 }
