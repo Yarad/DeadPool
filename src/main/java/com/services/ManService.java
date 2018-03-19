@@ -26,4 +26,16 @@ public class ManService implements IManService {
         newMan.setPhotoPath(photoPath);
         return daoMan.addMan(newMan);
     }
+
+    @Override
+    public boolean updateMan(long id, String name, String surname, LocalDate birthday, String homeAddress, String photoPath) {
+        Man newMan = new Participant();
+        newMan.setManId(id);
+        newMan.setName(name);
+        newMan.setSurname(surname);
+        newMan.setBirthDay(birthday);
+        newMan.setHomeAddress(homeAddress);
+        newMan.setPhotoPath(photoPath);
+        return daoMan.updateMan(newMan);
+    }
 }

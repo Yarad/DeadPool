@@ -1,9 +1,6 @@
 package com.controller;
 
-import com.DTO.CrimeExtendedDTO;
-import com.DTO.CrimeObjectDTO;
-import com.DTO.GenericDTO;
-import com.DTO.ListCrimesDTO;
+import com.DTO.*;
 import com.DTO.parsers.CrimeParser;
 import com.logic.Crime;
 import com.logic.EvidenceOfCrime;

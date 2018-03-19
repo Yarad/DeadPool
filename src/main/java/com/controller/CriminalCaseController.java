@@ -1,8 +1,6 @@
 package com.controller;
 
-import com.DTO.CriminalCaseExtendedDTO;
-import com.DTO.CriminalCaseObjectDTO;
-import com.DTO.ListCriminalCasesDTO;
+import com.DTO.*;
 import com.DTO.parsers.CriminalCaseParser;
 import com.logic.Crime;
 import com.logic.CriminalCase;
@@ -22,6 +20,33 @@ public class CriminalCaseController {
 
     @Autowired
     private ICrimeService crimeService;
+
+    @CrossOrigin
+    @RequestMapping(path = "/add", method = RequestMethod.POST)
+    public OperationResultDTO getEvidenceById(@RequestBody CriminalCaseInputDTO criminalCase) {
+        boolean result = crimeCasesService.addCriminalCase(
+                criminalCase.getDetective().getId(),
+                criminalCase.getNumber(),
+                criminalCase.getCreateDate(),
+                criminalCase.getClosed(),
+                criminalCase.getCloseDate()
+        );
+        return new OperationResultDTO(result);
+    }
+
+    @CrossOrigin
+    @RequestMapping(path = "/update", method = RequestMethod.POST)
+    public OperationResultDTO updateEvidenceById(@RequestBody CriminalCaseInputWithIdDTO criminalCase) {
+        boolean result = crimeCasesService.updateCriminalCase(
+                criminalCase.getId(),
+                criminalCase.getDetective().getId(),
+                criminalCase.getNumber(),
+                criminalCase.getCreateDate(),
+                criminalCase.getClosed(),
+                criminalCase.getCloseDate()
+        );
+        return new OperationResultDTO(result);
+    }
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)

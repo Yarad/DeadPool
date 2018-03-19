@@ -9,6 +9,7 @@ public class ManInfoDTO extends ManInfoWithoutIdDTO {
         super(name, surname, birthday, homeAddress, photoPath);
         this.id = id;
     }
+    public ManInfoDTO() {}
 
     public long getId() {
         return id;
