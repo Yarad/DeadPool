@@ -2,6 +2,8 @@ package com.logic;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.*;
 import java.util.*;
 import java.sql.Date;
@@ -38,11 +40,24 @@ public class ProjectFunctions {
 
             if (methodToRun != null) {
                 try {
-                    Type setValueType = methodToRun.getGenericParameterTypes()[0];
 
                     methodToRun.invoke(object, item.getValue());
                 } catch (Exception e) {
-                    avoidedElementsOfArray.put(item.getKey(), item.getValue());
+                    try {
+
+                        if (item.getValue() instanceof Time) {
+                            methodToRun.invoke(object, LocalTime.parse(item.getValue().toString(), ProjectConstants.myTimeFormatter));
+                        } else if (item.getValue() instanceof Date) {
+                            methodToRun.invoke(object, LocalDate.parse(item.getValue().toString(), ProjectConstants.myDateFormatter));
+                        }
+                        else if(item.getValue() instanceof Timestamp)
+                        {
+                            methodToRun.invoke(object, LocalDate.parse(item.getValue().toString(), ProjectConstants.myDateTimeFormatter));
+                        }
+
+                    } catch (Exception e2) {
+                        avoidedElementsOfArray.put(item.getKey(), item.getValue());
+                    }
                 }
             } else
                 avoidedElementsOfArray.put(item.getKey(), item.getValue());

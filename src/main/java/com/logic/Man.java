@@ -9,7 +9,7 @@ public class Man {
     protected long manId = -1;
     protected String name = "NoName";
     protected String surname = "NoSurname";
-    protected LocalDate birthDay = LocalDate.parse("08.09.1998", ProjectConstants.myDateTimeFormatter);
+    protected LocalDate birthDay = LocalDate.parse("08.09.1998", ProjectConstants.myDateFormatter);
     protected String homeAddress = "NoHomeAddress";
     protected String photoPath = "NoPhotoPath";
 
@@ -53,7 +53,7 @@ public class Man {
 
     public void setBirthDay(String birthDay) {
         try {
-            this.birthDay = LocalDate.parse(birthDay, ProjectConstants.myDateTimeFormatter);
+            this.birthDay = LocalDate.parse(birthDay, ProjectConstants.myDateFormatter);
         } catch (DateTimeParseException e) {
             LogicLog.log(e.toString());
         }
