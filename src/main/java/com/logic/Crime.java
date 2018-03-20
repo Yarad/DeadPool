@@ -1,6 +1,7 @@
 package com.logic;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class Crime {
@@ -12,6 +13,14 @@ public class Crime {
     private LocalDate crimeDate = LocalDate.now();
     private LocalTime crimeTime = null;
     private CriminalCase parentCriminalCase;
+
+    public CrimeType getCrimeType() {
+        return crimeType;
+    }
+
+    public void setCrimeType(String crimeType) {
+        this.crimeType = CrimeType.valueOf(crimeType);
+    }
 
     public long getCrimeId() {
         return crimeId;

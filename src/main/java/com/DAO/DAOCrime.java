@@ -24,7 +24,7 @@ public class DAOCrime extends DAO implements IDAOCrime {
     public boolean addCrime(Crime crimeToAdd) {
         if (crimeToAdd == null) return false;
 
-        PreparedStatement preparedStatement = currConnection.prepareStatement("INSERT INTO `crime`(`criminal_case_id`, `description`, `crime_date`, `crime_time`, `crime_place`) VALUES (?,?,?,?,?)");
+        PreparedStatement preparedStatement = currConnection.prepareStatement("INSERT INTO `crime`(`criminal_case_id`, `description`, `crime_date`, `crime_time`, `crime_place`,`crime_type`) VALUES (?,?,?,?,?,?)");
         try {
             preparedStatement.setLong(1, crimeToAdd.getCriminalCaseId());
             preparedStatement.setString(2, crimeToAdd.getDescription());
@@ -35,7 +35,7 @@ public class DAOCrime extends DAO implements IDAOCrime {
             else
                 preparedStatement.setNull(4, 0);
             preparedStatement.setString(5, crimeToAdd.getCrimePlace());
-
+            preparedStatement.setString(6, crimeToAdd.crimeType.toString());
         } catch (SQLException e) {
             DAOLog.log(e.toString());
             return false;
@@ -72,13 +72,14 @@ public class DAOCrime extends DAO implements IDAOCrime {
     @Override
     public boolean updateCrime(Crime crimeToUpdate) {
         if (crimeToUpdate == null) return false;
-        PreparedStatement preparedStatement = currConnection.prepareStatement("UPDATE `crime` SET `description`=?,`crime_date`=?,`crime_time`=?,`crime_place`=? WHERE `crime_id` = ?");
+        PreparedStatement preparedStatement = currConnection.prepareStatement("UPDATE `crime` SET `description`=?,`crime_date`=?,`crime_time`=?,`crime_place`=?,`crime_type`=? WHERE `crime_id` = ?");
         try {
             preparedStatement.setString(1, crimeToUpdate.getDescription());
             preparedStatement.setDate(2, Date.valueOf(crimeToUpdate.getCrimeDate()));
             preparedStatement.setTime(3, Time.valueOf(crimeToUpdate.getCrimeTime()));
             preparedStatement.setString(4, crimeToUpdate.getCrimePlace());
-            preparedStatement.setLong(5, crimeToUpdate.getCrimeId());
+            preparedStatement.setString(5, crimeToUpdate.crimeType.toString());
+            preparedStatement.setLong(6, crimeToUpdate.getCrimeId());
         } catch (Exception e) {
             DAOLog.log(e.toString());
         }

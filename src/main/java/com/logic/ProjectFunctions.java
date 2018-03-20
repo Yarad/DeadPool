@@ -2,10 +2,9 @@ package com.logic;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.*;
+import java.util.*;
+import java.sql.Date;
 
 public class ProjectFunctions {
     public static boolean ifDbObjectContainsKey(HashMap<String, Object> dbRetObject, String key) {
@@ -15,6 +14,12 @@ public class ProjectFunctions {
     //пытается заполнить объект с использованием массива, полученного из БД
     //ищет setters с использованием рефлексии
     //возвращает часть исходного массива, setter-ы для которого не были найдены
+
+    public static Date localDateTimeToSqlDate(LocalDateTime localDateTime) {
+
+        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
+        return (Date) Date.from(zonedDateTime.toInstant());
+    }
 
     public static HashMap<String, Object> tryFillObjectByDbArray(Object object, HashMap<String, Object> dbArray) {
         List<Method> existingSetters = getSetters(object.getClass().getMethods());

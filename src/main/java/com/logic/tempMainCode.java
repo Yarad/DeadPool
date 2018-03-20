@@ -3,23 +3,15 @@ package com.logic;
 import com.DAO.*;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 public class tempMainCode {
     public static void main(String[] args) {
 
-        //дообавление детектива
-        DAODetective daoDetective = new DAODetective();
-        Detective newDetective = new Detective();
-
-        newDetective.setName("Andr");
-        newDetective.setSurname("Zhlobich");
-        newDetective.setLogin("log897");
-        newDetective.setHashOfPassword("passwordHash");
-        newDetective.setBirthDay(LocalDate.now());
-        newDetective.setHomeAddress("Osipovichi");
-        daoDetective.addDetective(newDetective);
-
+        DAOCrime daoCrime = new DAOCrime();
+        Crime c = daoCrime.getCrimeById(4);
+        int a=0;
         /*
         DAOEvidenceOfCrime daoEvidenceOfCrime = new DAOEvidenceOfCrime();
 
