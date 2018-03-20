@@ -3,6 +3,7 @@ package com.DAO;
 import com.DAO.interfaces.IDAOCrime;
 import com.logic.Crime;
 import com.logic.ProjectFunctions;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -13,7 +14,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@Repository
 public class DAOCrime extends DAO implements IDAOCrime {
+    public DAOCrime() {
+        setConnectionToUse(new SQLConnection());
+    }
+
     @Override
     public boolean addCrime(Crime crimeToAdd) {
         if (crimeToAdd == null) return false;
@@ -117,12 +123,6 @@ public class DAOCrime extends DAO implements IDAOCrime {
     }
 
     @Override
-    //потом
-    public Crime getCrimeWithCriminalCase(long crimeId) {
-        return null;
-    }
-
-    @Override
     public List<Crime> getCrimesByCriminalCase(long caseId) {
         PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM crime WHERE criminal_case_id = ?");
         List<Crime> crimes = new ArrayList<Crime>();
@@ -146,6 +146,6 @@ public class DAOCrime extends DAO implements IDAOCrime {
     @Override
     public List<Crime> getCrimesWhereEvidenceExists(long evidenceId) {
         //TODO
-        return null;
+        return new ArrayList<>();
     }
 }

@@ -6,16 +6,8 @@ import java.time.LocalTime;
 public class Crime {
     private long crimeId = -1;
     private long criminalCaseId = -1;
+    private String crimeType = "noType";
     private String crimePlace = "noAddress";
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     private String description = "noDescription";
     private LocalDate crimeDate = LocalDate.now();
     private LocalTime crimeTime = null;
@@ -37,12 +29,28 @@ public class Crime {
         this.criminalCaseId = Math.abs(criminalCaseId);
     }
 
+    public String getCrimeType() {
+        return crimeType;
+    }
+
+    public void setCrimeType(String crimeType) {
+        this.crimeType = crimeType;
+    }
+
     public String getCrimePlace() {
         return crimePlace;
     }
 
     public void setCrimePlace(String crimePlace) {
         this.crimePlace = crimePlace;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public LocalDate getCrimeDate() {
@@ -59,5 +67,13 @@ public class Crime {
 
     public void setCrimeTime(LocalTime crimeTime) {
         this.crimeTime = crimeTime;
+    }
+
+    public CriminalCase getParentCriminalCase() {
+        return parentCriminalCase;
+    }
+
+    public void setParentCriminalCase(CriminalCase crimeTime) {
+        this.parentCriminalCase = parentCriminalCase;
     }
 }

@@ -1,16 +1,25 @@
 package com.DAO;
 
 import com.DAO.interfaces.IDAOMan;
+import com.logic.Detective;
 import com.logic.Man;
 import com.logic.ProjectFunctions;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+@Repository
 public class DAOMan extends DAO implements IDAOMan {
+    public DAOMan() {
+        setConnectionToUse(new SQLConnection());
+    }
+
     public boolean addMan(Man manToAdd) {
         PreparedStatement preparedQuery = currConnection.prepareStatement("INSERT INTO `man`( `name`, `home_address`, `birthday`, `surname`) VALUES (?,?,?,?)");
 
@@ -99,16 +108,15 @@ public class DAOMan extends DAO implements IDAOMan {
         return true;
     }
 
-    // TODO Надо реализовать
-	@Override
-	public List<Man> getAllManWhoTookParticipantInCrimes() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public Man getFullManInfo(long manId) {
+        // TODO Реализовать
+        return null;
+    }
 
-	@Override
-	public Man getFullManInfo(long manId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    //TODO: реализовать!!!
+    @Override
+    public Map<Man, Long> getAllManWithCrimeAmount() {
+        return new HashMap<>();
+    }
 }

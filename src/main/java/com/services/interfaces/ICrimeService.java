@@ -1,0 +1,15 @@
+package com.services.interfaces;
+
+import com.logic.Crime;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
+
+public interface ICrimeService {
+    List<Crime> getAllCrimes();
+    List<Crime> getCrimesByCriminalCase(long id);
+    Crime getCrimeById(long id);
+    boolean addCrime(long criminalCaseId, String type, String description, LocalDate date, LocalTime time, String place);
+    boolean updateCrime(long id, long criminalCaseId, String type, String description, LocalDate date, LocalTime time, String place);
+}

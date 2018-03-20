@@ -1,5 +1,18 @@
 package com.logic;
 
 public enum EvidenceType {
-    //пока что пусто
+    CRIME_INSTRUMENT("Орудие преступления"),                            //орудие преступления
+    PRINT("Отпечаток"),                                                 //предмет с отпечатком (пальца/подошвы/др.)
+    OBJECT_FROM_CRIME_SCENE("Предмет с места преступления");            //потерпевший
+    //TODO: дополнить
+
+    private final String fieldDescription;
+
+    private EvidenceType(String value) {
+        fieldDescription = value;
+    }
+
+    public String getName() {
+        return fieldDescription;
+    }
 }

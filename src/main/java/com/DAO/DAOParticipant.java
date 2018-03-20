@@ -1,8 +1,10 @@
 package com.DAO;
 
 import com.DAO.interfaces.IDAOParticipant;
+import com.logic.Man;
 import com.logic.Participant;
 import com.logic.ProjectFunctions;
+import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -10,7 +12,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@Repository
 public class DAOParticipant extends DAOMan implements IDAOParticipant {
+    public DAOParticipant() {
+        setConnectionToUse(new SQLConnection());
+    }
+
     public Participant getParticipantById(long manId, long crimeId) {
 
         PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM participant JOIN man USING(man_id) WHERE crime_id = ? AND participant.man_id = ? ");
@@ -139,11 +146,4 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
 
         return retParticipantCrimesArray;
     }
-
-    //TODO Реализовать.
-	@Override
-	public long getAmountOfCrimesWithMan(long manId) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 }

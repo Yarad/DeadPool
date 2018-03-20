@@ -12,12 +12,6 @@ public interface IDAOCriminalCase {
      * По сути: обновить все остальные поля в БД у дела с указанным id
      */
     boolean updateCriminalCase(CriminalCase criminalCaseToUpdate);
-    
-    /*
-     * Общая информация дела: номер, статус, даты создания и завершения, расследующий детектив
-     * SELECT `criminal_case`.`criminal_case_number`, `criminal_case`.`create_date`, `criminal_case`.`close_date`, `criminal_case`.`closed`, `man`.`man_id`, `man`.`name`, `man`.`surname`, `man`.`birthday`, `man`.`home_address` FROM `criminal_case`, `man` WHERE `criminal_case`.`criminal_case_id` = 2 AND `criminal_case`.`detective_id` = `man`.`man_id`
-     */
-    CriminalCase getCriminalCaseWithDetective(long caseID);
 
     /*
     * Получить вообще все дела. Для вывода на экран в соотв. разделе сайта

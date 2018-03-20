@@ -3,13 +3,18 @@ package com.DAO;
 import com.DAO.interfaces.IDAODetective;
 import com.logic.Detective;
 import com.logic.ProjectFunctions;
+import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
+@Repository
 public class DAODetective extends DAOMan implements IDAODetective {
+    public DAODetective() {
+        setConnectionToUse(new SQLConnection());
+    }
 
     public Detective getDetectiveById(long id) {
 
@@ -30,11 +35,12 @@ public class DAODetective extends DAOMan implements IDAODetective {
         if (!addMan(detectiveToAdd))
             return false;
 
-        PreparedStatement preparedStatement = currConnection.prepareStatement("INSERT INTO `detective`(`login`, `password_hash`, `man_id`) VALUES (?,?,?)");
+        PreparedStatement preparedStatement = currConnection.prepareStatement("INSERT INTO `detective`(`login`, `hash_of_password`, `man_id`, `email`) VALUES (?,?,?,?)");
         try {
             preparedStatement.setString(1, detectiveToAdd.getLogin());
-            preparedStatement.setString(2, detectiveToAdd.getPassword());
+            preparedStatement.setString(2, detectiveToAdd.getHashOfPassword());
             preparedStatement.setLong(3, detectiveToAdd.getManId());
+            preparedStatement.setString(4, detectiveToAdd.getEmail());
         } catch (SQLException e) {
             DAOLog.log(e.toString());
             return false;
@@ -46,11 +52,12 @@ public class DAODetective extends DAOMan implements IDAODetective {
     @Override
     public boolean updateDetective(Detective detectiveToUpdate) {
         if (detectiveToUpdate == null) return false;
-        PreparedStatement preparedStatement = currConnection.prepareStatement("UPDATE `detective` SET `login`=?,`hash_of_password`=? WHERE `detective_id` = ?");
+        PreparedStatement preparedStatement = currConnection.prepareStatement("UPDATE `detective` SET `login`=?,`hash_of_password`=?,`email`=? WHERE `detective_id` = ?");
         try {
             preparedStatement.setString(1, detectiveToUpdate.getLogin());
-            preparedStatement.setString(2, detectiveToUpdate.getPassword());
-            preparedStatement.setLong(3, detectiveToUpdate.getManId());
+            preparedStatement.setString(2, detectiveToUpdate.getHashOfPassword());
+            preparedStatement.setString(3, detectiveToUpdate.getEmail());
+            preparedStatement.setLong(4, detectiveToUpdate.getManId());
         } catch (Exception e) {
             DAOLog.log(e.toString());
         }

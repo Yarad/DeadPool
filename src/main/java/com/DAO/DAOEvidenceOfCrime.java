@@ -4,18 +4,22 @@ import com.DAO.interfaces.IDAOEvidenceOfCrime;
 import com.logic.Evidence;
 import com.logic.EvidenceOfCrime;
 import com.logic.ProjectFunctions;
+import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@Repository
 public class DAOEvidenceOfCrime extends DAO implements IDAOEvidenceOfCrime {
-
     private DAOCrime parentDaoCrime;
     private DAOEvidence parentDaoEvidence;
 
     public DAOEvidenceOfCrime() {
+        setConnectionToUse(new SQLConnection());
+
         parentDaoCrime = new DAOCrime();
         parentDaoEvidence = new DAOEvidence();
 
@@ -50,24 +54,31 @@ public class DAOEvidenceOfCrime extends DAO implements IDAOEvidenceOfCrime {
         return evidenceOfCrime;
     }
 
-    //TODO: Реализовать
 	@Override
 	public List<EvidenceOfCrime> getAllEvidencesOfCrime() {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO Реализовать
+		return new ArrayList<>();
 	}
 
-	//TODO: Реализовать
 	@Override
 	public List<EvidenceOfCrime> getAllEvidencesOfCrimeByCrimeId(long crimeId) {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO Реализовать
+		return new ArrayList<>();
 	}
 
-	//TODO: Реализовать
 	@Override
-	public List<EvidenceOfCrime> getAllEvidencesOfCrimeByEvidenceId(long crimeId) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<EvidenceOfCrime> getAllEvidencesOfCrimeByEvidenceId(long evidenceId) {
+		// TODO Реализовать
+		return new ArrayList<>();
 	}
+
+    @Override
+    public boolean addEvidenceOfCrime(EvidenceOfCrime evidenceOfCrime) {
+        return false;
+    }
+
+    @Override
+    public boolean updateEvidenceOfCrime(EvidenceOfCrime evidenceOfCrime) {
+        return false;
+    }
 }

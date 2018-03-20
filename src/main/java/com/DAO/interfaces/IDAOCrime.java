@@ -8,6 +8,10 @@ import java.util.List;
 public interface IDAOCrime {
     boolean addCrime(Crime crimeToAdd);
 
+    /*
+     * Общая информация о преступлении: дело, к которому относится (с указанием статуса дела), дата+время+место преступления, описание самого преступления
+     * SELECT `criminal_case`.`criminal_case_id`, `criminal_case`.`criminal_case_number`, `criminal_case`.`closed`, `crime`.`description`, `crime`.`crime_date`, `crime`.`crime_time`, `crime`.`crime_place` FROM `crime`, `criminal_case` WHERE `crime`.`crime_id` = 2 AND `criminal_case`.`criminal_case_id` = `crime`.`criminal_case_id`
+     */
     Crime getCrimeById(long crimeId);
 
     /*
@@ -24,11 +28,6 @@ public interface IDAOCrime {
      * */
     List<Crime> getCrimesBetweenDates(LocalDate dateStart, LocalDate dateEnd);
 
-    /*
-     * Общая информация о преступлении: дело, к которому относится (с указанием статуса дела), дата+время+место преступления, описание самого преступления
-     * SELECT `criminal_case`.`criminal_case_id`, `criminal_case`.`criminal_case_number`, `criminal_case`.`closed`, `crime`.`description`, `crime`.`crime_date`, `crime`.`crime_time`, `crime`.`crime_place` FROM `crime`, `criminal_case` WHERE `crime`.`crime_id` = 2 AND `criminal_case`.`criminal_case_id` = `crime`.`criminal_case_id` 
-     */
-    Crime getCrimeWithCriminalCase(long crimeId);
 
     /*
      * Все преступления, входящие в состав дела, с указанием описания, дата+время+место преступления

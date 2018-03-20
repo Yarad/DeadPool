@@ -3,6 +3,7 @@ package com.DAO;
 import com.DAO.interfaces.IDAOCriminalCase;
 import com.logic.CriminalCase;
 import com.logic.ProjectFunctions;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -11,7 +12,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@Repository
 public class DAOCriminalCase extends DAO implements IDAOCriminalCase {
+    public DAOCriminalCase() {
+        setConnectionToUse(new SQLConnection());
+    }
+
     @Override
     public boolean addCriminalCase(CriminalCase criminalCase) {
         if (criminalCase == null) return false;
@@ -82,12 +88,6 @@ public class DAOCriminalCase extends DAO implements IDAOCriminalCase {
         return currConnection.queryDataEdit(preparedStatement);
     }
 
-    //что?? Какой with detective? обсудить!!!TODO
-    @Override
-    public CriminalCase getCriminalCaseWithDetective(long caseID) {
-        return null;
-    }
-
     @Override
     public List<CriminalCase> getAllCriminalCases() {
         PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM `criminal_case`");
@@ -108,7 +108,7 @@ public class DAOCriminalCase extends DAO implements IDAOCriminalCase {
 
     @Override
     public List<CriminalCase> getAllClosedSolvedCrimes() {
-        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM `criminal_case` WHERE `closed` = 1");
+        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM `criminal_case` WHERE `closed` = 1 AND `close_date` IS NOT NULL");
         List<CriminalCase> criminalCases = new ArrayList<>();
 
         List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
@@ -126,7 +126,7 @@ public class DAOCriminalCase extends DAO implements IDAOCriminalCase {
 
     @Override
     public List<CriminalCase> getAllClosedUnsolvedCrimes() {
-        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM `criminal_case` WHERE `closed` = 0 AND `close_date` IS NOT NULL ");
+        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM `criminal_case` WHERE `closed` = 1 AND `close_date` IS NULL");
         List<CriminalCase> criminalCases = new ArrayList<>();
 
         List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
