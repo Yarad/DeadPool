@@ -9,9 +9,9 @@ import java.util.List;
 public class tempMainCode {
     public static void main(String[] args) {
 
-        DAOCrime daoCrime = new DAOCrime();
-        Crime c = daoCrime.getCrimeById(4);
-        int a=0;
+        DAOEvidenceOfCrime daoEvidenceOfCrime = new DAOEvidenceOfCrime();
+        List<EvidenceOfCrime> evidenceOfCrimes = daoEvidenceOfCrime.getAllEvidencesOfCrime();
+        int a = 0;
         /*
         DAOEvidenceOfCrime daoEvidenceOfCrime = new DAOEvidenceOfCrime();
 

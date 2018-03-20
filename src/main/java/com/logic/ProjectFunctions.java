@@ -52,7 +52,7 @@ public class ProjectFunctions {
                         }
                         else if(item.getValue() instanceof Timestamp)
                         {
-                            methodToRun.invoke(object, LocalDate.parse(item.getValue().toString(), ProjectConstants.myDateTimeFormatter));
+                            methodToRun.invoke(object, LocalDateTime.parse(item.getValue().toString(), ProjectConstants.myDateTimeFormatter));
                         }
 
                     } catch (Exception e2) {
