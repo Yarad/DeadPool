@@ -66,6 +66,45 @@ public class DAODetective extends DAOMan implements IDAODetective {
         return res1 && res2;
     }
 
+    @Override
+    public Detective getDetectiveByLogin(String login) {
+        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM `detective` WHERE `login` = ?");
+        try {
+            preparedStatement.setString(1, login);
+        } catch (SQLException e) {
+            DAOLog.log(e.toString());
+            return null;
+        }
+
+        List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
+
+        if (retArray.isEmpty()) return null;
+
+        Detective detective = new Detective();
+
+        ProjectFunctions.tryFillObjectByDbArray(detective, retArray.get(0));
+        return detective;
+    }
+
+    @Override
+    public boolean existDetectiveWithLogin(String login) {
+        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT COUNT(*) FROM `detective` WHERE `login` = ?");
+        try {
+            preparedStatement.setString(1, login);
+        } catch (SQLException e) {
+            DAOLog.log(e.toString());
+            return false;
+        }
+
+        List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
+
+        if (retArray.isEmpty()) return false;
+
+        if (retArray.size() == 1) return true;
+
+        return false;
+    }
+
     private boolean fillInfoFromDetectiveTableById(long id, Detective objectToFill) {
 
         //TODO Join

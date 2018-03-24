@@ -6,4 +6,6 @@ public interface IDAODetective {
     Detective getDetectiveById(long id);
     boolean addDetective(Detective detectiveToAdd);
     boolean updateDetective(Detective detectiveToUpdate);
+    Detective getDetectiveByLogin(String login);
+    boolean existDetectiveWithLogin(String login);
 }
