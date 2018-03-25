@@ -32,8 +32,8 @@ export class CriminalCaseService {
   getAllSolvedCriminalCases() {   
     this.mainService.getAuthorizedRequest("/criminal_cases/solved")
     .map(res => {
-      if(!res.error && res.criminalCases) {
-        return res.criminalCases.map(criminalCase => {
+      if(!res.error && res.result.criminalCases) {
+        return res.result.criminalCases.map(criminalCase => {
           return new CriminalCase(criminalCase);
         });
       }
@@ -47,8 +47,23 @@ export class CriminalCaseService {
   getAllUnsolvedCriminalCases() {   
     this.mainService.getAuthorizedRequest("/criminal_cases/unsolved")
     .map(res => {
-      if(!res.error && res.criminalCases) {
-        return res.criminalCases.map(criminalCase => {
+      if(!res.error && res.result.criminalCases) {
+        return res.result.criminalCases.map(criminalCase => {
+          return new CriminalCase(criminalCase);
+        });
+      }
+      return [];
+    })
+    .catch((error: any)=> { 
+      return Observable.throw(error);
+    });
+  }
+
+  getAllOpenCriminalCases() {   
+    this.mainService.getAuthorizedRequest("/criminal_cases/open")
+    .map(res => {
+      if(!res.error && res.result.criminalCases) {
+        return res.result.criminalCases.map(criminalCase => {
           return new CriminalCase(criminalCase);
         });
       }

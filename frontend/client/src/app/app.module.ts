@@ -6,10 +6,15 @@ import { Routes, RouterModule } from '@angular/router';
 import {TabsModule} from "ng2-tabs";
 import { DatepickerModule } from 'angular2-material-datepicker';
 
-import { CriminalCaseService } from './services/criminal-case.service';
-import { AuthorizationService } from './services/authorization.service';
 import { MainService } from './services/main.service';
+import { AuthorizationService } from './services/authorization.service';
+import { CriminalCaseService } from './services/criminal-case.service';
+import { CrimeService } from './services/crime.service';
 import { DetectiveService } from './services/detective.service';
+import { EvidenceService } from './services/evidence.service';
+import { EvidenceOfCrimeService } from './services/evidence-of-crime.service';
+import { ParticipantService } from './services/participant.service';
+import { ManService } from './services/man.service';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -64,9 +69,14 @@ const appRoutes: Routes = [
   ],
   providers: [
     MainService,
-    CriminalCaseService,
     AuthorizationService,
+    CriminalCaseService,
+    CrimeService,
     DetectiveService,
+    EvidenceService,
+    EvidenceOfCrimeService,
+    ParticipantService,
+    ManService,
   ],
   bootstrap: [AppComponent]
 })

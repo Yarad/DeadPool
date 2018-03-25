@@ -6,10 +6,10 @@
         <h3 class="list-group-item bg-dark">
           Категории
         </h3>
-        <p class="list-group-item list-group-item-action" (click)="changeActiveCategory('0')">Дела</p>
-        <p class="list-group-item list-group-item-action" (click)="changeActiveCategory('1')">Преступления</p>
-        <p class="list-group-item list-group-item-action" (click)="changeActiveCategory('2')">Улики</p>
-        <p class="list-group-item list-group-item-action" (click)="changeActiveCategory('3')">Люди</p>
+        <p class="list-group-item list-group-item-action" (click)="changeActiveCategory(0)">Дела</p>
+        <p class="list-group-item list-group-item-action" (click)="changeActiveCategory(1)">Преступления</p>
+        <p class="list-group-item list-group-item-action" (click)="changeActiveCategory(2)">Улики</p>
+        <p class="list-group-item list-group-item-action" (click)="changeActiveCategory(3)">Люди</p>
       </div>
     </div>
     <div class="col-lg-9">
@@ -18,25 +18,21 @@
         <button class="btn btn-secondary my-2 my-sm-0" type="submit">Поиск</button>
       </form>
       <div style="height:40px">
-        
-      <!--div class="my-3">
-       <button class="btn btn-secondary" routerLink="/add_criminal_case">Добавить новое</button>
-      </div-->
 
       </div>
       <table *ngIf="activeCategoryId==0" class="table table-hover">
         <thead>
           <tr>
-            <th class="col-lg-4" scope="col">Номер дела</th>
+            <th  scope="col">Номер дела</th>
             <th scope="col">Статус</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let criminalCase of  criminalCases"
-            [ngClass]="{'table-primary':(criminalCase.status ==='Закрыто')}"
+            [ngClass]="{'table-primary':(criminalCase.type ==='Закрыто')}"
             routerLink="/criminal_case/{{criminalCase.id}}">
             <th scope="row">{{criminalCase.number}}</th>
-            <td>{{criminalCase.status}}</td>
+            <td>{{criminalCase.type}}</td>
           </tr>
         </tbody>
       </table> 
@@ -51,11 +47,11 @@
         </thead>
         <tbody>
           <tr *ngFor="let crime of crimes" 
-            [ngClass]="{'table-primary':(crime.criminalCaseStatus ==='Закрыто')}"
+            [ngClass]="{'table-primary':(crime.criminalCase.type ==='Закрыто')}"
             routerLink="/crime/{{crime.id}}">
-            <th scope="row">{{crime.criminalCaseNumber}}</th>
-            <td>{{crime.crimeDate}}</td>
-            <td>{{crime.criminalCaseStatus}}</td>
+            <th scope="row">{{crime.criminalCase.number}}</th>
+            <td>{{crime.date}}</td>
+            <td>{{crime.criminalCase.type}}</td>
           </tr>
         </tbody>
       </table> 
@@ -69,10 +65,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let evidence of evidences">
-            <th scope="row"> <img class="img" src="{{evidence.photoPath}}" alt=""></th>
-            <td>{{evidence.name}}</td>
-            <td>{{evidence.criminalCaseNumber}}</td>
+          <tr *ngFor="let evidenceOfCrime of evidencesOfCrime">
+            <th scope="row"> <img class="img" src="{{evidenceOfCrime.photoPath}}" alt=""></th>
+            <td>{{evidenceOfCrime.evidence.name}}</td>
+            <td>{{evidenceOfCrime.crime.criminalCase.number}}</td>
           </tr>
         </tbody>
       </table> 
@@ -86,10 +82,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let participant of participants">
-            <th scope="row"> <img class="img" src="{{participant.photoPath}}" alt=""></th>
-            <td>{{participant.name}} {{participant.surname}}</td>
-            <td>{{participant.crimes_part_amount}}</td>
+          <tr *ngFor="let man of men">
+            <th scope="row"> <img class="img" src="{{man.photoPath}}" alt=""></th>
+            <td>{{man.name}} {{man.surname}}</td>
+            <td>{{man.crimesPartAmount}}</td>
           </tr>
         </tbody>
       </table> 

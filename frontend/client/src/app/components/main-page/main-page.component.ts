@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CriminalCaseService } from '../../services/criminal-case.service';
+import { CrimeService } from '../../services/crime.service';
 import { DetectiveService } from '../../services/detective.service';
+import { EvidenceOfCrimeService } from '../../services/evidence-of-crime.service';
+import { ManService } from '../../services/man.service';
 
 @Component({
   selector: 'app-main-page',
@@ -12,22 +15,9 @@ export class MainPageComponent implements OnInit {
 
   activeCategoryId = 0;
 
-  criminalCases = [];// this.criminalCaseService.getAllCriminalCases();;
+  criminalCases = [];
 
-  crimes = [
-    {
-      id: 1,
-      criminalCaseNumber: "РК1244",
-      crimeDate: "12.11.2017",
-      criminalCaseStatus: "Закрыто"
-    },
-    {
-      id: 2,
-      criminalCaseNumber: "TC23423",
-      crimeDate: "25.02.2018",
-      criminalCaseStatus: "Открыто"
-    }
-  ];
+  crimes = [];
 
   evidences = [
     {
@@ -42,24 +32,15 @@ export class MainPageComponent implements OnInit {
     }
   ];
 
-  participants = [
-    {
-      photoPath: "https://res.cloudinary.com/dyzdll94h/image/upload/v1512924240/mpv69dvnolst2gtjjljh.jpg",
-      name: "Ангелина",
-      surname: "Хилькевич",
-      crimes_part_amount: 3
-    },
-    {
-      photoPath: "https://res.cloudinary.com/dyzdll94h/image/upload/v1513188126/kxj1l9ekt31bp67ir8db.jpg",
-      name: "Алина",
-      surname: "Ивченко",
-      crimes_part_amount: 1
-    }
-  ];
+  evidencesOfCrime = [];
+  men = [];
   
   constructor(
     private criminalCaseService: CriminalCaseService,
-    private datectiveService: DetectiveService
+    private crimeService: CrimeService,
+    private datectiveService: DetectiveService,
+    private evidenceOfCrimeService: EvidenceOfCrimeService,
+    private manService: ManService
   ) {  
     const criminalCasesObserver = this.criminalCaseService.getAllCriminalCases();
     criminalCasesObserver.subscribe(
@@ -74,11 +55,36 @@ export class MainPageComponent implements OnInit {
   changeActiveCategory(id) {
     this.activeCategoryId = id;
     switch(id) {
-      case 0: {
+      case 0: {        
         const criminalCasesObserver = this.criminalCaseService.getAllCriminalCases();
         criminalCasesObserver.subscribe(
           data => this.criminalCases = data,
           error => this.criminalCases = this.criminalCaseService.criminalCases
+        );
+        break;
+      }
+      case 1: {
+        const crimesObserver = this.crimeService.getAllCrimes();
+        crimesObserver.subscribe(
+          data => this.crimes = data,
+          error => this.crimes = this.crimeService.crimes
+        );
+        break;
+      }
+      case 2: {
+        const observer = this.evidenceOfCrimeService.getAllEvidences();
+        observer.subscribe(
+          data => this.evidencesOfCrime = data,
+          error => {this.evidencesOfCrime = this.evidenceOfCrimeService.evidences; 
+            console.log(this.evidencesOfCrime)}
+        );
+        break;
+      }
+      case 3: {
+        const observer = this.manService.getAllMen();
+        observer.subscribe(
+          data => this.men = data,
+          error => this.men = this.manService.men
         );
         break;
       }
