@@ -69,8 +69,8 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
         }
 
         boolean res1 = currConnection.queryDataEdit(preparedStatement);
-        boolean res2 = updateMan(participantToUpdate);
-        return res1 && res2;
+        /*boolean res2 = updateMan(participantToUpdate);*/
+        return res1 /*&& res2*/;
     }
 
     @Override

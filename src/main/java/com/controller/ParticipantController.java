@@ -5,6 +5,7 @@ import com.DTO.parsers.ManParser;
 import com.DTO.parsers.ParticipantParser;
 import com.logic.Man;
 import com.logic.Participant;
+import com.security.annotations.IsDetective;
 import com.services.interfaces.IManService;
 import com.services.interfaces.IParticipantService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ public class ParticipantController {
     @Autowired
     private IParticipantService participantService;
 
+    @IsDetective
     @CrossOrigin
     @RequestMapping(path = "/add", method = RequestMethod.POST)
     public OperationResultDTO addParticipant(@RequestBody ParticipantInputDTO participant) {
@@ -32,6 +34,7 @@ public class ParticipantController {
         return new OperationResultDTO(result);
     }
 
+    @IsDetective
     @CrossOrigin
     @RequestMapping(path = "/update", method = RequestMethod.POST)
     public OperationResultDTO updateParticipant(@RequestBody ParticipantInputDTO participant) {
@@ -47,6 +50,7 @@ public class ParticipantController {
     }
 
     //TODO: потестить
+    @IsDetective
     @CrossOrigin
     @RequestMapping(path = "/{man_id}/{crime_id}", method = RequestMethod.GET)
     public GenericDTO<ParticipantFullInfoDTO> getParticipantByManAndCrime(
@@ -59,6 +63,7 @@ public class ParticipantController {
                 : new GenericDTO<ParticipantFullInfoDTO>(true, null);
     }
 
+    @IsDetective
     @CrossOrigin
     @RequestMapping(path = "/status_list", method = RequestMethod.GET)
     public ListEnumDTO getParticipantStatuses() {

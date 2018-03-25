@@ -5,6 +5,7 @@ import com.DTO.parsers.CrimeParser;
 import com.logic.Crime;
 import com.logic.EvidenceOfCrime;
 import com.logic.Participant;
+import com.security.annotations.IsDetective;
 import com.services.interfaces.ICrimeService;
 import com.services.interfaces.IEvidenceOfCrimeService;
 import com.services.interfaces.IParticipantService;
@@ -26,6 +27,7 @@ public class CrimeController {
     @Autowired
     private IEvidenceOfCrimeService evidenceOfCrimeService;
 
+    @IsDetective
     @CrossOrigin
     @RequestMapping(path = "/add", method = RequestMethod.POST)
     public OperationResultDTO addCrime(@RequestBody CrimeInputDTO crime) {
@@ -40,6 +42,7 @@ public class CrimeController {
         return new OperationResultDTO(result);
     }
 
+    @IsDetective
     @CrossOrigin
     @RequestMapping(path = "/update", method = RequestMethod.POST)
     public OperationResultDTO updateCrime(@RequestBody CrimeInputWithIdDTO crime) {
@@ -55,6 +58,7 @@ public class CrimeController {
         return new OperationResultDTO(result);
     }
 
+    @IsDetective
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
     public GenericDTO<ListCrimesDTO> getAllCrimes() {
@@ -65,6 +69,7 @@ public class CrimeController {
         return new GenericDTO<ListCrimesDTO>(false, new ListCrimesDTO(results));
     }
 
+    @IsDetective
     @CrossOrigin
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
     public GenericDTO<CrimeExtendedDTO> getCrimeById(@PathVariable("id") long id) {
@@ -76,6 +81,7 @@ public class CrimeController {
                 : new GenericDTO<CrimeExtendedDTO>(true, null);
     }
 
+    @IsDetective
     @CrossOrigin
     @RequestMapping(path = "/types_list", method = RequestMethod.GET)
     public ListEnumDTO getParticipantStatuses() {
