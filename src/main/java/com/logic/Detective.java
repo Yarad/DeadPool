@@ -1,5 +1,8 @@
 package com.logic;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -7,6 +10,7 @@ public class Detective extends Man {
     private String login;
     private String hashOfPassword;
     private String email;
+    public List<UserRole> roles = Arrays.asList(UserRole.DETECTIVE);
 
     public String getLogin() {
         return login;
@@ -42,7 +46,6 @@ public class Detective extends Man {
         }
     }
 
-    // [S]olid
     private boolean ifLoginValid(String login) {
         Pattern p = Pattern.compile("[a-z]+[a-z0-9]+");
         Matcher m = p.matcher(login);

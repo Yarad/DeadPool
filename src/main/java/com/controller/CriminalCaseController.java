@@ -4,6 +4,7 @@ import com.DTO.*;
 import com.DTO.parsers.CriminalCaseParser;
 import com.logic.Crime;
 import com.logic.CriminalCase;
+import com.security.annotations.IsDetective;
 import com.services.interfaces.ICrimeService;
 import com.services.interfaces.ICriminalCaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ public class CriminalCaseController {
     @Autowired
     private ICrimeService crimeService;
 
+    @IsDetective
     @CrossOrigin
     @RequestMapping(path = "/add", method = RequestMethod.POST)
     public OperationResultDTO addCriminalCase(@RequestBody CriminalCaseInputDTO criminalCase) {
@@ -34,6 +36,7 @@ public class CriminalCaseController {
         return new OperationResultDTO(result);
     }
 
+    @IsDetective
     @CrossOrigin
     @RequestMapping(path = "/update", method = RequestMethod.POST)
     public OperationResultDTO updateCriminalCase(@RequestBody CriminalCaseInputWithIdDTO criminalCase) {
@@ -48,6 +51,7 @@ public class CriminalCaseController {
         return new OperationResultDTO(result);
     }
 
+    @IsDetective
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
     public GenericDTO<ListCriminalCasesDTO> getAllCriminalCases() {
@@ -58,6 +62,7 @@ public class CriminalCaseController {
         return new GenericDTO<ListCriminalCasesDTO>(false, new ListCriminalCasesDTO(results));
     }
 
+    @IsDetective
     @CrossOrigin
     @RequestMapping(path = "/solved", method = RequestMethod.GET)
     public GenericDTO<ListCriminalCasesDTO> getAllSolvedCriminalCases() {
@@ -68,6 +73,7 @@ public class CriminalCaseController {
         return new GenericDTO<ListCriminalCasesDTO>(false, new ListCriminalCasesDTO(results));
     }
 
+    @IsDetective
     @CrossOrigin
     @RequestMapping(path = "/unsolved", method = RequestMethod.GET)
     public GenericDTO<ListCriminalCasesDTO> getAllUnsolvedCriminalCases() {
@@ -78,6 +84,7 @@ public class CriminalCaseController {
         return new GenericDTO<ListCriminalCasesDTO>(false, new ListCriminalCasesDTO(results));
     }
 
+    @IsDetective
     @CrossOrigin
     @RequestMapping(path = "/open", method = RequestMethod.GET)
     public GenericDTO<ListCriminalCasesDTO> getAllOpenCriminalCases() {
@@ -88,6 +95,7 @@ public class CriminalCaseController {
         return new GenericDTO<ListCriminalCasesDTO>(false, new ListCriminalCasesDTO(results));
     }
 
+    @IsDetective
     @CrossOrigin
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
     public GenericDTO<CriminalCaseExtendedDTO> getCriminalCaseById(@PathVariable("id") long id) {

@@ -21,6 +21,9 @@ public class DAOMan extends DAO implements IDAOMan {
     }
 
     public boolean addMan(Man manToAdd) {
+        if (manToAdd == null)
+            return false;
+
         PreparedStatement preparedQuery = currConnection.prepareStatement("INSERT INTO `man`( `name`, `home_address`, `birthday`, `surname`) VALUES (?,?,?,?)");
 
         try {

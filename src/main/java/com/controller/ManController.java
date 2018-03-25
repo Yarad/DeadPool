@@ -4,6 +4,7 @@ import com.DTO.*;
 import com.DTO.parsers.ManParser;
 import com.logic.Man;
 import com.logic.Participant;
+import com.security.annotations.IsDetective;
 import com.services.interfaces.IManService;
 import com.services.interfaces.IParticipantService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ public class ManController {
     @Autowired
     private IParticipantService participantService;
 
+    @IsDetective
     @CrossOrigin
     @RequestMapping(path = "/add", method = RequestMethod.POST)
     public OperationResultDTO addMan(@RequestBody ManInfoWithoutIdDTO man) {
@@ -36,6 +38,7 @@ public class ManController {
         return new OperationResultDTO(result);
     }
 
+    @IsDetective
     @CrossOrigin
     @RequestMapping(path = "/update", method = RequestMethod.POST)
     public OperationResultDTO updateMan(@RequestBody ManInfoDTO man) {
@@ -51,6 +54,7 @@ public class ManController {
     }
 
     //TODO: потестить
+    @IsDetective
     @CrossOrigin
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
     public GenericDTO<ManExtendedDTO> getManFullInfo(@PathVariable("id") long id) {
@@ -62,6 +66,7 @@ public class ManController {
     }
 
     //TODO: потестить
+    @IsDetective
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
     public GenericDTO<ListMenDTO> getAllManWithCrimeAmount() {
