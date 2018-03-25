@@ -42,7 +42,6 @@ public class AuthorizationController {
         }
     }
 
-    //TODO: протестировать после обновления метода ДАО addDetective
     @CrossOrigin
     @RequestMapping(path = "/sign_up", method = RequestMethod.POST)
     public GenericDTO<String> signUp(@RequestBody DetectiveWithoutManIdDTO authData) {
@@ -61,7 +60,7 @@ public class AuthorizationController {
                     authData.getEmail()
             );
             if (addResult) {
-                return new GenericDTO<>(false, "Вы успешно авторизованы в системе!");
+                return new GenericDTO<>(false, "Вы успешно зарегистрированы в системе!");
             } else {
                 return new GenericDTO<>(true, "Не удалось добавить пользователя!");
             }

@@ -30,8 +30,7 @@ public class DetectiveService implements IDetectiveService {
         detective.setPhotoPath(photoPath);
         if (!detective.setLogin(login))
             return false;
-        if (!detective.setHashOfPassword(hashService.getMD5Hash(password)))
-            return false;
+        detective.setHashOfPassword(hashService.getMD5Hash(password));
         detective.setEmail(email);
         return daoDetective.addDetective(detective);
     }
@@ -48,8 +47,7 @@ public class DetectiveService implements IDetectiveService {
         detective.setPhotoPath(photoPath);
         if (!detective.setLogin(login))
             return false;
-        if (!detective.setHashOfPassword(hashService.getMD5Hash(password)))
-            return false;
+        detective.setHashOfPassword(hashService.getMD5Hash(password));
         detective.setEmail(email);
         return daoDetective.updateDetective(detective);
     }

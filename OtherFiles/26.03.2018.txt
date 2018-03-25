@@ -1,0 +1,38 @@
+1) IDAOEvidence & IDAOEvidenceOfCrime имеют один и тот же метод getAllEvidencesByCrime.
+Надо оптимизировать.
+Что мне надо? Все EvidenceOfCrime, у которых заполнено Evidence & EvidenceType.
+Я использую только у себбя только метод IDAOEvidenceOfCrime. Надо синхронизироваться по этому поводу
+
+2) Что-то не так с методом DAODetective.getDetectiveByLogin(String login)
+
+3) На строке в Man
+protected LocalDate birthDay = LocalDate.parse("08.09.1998", ProjectConstants.myDateFormatter);
+вылетает Exception
+
+Поменял на
+protected LocalDate birthDay = LocalDate.of(2012, 12, 31);
+взятое из LocalDate (описания класса)
+Спасибо за неработающее обновление
+
+4) "Спасибо" за паттерн проверки логина, не преемлющий заглавные буквы
+
+5) Андрей, помнишь, Пинюта на лк говорил, что надо закрывать соединения. У нас это происходит, или у нас не важно?
+
+6) Ещё раз: везде проверка на null в логике должна быть!! А то достало ловить exception на
+surname.equals("") при surname == null
+!homeAddress.isEmpty() 
+
+7) Андрей! Зачем устнавливать фиктивные значения для адреса у человека, например?! Он в ДАО м.б. null. Зачем мне Ане возвращать какое-то "NoHomeAddress"?! Здравствуй, пещерный век.
+
+	public void setSurname(String surname) {
+        if (isNullOrEmpty(surname))
+            this.surname = "NoSurname";
+        else
+            this.surname = surname;
+    }
+
+Почему бы не возвращать boolean, кидать исключение?! Это ошибка, при таком не надо добавлять в БД.
+Андрей, у тебя ОЧЕНЬ странный подход к ДАО.
+
+8) ДАО. Везде сделать так, чтобы могло быть null, где может быть в самой БД (чтобы позволяло установить параметр для PreparedStatement)
+Date.valueOf - не принимает null как нормальный параметр!
