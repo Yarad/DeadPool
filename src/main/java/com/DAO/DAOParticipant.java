@@ -75,8 +75,8 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
         }
 
         boolean res1 = currConnection.queryDataEdit(preparedStatement);
-        boolean res2 = updateMan(participantToUpdate);
-        return res1 && res2;
+        /*boolean res2 = updateMan(participantToUpdate);*/
+        return res1 /*&& res2*/;
     }
 
     @Override
@@ -154,17 +154,5 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
         }
 
         return retParticipantCrimesArray;
-    }
-
-    @Override
-    public long getAmountOfCrimesWithMan(long manId) {
-        // TODO Реализовать. А надо ли?!
-        return 0;
-    }
-
-    @Override
-    public List<Man> getAllManWhoTookParticipantInCrimes() {
-        // TODO Реализовать
-        return new ArrayList<>();
     }
 }

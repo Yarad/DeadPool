@@ -116,4 +116,15 @@ public class DAOEvidenceOfCrime extends DAO implements IDAOEvidenceOfCrime {
         }
         return retArr;
     }
+
+    @Override
+    public boolean addEvidenceOfCrime(EvidenceOfCrime evidenceOfCrime) {
+        return false;
+    }
+
+    @Override
+    public boolean updateEvidenceOfCrime(EvidenceOfCrime evidenceOfCrime) {
+        return false;
+    }
 }
+

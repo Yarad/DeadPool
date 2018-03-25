@@ -1,13 +1,11 @@
 package com.controller;
 
-import com.DTO.EvidenceExtendedDTO;
-import com.DTO.EvidenceOfCrimeExtendedDTO;
-import com.DTO.EvidenceOfCrimeShortedWithCrimeDTO;
-import com.DTO.ListEvidenceOfCrimeShortedWithCrimeList;
+import com.DTO.*;
 import com.DTO.parsers.EvidenceOfCrimeParser;
 import com.DTO.parsers.EvidenceParser;
 import com.logic.Evidence;
 import com.logic.EvidenceOfCrime;
+import com.security.annotations.IsDetective;
 import com.services.interfaces.IEvidenceOfCrimeService;
 import com.services.interfaces.IEvidenceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,33 +23,99 @@ public class EvidenceOfCrimeController {
     @Autowired
     private IEvidenceService evidenceService;
 
-    //TODO: потестить с реальными данными
+    @IsDetective
+    @CrossOrigin
+    @RequestMapping(path = "/add_single", method = RequestMethod.POST)
+    public OperationResultDTO addEvidenceSingle(@RequestBody EvidenceInputDTO evidence) {
+        boolean result = evidenceService.addEvidence(
+                evidence.getName(),
+                evidence.getDescription()
+        );
+        return new OperationResultDTO(result);
+    }
+
+    @IsDetective
+    @CrossOrigin
+    @RequestMapping(path = "/update_single", method = RequestMethod.POST)
+    public OperationResultDTO updateEvidenceSingle(@RequestBody EvidenceInputWithIdDTO evidence) {
+        boolean result = evidenceService.updateEvidence(
+                evidence.getId(),
+                evidence.getName(),
+                evidence.getDescription()
+        );
+        return new OperationResultDTO(result);
+    }
+
+    @IsDetective
+    @CrossOrigin
+    @RequestMapping(path = "/add_for_crime", method = RequestMethod.POST)
+    public OperationResultDTO addEvidenceForCrime(@RequestBody EvidenceOfCrimeInputDTO evidenceOfCrime) {
+        boolean result = evidenceOfCrimeService.addEvidenceOfCrime(
+                evidenceOfCrime.getEvidence().getId(),
+                evidenceOfCrime.getCrime().getId(),
+                evidenceOfCrime.getType(),
+                evidenceOfCrime.getDateAdded(),
+                evidenceOfCrime.getDetails(),
+                evidenceOfCrime.getPhotoPath()
+        );
+        return new OperationResultDTO(result);
+    }
+
+    @IsDetective
+    @CrossOrigin
+    @RequestMapping(path = "/update_for_crime", method = RequestMethod.POST)
+    public OperationResultDTO updateEvidenceForCrime(@RequestBody EvidenceOfCrimeInputDTO evidenceOfCrime) {
+        boolean result = evidenceOfCrimeService.updateEvidenceOfCrime(
+                evidenceOfCrime.getEvidence().getId(),
+                evidenceOfCrime.getCrime().getId(),
+                evidenceOfCrime.getType(),
+                evidenceOfCrime.getDateAdded(),
+                evidenceOfCrime.getDetails(),
+                evidenceOfCrime.getPhotoPath()
+        );
+        return new OperationResultDTO(result);
+    }
+
+    @IsDetective
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
-    public ListEvidenceOfCrimeShortedWithCrimeList getAllCrimes() {
+    public GenericDTO<ListEvidenceOfCrimeShortedWithCrimeList> getAllCrimes() {
         List<EvidenceOfCrime> inputEvidencesOfCrime = evidenceOfCrimeService.getAllEvidencesOfCrime();
         List<EvidenceOfCrimeShortedWithCrimeDTO> results = inputEvidencesOfCrime.stream()
                 .map(curEvidence -> EvidenceOfCrimeParser.parseEvidenceOfCrimeShortedWithCrime(curEvidence))
                 .collect(Collectors.toList());
-        return new ListEvidenceOfCrimeShortedWithCrimeList(results);
+        return new GenericDTO<ListEvidenceOfCrimeShortedWithCrimeList>(false, new ListEvidenceOfCrimeShortedWithCrimeList(results));
     }
 
+    @IsDetective
     @CrossOrigin
     @RequestMapping(path = "/{evidence_id}/{crime_id}", method = RequestMethod.GET)
-    public EvidenceOfCrimeExtendedDTO getEvidenceOfCrimeByEvidenceAndCrime(
+    public GenericDTO<EvidenceOfCrimeExtendedDTO> getEvidenceOfCrimeByEvidenceAndCrime(
             @PathVariable("evidence_id") long evidenceId,
             @PathVariable("crime_id") long crimeId
     ) {
         EvidenceOfCrime evidenceOfCrime = evidenceOfCrimeService.getEvidenceOfCrimeByEvidenceAndCrime(evidenceId, crimeId);
-        return EvidenceOfCrimeParser.parseEvidenceOfCrimeExtended(evidenceOfCrime);
+        return (evidenceOfCrime != null)
+                ? new GenericDTO<EvidenceOfCrimeExtendedDTO>(false, EvidenceOfCrimeParser.parseEvidenceOfCrimeExtended(evidenceOfCrime))
+                : new GenericDTO<EvidenceOfCrimeExtendedDTO>(true, null);
     }
 
     //TODO: потестировать, когда будет реализован метод получения списка EvidenceOfCrime
+    @IsDetective
     @CrossOrigin
     @RequestMapping(path = "/{evidence_id}", method = RequestMethod.GET)
-    public EvidenceExtendedDTO getEvidenceById(@PathVariable("evidence_id") long id) {
+    public GenericDTO<EvidenceExtendedDTO> getEvidenceById(@PathVariable("evidence_id") long id) {
         Evidence evidence = evidenceService.getEvidenceById(id);
         List<EvidenceOfCrime> evidencesOfCrime = evidenceOfCrimeService.getEvidencesOfCrimeByEvidenceId(id);
-        return EvidenceParser.parseEvidenceExtended(evidence, evidencesOfCrime);
+        return (evidence != null)
+                ? new GenericDTO<EvidenceExtendedDTO>(false, EvidenceParser.parseEvidenceExtended(evidence, evidencesOfCrime))
+                : new GenericDTO<EvidenceExtendedDTO>(true, null);
+    }
+
+    @IsDetective
+    @CrossOrigin
+    @RequestMapping(path = "/types_list", method = RequestMethod.GET)
+    public ListEnumDTO getParticipantStatuses() {
+        return EvidenceOfCrimeParser.getEvidenceTypes();
     }
 }

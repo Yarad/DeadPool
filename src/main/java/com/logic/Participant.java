@@ -68,4 +68,12 @@ public class Participant extends Man {
     public void setManId(long manId) {
         this.manId = Math.abs(manId);
     }
+
+    public LocalDateTime getDateAdded() {
+        return dateAdded;
+    }
+
+    public void setDateAdded(LocalDateTime dateAdded) {
+        this.dateAdded = dateAdded;
+    }
 }

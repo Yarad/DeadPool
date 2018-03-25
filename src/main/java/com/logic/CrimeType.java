@@ -1,8 +1,20 @@
 package com.logic;
 
 public enum CrimeType {
-    MURDER, //убийство
-    ROBBERY, //ограбление
-    RAPE, //изначислование
-    ARSON //поджог
+    MURDER("Убийство"),
+    ROBBERY("Ограбление"),
+    RAPE("Изнасилование"),
+    ARSON("Поджог"),
+    SUICIDE("Самоубийство");
+    //TODO: дополнить
+
+    private final String fieldDescription;
+
+    private CrimeType(String value) {
+        fieldDescription = value;
+    }
+
+    public String getName() {
+        return fieldDescription;
+    }
 }

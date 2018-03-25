@@ -1,8 +1,18 @@
 package com.logic;
 
 public enum ParticipantStatus {
-    SUSPECTED, //подозоеваемый
-    WITNESS,   //просто опросили (свидетель)
-    VICTIM,    //потерпевший
-    SPECTATOR  //очевидец
+    SUSPECTED("Подозреваемый"), //подозоеваемый
+    WITNESS("Свидетель"),       //просто опросили (свидетель)
+    VICTIM("Потерпевший"),      //потерпевший
+    SPECTATOR("Очевидец");      //очевидец
+
+    private final String fieldDescription;
+
+    private ParticipantStatus(String value) {
+        fieldDescription = value;
+    }
+
+    public String getName() {
+        return fieldDescription;
+    }
 }

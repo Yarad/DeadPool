@@ -1,10 +1,12 @@
 package com.DTO.parsers;
 
-import com.DTO.EvidenceOfCrimeExtendedDTO;
-import com.DTO.EvidenceOfCrimeForListOfEvidenceDTO;
-import com.DTO.EvidenceOfCrimeShortedDTO;
-import com.DTO.EvidenceOfCrimeShortedWithCrimeDTO;
+import com.DTO.*;
 import com.logic.EvidenceOfCrime;
+import com.logic.EvidenceType;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public final class EvidenceOfCrimeParser {
     private EvidenceOfCrimeParser () {}
@@ -13,7 +15,7 @@ public final class EvidenceOfCrimeParser {
         if (evidenceOfCrime != null) {
             return new EvidenceOfCrimeShortedDTO(
                     EvidenceParser.parseEvidenceShorted(evidenceOfCrime.parentEvidence),
-                    evidenceOfCrime.evidenceType.toString(),
+                    evidenceOfCrime.evidenceType.getName(),
                     evidenceOfCrime.getPhotoPath()
             );
         } else {
@@ -25,7 +27,7 @@ public final class EvidenceOfCrimeParser {
         if (evidenceOfCrime != null) {
             return new EvidenceOfCrimeShortedWithCrimeDTO(
                     EvidenceParser.parseEvidenceShorted(evidenceOfCrime.parentEvidence),
-                    evidenceOfCrime.evidenceType.toString(),
+                    evidenceOfCrime.evidenceType.getName(),
                     evidenceOfCrime.getPhotoPath(),
                     CrimeParser.parseShortedCrimeForOthers(evidenceOfCrime.parentCrime)
             );
@@ -38,7 +40,7 @@ public final class EvidenceOfCrimeParser {
         if (evidenceOfCrime != null) {
             return new EvidenceOfCrimeForListOfEvidenceDTO(
                     CrimeParser.parseShortedCrimeForOthers(evidenceOfCrime.parentCrime),
-                    evidenceOfCrime.evidenceType.toString(),
+                    evidenceOfCrime.evidenceType.getName(),
                     evidenceOfCrime.getPhotoPath(),
                     evidenceOfCrime.getDateAdded(),
                     evidenceOfCrime.getDetails()
@@ -53,7 +55,7 @@ public final class EvidenceOfCrimeParser {
             return new EvidenceOfCrimeExtendedDTO(
                     EvidenceParser.parseEvidence(evidenceOfCrime.parentEvidence),
                     CrimeParser.parseShortedCrimeForOthers(evidenceOfCrime.parentCrime),
-                    evidenceOfCrime.evidenceType.toString(),
+                    evidenceOfCrime.evidenceType.getName(),
                     evidenceOfCrime.getPhotoPath(),
                     evidenceOfCrime.getDateAdded(),
                     evidenceOfCrime.getDetails()
@@ -61,5 +63,14 @@ public final class EvidenceOfCrimeParser {
         } else {
             return null;
         }
+    }
+
+    public static ListEnumDTO getEvidenceTypes() {
+        EvidenceType[] types = EvidenceType.class.getEnumConstants();
+        List<EnumDTO> results = new ArrayList<>();
+        for(EvidenceType type: types) {
+            results.add(new EnumDTO(type.toString(), type.getName()));
+        }
+        return new ListEnumDTO(results);
     }
 }

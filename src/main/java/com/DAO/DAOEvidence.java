@@ -55,4 +55,14 @@ public class DAOEvidence extends DAO implements IDAOEvidence {
         }
         return evidences;
     }
+
+    @Override
+    public boolean addEvidence(Evidence evidence) {
+        return false;
+    }
+
+    @Override
+    public boolean updateEvidence(Evidence evidence) {
+        return false;
+    }
 }
