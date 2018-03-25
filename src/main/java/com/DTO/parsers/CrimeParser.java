@@ -17,7 +17,7 @@ public final class CrimeParser {
         if (crime != null) {
             return new CrimeObjectDTO(
                     crime.getCrimeId(),
-                    crime.getCrimeType(),
+                    crime.getCrimeType().toString(),
                     crime.getCrimeDate(),
                     crime.getCrimePlace(),
                     CriminalCaseParser.parseShortedCriminalCase(crime.getParentCriminalCase())
@@ -31,7 +31,7 @@ public final class CrimeParser {
         if (crime != null) {
             return new CrimeShortedDTO(
                     crime.getCrimeId(),
-                    crime.getCrimeType(),
+                    crime.getCrimeType().toString(),
                     crime.getCrimeDate(),
                     crime.getCrimePlace()
             );
@@ -44,7 +44,7 @@ public final class CrimeParser {
         if (crime != null) {
             return new CrimeForOthersShortedDTO(
                     crime.getCrimeId(),
-                    crime.getCrimeType(),
+                    crime.getCrimeType().toString(),
                     CriminalCaseParser.parseCriminalCaseOnlyNumber(crime.getParentCriminalCase())
             );
         } else {
@@ -57,7 +57,7 @@ public final class CrimeParser {
         if (crime != null) {
             return new CrimeExtendedDTO(
                     crime.getCrimeId(),
-                    crime.getCrimeType(),
+                    crime.getCrimeType().toString(),
                     crime.getCrimeDate(),
                     crime.getCrimePlace(),
                     CriminalCaseParser.parseShortedCriminalCaseWithDetective(crime.getParentCriminalCase()),

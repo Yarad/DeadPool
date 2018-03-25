@@ -1,14 +1,14 @@
 ﻿0) Обновить все объекты и связанные с ними методы ДАО там, где изменилась БД.
 
 Изменения БД:
-- добавлено: дата добавления evidence_of_crime
-- добавлено: дата добавления participant
-- добавлено: тип преступления crime
+FIXED добавлено: дата добавления evidence_of_crime
+FIXED добавлено: дата добавления participant
+FIXED добавлено: тип преступления crime
 
 Ну и напомню изменения от понедельника:
 
-- добавлено: email для detective
-- добавлено: фото у man
+FIXED добавлено: email для detective
+FIXED добавлено: фото у man
 - изменение: evidence_type перенесено от evidence к evidence_of_crime
 
 Ну и дописать для классов методы работы с полями-"родительскими" (сейчас, к примеру: The value of the field Crime.parentCriminalCase is not used)
