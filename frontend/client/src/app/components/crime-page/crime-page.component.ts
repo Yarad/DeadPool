@@ -25,23 +25,17 @@ export class CrimePageComponent implements OnInit {
     },
     participants: [
       {
-      photoPath: "https://res.cloudinary.com/dyzdll94h/image/upload/v1512924240/mpv69dvnolst2gtjjljh.jpg",
-      name: "Ангелина",
-      surname: "Хилькевич",
-      status: "Подозреваемый"
-    },
-    {
-      photoPath: "https://res.cloudinary.com/dyzdll94h/image/upload/v1513188126/kxj1l9ekt31bp67ir8db.jpg",
-      name: "Алина",
-      surname: "Ивченко",
-      status: "Очевидец"
-    },
-    {
-      photoPath: "https://res.cloudinary.com/dyzdll94h/image/upload/v1513188126/kxj1l9ekt31bp67ir8db.jpg",
-      name: "Алина",
-      surname: "Ивченко",
-      status: "Очевидец"
-    }
+        photoPath: "https://res.cloudinary.com/dyzdll94h/image/upload/v1512924240/mpv69dvnolst2gtjjljh.jpg",
+        name: "Ангелина",
+        surname: "Хилькевич",
+        status: "Подозреваемый"
+      },
+      {
+        photoPath: "https://res.cloudinary.com/dyzdll94h/image/upload/v1513188126/kxj1l9ekt31bp67ir8db.jpg",
+        name: "Алина",
+        surname: "Ивченко",
+        status: "Очевидец"
+      }
     ],
     evidences: [
       {

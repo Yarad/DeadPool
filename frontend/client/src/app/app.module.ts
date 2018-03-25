@@ -1,11 +1,15 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {FormsModule} from '@angular/forms';
-import {HttpModule} from '@angular/http';
-import {Routes, RouterModule} from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
+import { Routes, RouterModule } from '@angular/router';
 import {TabsModule} from "ng2-tabs";
 import { DatepickerModule } from 'angular2-material-datepicker';
 
+import { CriminalCaseService } from './services/criminal-case.service';
+import { AuthorizationService } from './services/authorization.service';
+import { MainService } from './services/main.service';
+import { DetectiveService } from './services/detective.service';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -58,7 +62,12 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     TabsModule
   ],
-  providers: [ ],
+  providers: [
+    MainService,
+    CriminalCaseService,
+    AuthorizationService,
+    DetectiveService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

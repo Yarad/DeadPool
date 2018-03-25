@@ -19,9 +19,9 @@
       </form>
       <div style="height:40px">
         
-      <div class="my-3">
+      <!--div class="my-3">
        <button class="btn btn-secondary" routerLink="/add_criminal_case">Добавить новое</button>
-      </div>
+      </div-->
 
       </div>
       <table *ngIf="activeCategoryId==0" class="table table-hover">
@@ -33,10 +33,10 @@
         </thead>
         <tbody>
           <tr *ngFor="let criminalCase of  criminalCases"
-            [ngClass]="{'table-primary':(criminalCase.criminalCaseStatus ==='Закрыто')}"
-            routerLink="/criminal_case/{{criminalCase.criminalCaseId}}">
-            <th scope="row">{{criminalCase.criminalCaseNumber}}</th>
-            <td>{{criminalCase.criminalCaseStatus}}</td>
+            [ngClass]="{'table-primary':(criminalCase.status ==='Закрыто')}"
+            routerLink="/criminal_case/{{criminalCase.id}}">
+            <th scope="row">{{criminalCase.number}}</th>
+            <td>{{criminalCase.status}}</td>
           </tr>
         </tbody>
       </table> 

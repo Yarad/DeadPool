@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CriminalCaseService } from '../../services/criminal-case.service';
 
 @Component({
   selector: 'app-criminal-case-page',
@@ -6,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./criminal-case-page.component.css']
 })
 export class CriminalCasePageComponent implements OnInit {
+  readMode = true;
+  allDetectives = [];
+
   criminalCase = {
     id: 1,
     number: "УПН1854",
@@ -14,7 +18,7 @@ export class CriminalCasePageComponent implements OnInit {
     closeDate: null,
     detective:
     {
-            id: 2,
+            id: 1,
             name: "Шерлок",
             surname: "Холмс",
     },
@@ -27,10 +31,71 @@ export class CriminalCasePageComponent implements OnInit {
       }
     ]
  }
+ oldCriminalCase;
 
-  constructor() { }
+  constructor(
+    private criminalCaseService:CriminalCaseService
+  ) { }
 
   ngOnInit() {
   }
 
+  switchMode(mode) {
+    this.readMode = mode;
+    if (!mode) {
+      this.allDetectives = this.loadAllDetectives();
+      this.oldCriminalCase = this.copyObject(this.criminalCase);
+    }
+  }
+
+  saveChanges() {
+    this.switchMode(true);
+  }
+
+  cancellationOfChanges() {
+    this.criminalCase = this.oldCriminalCase;
+    this.switchMode(true);
+  }
+  
+  changeSelectedDetective($event) {
+    const index = this.allDetectives.map(detective => detective.id).indexOf(+$event.target.value);
+    if (index > -1) {
+      this.criminalCase.detective = this.allDetectives[index];
+    }
+  }
+
+  closeCriminalCase() {
+  }
+
+  loadAllDetectives() {
+    return [
+      {
+        id: 1,
+        name: "Шерлок",
+        surname: "Холмс"
+      },
+      {
+        id: 2,
+        name: "Жареная",
+        surname: "Картошка"
+      },
+      {
+        id: 3,
+        name: "Андрей",
+        surname: "Жлобич"
+      }
+    ]
+  }
+
+  copyObject(currObject) {
+    const newObject = {};
+
+    Object.keys(currObject).forEach(key => {
+      Object.assign(newObject, {
+        [key]: currObject[key]
+      })
+    });
+
+    return newObject;
+  }
 }

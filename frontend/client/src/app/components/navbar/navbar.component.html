@@ -1,5 +1,8 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">DEADPOOL</a>
+  <a class="navbar-brand" routerLink="/">DEADPOOL</a>
+  <button class="btn btn-secondary" routerLink="/add_criminal_case">Добавить дело</button>
+   
+
 
   <ol class="breadcrumb">
     <li *ngFor="let breadcrumb of breadcrumbs" class="breadcrumb-item"><a routerLink="{{breadcrumb.link}}">{{breadcrumb.name}}</a></li>

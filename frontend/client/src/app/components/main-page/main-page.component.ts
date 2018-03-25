@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CriminalCaseService } from '../../services/criminal-case.service';
+import { DetectiveService } from '../../services/detective.service';
 
 @Component({
   selector: 'app-main-page',
@@ -10,18 +12,7 @@ export class MainPageComponent implements OnInit {
 
   activeCategoryId = 0;
 
-  criminalCases = [
-    {
-      criminalCaseId: 1,
-      criminalCaseNumber: "РК1244",
-      criminalCaseStatus: "Закрыто"
-    },
-    {
-      criminalCaseId: 2,
-      criminalCaseNumber: "TC23423",
-      criminalCaseStatus: "Открыто"
-    }
-  ];
+  criminalCases = [];// this.criminalCaseService.getAllCriminalCases();;
 
   crimes = [
     {
@@ -66,13 +57,31 @@ export class MainPageComponent implements OnInit {
     }
   ];
   
-  constructor() { }
+  constructor(
+    private criminalCaseService: CriminalCaseService,
+    private datectiveService: DetectiveService
+  ) {  
+    const criminalCasesObserver = this.criminalCaseService.getAllCriminalCases();
+    criminalCasesObserver.subscribe(
+      data => this.criminalCases = data,
+      error => this.criminalCases = this.criminalCaseService.criminalCases
+    );
+  }
 
   ngOnInit() {
   }
 
   changeActiveCategory(id) {
     this.activeCategoryId = id;
+    switch(id) {
+      case 0: {
+        const criminalCasesObserver = this.criminalCaseService.getAllCriminalCases();
+        criminalCasesObserver.subscribe(
+          data => this.criminalCases = data,
+          error => this.criminalCases = this.criminalCaseService.criminalCases
+        );
+        break;
+      }
+    }
   }
-
 }
