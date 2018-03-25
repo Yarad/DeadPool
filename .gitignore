@@ -1,7 +1,12 @@
 <<<<<<< HEAD
 out/*
+target/*
 *.xml
 =======
 
+*.iml
+OtherFiles/~$deadpool.xlsx
+.classpath
+.project
 .idea/
 >>>>>>> bb22746c9592de34a20d2ceecda0cc769f62aa07
