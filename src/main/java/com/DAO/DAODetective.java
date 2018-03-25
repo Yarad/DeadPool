@@ -37,7 +37,7 @@ public class DAODetective extends DAOMan implements IDAODetective {
         if (!addMan(detectiveToAdd))
             return false;
 
-        PreparedStatement preparedStatement = currConnection.prepareStatement("INSERT INTO `detective`(`login`, `hash_of_password`, `man_id`, `email`) VALUES (?,?,?,?)");
+        PreparedStatement preparedStatement = currConnection.prepareStatement("INSERT INTO `detective`(`login`, `hash_of_password`, `detective_id`, `email`) VALUES (?,?,?,?)");
         try {
             preparedStatement.setString(1, detectiveToAdd.getLogin());
             preparedStatement.setString(2, detectiveToAdd.getHashOfPassword());
@@ -47,7 +47,7 @@ public class DAODetective extends DAOMan implements IDAODetective {
             DAOLog.log(e.toString());
             return false;
         }
-        //TODO
+
         return currConnection.queryDataEdit(preparedStatement);
     }
 

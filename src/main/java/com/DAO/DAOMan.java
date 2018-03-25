@@ -24,13 +24,19 @@ public class DAOMan extends DAO implements IDAOMan {
         if (manToAdd == null)
             return false;
 
-        PreparedStatement preparedQuery = currConnection.prepareStatement("INSERT INTO `man`( `name`, `home_address`, `birthday`, `surname`) VALUES (?,?,?,?)");
+        PreparedStatement preparedQuery = currConnection.prepareStatement("INSERT INTO `man`( `name`, `home_address`, `birthday`, `surname`, `photo_path`) VALUES (?,?,?,?,?)");
 
         try {
             preparedQuery.setString(1, manToAdd.getName());
             preparedQuery.setString(2, manToAdd.getHomeAddress());
             preparedQuery.setDate(3, Date.valueOf(manToAdd.getBirthDay()));
             preparedQuery.setString(4, manToAdd.getSurname());
+
+            if (manToAdd.getPhotoPath() != null)
+                preparedQuery.setString(5, manToAdd.getPhotoPath());
+            else
+                preparedQuery.setNull(5, 0);
+
         } catch (SQLException e) {
             DAOLog.log(e.toString());
             return false;
@@ -50,6 +56,7 @@ public class DAOMan extends DAO implements IDAOMan {
                 "`surname`=?," +
                 "`birthday`=?," + //nullable
                 "`home_address`=? " + //nullable
+                "`photo_path`=? " + //nullable
                 "WHERE man_id = ?");
         try {
 
@@ -66,12 +73,26 @@ public class DAOMan extends DAO implements IDAOMan {
             else
                 preparedStatement2.setNull(4, 0);
 
-            preparedStatement2.setLong(5, manToUpdate.getManId());
+            if (manToUpdate.getPhotoPath() != null)
+                preparedStatement2.setString(5, manToUpdate.getPhotoPath());
+            else
+                preparedStatement2.setNull(5, 0);
+
+            preparedStatement2.setLong(6, manToUpdate.getManId());
         } catch (Exception e) {
             DAOLog.log(e.toString());
         }
 
         return currConnection.queryDataEdit(preparedStatement2);
+    }
+
+    @Override
+    public Man getFullManInfo(long manId) {
+        Man man = new Man();
+        if (fillInfoFromManTableById(manId, man))
+            return man;
+        else
+            return null;
     }
 
     protected boolean fillInfoFromManTableById(long id, Man objectToFill) {
@@ -89,25 +110,6 @@ public class DAOMan extends DAO implements IDAOMan {
         if (retArray.isEmpty()) return false;
 
         ProjectFunctions.tryFillObjectByDbArray(objectToFill, retArray.get(0));
-        //ProjectConstants.fillObjectFieldByArrayOfValues(objectToFill, retArray);
-        //if (retArray.get(0).containsKey("bithday") && (LocalDate) retArray.get(0).get("bithday") != null)
-        /*
-        if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "birthday"))
-            objectToFill.setBirthDay((LocalDate) retArray.get(0).get("bithday"));
-
-        //if (retArray.get(0).containsKey("name") && retArray.get(0).get("name") != null)
-        if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "name"))
-            objectToFill.setName(retArray.get(0).get("name").toString());
-
-        //if (retArray.get(0).containsKey("surname") && retArray.get(0).get("surname") != null)
-        if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "surname"))
-            objectToFill.setSurname(retArray.get(0).get("surname").toString());
-
-        //if (retArray.get(0).containsKey("home_address") && retArray.get(0).get("home_address") != null)
-        if (ProjectFunctions.ifDbObjectContainsKey(retArray.get(0), "home_address"))
-            objectToFill.setHomeAddress(retArray.get(0).get("home_address").toString());
-        //LogicLog.log(list.toString());
-        */
         return true;
     }
 

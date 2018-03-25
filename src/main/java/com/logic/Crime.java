@@ -1,17 +1,26 @@
 package com.logic;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class Crime {
     private long crimeId = -1;
     private long criminalCaseId = -1;
-    private String crimeType = "noType";
+    public CrimeType crimeType = CrimeType.MURDER;
     private String crimePlace = "noAddress";
     private String description = "noDescription";
     private LocalDate crimeDate = LocalDate.now();
     private LocalTime crimeTime = null;
     private CriminalCase parentCriminalCase;
+
+    public CrimeType getCrimeType() {
+        return crimeType;
+    }
+
+    public void setCrimeType(String crimeType) {
+        this.crimeType = CrimeType.valueOf(crimeType);
+    }
 
     public long getCrimeId() {
         return crimeId;
@@ -27,14 +36,6 @@ public class Crime {
 
     public void setCriminalCaseId(long criminalCaseId) {
         this.criminalCaseId = Math.abs(criminalCaseId);
-    }
-
-    public String getCrimeType() {
-        return crimeType;
-    }
-
-    public void setCrimeType(String crimeType) {
-        this.crimeType = crimeType;
     }
 
     public String getCrimePlace() {
