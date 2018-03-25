@@ -2,10 +2,14 @@ package com.services;
 
 import com.DAO.interfaces.IDAODetective;
 import com.logic.Detective;
+import com.logic.Man;
 import com.services.interfaces.IDetectiveService;
 import com.services.interfaces.IHashService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class DetectiveService implements IDetectiveService {
@@ -16,9 +20,14 @@ public class DetectiveService implements IDetectiveService {
     private IHashService hashService;
 
     @Override
-    public boolean addDetective(long id, String login, String password, String email) {
+    public boolean addDetective(String name, String surname, LocalDate birthday, String homeAddress, String photoPath,
+                                String login, String password, String email) {
         Detective detective = new Detective();
-        detective.setManId(id);
+        detective.setName(name);
+        detective.setSurname(surname);
+        detective.setBirthDay(birthday);
+        detective.setHomeAddress(homeAddress);
+        detective.setPhotoPath(photoPath);
         if (!detective.setLogin(login))
             return false;
         if (!detective.setHashOfPassword(hashService.getMD5Hash(password)))
@@ -28,9 +37,15 @@ public class DetectiveService implements IDetectiveService {
     }
 
     @Override
-    public boolean updateDetective(long id, String login, String password, String email) {
+    public boolean updateDetective(long id, String name, String surname, LocalDate birthday, String homeAddress, String photoPath,
+                                   String login, String password, String email) {
         Detective detective = new Detective();
         detective.setManId(id);
+        detective.setName(name);
+        detective.setSurname(surname);
+        detective.setBirthDay(birthday);
+        detective.setHomeAddress(homeAddress);
+        detective.setPhotoPath(photoPath);
         if (!detective.setLogin(login))
             return false;
         if (!detective.setHashOfPassword(hashService.getMD5Hash(password)))
@@ -47,5 +62,10 @@ public class DetectiveService implements IDetectiveService {
     @Override
     public boolean existDetectiveWithLogin(String login) {
         return daoDetective.existDetectiveWithLogin(login);
+    }
+
+    @Override
+    public List<Man> getAllDetetives() {
+        return daoDetective.getAllDetectives();
     }
 }

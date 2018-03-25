@@ -1,8 +1,8 @@
 package com.controller;
 
 import com.DTO.AuthDTO;
+import com.DTO.DetectiveWithoutManIdDTO;
 import com.DTO.GenericDTO;
-import com.DTO.RegisterDTO;
 import com.DTO.StringOnlyDTO;
 import com.logic.Detective;
 import com.security.annotations.IsDetective;
@@ -45,13 +45,17 @@ public class AuthorizationController {
     //TODO: протестировать после обновления метода ДАО addDetective
     @CrossOrigin
     @RequestMapping(path = "/sign_up", method = RequestMethod.POST)
-    public GenericDTO<String> signUp(@RequestBody RegisterDTO authData) {
+    public GenericDTO<String> signUp(@RequestBody DetectiveWithoutManIdDTO authData) {
         Detective detective = detectiveService.getDetectiveByLogin(authData.getLogin());
         if (detective != null) {
             return new GenericDTO<>(true, "Пользователь с таким именем уже существует!");
         } else {
             boolean addResult = detectiveService.addDetective(
-                    authData.getMan().getId(),
+                    authData.getMan().getName(),
+                    authData.getMan().getSurname(),
+                    authData.getMan().getBirthday(),
+                    authData.getMan().getHomeAddress(),
+                    authData.getMan().getPhotoPath(),
                     authData.getLogin(),
                     authData.getPassword(),
                     authData.getEmail()

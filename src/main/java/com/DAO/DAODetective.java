@@ -2,11 +2,13 @@ package com.DAO;
 
 import com.DAO.interfaces.IDAODetective;
 import com.logic.Detective;
+import com.logic.Man;
 import com.logic.ProjectFunctions;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -105,8 +107,13 @@ public class DAODetective extends DAOMan implements IDAODetective {
         return false;
     }
 
-    private boolean fillInfoFromDetectiveTableById(long id, Detective objectToFill) {
+    @Override
+    public List<Man> getAllDetectives() {
+        //TODO: реализовать. Все люди, которым есть эквивалент в таблице `Detective`
+        return new ArrayList<>();
+    }
 
+    private boolean fillInfoFromDetectiveTableById(long id, Detective objectToFill) {
         //TODO Join
         PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM `detective` WHERE `detective_id` = ?");
         try {
