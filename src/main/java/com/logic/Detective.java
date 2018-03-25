@@ -7,9 +7,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Detective extends Man {
-    private String login;
-    private String hashOfPassword;
-    private String email;
+    private String login = "";
+    private String hashOfPassword = "";
+    private String email = "";
     public List<UserRole> roles = Arrays.asList(UserRole.DETECTIVE);
 
     public String getLogin() {
@@ -29,7 +29,11 @@ public class Detective extends Man {
         return hashOfPassword;
     }
 
-    public String getEmail() {
+    public void setHashOfPassword(String hashOfPassword) {
+        this.hashOfPassword = hashOfPassword;
+    }
+  
+  public String getEmail() {
         return email;
     }
 
@@ -37,24 +41,9 @@ public class Detective extends Man {
         this.email = email;
     }
 
-    public boolean setHashOfPassword(String hashOfPassword) {
-        if (ifPasswordValid(hashOfPassword)) {
-            this.hashOfPassword = hashOfPassword;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     private boolean ifLoginValid(String login) {
         Pattern p = Pattern.compile("[a-z]+[a-z0-9]+");
         Matcher m = p.matcher(login);
-        return m.matches();
-    }
-
-    private boolean ifPasswordValid(String password) {
-        Pattern p = Pattern.compile("[a-z0-9]+");
-        Matcher m = p.matcher(password);
         return m.matches();
     }
 }
