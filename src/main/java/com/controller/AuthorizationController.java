@@ -45,8 +45,8 @@ public class AuthorizationController {
     @CrossOrigin
     @RequestMapping(path = "/sign_up", method = RequestMethod.POST)
     public GenericDTO<String> signUp(@RequestBody DetectiveWithoutManIdDTO authData) {
-        Detective detective = detectiveService.getDetectiveByLogin(authData.getLogin());
-        if (detective != null) {
+        Boolean exist = detectiveService.existDetectiveWithLogin(authData.getLogin());
+        if (exist) {
             return new GenericDTO<>(true, "Пользователь с таким именем уже существует!");
         } else {
             boolean addResult = detectiveService.addDetective(
@@ -71,14 +71,6 @@ public class AuthorizationController {
     @RequestMapping(path = "/md5", method = RequestMethod.POST)
     public GenericDTO<StringOnlyDTO> md5(@RequestBody StringOnlyDTO password) {
         return new GenericDTO<>(false, new StringOnlyDTO(hashService.getMD5Hash(password.getResult())));
-    }
-*//*
-    @IsDetective
-    @CrossOrigin
-    @RequestMapping(path = "/sign_out", method = RequestMethod.POST)
-    public void signOut(@RequestBody StringOnlyDTO token) {
-        //TODO: переделать. Брать из заголовков, метод д.б. без параметров, т.е. можжно сделать get
-        tokenService.remove(token.getResult());
     }
 */
     @IsDetective

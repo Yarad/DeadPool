@@ -22,8 +22,7 @@ public class DAOMan extends DAO implements IDAOMan {
     }
 
     public boolean addMan(Man manToAdd) {
-        if (manToAdd == null)
-            return false;
+        if (manToAdd == null) return false;
 
         PreparedStatement preparedQuery = currConnection.prepareStatement("INSERT INTO `man`( `name`, `home_address`, `birthday`, `surname`, `photo_path`) VALUES (?,?,?,?,?)");
 
@@ -55,7 +54,7 @@ public class DAOMan extends DAO implements IDAOMan {
                 "`name`=?," +
                 "`surname`=?," +
                 "`birthday`=?," + //nullable
-                "`home_address`=?, " + //nullable //TODO: быть внимательнее. Была пропущена запятая => неправильный синтаксис. Лекс
+                "`home_address`=?, " + //nullable
                 "`photo_path`=? " + //nullable
                 "WHERE `man_id` = ?");
         try {
@@ -70,7 +69,6 @@ public class DAOMan extends DAO implements IDAOMan {
             preparedStatement2.setLong(6, manToUpdate.getManId());
         } catch (SQLException  e) {
             DAOLog.log(e.toString());
-            //TODO: обсудить возврат false. Мне кажется, так правильнее. Лекс
             return false;
         }
 

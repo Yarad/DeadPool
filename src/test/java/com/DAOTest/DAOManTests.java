@@ -58,7 +58,7 @@ public class DAOManTests {
     }
 
     @Test
-    public void limitWork()  {
+    public void limitAndExceptionWork()  {
         Man man = new Man();
         man.setName("10letters_20letters_30letters_40letters_L");
         man.setSurname("someSurname");

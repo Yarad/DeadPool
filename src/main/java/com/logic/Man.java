@@ -50,15 +50,7 @@ public class Man {
     public void setBirthDay(LocalDate birthDay) {
         this.birthDay = birthDay;
     }
-/*
-    public void setBirthDay(String birthDay) {
-        try {
-            this.birthDay = LocalDate.parse(birthDay, ProjectConstants.myDateFormatter);
-        } catch (DateTimeParseException e) {
-            LogicLog.log(e.toString());
-        }
-    }
-*/
+
     public String getHomeAddress() {
         return homeAddress;
     }

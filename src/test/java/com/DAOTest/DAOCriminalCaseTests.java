@@ -5,7 +5,8 @@ import com.DAO.interfaces.IDAOCriminalCase;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
+import static org.junit.Assert.*;
 
 public class DAOCriminalCaseTests {
     private static IDAOCriminalCase daoCriminalCase;
