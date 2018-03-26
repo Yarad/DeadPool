@@ -33,7 +33,7 @@ public class DAOEvidence extends DAO implements IDAOEvidence {
         ProjectFunctions.tryFillObjectByDbArray(retEvidenceRecord, retArray.get(0));
         return retEvidenceRecord;
     }
-
+/*
     //потестить
     @Override
     public List<Evidence> getAllEvidencesByCrime(long crimeId) {
@@ -55,7 +55,7 @@ public class DAOEvidence extends DAO implements IDAOEvidence {
         }
         return evidences;
     }
-
+*/
     @Override
     public boolean addEvidence(Evidence evidence) {
         return false;

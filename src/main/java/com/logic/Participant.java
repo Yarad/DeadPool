@@ -9,7 +9,7 @@ public class Participant extends Man {
     private String witnessReport;
     private LocalDateTime dateAdded = LocalDateTime.now();
     private Crime parentCrime;
-    public ParticipantStatus participantStatus = ParticipantStatus.SUSPECTED;
+    private ParticipantStatus participantStatus = ParticipantStatus.SUSPECTED;
 
     public ParticipantStatus getParticipantStatus() {
         return participantStatus;
@@ -67,13 +67,5 @@ public class Participant extends Man {
     @Override
     public void setManId(long manId) {
         this.manId = Math.abs(manId);
-    }
-
-    public LocalDateTime getDateAdded() {
-        return dateAdded;
-    }
-
-    public void setDateAdded(LocalDateTime dateAdded) {
-        this.dateAdded = dateAdded;
     }
 }

@@ -7,8 +7,16 @@ public class EvidenceOfCrime {
     public Evidence parentEvidence = null;
     private String photoPath;
     private String details;
-    public EvidenceType evidenceType = EvidenceType.CRIME_INSTRUMENT;
+    private EvidenceType evidenceType = EvidenceType.OBJECT_FROM_CRIME_SCENE;
     private LocalDateTime dateAdded;
+
+    public EvidenceType getEvidenceType() {
+        return evidenceType;
+    }
+
+    public void setEvidenceType(String evidenceType) {
+        this.evidenceType = EvidenceType.valueOf(evidenceType);
+    }
 
     public String getPhotoPath() {
         return photoPath;

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 4.7.0
 -- https://www.phpmyadmin.net/
 --
--- Хост: 127.0.0.1
--- Время создания: Фев 26 2018 г., 14:44
--- Версия сервера: 5.5.23
--- Версия PHP: 7.1.12
+-- Хост: localhost
+-- Время создания: Мар 26 2018 г., 21:46
+-- Версия сервера: 5.7.17-log
+-- Версия PHP: 7.1.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -68,7 +68,9 @@ CREATE TABLE `criminal_case` (
 INSERT INTO `criminal_case` (`criminal_case_id`, `detective_id`, `criminal_case_number`, `create_date`, `close_date`, `closed`) VALUES
 (2, 1, 'hndth', '2012-02-02', NULL, 0),
 (3, 1, 'new criminal case number', '2018-02-26', '2018-02-08', 1),
-(5, 1, 'NoCriminalCaseNumber', '2018-02-12', NULL, 0);
+(5, 1, 'NoCriminalCaseNumber', '2018-02-12', NULL, 0),
+(6, 1, 'Абракадабра', '2015-02-24', NULL, 1),
+(7, 1, 'Это успех, my dear!', '2015-03-24', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -88,7 +90,9 @@ CREATE TABLE `detective` (
 --
 
 INSERT INTO `detective` (`detective_id`, `login`, `hash_of_password`, `email`) VALUES
-(1, 'newlogin', 'newhash', 'bartimeyse@yandex.by');
+(1, 'bartimeyse', '098f6bcd4621d373cade4e832627b4f6', 'bartimeyse@yandex.by'),
+(9, 'password_test', '098f6bcd4621d373cade4e832627b4f6', 'some@gmail.com'),
+(49, 'weg', '793805d61d24ed4ade56d8ba1a808dbf', 'some@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -102,6 +106,13 @@ CREATE TABLE `evidence` (
   `description` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Дамп данных таблицы `evidence`
+--
+
+INSERT INTO `evidence` (`evidence_id`, `name`, `description`) VALUES
+(1, 'Оренбургский пуховый платок', 'Произведено в СССР, 1979 г., Оренбургская фабрика');
+
 -- --------------------------------------------------------
 
 --
@@ -111,22 +122,18 @@ CREATE TABLE `evidence` (
 CREATE TABLE `evidence_of_crime` (
   `evidence_id` int(10) UNSIGNED NOT NULL,
   `crime_id` int(10) UNSIGNED NOT NULL,
-  `evidence_type_id` int(10) UNSIGNED NOT NULL,
-  `date_added` DATETIME NOT NULL,
+  `evidence_type` varchar(50) NOT NULL,
+  `date_added` datetime NOT NULL,
   `details` text,
   `photo_path` varchar(250) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
 --
--- Структура таблицы `evidence_type`
+-- Дамп данных таблицы `evidence_of_crime`
 --
 
-CREATE TABLE `evidence_type` (
-  `evidence_type_id` int(10) UNSIGNED NOT NULL,
-  `name` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO `evidence_of_crime` (`evidence_id`, `crime_id`, `evidence_type`, `date_added`, `details`, `photo_path`) VALUES
+(1, 3, 'CRIME_INSTRUMENT', '2018-03-18 10:33:15', 'Этим платком была, предположительно, задушена потерпевшая. Найден рядом с трупом. Отпечатков пальцев нет.', 'а_я_не_знаю_путь_к_картинке_этой.png');
 
 -- --------------------------------------------------------
 
@@ -148,8 +155,16 @@ CREATE TABLE `man` (
 --
 
 INSERT INTO `man` (`man_id`, `name`, `surname`, `birthday`, `home_address`, `photo_path`) VALUES
-(1, 'Holms', 'sssnewnew', '1998-09-08', 'NoHomeAddress', NULL),
-(2, 'aaas', 'ss', NULL, NULL, NULL);
+(1, 'NoName', 'NoSurname', '1998-09-08', 'NoHomeAddress', NULL),
+(2, 'aaas', 'ss', NULL, NULL, NULL),
+(3, 'Sherlock', 'Holms', '2012-02-15', 'some_address in Minsk for Andrew', NULL),
+(4, 'NoName', 'NoSurname', '1998-09-08', 'NoHomeAddress', NULL),
+(5, 'NoName', 'NoSurname', '1998-09-08', 'NoHomeAddress', NULL),
+(6, 'NoName', 'NoSurname', '1998-09-08', 'NoHomeAddress', NULL),
+(7, 'NoName', 'NoSurname', '1998-09-08', 'NoHomeAddress', NULL),
+(8, 'Sherlock', 'Holms', '2012-02-15', 'some_address in Minsk for Andrew', NULL),
+(9, 'Testes', 'Person', NULL, NULL, NULL),
+(49, 'weg', 'wegew', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -161,7 +176,7 @@ CREATE TABLE `participant` (
   `man_id` int(10) UNSIGNED NOT NULL,
   `crime_id` int(10) UNSIGNED NOT NULL,
   `participant_status` varchar(50) NOT NULL,
-  `date_added` DATETIME NOT NULL,
+  `date_added` datetime NOT NULL,
   `alibi` text,
   `witness_report` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -173,7 +188,7 @@ CREATE TABLE `participant` (
 INSERT INTO `participant` (`man_id`, `crime_id`, `participant_status`, `date_added`, `alibi`, `witness_report`) VALUES
 (1, 2, 'SUSPECTED', '2018-02-25 12:24:45', NULL, 'witness reportnewnewnew'),
 (1, 3, 'SUSPECTED', '2018-02-26 13:24:45', NULL, 'witness reportnewnewnew'),
-(2, 2, 'dgdfi', '2018-02-27 14:24:45', NULL, NULL),
+(2, 2, 'WITNESS', '2018-02-27 14:24:45', NULL, NULL),
 (2, 3, 'SUSPECTED', '2018-02-28 15:24:45', NULL, 'SomeReportInfo');
 
 --
@@ -213,14 +228,8 @@ ALTER TABLE `evidence`
 ALTER TABLE `evidence_of_crime`
   ADD PRIMARY KEY (`evidence_id`,`crime_id`),
   ADD KEY `IXFK_evidence_of_crime_crime` (`crime_id`),
-  ADD KEY `IXFK_evidence_evidence_type` (`evidence_type_id`),
+  ADD KEY `IXFK_evidence_evidence_type` (`evidence_type`),
   ADD KEY `IXFK_evidence_of_crime_evidence` (`evidence_id`);
-
---
--- Индексы таблицы `evidence_type`
---
-ALTER TABLE `evidence_type`
-  ADD PRIMARY KEY (`evidence_type_id`);
 
 --
 -- Индексы таблицы `man`
@@ -245,31 +254,21 @@ ALTER TABLE `participant`
 --
 ALTER TABLE `crime`
   MODIFY `crime_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
 --
 -- AUTO_INCREMENT для таблицы `criminal_case`
 --
 ALTER TABLE `criminal_case`
-  MODIFY `criminal_case_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
+  MODIFY `criminal_case_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT для таблицы `evidence`
 --
 ALTER TABLE `evidence`
-  MODIFY `evidence_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT для таблицы `evidence_type`
---
-ALTER TABLE `evidence_type`
-  MODIFY `evidence_type_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
+  MODIFY `evidence_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT для таблицы `man`
 --
 ALTER TABLE `man`
-  MODIFY `man_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
+  MODIFY `man_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 --
 -- Ограничения внешнего ключа сохраненных таблиц
 --
@@ -278,27 +277,26 @@ ALTER TABLE `man`
 -- Ограничения внешнего ключа таблицы `crime`
 --
 ALTER TABLE `crime`
-  ADD CONSTRAINT `FK_crime_criminal_case` FOREIGN KEY (`criminal_case_id`) REFERENCES `criminal_case` (`criminal_case_id`) ON DELETE Restrict ON UPDATE CASCADE;
+  ADD CONSTRAINT `FK_crime_criminal_case` FOREIGN KEY (`criminal_case_id`) REFERENCES `criminal_case` (`criminal_case_id`) ON UPDATE CASCADE;
 
 --
 -- Ограничения внешнего ключа таблицы `criminal_case`
 --
 ALTER TABLE `criminal_case`
-  ADD CONSTRAINT `FK_criminal_case_detective` FOREIGN KEY (`detective_id`) REFERENCES `detective` (`detective_id`) ON DELETE Restrict ON UPDATE CASCADE;
+  ADD CONSTRAINT `FK_criminal_case_detective` FOREIGN KEY (`detective_id`) REFERENCES `detective` (`detective_id`) ON UPDATE CASCADE;
 
 --
 -- Ограничения внешнего ключа таблицы `detective`
 --
 ALTER TABLE `detective`
-  ADD CONSTRAINT `FK_detective_man` FOREIGN KEY (`detective_id`) REFERENCES `man` (`man_id`) ON DELETE Restrict ON UPDATE CASCADE;
-  
+  ADD CONSTRAINT `FK_detective_man` FOREIGN KEY (`detective_id`) REFERENCES `man` (`man_id`) ON UPDATE CASCADE;
+
 --
 -- Ограничения внешнего ключа таблицы `evidence_of_crime`
 --
 ALTER TABLE `evidence_of_crime`
   ADD CONSTRAINT `FK_evidence_of_crime_crime` FOREIGN KEY (`crime_id`) REFERENCES `crime` (`crime_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_evidence_of_crime_evidence` FOREIGN KEY (`evidence_id`) REFERENCES `evidence` (`evidence_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_evidence_of_crime_evidence_type` FOREIGN KEY (`evidence_type_id`) REFERENCES `evidence_type` (`evidence_type_id`) ON DELETE Restrict ON UPDATE CASCADE;
+  ADD CONSTRAINT `FK_evidence_of_crime_evidence` FOREIGN KEY (`evidence_id`) REFERENCES `evidence` (`evidence_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Ограничения внешнего ключа таблицы `participant`

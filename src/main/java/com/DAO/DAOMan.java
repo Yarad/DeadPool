@@ -4,6 +4,7 @@ import com.DAO.interfaces.IDAOMan;
 import com.logic.Detective;
 import com.logic.Man;
 import com.logic.ProjectFunctions;
+import com.mysql.jdbc.MysqlDataTruncation;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
@@ -21,23 +22,21 @@ public class DAOMan extends DAO implements IDAOMan {
     }
 
     public boolean addMan(Man manToAdd) {
-        if (manToAdd == null)
-            return false;
+        if (manToAdd == null) return false;
 
         PreparedStatement preparedQuery = currConnection.prepareStatement("INSERT INTO `man`( `name`, `home_address`, `birthday`, `surname`, `photo_path`) VALUES (?,?,?,?,?)");
 
         try {
             preparedQuery.setString(1, manToAdd.getName());
             preparedQuery.setString(2, manToAdd.getHomeAddress());
-            preparedQuery.setDate(3, Date.valueOf(manToAdd.getBirthDay()));
-            preparedQuery.setString(4, manToAdd.getSurname());
-
-            if (manToAdd.getPhotoPath() != null)
-                preparedQuery.setString(5, manToAdd.getPhotoPath());
+            if (manToAdd.getBirthDay() != null)
+                preparedQuery.setDate(3, Date.valueOf(manToAdd.getBirthDay()));
             else
-                preparedQuery.setNull(5, 0);
+                preparedQuery.setNull(3, 0);
+            preparedQuery.setString(4, manToAdd.getSurname());
+            preparedQuery.setString(5, manToAdd.getPhotoPath());
 
-        } catch (SQLException e) {
+        } catch (SQLException  e) {
             DAOLog.log(e.toString());
             return false;
         }
@@ -55,32 +54,22 @@ public class DAOMan extends DAO implements IDAOMan {
                 "`name`=?," +
                 "`surname`=?," +
                 "`birthday`=?," + //nullable
-                "`home_address`=? " + //nullable
+                "`home_address`=?, " + //nullable
                 "`photo_path`=? " + //nullable
-                "WHERE man_id = ?");
+                "WHERE `man_id` = ?");
         try {
-
             preparedStatement2.setString(1, manToUpdate.getName());
             preparedStatement2.setString(2, manToUpdate.getSurname());
-
             if (manToUpdate.getBirthDay() != null)
                 preparedStatement2.setDate(3, Date.valueOf(manToUpdate.getBirthDay()));
             else
                 preparedStatement2.setNull(3, 0);
-
-            if (manToUpdate.getHomeAddress() != null)
-                preparedStatement2.setString(4, manToUpdate.getHomeAddress());
-            else
-                preparedStatement2.setNull(4, 0);
-
-            if (manToUpdate.getPhotoPath() != null)
-                preparedStatement2.setString(5, manToUpdate.getPhotoPath());
-            else
-                preparedStatement2.setNull(5, 0);
-
+            preparedStatement2.setString(4, manToUpdate.getHomeAddress());
+            preparedStatement2.setString(5, manToUpdate.getPhotoPath());
             preparedStatement2.setLong(6, manToUpdate.getManId());
-        } catch (Exception e) {
+        } catch (SQLException  e) {
             DAOLog.log(e.toString());
+            return false;
         }
 
         return currConnection.queryDataEdit(preparedStatement2);
@@ -100,7 +89,7 @@ public class DAOMan extends DAO implements IDAOMan {
         PreparedStatement preparedQuery = currConnection.prepareStatement("SELECT * FROM `Man` WHERE `man_id` = ?");
         try {
             preparedQuery.setLong(1, id);
-        } catch (SQLException e) {
+        } catch (SQLException  e) {
             DAOLog.log(e.toString());
             return false;
         }
@@ -111,12 +100,6 @@ public class DAOMan extends DAO implements IDAOMan {
 
         ProjectFunctions.tryFillObjectByDbArray(objectToFill, retArray.get(0));
         return true;
-    }
-
-    @Override
-    public Man getFullManInfo(long manId) {
-        // TODO Реализовать
-        return null;
     }
 
     //TODO: реализовать!!!
