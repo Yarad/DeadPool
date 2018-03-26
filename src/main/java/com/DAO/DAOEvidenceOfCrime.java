@@ -52,6 +52,7 @@ public class DAOEvidenceOfCrime extends DAO implements IDAOEvidenceOfCrime {
         return evidenceOfCrime;
     }
 
+    //TODO: надо заполнять parentEvidence & EvidenceType
     @Override
     public List<EvidenceOfCrime> getAllEvidencesOfCrime() {
         List<EvidenceOfCrime> retArr = new ArrayList<>();

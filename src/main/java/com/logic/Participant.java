@@ -9,7 +9,7 @@ public class Participant extends Man {
     private String witnessReport;
     private LocalDateTime dateAdded = LocalDateTime.now();
     private Crime parentCrime;
-    public ParticipantStatus participantStatus = ParticipantStatus.SUSPECTED;
+    private ParticipantStatus participantStatus = ParticipantStatus.SUSPECTED;
 
     public ParticipantStatus getParticipantStatus() {
         return participantStatus;

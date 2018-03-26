@@ -7,7 +7,7 @@ import java.time.LocalTime;
 public class Crime {
     private long crimeId = -1;
     private long criminalCaseId = -1;
-    public CrimeType crimeType = CrimeType.MURDER;
+    private CrimeType crimeType = CrimeType.MURDER;
     private String crimePlace = "noAddress";
     private String description = "noDescription";
     private LocalDate crimeDate = LocalDate.now();
