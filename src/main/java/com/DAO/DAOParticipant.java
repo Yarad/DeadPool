@@ -55,7 +55,7 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
                 "`date_added`=? " +
                 "WHERE man_id = ?");
         try {
-            preparedStatement.setString(1, participantToUpdate.participantStatus.toString());
+            preparedStatement.setString(1, participantToUpdate.getParticipantStatus().toString());
 
             if (participantToUpdate.getAlibi() != null)
                 preparedStatement.setString(2, participantToUpdate.getAlibi());
@@ -118,7 +118,7 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
                 preparedStatement.setString(4, participantToAdd.getWitnessReport());
             else
                 preparedStatement.setNull(4, 0);
-            preparedStatement.setString(5, participantToAdd.participantStatus.toString());
+            preparedStatement.setString(5, participantToAdd.getParticipantStatus().toString());
 
             preparedStatement.setDate(6, ProjectFunctions.localDateTimeToSqlDate(participantToAdd.getDateAdded()));
         } catch (SQLException e) {

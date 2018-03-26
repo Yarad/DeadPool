@@ -32,7 +32,7 @@ public class AuthFilter extends AbstractAuthenticationProcessingFilter {
             return;
         }
 
-        //On success keep going on the chain
+        //В случае наличия заголовка
         this.setAuthenticationSuccessHandler((requestNext, responseNext, authentication) -> {
             chain.doFilter(requestNext, responseNext);
         });

@@ -35,7 +35,7 @@ public class DAOCrime extends DAO implements IDAOCrime {
             else
                 preparedStatement.setNull(4, 0);
             preparedStatement.setString(5, crimeToAdd.getCrimePlace());
-            preparedStatement.setString(6, crimeToAdd.crimeType.toString());
+            preparedStatement.setString(6, crimeToAdd.getCrimeType().toString());
         } catch (SQLException e) {
             DAOLog.log(e.toString());
             return false;
@@ -78,7 +78,7 @@ public class DAOCrime extends DAO implements IDAOCrime {
             preparedStatement.setDate(2, Date.valueOf(crimeToUpdate.getCrimeDate()));
             preparedStatement.setTime(3, Time.valueOf(crimeToUpdate.getCrimeTime()));
             preparedStatement.setString(4, crimeToUpdate.getCrimePlace());
-            preparedStatement.setString(5, crimeToUpdate.crimeType.toString());
+            preparedStatement.setString(5, crimeToUpdate.getCrimeType().toString());
             preparedStatement.setLong(6, crimeToUpdate.getCrimeId());
         } catch (Exception e) {
             DAOLog.log(e.toString());

@@ -13,5 +13,5 @@ public interface IDetectiveService {
                             String login, String password, String email);
     Detective getDetectiveByLogin(String login);
     boolean existDetectiveWithLogin(String login);
-    List<Man> getAllDeteсtives();
+    List<Man> getAllDetectives();
 }

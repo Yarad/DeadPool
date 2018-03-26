@@ -63,7 +63,7 @@ public class DetectiveService implements IDetectiveService {
     }
 
     @Override
-    public List<Man> getAllDeteсtives() {
+    public List<Man> getAllDetectives() {
         return daoDetective.getAllDetectives();
     }
 }

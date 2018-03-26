@@ -29,7 +29,7 @@ public class AuthProvider implements AuthenticationProvider {
 
         final String username = tokenStore.get(token);
         if (!detectiveService.existDetectiveWithLogin(username)) {
-            //на всякий случай
+            //на всякий случай. Никогда не должн произойти
             throw new BadCredentialsException("No user found for token - " + token);
         }
 
