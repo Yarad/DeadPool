@@ -59,10 +59,16 @@ public class DAOManTests {
 
     @Test
     public void limitAndExceptionWork()  {
+        // given
         Man man = new Man();
         man.setName("10letters_20letters_30letters_40letters_L");
         man.setSurname("someSurname");
-        assertEquals(false, daoMan.addMan(man));
+
+        // execution
+        boolean actualResult = daoMan.addMan(man);
+
+        // verify
+        assertEquals(false, actualResult);
 
         man.setName("no_limitation");
         man.setSurname("10letters_20letters_30letters_40letters_L");

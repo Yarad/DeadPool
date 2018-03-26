@@ -45,8 +45,8 @@ public class AuthorizationController {
     @CrossOrigin
     @RequestMapping(path = "/sign_up", method = RequestMethod.POST)
     public GenericDTO<String> signUp(@RequestBody DetectiveWithoutManIdDTO authData) {
-        Boolean exist = detectiveService.existDetectiveWithLogin(authData.getLogin());
-        if (exist) {
+        Detective detective = detectiveService.getDetectiveByLogin(authData.getLogin());
+        if (detective != null) {
             return new GenericDTO<>(true, "Пользователь с таким именем уже существует!");
         } else {
             boolean addResult = detectiveService.addDetective(
