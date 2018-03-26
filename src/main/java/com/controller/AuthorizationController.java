@@ -72,12 +72,19 @@ public class AuthorizationController {
     public GenericDTO<StringOnlyDTO> md5(@RequestBody StringOnlyDTO password) {
         return new GenericDTO<>(false, new StringOnlyDTO(hashService.getMD5Hash(password.getResult())));
     }
-*/
+*//*
     @IsDetective
     @CrossOrigin
     @RequestMapping(path = "/sign_out", method = RequestMethod.POST)
     public void signOut(@RequestBody StringOnlyDTO token) {
         //TODO: переделать. Брать из заголовков, метод д.б. без параметров, т.е. можжно сделать get
         tokenService.remove(token.getResult());
+    }
+*/
+    @IsDetective
+    @CrossOrigin
+    @RequestMapping(path = "/sign_out", method = RequestMethod.DELETE)
+    public void signOut(@RequestHeader(value = "deadpool-token") String token) {
+        tokenService.remove(token);
     }
 }
