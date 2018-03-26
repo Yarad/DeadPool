@@ -14,6 +14,7 @@ public interface IDAOMan {
     */
    Man getFullManInfo(long manId);
 
+
    /*
    * Получить всех людей Man в БД, указать для каждого кол-во записей в табл. Participant
     */

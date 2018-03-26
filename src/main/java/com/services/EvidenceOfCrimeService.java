@@ -40,7 +40,7 @@ public class EvidenceOfCrimeService implements IEvidenceOfCrimeService {
         EvidenceOfCrime evidenceOfCrime = new EvidenceOfCrime();
         evidenceOfCrime.parentEvidence.setEvidenceId(evidenceId);
         evidenceOfCrime.parentCrime.setCrimeId(crimeId);
-        evidenceOfCrime.evidenceType = EvidenceType.valueOf(type);
+        evidenceOfCrime.setEvidenceType(type);
         evidenceOfCrime.setDateAdded(dateAdded);
         evidenceOfCrime.setDetails(details);
         evidenceOfCrime.setPhotoPath(photoPath);
@@ -52,7 +52,7 @@ public class EvidenceOfCrimeService implements IEvidenceOfCrimeService {
         EvidenceOfCrime evidenceOfCrime = new EvidenceOfCrime();
         evidenceOfCrime.parentEvidence.setEvidenceId(evidenceId);
         evidenceOfCrime.parentCrime.setCrimeId(crimeId);
-        evidenceOfCrime.evidenceType = EvidenceType.valueOf(type);
+        evidenceOfCrime.setEvidenceType(type);
         evidenceOfCrime.setDateAdded(dateAdded);
         evidenceOfCrime.setDetails(details);
         evidenceOfCrime.setPhotoPath(photoPath);

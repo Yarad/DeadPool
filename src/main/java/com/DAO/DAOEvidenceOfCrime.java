@@ -27,7 +27,6 @@ public class DAOEvidenceOfCrime extends DAO implements IDAOEvidenceOfCrime {
         parentDaoCrime.setConnectionToUse(currConnection);
     }
 
-
     //TODO: потестить
     @Override
     public EvidenceOfCrime getEvidenceOfCrime(long crimeId, long evidenceId) {
@@ -37,7 +36,6 @@ public class DAOEvidenceOfCrime extends DAO implements IDAOEvidenceOfCrime {
         evidenceOfCrime.parentEvidence = parentDaoEvidence.getEvidenceById(evidenceId);
 
         PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM evidence_of_crime WHERE crime_id = ? AND evidence_id  = ? ");
-        //PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM `participant` WHERE `crime_id` = ? AND `man_id` = ?");
 
         try {
             preparedStatement.setLong(1, crimeId);
@@ -54,23 +52,71 @@ public class DAOEvidenceOfCrime extends DAO implements IDAOEvidenceOfCrime {
         return evidenceOfCrime;
     }
 
-	@Override
-	public List<EvidenceOfCrime> getAllEvidencesOfCrime() {
-		// TODO Реализовать
-		return new ArrayList<>();
-	}
+    //TODO: надо заполнять parentEvidence & EvidenceType
+    @Override
+    public List<EvidenceOfCrime> getAllEvidencesOfCrime() {
+        List<EvidenceOfCrime> retArr = new ArrayList<>();
+        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM evidence_of_crime");
 
-	@Override
-	public List<EvidenceOfCrime> getAllEvidencesOfCrimeByCrimeId(long crimeId) {
-		// TODO Реализовать
-		return new ArrayList<>();
-	}
+        List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
 
-	@Override
-	public List<EvidenceOfCrime> getAllEvidencesOfCrimeByEvidenceId(long evidenceId) {
-		// TODO Реализовать
-		return new ArrayList<>();
-	}
+        if (retArray.isEmpty()) return retArr;
+
+        for (int i = 0; i < retArray.size(); i++) {
+            EvidenceOfCrime tempObj = new EvidenceOfCrime();
+            ProjectFunctions.tryFillObjectByDbArray(tempObj, retArray.get(i));
+            retArr.add(tempObj);
+        }
+        return retArr;
+    }
+
+
+    public List<EvidenceOfCrime> getAllEvidencesOfCrimeByCrimeId(long crimeId) {
+        List<EvidenceOfCrime> retArr = new ArrayList<>();
+        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM evidence_of_crime WHERE crime_id = ?");
+
+        try {
+            preparedStatement.setLong(1, crimeId);
+        } catch (SQLException e) {
+            DAOLog.log(e.toString());
+            return retArr;
+        }
+        List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
+
+        if (retArray.isEmpty()) return retArr;
+
+
+        for (int i = 0; i < retArray.size(); i++) {
+            EvidenceOfCrime tempObj = new EvidenceOfCrime();
+            ProjectFunctions.tryFillObjectByDbArray(tempObj, retArray.get(i));
+            retArr.add(tempObj);
+        }
+        return retArr;
+    }
+
+    @Override
+    public List<EvidenceOfCrime> getAllEvidencesOfCrimeByEvidenceId(long evidenceId) {
+        List<EvidenceOfCrime> retArr = new ArrayList<>();
+        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM evidence_of_crime WHERE evidence_id = ?");
+
+        try {
+            preparedStatement.setLong(1, evidenceId);
+        } catch (SQLException e) {
+            DAOLog.log(e.toString());
+            return retArr;
+        }
+        List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
+
+        if (retArray.isEmpty()) return retArr;
+
+
+        for (int i = 0; i < retArray.size(); i++) {
+            EvidenceOfCrime tempObj = new EvidenceOfCrime();
+            ProjectFunctions.tryFillObjectByDbArray(tempObj, retArray.get(i));
+            retArr.add(tempObj);
+        }
+        return retArr;
+    }
 
     @Override
     public boolean addEvidenceOfCrime(EvidenceOfCrime evidenceOfCrime) {
@@ -82,3 +128,4 @@ public class DAOEvidenceOfCrime extends DAO implements IDAOEvidenceOfCrime {
         return false;
     }
 }
+

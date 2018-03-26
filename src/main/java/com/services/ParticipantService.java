@@ -36,7 +36,7 @@ public class ParticipantService implements IParticipantService {
         Participant participant = new Participant();
         participant.setManId(manId);
         participant.setCrimeId(crimeId);
-        participant.participantStatus = ParticipantStatus.valueOf(status);
+        participant.setParticipantStatus(status);
         participant.setDateAdded(dateAdded);
         participant.setAlibi(alibi);
         participant.setWitnessReport(witnessReport);
@@ -48,7 +48,7 @@ public class ParticipantService implements IParticipantService {
         Participant participant = new Participant();
         participant.setManId(manId);
         participant.setCrimeId(crimeId);
-        participant.participantStatus = ParticipantStatus.valueOf(status);
+        participant.setParticipantStatus(status);
         participant.setDateAdded(dateAdded);
         participant.setAlibi(alibi);
         participant.setWitnessReport(witnessReport);

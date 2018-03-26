@@ -1,14 +1,32 @@
 package com.logic;
 
-import com.DAO.DAOCrime;
-import com.DAO.DAOParticipant;
-import com.DAO.SQLConnection;
+import com.DAO.*;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 public class tempMainCode {
     public static void main(String[] args) {
+
+        DAOEvidenceOfCrime daoEvidenceOfCrime = new DAOEvidenceOfCrime();
+        List<EvidenceOfCrime> evidenceOfCrimes = daoEvidenceOfCrime.getAllEvidencesOfCrime();
+        int a = 0;
+        /*
+        DAOEvidenceOfCrime daoEvidenceOfCrime = new DAOEvidenceOfCrime();
+
+        List<EvidenceOfCrime> t = daoEvidenceOfCrime.getAllEvidencesOfCrime();
+        List<EvidenceOfCrime> t2 = daoEvidenceOfCrime.getAllEvidencesOfCrimeByCrimeId(3);
+        List<EvidenceOfCrime> t3 = daoEvidenceOfCrime.getAllEvidencesOfCrimeByEvidenceId(1);
+
+
+/*
+        DAOMan daoMan = new DAOMan();
+        Man man = daoMan.getFullManInfo(1);
+        man.setManId(1);
+
+        /*
+
         DAOParticipant daoParticipant = new DAOParticipant();
         daoParticipant.setConnectionToUse(new SQLConnection());
 
@@ -31,6 +49,7 @@ public class tempMainCode {
         boolean res = daoDetective.updateDetective(detective);
 
         /*
+        DAOParticipant daoParticipant = new DAOParticipant();
         Participant participant = daoParticipant.getParticipantById(1, 3);
 
         participant.setWitnessReport(participant.getWitnessReport() + "new");

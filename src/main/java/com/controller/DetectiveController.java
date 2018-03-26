@@ -56,7 +56,7 @@ public class DetectiveController {
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
     public GenericDTO<ListMenShortedDTO> getAllDetectives() {
-        List<Man> inputDetectives = detectiveService.getAllDetetives();
+        List<Man> inputDetectives = detectiveService.getAllDetectives();
         List<ManShortedDTO> results = inputDetectives.stream()
                 .map(man -> ManParser.parseManShorted(man))
                 .collect(Collectors.toList());

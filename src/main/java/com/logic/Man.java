@@ -5,13 +5,13 @@ import java.time.format.DateTimeParseException;
 
 import static com.mysql.jdbc.StringUtils.isNullOrEmpty;
 
-public abstract class Man {
+public class Man {
     protected long manId = -1;
     protected String name = "NoName";
     protected String surname = "NoSurname";
-    protected LocalDate birthDay = LocalDate.parse("08.09.1998", ProjectConstants.myDateTimeFormatter);
-    protected String homeAddress = "NoHomeAddress";
-    protected String photoPath = "NoPhotoPath";
+    protected LocalDate birthDay/* = LocalDate.of(2012, 12, 31)*/;
+    protected String homeAddress;
+    protected String photoPath;
 
     public long getManId() {
         return manId;
@@ -27,7 +27,7 @@ public abstract class Man {
 
     public void setName(String name) {
         if (isNullOrEmpty(name))  // почему это плохо?
-            this.name = "NoName";
+            this.name = null;
         else
             this.name = name;
     }
@@ -37,8 +37,8 @@ public abstract class Man {
     }
 
     public void setSurname(String surname) {
-        if (surname.equals(""))
-            this.surname = "NoSurname";
+        if (isNullOrEmpty(surname))
+            this.surname = null;
         else
             this.surname = surname;
     }
@@ -51,21 +51,12 @@ public abstract class Man {
         this.birthDay = birthDay;
     }
 
-    public void setBirthDay(String birthDay) {
-        try {
-            this.birthDay = LocalDate.parse(birthDay, ProjectConstants.myDateTimeFormatter);
-        } catch (DateTimeParseException e) {
-            LogicLog.log(e.toString());
-        }
-    }
-
     public String getHomeAddress() {
         return homeAddress;
     }
 
     public void setHomeAddress(String homeAddress) {
-        if (!homeAddress.isEmpty())
-            this.homeAddress = homeAddress;
+        this.homeAddress = homeAddress;
     }
 
     public String getPhotoPath() {
