@@ -10,7 +10,7 @@ public class Detective extends Man {
     private String login = "";
     private String hashOfPassword = "";
     private String email = "";
-    public List<UserRole> roles = Arrays.asList(UserRole.DETECTIVE);
+    public List<UserRole> roles;// = Arrays.asList(UserRole.DETECTIVE);
 
     public String getLogin() {
         return login;
@@ -32,8 +32,8 @@ public class Detective extends Man {
     public void setHashOfPassword(String hashOfPassword) {
         this.hashOfPassword = hashOfPassword;
     }
-  
-  public String getEmail() {
+
+    public String getEmail() {
         return email;
     }
 

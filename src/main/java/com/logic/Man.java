@@ -9,7 +9,7 @@ public class Man {
     protected long manId = -1;
     protected String name = "NoName";
     protected String surname = "NoSurname";
-    protected LocalDate birthDay = LocalDate.parse("08.09.1998", ProjectConstants.myDateFormatter);
+    protected LocalDate birthDay = LocalDate.parse("1998-09-08", ProjectConstants.myDateFormatter);
     protected String homeAddress = "NoHomeAddress";
     protected String photoPath = "NoPhotoPath";
 
@@ -37,7 +37,7 @@ public class Man {
     }
 
     public void setSurname(String surname) {
-        if (surname.equals(""))
+        if (isNullOrEmpty(surname))
             this.surname = "NoSurname";
         else
             this.surname = surname;
