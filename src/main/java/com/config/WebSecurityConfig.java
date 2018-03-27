@@ -1,5 +1,6 @@
-package com.security;
+package com.config;
 
+import com.security.AuthFilter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

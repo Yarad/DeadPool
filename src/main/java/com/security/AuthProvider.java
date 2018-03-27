@@ -1,8 +1,9 @@
 package com.security;
 
+import com.DTO.TokenVerifyResult;
 import com.logic.Detective;
+import com.services.interfaces.IAuthorizationService;
 import com.services.interfaces.IDetectiveService;
-import com.services.interfaces.ITokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -11,29 +12,28 @@ import org.springframework.security.core.AuthenticationException;
 
 //Проверка токена
 public class AuthProvider implements AuthenticationProvider {
+    @Autowired
+    private IAuthorizationService authorizationService;
 
     @Autowired
-    ITokenService tokenStore;
-
-    @Autowired
-    IDetectiveService detectiveService;
+    private IDetectiveService detectiveService;
 
     @Override
     public Authentication authenticate(Authentication auth) throws AuthenticationException {
         final AuthenticationToken tokenContainer = (AuthenticationToken) auth;
         final String token = tokenContainer.getToken();
 
-        if (!tokenStore.contains(token)) {
+        TokenVerifyResult verifyResult = authorizationService.checkToken(token);
+        if (!verifyResult.getIsCorrect()) {
             throw new BadCredentialsException("Invalid token - " + token);
         }
 
-        final String username = tokenStore.get(token);
-        if (!detectiveService.existDetectiveWithLogin(username)) {
+        if (!detectiveService.existDetectiveWithLogin(verifyResult.getUserName())) {
             //на всякий случай. Никогда не должн произойти
             throw new BadCredentialsException("No user found for token - " + token);
         }
 
-        final Detective user = detectiveService.getDetectiveByLogin(username);
+        final Detective user = detectiveService.getDetectiveByLogin(verifyResult.getUserName());
 
         return new AuthenticationToken(token, user);
     }
