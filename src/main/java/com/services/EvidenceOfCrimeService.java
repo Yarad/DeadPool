@@ -6,6 +6,7 @@ import com.logic.EvidenceType;
 import com.services.interfaces.IEvidenceOfCrimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,26 +16,31 @@ public class EvidenceOfCrimeService implements IEvidenceOfCrimeService {
     @Autowired
     private IDAOEvidenceOfCrime daoEvidenceOfCrime;
 
+    @Transactional
     @Override
     public List<EvidenceOfCrime> getEvidencesOfCrimeByCrimeId(long id) {
         return daoEvidenceOfCrime.getAllEvidencesOfCrimeByCrimeId(id);
     }
 
+    @Transactional
     @Override
     public List<EvidenceOfCrime> getAllEvidencesOfCrime() {
         return daoEvidenceOfCrime.getAllEvidencesOfCrime();
     }
 
+    @Transactional
     @Override
     public EvidenceOfCrime getEvidenceOfCrimeByEvidenceAndCrime(long evidenceId, long crimeId) {
         return daoEvidenceOfCrime.getEvidenceOfCrime(crimeId, evidenceId);
     }
 
+    @Transactional
     @Override
     public List<EvidenceOfCrime> getEvidencesOfCrimeByEvidenceId(long id) {
         return daoEvidenceOfCrime.getAllEvidencesOfCrimeByEvidenceId(id);
     }
 
+    @Transactional
     @Override
     public boolean addEvidenceOfCrime(long evidenceId, long crimeId, String type, LocalDateTime dateAdded, String details, String photoPath) {
         EvidenceOfCrime evidenceOfCrime = new EvidenceOfCrime();
@@ -47,6 +53,7 @@ public class EvidenceOfCrimeService implements IEvidenceOfCrimeService {
         return daoEvidenceOfCrime.addEvidenceOfCrime(evidenceOfCrime);
     }
 
+    @Transactional
     @Override
     public boolean updateEvidenceOfCrime(long evidenceId, long crimeId, String type, LocalDateTime dateAdded, String details, String photoPath) {
         EvidenceOfCrime evidenceOfCrime = new EvidenceOfCrime();
