@@ -1,12 +1,18 @@
 package com.DTO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDate;
 
 public class CriminalCaseInputDTO {
     private IdOnlyDTO detective;
     private String number;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd" )
     private LocalDate createDate;
     private boolean closed;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd" )
     private LocalDate closeDate;
 
     public CriminalCaseInputDTO() { }
