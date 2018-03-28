@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class AuthorizationController {
+    private final int tokenHoursExpire = 24*7;
+
     @Autowired
     private IDetectiveService detectiveService;
 
@@ -33,7 +35,7 @@ public class AuthorizationController {
             return new GenericDTO<>(true,"Нет пользователя с таким именем!");
         } else {
             if (hashService.getMD5Hash(authData.getPassword()).equals(detective.getHashOfPassword())) {
-                final String token = authorizationService.getToken(detective, 24*7);
+                String token = authorizationService.getToken(detective, tokenHoursExpire);
                 return new GenericDTO<>(false, token);
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
