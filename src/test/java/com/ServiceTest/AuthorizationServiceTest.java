@@ -8,8 +8,10 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.logic.Detective;
 import com.services.AuthorizationService;
+import com.services.KeyProvider;
 import com.services.interfaces.IKeyProvider;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -29,6 +31,13 @@ public class AuthorizationServiceTest {
     @InjectMocks
     private AuthorizationService service;
 
+    private static IKeyProvider realKeyProvider;
+
+    @BeforeClass
+    public static void getDAO() {
+        realKeyProvider = new KeyProvider();
+    }
+
     @Before
     public void init(){
         MockitoAnnotations.initMocks(this);
@@ -36,12 +45,11 @@ public class AuthorizationServiceTest {
 
     @Test
     public void getToken() throws Exception {
-        String someKey = "ertfyuigltrtersy5iguoykdraSRdfyiu";
         long hoursExpire = 24*7;
         Detective user = new Detective();
         user.setLogin("some_login");
 
-        when(keyProvider.getHS256Key()).thenReturn(someKey);
+        when(keyProvider.getHS256Key()).thenReturn(realKeyProvider.getHS256Key());
 
         String actualResult = service.getToken(user, hoursExpire);
 
@@ -49,7 +57,7 @@ public class AuthorizationServiceTest {
 
         String userName = null;
         try {
-            Algorithm algorithm = Algorithm.HMAC256(someKey);
+            Algorithm algorithm = Algorithm.HMAC256(realKeyProvider.getHS256Key());
             JWTVerifier verifier = JWT.require(algorithm)
                     .withIssuer("auth0")
                     .build();
@@ -66,11 +74,10 @@ public class AuthorizationServiceTest {
 
     @Test
     public void checkTokenCorrect() throws Exception {
-        String someKey = "ertfyuigltrtersy5iguoykdraSRdfyiu";
         long hoursExpire = 24*7;
         Detective user = new Detective();
         user.setLogin("some_login");
-        when(keyProvider.getHS256Key()).thenReturn(someKey);
+        when(keyProvider.getHS256Key()).thenReturn(realKeyProvider.getHS256Key());
         String token = service.getToken(user, hoursExpire);
 
         TokenVerifyResult result = service.checkToken(token);
@@ -80,8 +87,7 @@ public class AuthorizationServiceTest {
 
     @Test
     public void checkTokenNotCorrect() throws Exception {
-        String someKey = "ertfyuigltrtersy5iguoykdraSRdfyiu";
-        when(keyProvider.getHS256Key()).thenReturn(someKey);
+        when(keyProvider.getHS256Key()).thenReturn(realKeyProvider.getHS256Key());
 
         TokenVerifyResult result = service.checkToken("fjycgvbu.oiykcfjchghbkjniuulgjh.kjnluvkcfhg");
         assertEquals(false, result.getIsCorrect());

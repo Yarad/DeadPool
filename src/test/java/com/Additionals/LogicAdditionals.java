@@ -120,6 +120,20 @@ public final class LogicAdditionals {
         return man;
     }
 
+    public static Detective getCustomDetective() {
+        Detective man = new Detective();
+        man.setManId(1);
+        man.setSurname("surname");
+        man.setName("name");
+        man.setPhotoPath("photo");
+        man.setHomeAddress("addr");
+        man.setBirthDay(null);
+        man.setLogin("login");
+        man.setHashOfPassword("hash");
+        man.setEmail("email");
+        return man;
+    }
+
     public static Map<Man,Long> getMapOfManAndTheirCrime() {
         Map<Man,Long> map = new HashMap<>();
         map.put(getCustomMan(), Long.valueOf(2));
