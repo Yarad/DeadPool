@@ -1,19 +1,30 @@
+import { Detective } from './detective'
+
 export class CriminalCase {
-    id: number;
+    id: -1;
     number: string;
-    type: string;
     createDate: string;
     closeDate: string;
-    detective = [];
+    detective: Detective;
+    closed: boolean;
+    type: string;
     crimes = [];
     
     constructor(object) {
-        this.id = object.id;
-        this.number = object.number;
-        this.type = object.type;
-        this.createDate = "2018-12-12"; //object.createDate;
-        this.closeDate = null;//object.closeDate;
-        this.detective = object.detective;
+        this.id = object.id || -1;
+        this.number = object.number || "";
+        this.type = object.type || "Открыто";
+        this.createDate = object.createDate || null;
+        this.closeDate = object.closeDate || null;
+        this.closed = object.closed || false;
+        this.detective = object.detective ? new Detective(object.detective) : new Detective({});
         this.crimes = object.crimes || [];
+    }
+
+    isValidate() {
+        if (this.id > -1 && this.number && this.type && this.createDate && this.detective.id) {
+            return true;
+        }
+        return false;
     }
 }

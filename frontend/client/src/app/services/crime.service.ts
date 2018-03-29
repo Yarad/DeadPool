@@ -16,13 +16,39 @@ export class CrimeService {
   ) {}
 
   getAllCrimes(): Observable<Crime[]> { 
-    console.log('ads');
     return this.mainService.getAuthorizedRequest("/crimes")
     .map(res => {
-      if(!res.error && res.result.crimes) {        
+      if(!res.result.error && res.result.crimes) {  
+        console.log(res.result.crimes)      
         return res.result.crimes.map(crime => {
           return new Crime(crime);
         });
+      }
+      return [];
+    })
+    .catch((error: any)=> { 
+      return Observable.throw(error);
+    });
+  }
+
+  addNewCrime(crime): Observable<Boolean> {
+    return this.mainService.postAuthorizedRequest("/crimes/add", crime)
+    .map(res => {
+      if(!res.error && res.success) {
+        return res.success
+      }
+      return false;
+    })
+    .catch((error: any)=> { 
+      return Observable.throw(error);
+    });
+  }
+
+  getCrimeTypes(): Observable<Object[]> {
+    return this.mainService.getAuthorizedRequest("/crimes/types_list")
+    .map(res => {
+      if(!res.error && res.enums) {      
+        return res.enums;
       }
       return [];
     })

@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router} from '@angular/router';
+import { CriminalCaseService } from '../../services/criminal-case.service';
+import { CriminalCase } from '../../classes/criminal-case';
+import { DetectiveService } from '../../services/detective.service';
 
 @Component({
   selector: 'app-add-criminal-case-page',
@@ -10,34 +13,21 @@ export class AddCriminalCasePageComponent implements OnInit {
 
   detectives = [];
 
-  criminalCase = {
-    number: "",
-    createDate: "",
-    detective: {
-      id: null
-    }
-  }
+  criminalCase = new CriminalCase({});
 
-  constructor(private router: Router) { 
-    this.detectives = this.loadAllDetectives();
+  constructor(private router: Router,
+    private detectiveService: DetectiveService,
+    private criminalCaseService: CriminalCaseService
+  ) { 
+    this.detectiveService.getAllDetectives()
+    .subscribe(
+      data => this.detectives = data,
+      error => this.detectives = this.detectiveService.detectives
+    );
+    this.criminalCase.detective.id = 1;
   }
 
   ngOnInit() {
-  }
-
-  loadAllDetectives() {
-    return [
-      {
-        id: 1,
-        name: "Шерлок",
-        surname: "Холмс"
-      },
-      {
-        id: 2,
-        name: "Жареная",
-        surname: "Картошка"
-      }
-    ]
   }
 
   changeSelectedDetective($event) {
@@ -58,7 +48,12 @@ export class AddCriminalCasePageComponent implements OnInit {
       if (!this.criminalCase.detective.id) {
         this.criminalCase.detective.id = this.detectives[0].id;
       }    
-      this.router.navigate(['/']);  
+
+      this.criminalCaseService.addNewCriminalCase(this.criminalCase)
+      .subscribe(
+        result => {if(result) this.router.navigate(['/'])},
+        error => {this.router.navigate(['/'])}
+      );
     }
   }
 

@@ -1,32 +1,72 @@
 <app-navbar></app-navbar> 
-<div class="container col-sm-5 col-md-4 col-lg-3">
-    <form>
-      <fieldset>
-        <legend id="form-legend">
-          <h1>Регистрация</h1>
-        </legend> 
-        <div *ngIf="error.isError">     
-          <div class="alert alert-dismissible alert-secondary">
-            {{error.text}}
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="input-login">Логин</label>
-          <input type="email" class="form-control" id="input-login" placeholder="Введите логин">
-        </div>
-        <div class="form-group">
-          <label for="input-email">Email</label>
-          <input type="email" class="form-control" id="input-email" placeholder="Введите email">
-        </div>
-        <div class="form-group">
-          <label for="input-password">Пароль</label>
-          <input type="password" class="form-control" id="input-password" placeholder="Введите пароль">
-        </div>
-        <button type="submit" class="btn btn-block btn-secondary">Зарегистрироваться</button>
-        <hr class="my-4">
-        <div class="col-sm-12">
-            <button id="btn-login" class="btn btn-secondary btn-sm btn-block" routerLink="/login">Авторизация</button>
-        </div>
-      </fieldset>
-    </form>
+<div class="container col-sm-10 col-md-10 col-lg-5">
+
+  <fieldset class="mx-auto">
+    <legend id="form-legend">
+      <h1>Регистрация</h1>
+    </legend> 
+    <div *ngIf="error.isError">     
+      <div class="alert alert-dismissible alert-secondary">
+        {{error.text}}
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="name" class="col-sm-4 col-form-label" required>Имя</label>
+      <div class="col-sm-6 col-md-8">
+        <input type="text" id="name" class="form-control" [(ngModel)]="user.man.name"
+          [ngClass]="{'is-invalid':(!user.man.name)}">          
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="surname" class="col-sm-4 col-form-label" required>Фамилия</label>
+      <div class="col-sm-6 col-md-8">
+        <input type="text" id="surname" class="form-control" [(ngModel)]="user.man.surname"
+          [ngClass]="{'is-invalid':(!user.man.surname)}">          
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="birthday" class="col-sm-4 col-form-label">Дата рождения</label>
+      <div class="col-sm-6 col-md-8">
+        <input id="birthday" class="form-control" type="date" [(ngModel)]="user.man.birthday"
+        [ngClass]="{'is-invalid':(!user.man.birthday)}">    
+      </div>
+    </div> 
+    <div class="form-group row">
+      <label for="homeAddress" class="col-sm-4 col-form-label" required>Домашний адрес</label>
+      <div class="col-sm-6 col-md-8">
+        <textarea rows="2" type="text" id="homeAddress" class="form-control" [(ngModel)]="user.man.homeAddress"
+          [ngClass]="{'is-invalid':(!user.man.homeAddress)}"> </textarea>         
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="login" class="col-sm-4 col-form-label" required>Логин</label>
+      <div class="col-sm-6 col-md-8">
+        <input type="text" id="login" class="form-control" [(ngModel)]="user.login"
+          [ngClass]="{'is-invalid':(!user.login)}">          
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="password" class="col-sm-4 col-form-label" required>Пароль</label>
+      <div class="col-sm-6 col-md-8">
+        <input type="text" id="password" class="form-control" [(ngModel)]="user.password"
+          [ngClass]="{'is-invalid':(!user.password)}">          
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="email" class="col-sm-4 col-form-label" required>Email</label>
+      <div class="col-sm-6 col-md-8">
+        <input type="text" id="email" class="form-control" [(ngModel)]="user.email" #email="ngModel" 
+        required pattern="[a-zA-Z_]+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}"  
+          [ngClass]="{'is-invalid':(!user.email)}" >          
+      </div>
+    </div>
+    <div class="col-md-6 mx-auto mt-5">
+      <button type="submit" class="btn btn-block btn-secondary" (click)="registrate()">Зарегистрироваться</button>
+      <hr class="my-4">
+      <div class="col-sm-12">
+          <button id="btn-authorization" class="btn btn-secondary btn-sm btn-block" routerLink="/login">Авторизация</button>
+      </div>
+    </div>
+  </fieldset>
+
   </div>

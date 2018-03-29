@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 import { Routes, RouterModule } from '@angular/router';
 import {TabsModule} from "ng2-tabs";
 import { DatepickerModule } from 'angular2-material-datepicker';
+import { LocalStorageModule } from 'angular-2-local-storage';
 
 import { MainService } from './services/main.service';
 import { AuthorizationService } from './services/authorization.service';
@@ -39,7 +40,8 @@ const appRoutes: Routes = [
   {path: 'criminal_case/:id', component: CriminalCasePageComponent},
   {path: 'crime/:id', component: CrimePageComponent},
   {path: 'crime/:id/add_evidence', component: AddEvidencePageComponent},
-  {path: 'add_criminal_case', component: AddCriminalCasePageComponent}
+  {path: 'add_criminal_case', component: AddCriminalCasePageComponent},
+  {path: 'add_crime', component: AddCrimePageComponent}
 ];
 
 
@@ -65,7 +67,8 @@ const appRoutes: Routes = [
     HttpModule, 
     FormsModule, 
     RouterModule.forRoot(appRoutes),
-    TabsModule
+    TabsModule,
+    LocalStorageModule
   ],
   providers: [
     MainService,

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router} from '@angular/router';
+import { AuthorizationService } from '../../services/authorization.service';
+import { LocalStorageService } from 'angular-2-local-storage';
 
 @Component({
   selector: 'app-authorization-page',
@@ -10,7 +12,7 @@ export class AuthorizationPageComponent implements OnInit {
 
   error = {
     isError: false,
-    text: "Проверьте логин и пароль."
+    text: ""
   };
 
   user = {
@@ -18,24 +20,27 @@ export class AuthorizationPageComponent implements OnInit {
     password: ""
   }
 
-  constructor() { }
+  constructor(private authorizationService: AuthorizationService,
+  private router: Router) { }
 
   ngOnInit() {
 
   }
 
   authorize(): void{
-    this.error.isError = !this.error.isError;
-   /* this.loginService.login(this.user)
-        .subscribe(res => {
-          if(res.error){
-            this.error = res.error;
-         } else {
-          if(res.token && res.username && res.id){
-            localStorage.setItem('currentUser', JSON.stringify({ token: res.token, username: res.username, id: res.id, role: res.role }));
+   // if (this.user.login && this.user.password) {
+    this.authorizationService.authorization(this.user)
+      .subscribe(res => {
+        if(res.error){
+          this.error = res.error;
+        } else {
+          if(res.result){
+            localStorage.setItem('user', JSON.stringify({ token: res.result, login: this.user.login}));
+            this.router.navigate(['/']);
           }
-         }
-        });*/
+        }
+      });
+   // }
   }
 
 }

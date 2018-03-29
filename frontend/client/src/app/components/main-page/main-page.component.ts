@@ -14,24 +14,9 @@ import { ManService } from '../../services/man.service';
 export class MainPageComponent implements OnInit {
 
   activeCategoryId = 0;
-
+  
   criminalCases = [];
-
   crimes = [];
-
-  evidences = [
-    {
-      photoPath: "https://i2.rozetka.ua/goods/8796/cold_steel_jungle_machete_97jms_images_8796146.jpg",
-      name: "Мачете Cold Steel Jungle Machete 97JMS",
-      criminalCaseNumber: "РК1244",
-    },
-    {
-      photoPath: "https://cdnmedia.220-volt.ru/content/products/485/485859/images/thumb_220/n1200x800/1.jpeg",
-      name: "Бензопила КАЛИБР БП-1500/16У",
-      criminalCaseNumber: "TC23423",
-    }
-  ];
-
   evidencesOfCrime = [];
   men = [];
   
@@ -42,8 +27,8 @@ export class MainPageComponent implements OnInit {
     private evidenceOfCrimeService: EvidenceOfCrimeService,
     private manService: ManService
   ) {  
-    const criminalCasesObserver = this.criminalCaseService.getAllCriminalCases();
-    criminalCasesObserver.subscribe(
+    const observer = this.criminalCaseService.getAllCriminalCases();
+    observer.subscribe(
       data => this.criminalCases = data,
       error => this.criminalCases = this.criminalCaseService.criminalCases
     );
@@ -56,16 +41,16 @@ export class MainPageComponent implements OnInit {
     this.activeCategoryId = id;
     switch(id) {
       case 0: {        
-        const criminalCasesObserver = this.criminalCaseService.getAllCriminalCases();
-        criminalCasesObserver.subscribe(
+        const observer = this.criminalCaseService.getAllCriminalCases();
+        observer.subscribe(
           data => this.criminalCases = data,
           error => this.criminalCases = this.criminalCaseService.criminalCases
         );
         break;
       }
       case 1: {
-        const crimesObserver = this.crimeService.getAllCrimes();
-        crimesObserver.subscribe(
+        const observer = this.crimeService.getAllCrimes();
+        observer.subscribe(
           data => this.crimes = data,
           error => this.crimes = this.crimeService.crimes
         );
@@ -75,8 +60,7 @@ export class MainPageComponent implements OnInit {
         const observer = this.evidenceOfCrimeService.getAllEvidences();
         observer.subscribe(
           data => this.evidencesOfCrime = data,
-          error => {this.evidencesOfCrime = this.evidenceOfCrimeService.evidences; 
-            console.log(this.evidencesOfCrime)}
+          error => this.evidencesOfCrime = this.evidenceOfCrimeService.evidences
         );
         break;
       }

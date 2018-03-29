@@ -17,8 +17,9 @@ export class CriminalCaseService {
   getAllCriminalCases(): Observable<CriminalCase[]> { 
     return this.mainService.getAuthorizedRequest("/criminal_cases")
     .map(res => {
-      if(!res.error && res.criminalCases) {
-        return res.criminalCases.map(criminalCase => {
+      if(!res.result.error && res.result.criminalCases) {
+console.log(res.result)
+        return res.result.criminalCases.map(criminalCase => {
           return new CriminalCase(criminalCase);
         });
       }
@@ -29,8 +30,8 @@ export class CriminalCaseService {
     });
   }
 
-  getAllSolvedCriminalCases() {   
-    this.mainService.getAuthorizedRequest("/criminal_cases/solved")
+  getAllSolvedCriminalCases(): Observable<CriminalCase[]> {   
+    return this.mainService.getAuthorizedRequest("/criminal_cases/solved")
     .map(res => {
       if(!res.error && res.result.criminalCases) {
         return res.result.criminalCases.map(criminalCase => {
@@ -44,8 +45,8 @@ export class CriminalCaseService {
     });
   }
 
-  getAllUnsolvedCriminalCases() {   
-    this.mainService.getAuthorizedRequest("/criminal_cases/unsolved")
+  getAllUnsolvedCriminalCases(): Observable<CriminalCase[]> {   
+    return this.mainService.getAuthorizedRequest("/criminal_cases/unsolved")
     .map(res => {
       if(!res.error && res.result.criminalCases) {
         return res.result.criminalCases.map(criminalCase => {
@@ -59,8 +60,8 @@ export class CriminalCaseService {
     });
   }
 
-  getAllOpenCriminalCases() {   
-    this.mainService.getAuthorizedRequest("/criminal_cases/open")
+  getAllOpenCriminalCases(): Observable<CriminalCase[]> {   
+    return this.mainService.getAuthorizedRequest("/criminal_cases/open")
     .map(res => {
       if(!res.error && res.result.criminalCases) {
         return res.result.criminalCases.map(criminalCase => {
@@ -74,14 +75,60 @@ export class CriminalCaseService {
     });
   }
 
-  addNewCriminalCase(criminalCase) {
-    // return this.mainService.postAuthorizedRequest("/criminal_cases/add", criminalCase)
-    // .subscribe(res => {
-    //   if(!res.error && res.result.criminalCases) {
-    //     return res.result.criminalCases;
-    //   }
-    //   return [];
-    // });
+  getCriminalCase(id): Observable<CriminalCase> {
+    return this.mainService.getAuthorizedRequest("/criminal_cases/" + id)
+    .map(res => {
+      if(!res.error && res.result) {
+        // const criminalCaseJson = res.result;
+        // return criminalCaseJson as CriminalCase; 
+        return new CriminalCase(res.result);
+      }
+      return {};
+    })
+    .catch((error: any) => { 
+      return Observable.throw(error);
+    });
+  }
+
+  addNewCriminalCase(criminalCase): Observable<Boolean> {
+    return this.mainService.postAuthorizedRequest("/criminal_cases/add", criminalCase)
+    .map(res => {
+      if(!res.error && res.success) {
+        return res.success
+      }
+      return false;
+    })
+    .catch((error: any)=> { 
+      this.criminalCases.push(criminalCase);
+      return Observable.throw(error);
+    });
+  }
+
+  updateNewCriminalCase(criminalCase): Observable<Boolean> {
+    return this.mainService.postAuthorizedRequest("/criminal_cases/update", {      
+      id: criminalCase.id,
+      detective:
+      {
+          id: criminalCase.detective.id
+      },
+      number: criminalCase.number,
+      createDate: criminalCase.createDate,
+      closed: false,
+      closeDate: null    
+    })
+    .map(res => {
+      if(!res.error && res.success) {
+        return res.success
+      }
+      return false;
+    })
+    .catch((error: any)=> { 
+      const index = this.criminalCases.map(criminalCase => criminalCase.id).indexOf(criminalCase.id);
+      if(index > -1) {
+        this.criminalCases[index] = criminalCase;
+      }
+      return Observable.throw(error);
+    });
   }
 
   
@@ -89,7 +136,7 @@ export class CriminalCaseService {
   criminalCases = [
     {
       id: 1,
-      number: "УПН1854",
+      number: "У54",
       type: "Oткрыто",
       createDate: "2017-01-25",
       closeDate: null,

@@ -8,7 +8,7 @@
         </h3>
         <p class="list-group-item list-group-item-action" routerLink="/crime/{{crime.id}}/add_evidence">Добавить улику</p>
         <p class="list-group-item list-group-item-action" >Добавить участника</p>
-        <p class="list-group-item list-group-item-action" >Редактировать данные</p>
+        <p class="list-group-item list-group-item-action"  (click)="switchMode(false)" >Редактировать данные</p>
         <p class="list-group-item list-group-item-action" >Удалить преступление</p>
       </div>
     </div>

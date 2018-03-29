@@ -50,13 +50,30 @@ export class CrimePageComponent implements OnInit {
       }
     ]
   }
+  readMode = true;
+  oldCrime = {};
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  tabSelect($event) {
+  switchMode(mode) {
+    this.readMode = mode;
+    if (!mode) {
+      this.oldCrime = this.copyObject(this.crime);
+    }
+  }
+  copyObject(currObject) {
+    const newObject = {};
+
+    Object.keys(currObject).forEach(key => {
+      Object.assign(newObject, {
+        [key]: currObject[key]
+      })
+    });
+
+    return newObject;
   }
 
 }

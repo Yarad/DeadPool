@@ -1,28 +1,26 @@
 <app-navbar></app-navbar> 
 <div class="container col-sm-5 col-md-4 col-lg-3">
-  <form>
-    <fieldset>
-      <legend id="form-legend">
-        <h1>Авторизация</h1>
-      </legend> 
-      <div *ngIf="error.isError">     
-        <div class="alert alert-dismissible alert-secondary">
-          {{error.text}}
-        </div>
+  <fieldset>
+    <legend id="form-legend">
+      <h1>Авторизация</h1>
+    </legend> 
+    <div *ngIf="error.isError">     
+      <div class="alert alert-dismissible alert-secondary">
+        {{error.text}}
       </div>
-      <div class="form-group">
-        <label for="input-login">Логин</label>
-        <input type="email" class="form-control" id="input-login" placeholder="Введите логин">
-      </div>
-      <div class="form-group">
-        <label for="input-password">Пароль</label>
-        <input type="password" class="form-control" id="input-password" placeholder="Введите пароль">
-      </div>
-      <button type="submit" class="btn btn-block btn-secondary" (click)="authorize()">Войти</button>
-      <hr class="my-4">
-      <div class="col-sm-12">
-          <button id="btn-registration" class="btn btn-secondary btn-sm btn-block" routerLink="/registration">Регистрация</button>
-      </div>
-    </fieldset>
-  </form>
+    </div>
+    <div class="form-group">
+      <label for="input-login">Логин</label>
+      <input type="email" class="form-control" id="input-login"  [(ngModel)]="user.login" placeholder="Введите логин">
+    </div>
+    <div class="form-group">
+      <label for="input-password">Пароль</label>
+      <input type="password" class="form-control" id="input-password" [(ngModel)]="user.password" placeholder="Введите пароль">
+    </div>
+    <button type="submit" class="btn btn-block btn-secondary" (click)="authorize()">Войти</button>
+    <hr class="my-4">
+    <div class="col-sm-12">
+        <button id="btn-registration" class="btn btn-secondary btn-sm btn-block" routerLink="/registration">Регистрация</button>
+    </div>
+  </fieldset>
 </div>

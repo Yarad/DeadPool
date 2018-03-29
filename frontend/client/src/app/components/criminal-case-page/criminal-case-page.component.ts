@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Router} from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
+import { ActivatedRoute} from '@angular/router';
 import { CriminalCaseService } from '../../services/criminal-case.service';
+import { CriminalCase } from '../../classes/criminal-case';
+import { DetectiveService } from '../../services/detective.service';
+
 
 @Component({
   selector: 'app-criminal-case-page',
@@ -10,32 +16,25 @@ export class CriminalCasePageComponent implements OnInit {
   readMode = true;
   allDetectives = [];
 
-  criminalCase = {
-    id: 1,
-    number: "УПН1854",
-    type: "Oткрыто",
-    createDate: "2017-01-25",
-    closeDate: null,
-    detective:
-    {
-            id: 1,
-            name: "Шерлок",
-            surname: "Холмс",
-    },
-    crimes:[
-      {
-              id: 1,
-              type: "Убийство",
-              date: "2018-02-26",
-              place: "БГУИР, каб. 213а"
-      }
-    ]
- }
- oldCriminalCase;
+  criminalCase: CriminalCase;
+  oldCriminalCase;
+  criminalCaseId;
 
-  constructor(
-    private criminalCaseService:CriminalCaseService
-  ) { }
+  private routeSubscription: Subscription;
+  constructor( private router: Router,
+    private route: ActivatedRoute,
+    private criminalCaseService:CriminalCaseService,
+    private detectiveService: DetectiveService
+  ) {
+    this.routeSubscription = route.params.subscribe(params => this.criminalCaseId = +params['id']);
+
+    this.criminalCaseService.criminalCases[this.criminalCaseService.criminalCases.map(criminalCase => criminalCase.id).indexOf(this.criminalCaseId)];
+    const observer = this.criminalCaseService.getCriminalCase(this.criminalCaseId);
+    observer.subscribe(
+      data => this.criminalCase = data,
+      error => this.criminalCase = new CriminalCase(this.criminalCaseService.criminalCases[this.criminalCaseService.criminalCases.map(criminalCase => criminalCase.id).indexOf(this.criminalCaseId)])
+    );    
+   }
 
   ngOnInit() {
   }
@@ -43,13 +42,23 @@ export class CriminalCasePageComponent implements OnInit {
   switchMode(mode) {
     this.readMode = mode;
     if (!mode) {
-      this.allDetectives = this.loadAllDetectives();
+      this.detectiveService.getAllDetectives()
+      .subscribe(
+        data => this.allDetectives = data,
+        error => this.allDetectives = this.detectiveService.detectives
+      );
       this.oldCriminalCase = this.copyObject(this.criminalCase);
     }
   }
 
   saveChanges() {
-    this.switchMode(true);
+    if (this.criminalCase.isValidate()) {
+      this.criminalCaseService.updateNewCriminalCase(this.criminalCase)
+      .subscribe(
+        result => this.switchMode(true),
+        error => this.switchMode(true)
+      );
+    }
   }
 
   cancellationOfChanges() {
@@ -65,26 +74,10 @@ export class CriminalCasePageComponent implements OnInit {
   }
 
   closeCriminalCase() {
-  }
-
-  loadAllDetectives() {
-    return [
-      {
-        id: 1,
-        name: "Шерлок",
-        surname: "Холмс"
-      },
-      {
-        id: 2,
-        name: "Жареная",
-        surname: "Картошка"
-      },
-      {
-        id: 3,
-        name: "Андрей",
-        surname: "Жлобич"
-      }
-    ]
+    this.criminalCase.closed = true;
+    const closeDate = new Date();
+    this.criminalCase.closeDate = closeDate.getFullYear() + '-' + ('0' + (closeDate.getMonth() + 1)).slice(-2) + '-' + ('0' + closeDate.getDate()).slice(-2);
+    this.criminalCase.type = "Закрыто";
   }
 
   copyObject(currObject) {

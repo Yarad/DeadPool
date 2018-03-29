@@ -18,6 +18,7 @@ export class DetectiveService {
     return this.mainService.getAuthorizedRequest("/detectives")
     .map(res => {
       if(!res.error && res.result.men) {
+        console.log(res.result);
         return res.result.men.map(detective => {
           return new Detective(detective);
         });

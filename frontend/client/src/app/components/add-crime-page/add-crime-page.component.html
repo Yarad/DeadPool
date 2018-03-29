@@ -1,3 +1,54 @@
-<p>
-  add-crime-page works!
-</p>
+<app-navbar></app-navbar>
+<div class="container">
+  <div class="form-horizontal">
+    <fieldset>
+      <legend class="my-3"><h2>Новое преступление</h2></legend>
+      <!--div class="form-group row">
+        <label for="criminal-case-number" class="col-sm-2 col-form-label" required>Номер дела</label>
+        <div class="col-sm-4 col-md-3">
+          <input type="text" id="criminal-case-number" class="form-control" [(ngModel)]="crime.criminalCase.number"
+            readonly="true"
+            value="{'is-invalid':(!crime.criminalCase.id)}">      
+        </div>
+      </div-->
+      <div class="form-group row">
+        <label for="crime-type" class="col-sm-2 col-form-label">Тип</label>
+        <select class="form-control col-sm-4 col-md-3" id="crime-type" (change)="changeSelectedCrimeType($event)">
+          <option *ngFor="let type of crimeTypes" value="{{type}}">{{type}}</option>
+        </select>
+      </div>
+      <div class="form-group row">
+        <label for="crime-place" class="col-sm-2 col-form-label" required>Место преступления</label>
+        <div class="col-sm-4 col-md-3">
+          <input type="text" id="crime-place" class="form-control" [(ngModel)]="crime.place"
+            [ngClass]="{'is-invalid':(!crime.place)}">          
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="crime-date" class="col-sm-2 col-form-label">Дата преступления</label>
+        <div class="col-sm-4 col-md-3">
+          <input id="crime-date" class="form-control" type="date" [(ngModel)]="crime.date"
+          [ngClass]="{'is-invalid':(!crime.date)}">         
+        </div>
+      </div> 
+      <div class="form-group row">
+        <label for="crime-time" class="col-sm-2 col-form-label">Время преступления</label>
+        <div class="col-sm-4 col-md-3">
+          <input id="crime-time" class="form-control" type="time" [(ngModel)]="crime.time"
+          [ngClass]="{'is-invalid':(!crime.time)}">         
+        </div>
+      </div> 
+      <div class="form-group row">
+        <label for="crime-description" class="col-sm-2 col-form-label" required>Описание</label>
+        <div class="col-sm-4 col-md-3">
+          <textarea id="crime-description" class="form-control" rows="3" [(ngModel)]="crime.description"
+          > </textarea>        
+        </div>
+      </div>
+    </fieldset>
+    <div class="pt-3">
+      <button type="submit" role="submit" class="btn btn-secondary" (click)="addNewCrime()">Добавить</button>
+      <button type="submit" class="btn btn-secondary ml-5" routerLink="/">Отмена</button>
+    </div>
+  </div>
+</div>

@@ -2,7 +2,9 @@ import { CriminalCase } from './criminal-case';
 
 export class Crime {
 
-    criminalCase = {};
+    criminalCase = {
+        id: -1
+    };
     id: string;
     type: string;
     description: string;
@@ -18,6 +20,6 @@ export class Crime {
         this.date = object.date;
         this.time = object.time;
         this.place = object.place;
-        this.criminalCase = new CriminalCase(object.criminalCase);
+        this.criminalCase = object.criminalCase ? new CriminalCase(object.criminalCase) : {id: -1};
     }
 }

@@ -15,7 +15,7 @@ export class ManService {
   ) {}
 
   getAllMen(): Observable<Man[]> { 
-    return this.mainService.getAuthorizedRequest("/men")
+    return this.mainService.getAuthorizedRequest("/man")
     .map(res => {
       if(!res.error && res.result.men) {
         return res.result.men.map(man => {
