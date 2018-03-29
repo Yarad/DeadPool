@@ -28,7 +28,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .cors().and()
                 .addFilterBefore(createCustomFilter(), AnonymousAuthenticationFilter.class)
-                .csrf().disable();
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS,"/**").permitAll();
         http.addFilterBefore(corsFilter, ChannelProcessingFilter.class);
     }
 
