@@ -42,7 +42,8 @@ public final class EvidenceOfCrimeParser {
                     CrimeParser.parseShortedCrimeForOthers(evidenceOfCrime.parentCrime),
                     evidenceOfCrime.getEvidenceType().getName(),
                     evidenceOfCrime.getPhotoPath(),
-                    evidenceOfCrime.getDateAdded(),
+                    evidenceOfCrime.getDateAdded().toLocalDate(),
+                    evidenceOfCrime.getDateAdded().toLocalTime(),
                     evidenceOfCrime.getDetails()
             );
         } else {
@@ -57,7 +58,8 @@ public final class EvidenceOfCrimeParser {
                     CrimeParser.parseShortedCrimeForOthers(evidenceOfCrime.parentCrime),
                     evidenceOfCrime.getEvidenceType().getName(),
                     evidenceOfCrime.getPhotoPath(),
-                    evidenceOfCrime.getDateAdded(),
+                    evidenceOfCrime.getDateAdded().toLocalDate(),
+                    evidenceOfCrime.getDateAdded().toLocalTime(),
                     evidenceOfCrime.getDetails()
             );
         } else {

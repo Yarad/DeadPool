@@ -1,12 +1,14 @@
 package com.DTO;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class ParticipantInputDTO {
     private IdOnlyDTO man;
     private IdOnlyDTO crime;
     private String status;
-    private LocalDateTime dateAdded;
+    private LocalDate dateAdded;
+    private LocalTime timeAdded;
     private String alibi;
     private String witnessReport;
 
@@ -36,12 +38,20 @@ public class ParticipantInputDTO {
         this.status = status;
     }
 
-    public LocalDateTime getDateAdded() {
+    public LocalDate getDateAdded() {
         return dateAdded;
     }
 
-    public void setDateAdded(LocalDateTime dateAdded) {
+    public void setDateAdded(LocalDate dateAdded) {
         this.dateAdded = dateAdded;
+    }
+
+    public LocalTime getTimeAdded() {
+        return timeAdded;
+    }
+
+    public void setTimeAdded(LocalTime timeAdded) {
+        this.timeAdded = timeAdded;
     }
 
     public String getAlibi() {

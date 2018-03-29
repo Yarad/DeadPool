@@ -1,20 +1,23 @@
 package com.DTO;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class EvidenceOfCrimeForListOfEvidenceDTO {
     private CrimeForOthersShortedDTO crime;
     private String type;
     private String photoPath;
-    private LocalDateTime dateAdded;
+    private LocalDate dateAdded;
+    private LocalTime timeAdded;
     private String details;
 
-    public EvidenceOfCrimeForListOfEvidenceDTO(CrimeForOthersShortedDTO crime, String type,
-                                               String photoPath, LocalDateTime dateAdded, String details) {
+    public EvidenceOfCrimeForListOfEvidenceDTO(CrimeForOthersShortedDTO crime, String type, String photoPath,
+                                               LocalDate dateAdded, LocalTime timeAdded, String details) {
         this.crime = crime;
         this.type = type;
         this.photoPath = photoPath;
         this.dateAdded = dateAdded;
+        this.timeAdded = timeAdded;
         this.details = details;
     }
 
@@ -42,12 +45,20 @@ public class EvidenceOfCrimeForListOfEvidenceDTO {
         this.photoPath = photoPath;
     }
 
-    public LocalDateTime getDateAdded() {
+    public LocalDate getDateAdded() {
         return dateAdded;
     }
 
-    public void setDateAdded(LocalDateTime dateAdded) {
+    public void setDateAdded(LocalDate dateAdded) {
         this.dateAdded = dateAdded;
+    }
+
+    public LocalTime getTimeAdded() {
+        return timeAdded;
+    }
+
+    public void setTimeAdded(LocalTime timeAdded) {
+        this.timeAdded = timeAdded;
     }
 
     public String getDetails() {

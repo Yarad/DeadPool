@@ -11,6 +11,7 @@ import com.services.interfaces.IParticipantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -27,7 +28,7 @@ public class ParticipantController {
                 participant.getMan().getId(),
                 participant.getCrime().getId(),
                 participant.getStatus(),
-                participant.getDateAdded(),
+                LocalDateTime.of(participant.getDateAdded(), participant.getTimeAdded()),
                 participant.getAlibi(),
                 participant.getWitnessReport()
         );
@@ -42,7 +43,7 @@ public class ParticipantController {
                 participant.getMan().getId(),
                 participant.getCrime().getId(),
                 participant.getStatus(),
-                participant.getDateAdded(),
+                LocalDateTime.of(participant.getDateAdded(), participant.getTimeAdded()),
                 participant.getAlibi(),
                 participant.getWitnessReport()
         );
