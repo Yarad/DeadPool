@@ -59,7 +59,7 @@ public class CriminalCaseController {
         List<CriminalCaseObjectDTO> results = inputCrimeCases.stream()
                 .map(cc -> CriminalCaseParser.parseCriminalCase(cc))
                 .collect(Collectors.toList());
-        return new GenericDTO<ListCriminalCasesDTO>(false, new ListCriminalCasesDTO(results));
+        return new GenericDTO<>(false, new ListCriminalCasesDTO(results));
     }
 
     @IsDetective
@@ -70,7 +70,7 @@ public class CriminalCaseController {
         List<CriminalCaseObjectDTO> results = inputCrimeCases.stream()
                 .map(cc -> CriminalCaseParser.parseCriminalCase(cc))
                 .collect(Collectors.toList());
-        return new GenericDTO<ListCriminalCasesDTO>(false, new ListCriminalCasesDTO(results));
+        return new GenericDTO<>(false, new ListCriminalCasesDTO(results));
     }
 
     @IsDetective
@@ -81,7 +81,7 @@ public class CriminalCaseController {
         List<CriminalCaseObjectDTO> results = inputCrimeCases.stream()
                 .map(cc -> CriminalCaseParser.parseCriminalCase(cc))
                 .collect(Collectors.toList());
-        return new GenericDTO<ListCriminalCasesDTO>(false, new ListCriminalCasesDTO(results));
+        return new GenericDTO<>(false, new ListCriminalCasesDTO(results));
     }
 
     @IsDetective
@@ -92,7 +92,7 @@ public class CriminalCaseController {
         List<CriminalCaseObjectDTO> results = inputCrimeCases.stream()
                 .map(cc -> CriminalCaseParser.parseCriminalCase(cc))
                 .collect(Collectors.toList());
-        return new GenericDTO<ListCriminalCasesDTO>(false, new ListCriminalCasesDTO(results));
+        return new GenericDTO<>(false, new ListCriminalCasesDTO(results));
     }
 
     @IsDetective
@@ -102,7 +102,7 @@ public class CriminalCaseController {
         CriminalCase criminalCase = crimeCasesService.getCriminalCaseById(id);
         List<Crime> crimes = crimeService.getCrimesByCriminalCase(id);
         return (criminalCase != null)
-                ? new GenericDTO<CriminalCaseExtendedDTO>(false, CriminalCaseParser.parseExtendedCriminalCase(criminalCase, crimes))
-                : new GenericDTO<CriminalCaseExtendedDTO>(true, null);
+                ? new GenericDTO<>(false, CriminalCaseParser.parseExtendedCriminalCase(criminalCase, crimes))
+                : new GenericDTO<>(true, null);
     }
 }

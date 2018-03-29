@@ -60,6 +60,6 @@ public class DetectiveController {
         List<ManShortedDTO> results = inputDetectives.stream()
                 .map(man -> ManParser.parseManShorted(man))
                 .collect(Collectors.toList());
-        return new GenericDTO<ListMenShortedDTO>(false, new ListMenShortedDTO(results));
+        return new GenericDTO<>(false, new ListMenShortedDTO(results));
     }
 }

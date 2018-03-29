@@ -1,10 +1,14 @@
 package com.ControllerTest;
 
-import com.DTO.*;
+import com.DTO.AuthDTO;
+import com.DTO.DetectiveWithoutManIdDTO;
+import com.DTO.GenericDTO;
+import com.DTO.ManInfoWithoutIdDTO;
 import com.controller.AuthorizationController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.logic.Detective;
 import com.services.HashService;
+import com.services.interfaces.IAuthorizationService;
 import com.services.interfaces.IDetectiveService;
 import com.services.interfaces.IHashService;
 import org.junit.Before;
@@ -18,9 +22,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -32,10 +35,14 @@ public class AuthorizationControllerTest {
     private IDetectiveService detectiveService;
 
     @Mock
-    private static IHashService hashInjectedService;
+    private IHashService hashInjectedService;
+
+    @Mock
+    private IAuthorizationService authorizationService;
 
     private static IHashService hashService;
     private static ObjectMapper objectMapper;
+    private final int tokenHoursExpire = 24*7;
 
     @InjectMocks
     private AuthorizationController controller;
@@ -57,9 +64,44 @@ public class AuthorizationControllerTest {
     @Test
     public void signInCorrect() throws Exception {
         AuthDTO inputJson = createAuthJsonObject("testLogin", "testPassword");
-        String token = UUID.randomUUID().toString();
         Detective detective = getDetectiveByLogin("testLogin", "testPassword");
+        String token = "fygvhibkjnml";
         GenericDTO<String> response = new GenericDTO<>(false, token);
+
+        when(detectiveService.getDetectiveByLogin(inputJson.getLogin())).thenReturn(detective);
+        when(hashInjectedService.getMD5Hash(inputJson.getPassword())).thenReturn(hashService.getMD5Hash(inputJson.getPassword()));
+        when(authorizationService.getToken(detective, tokenHoursExpire)).thenReturn(token);
+
+        mockMvc.perform(
+                post("/sign_in")
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .content(objectMapper.writeValueAsString(inputJson)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(objectMapper.writeValueAsString(response)));
+    }
+
+    @Test
+    public void signInNoDetectiveFound() throws Exception {
+        AuthDTO inputJson = createAuthJsonObject("testLogin", "testPassword");
+        GenericDTO<String> response = new GenericDTO<>(true, "Нет пользователя с таким именем!");
+
+        when(detectiveService.getDetectiveByLogin(inputJson.getLogin())).thenReturn(null);
+
+        mockMvc.perform(
+                post("/sign_in")
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .content(objectMapper.writeValueAsString(inputJson)))
+                .andExpect(status().is4xxClientError())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(objectMapper.writeValueAsString(response)));
+    }
+
+    @Test
+    public void signInDifferentPasswords() throws Exception {
+        AuthDTO inputJson = createAuthJsonObject("testLogin", "testPassword");
+        Detective detective = getDetectiveByLogin("testLogin", "testPasswordOther");
+        GenericDTO<String> response = new GenericDTO<>(true, "Неправильный пароль!");
 
         when(detectiveService.getDetectiveByLogin(inputJson.getLogin())).thenReturn(detective);
         when(hashInjectedService.getMD5Hash(inputJson.getPassword())).thenReturn(hashService.getMD5Hash(inputJson.getPassword()));
@@ -68,11 +110,9 @@ public class AuthorizationControllerTest {
                 post("/sign_in")
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                         .content(objectMapper.writeValueAsString(inputJson)))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
-        //TODO: добавить конкретный json после изменения авторизации!
-                /*.andExpect(content().json(objectMapper.writeValueAsString(response))*/
-
+                .andExpect(status().is4xxClientError())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(objectMapper.writeValueAsString(response)));
     }
 
     @Test
