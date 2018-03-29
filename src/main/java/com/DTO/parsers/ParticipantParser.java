@@ -39,7 +39,8 @@ public final class ParticipantParser {
                     CrimeParser.parseShortedCrimeForOthers(participant.getCrime()),
                     participant.getParticipantStatus().getName(),
                     participant.getPhotoPath(),
-                    participant.getDateAdded(),
+                    participant.getDateAdded().toLocalDate(),
+                    participant.getDateAdded().toLocalTime(),
                     participant.getAlibi(),
                     participant.getWitnessReport()
             );

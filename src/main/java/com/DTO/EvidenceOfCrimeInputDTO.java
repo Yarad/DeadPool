@@ -1,13 +1,15 @@
 package com.DTO;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class EvidenceOfCrimeInputDTO {
     private IdOnlyDTO evidence;
     private IdOnlyDTO crime;
     private String type;
     private String photoPath;
-    private LocalDateTime dateAdded;
+    private LocalDate dateAdded;
+    private LocalTime timeAdded;
     private String details;
 
     public EvidenceOfCrimeInputDTO() { }
@@ -44,12 +46,20 @@ public class EvidenceOfCrimeInputDTO {
         this.photoPath = photoPath;
     }
 
-    public LocalDateTime getDateAdded() {
+    public LocalDate getDateAdded() {
         return dateAdded;
     }
 
-    public void setDateAdded(LocalDateTime dateAdded) {
+    public void setDateAdded(LocalDate dateAdded) {
         this.dateAdded = dateAdded;
+    }
+
+    public LocalTime getTimeAdded() {
+        return timeAdded;
+    }
+
+    public void setTimeAdded(LocalTime timeAdded) {
+        this.timeAdded = timeAdded;
     }
 
     public String getDetails() {

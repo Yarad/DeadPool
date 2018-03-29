@@ -11,6 +11,7 @@ import com.services.interfaces.IEvidenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,7 +55,7 @@ public class EvidenceOfCrimeController {
                 evidenceOfCrime.getEvidence().getId(),
                 evidenceOfCrime.getCrime().getId(),
                 evidenceOfCrime.getType(),
-                evidenceOfCrime.getDateAdded(),
+                LocalDateTime.of(evidenceOfCrime.getDateAdded(), evidenceOfCrime.getTimeAdded()),
                 evidenceOfCrime.getDetails(),
                 evidenceOfCrime.getPhotoPath()
         );
@@ -69,7 +70,7 @@ public class EvidenceOfCrimeController {
                 evidenceOfCrime.getEvidence().getId(),
                 evidenceOfCrime.getCrime().getId(),
                 evidenceOfCrime.getType(),
-                evidenceOfCrime.getDateAdded(),
+                LocalDateTime.of(evidenceOfCrime.getDateAdded(), evidenceOfCrime.getTimeAdded()),
                 evidenceOfCrime.getDetails(),
                 evidenceOfCrime.getPhotoPath()
         );
