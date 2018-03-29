@@ -33,7 +33,7 @@ public class AuthorizationService implements IAuthorizationService {
                     .withIssuer("auth0")
                     .withSubject(user.getLogin())
                     .withIssuedAt(new Date(System.currentTimeMillis()))
-                    .withNotBefore(hoursExpire > 0 ? new Date(System.currentTimeMillis() + hoursExpire*60*60*1000) : null)
+                    .withExpiresAt(hoursExpire > 0 ? new Date(System.currentTimeMillis() + hoursExpire*60*60*1000) : null)
                     .sign(algorithm);
         } catch (UnsupportedEncodingException exception){
             token = null;

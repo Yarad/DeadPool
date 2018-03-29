@@ -1,6 +1,9 @@
 package com.ControllerTest;
 
-import com.DTO.*;
+import com.DTO.AuthDTO;
+import com.DTO.DetectiveWithoutManIdDTO;
+import com.DTO.GenericDTO;
+import com.DTO.ManInfoWithoutIdDTO;
 import com.controller.AuthorizationController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.logic.Detective;
@@ -19,9 +22,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

@@ -5,10 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDate;
 
 public class CriminalCaseObjectDTO extends CriminalCaseShortedWithDetectiveDTO {
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd" )
     private LocalDate createDate;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd" )
     private LocalDate closeDate;
 
     public CriminalCaseObjectDTO(long id, String number, String type, DetectivePersonDTO detective,

@@ -59,8 +59,8 @@ public class ParticipantController {
     ) {
         Participant participant = participantService.getParticipantByCrimeAndMan(manId, crimeId);
         return (participant != null)
-                ? new GenericDTO<ParticipantFullInfoDTO>(false, ParticipantParser.parseParticipantFullInfo(participant))
-                : new GenericDTO<ParticipantFullInfoDTO>(true, null);
+                ? new GenericDTO<>(false, ParticipantParser.parseParticipantFullInfo(participant))
+                : new GenericDTO<>(true, null);
     }
 
     @IsDetective

@@ -1,12 +1,13 @@
 package com.ControllerTest;
 
-import com.AuthorizeAdditionals.TokensForTests;
+import com.Additionals.LogicAdditionals;
+import com.Additionals.TokensForTests;
 import com.DTO.*;
 import com.DTO.parsers.CriminalCaseParser;
 import com.controller.CriminalCaseController;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.logic.Crime;
 import com.logic.CriminalCase;
-import com.logic.Detective;
 import com.services.interfaces.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -14,17 +15,15 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -76,19 +75,7 @@ public class CriminalCaseControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(content().json(objectMapper.writeValueAsString(response)));
     }
-/*
-    @Test
-    public void noAuthentication() throws Exception {
-        CriminalCaseInputDTO inputJson = new CriminalCaseInputDTO();
-        inputJson.setDetective(new IdOnlyDTO());
 
-        mockMvc.perform(
-                post("/criminal_cases/add")
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-                        .content(objectMapper.writeValueAsString(inputJson)))
-                .andExpect(status().is4xxClientError());
-    }
-*/
     @Test
     public void updateCriminalCase() throws Exception {
         CriminalCaseInputWithIdDTO inputJson = new CriminalCaseInputWithIdDTO();
@@ -109,22 +96,7 @@ public class CriminalCaseControllerTest {
 
     @Test
     public void getAllCriminalCases() throws Exception {
-        criminalCasesGetRequest("/criminal_cases");
-    }
-
-    @Test
-    public void getAllCriminalCasesOpen() throws Exception {
-        criminalCasesGetRequest("/criminal_cases/open");
-    }
-
-    @Test
-    public void getAllCriminalCasesSolved() throws Exception {
-        criminalCasesGetRequest("/criminal_cases/solved");
-    }
-
-    @Test
-    public void getAllCriminalCasesUnsolved() throws Exception {
-        List<CriminalCase> crCases = getCriminalCases();
+        List<CriminalCase> crCases = LogicAdditionals.getCriminalCases();
         List<CriminalCaseObjectDTO> results = crCases.stream()
                 .map(cc -> CriminalCaseParser.parseCriminalCase(cc))
                 .collect(Collectors.toList());
@@ -133,45 +105,95 @@ public class CriminalCaseControllerTest {
         when(crimeCasesService.getAllCriminalCases()).thenReturn(crCases);
 
         mockMvc.perform(
-                get("/criminal_cases/unsolved")
-                        .header("deadpool-token", TokensForTests.getCorrectTokenUnlimited()))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(asJsonString(response)));
-    }
-
-    private void criminalCasesGetRequest(String path) throws Exception {
-        List<CriminalCase> crCases = getCriminalCases();
-        List<CriminalCaseObjectDTO> results = crCases.stream()
-                .map(cc -> CriminalCaseParser.parseCriminalCase(cc))
-                .collect(Collectors.toList());
-        GenericDTO<ListCriminalCasesDTO> response = new GenericDTO<>(false, new ListCriminalCasesDTO(results));
-
-        when(crimeCasesService.getAllCriminalCases()).thenReturn(crCases);
-
-        mockMvc.perform(
-                get(path)
+                get("/criminal_cases")
                         .header("deadpool-token", TokensForTests.getCorrectTokenUnlimited()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(content().json(objectMapper.writeValueAsString(response)));
     }
 
-    private List<CriminalCase> getCriminalCases() {
-        List<CriminalCase> cases = new ArrayList<>();
-        CriminalCase crCase = new CriminalCase();
-        crCase.setCriminalCaseId(1);
-        crCase.setCloseDate(LocalDate.MAX);
-        crCase.setCreateDate(LocalDate.now());
-        crCase.setClosed(true);
-        crCase.setDetectiveId(1);
-        Detective det = new Detective();
-        det.setManId(1);
-        det.setLogin("test");
-        det.setHashOfPassword("ferdsfgyujikjhgvbn");
-        crCase.setParentDetective(det);
-        crCase.setCriminalCaseNumber("API");
-        cases.add(crCase);
-        return cases;
+    @Test
+    public void getAllCriminalCasesOpen() throws Exception {
+        List<CriminalCase> crCases = LogicAdditionals.getCriminalCases();
+        List<CriminalCaseObjectDTO> results = crCases.stream()
+                .map(cc -> CriminalCaseParser.parseCriminalCase(cc))
+                .collect(Collectors.toList());
+        GenericDTO<ListCriminalCasesDTO> response = new GenericDTO<>(false, new ListCriminalCasesDTO(results));
+
+        when(crimeCasesService.getAllOpenCriminalCases()).thenReturn(crCases);
+
+        mockMvc.perform(
+                get("/criminal_cases/open")
+                        .header("deadpool-token", TokensForTests.getCorrectTokenUnlimited()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(objectMapper.writeValueAsString(response)));
+    }
+
+    @Test
+    public void getAllCriminalCasesSolved() throws Exception {
+        List<CriminalCase> crCases = LogicAdditionals.getCriminalCases();
+        List<CriminalCaseObjectDTO> results = crCases.stream()
+                .map(cc -> CriminalCaseParser.parseCriminalCase(cc))
+                .collect(Collectors.toList());
+        GenericDTO<ListCriminalCasesDTO> response = new GenericDTO<>(false, new ListCriminalCasesDTO(results));
+
+        when(crimeCasesService.getAllSolvedCriminalCases()).thenReturn(crCases);
+
+        mockMvc.perform(
+                get("/criminal_cases/solved")
+                        .header("deadpool-token", TokensForTests.getCorrectTokenUnlimited()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(objectMapper.writeValueAsString(response)));
+    }
+
+    @Test
+    public void getAllCriminalCasesUnsolved() throws Exception {
+        List<CriminalCase> crCases = LogicAdditionals.getCriminalCases();
+        List<CriminalCaseObjectDTO> results = crCases.stream()
+                .map(cc -> CriminalCaseParser.parseCriminalCase(cc))
+                .collect(Collectors.toList());
+        GenericDTO<ListCriminalCasesDTO> response = new GenericDTO<>(false, new ListCriminalCasesDTO(results));
+
+        when(crimeCasesService.getAllUnsolvedCriminalCases()).thenReturn(crCases);
+
+        mockMvc.perform(
+                get("/criminal_cases/unsolved")
+                        .header("deadpool-token", TokensForTests.getCorrectTokenUnlimited()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(objectMapper.writeValueAsString(response)));
+    }
+
+    @Test
+    public void getCriminalCaseByIdCorrect() throws Exception {
+        CriminalCase crCase = LogicAdditionals.getCustomCriminalCase();
+        List<Crime> crimes = LogicAdditionals.getCrimesList();
+        GenericDTO<CriminalCaseExtendedDTO> response = new GenericDTO<>(false, CriminalCaseParser.parseExtendedCriminalCase(crCase, crimes));
+
+        when(crimeCasesService.getCriminalCaseById(anyLong())).thenReturn(crCase);
+        when(crimeService.getCrimesByCriminalCase(anyLong())).thenReturn(crimes);
+
+        mockMvc.perform(
+                get("/criminal_cases/{id}", 1)
+                        .header("deadpool-token", TokensForTests.getCorrectTokenUnlimited()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(objectMapper.writeValueAsString(response)));
+    }
+
+    @Test
+    public void getCriminalCaseByIdNotCorrect() throws Exception {
+        GenericDTO<CriminalCaseExtendedDTO> response = new GenericDTO<>(true, null);
+
+        when(crimeCasesService.getCriminalCaseById(anyLong())).thenReturn(null);
+
+        mockMvc.perform(
+                get("/criminal_cases/{id}", 1)
+                        .header("deadpool-token", TokensForTests.getCorrectTokenUnlimited()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(objectMapper.writeValueAsString(response)));
     }
 }
