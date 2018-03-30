@@ -6,7 +6,7 @@
         <h3 class="list-group-item bg-dark">
           Действия
         </h3>
-        <p class="list-group-item list-group-item-action" routerLink="/add_crime" [queryParams]="{'criminal_case_id':criminalCaseId}">Добавить преступление</p>
+        <p class="list-group-item list-group-item-action" routerLink="/add_crime" [queryParams]="{'criminal_case':criminalCaseId}">Добавить преступление</p>
         <p class="list-group-item list-group-item-action" (click)="switchMode(false)">Редактировать данные</p>
         <p *ngIf="!criminalCase || !criminalCase.closeDate" class="list-group-item list-group-item-action" 
         (click)="closeCriminalCase()">Закрыть дело</p>
@@ -18,7 +18,7 @@
         <legend><h2>Дело № {{criminalCase.number}}</h2></legend>
         <div class="form-group row">
           <label for="criminal-case-number" class="col-sm-2 col-form-label">Дело</label>
-          <div class="col-sm-4 col-md-3">
+          <div class="col-sm-4 col-md-4">
             <input type="text" [readonly]="readMode" class="form-control"
             [class.form-control-plaintext]="readMode"
             id="criminal-case-number" [(ngModel)]="criminalCase.number"
@@ -28,12 +28,12 @@
         </div>
         <div class="form-group row">
           <label for="detective" class="col-sm-2 col-form-label">Детектив</label>
-          <div class="col-sm-10">
+          <div class="col-sm-9">
             <input *ngIf="readMode" 
-             type="text" [readonly]="readMode" class="form-control col-sm-4 col-md-4"
+             type="text" [readonly]="readMode" class="form-control col-sm-5 col-md-5"
              [class.form-control-plaintext]="readMode"
              id="detective" value="{{criminalCase.detective.name}} {{criminalCase.detective.surname}}">
-             <select *ngIf="!readMode" class="form-control col-sm-3" id="detective" (change)="changeSelectedDetective($event)">
+             <select *ngIf="!readMode" class="form-control col-sm-5 col-md-5" id="detective" (change)="changeSelectedDetective($event)">
               <option *ngFor="let detective of allDetectives" value="{{detective.id}}">
                 {{detective.name}} {{detective.surname}}
               </option>
@@ -50,14 +50,14 @@
         </div>
         <div class="form-group row">
           <label for="open-date" class="col-sm-2 col-form-label">Дата открытия</label>
-          <div class="col-sm-3">
+          <div class="col-sm-5 col-md-4">
             <input type="date" [readonly]="readMode" class="form-control"
             [class.form-control-plaintext]="readMode"
             id="open-date" [(ngModel)]="criminalCase.createDate"
             [class.is-invalid]="!criminalCase.createDate">
           </div>
           <label for="close-date" class="col-sm-2 col-form-label">Дата закрытия</label>
-          <div class="col-sm-3">
+          <div class="col-sm-5 col-md-4">
             <input *ngIf="criminalCase.closeDate" class="form-control"
             [class.form-control-plaintext]="readMode"
             [readonly]="readMode"  id="date" type="date"  [(ngModel)]="criminalCase.closeDate"

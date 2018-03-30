@@ -16,11 +16,10 @@ export class AuthorizationService {
   registration(user) {
     return this.mainService.postRequest("/sign_up", user)
     .map(res => {
-      console.log(res);
       if(!res.error) {
         return res
       }
-      return res;
+      return Observable.throw(res.result);
     })
     .catch((error: any)=> { 
       return Observable.throw(error);
@@ -30,11 +29,14 @@ export class AuthorizationService {
   authorization(user) {
     return this.mainService.postRequest("/sign_in", user)
     .map(res => {
-      console.log(res);
       return res;
     })
     .catch((error: any)=> { 
       return Observable.throw(error);
     });
+  }
+
+  logout() {
+    
   }
 }

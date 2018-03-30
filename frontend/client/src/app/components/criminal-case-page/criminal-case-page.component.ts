@@ -28,7 +28,6 @@ export class CriminalCasePageComponent implements OnInit {
   ) {
     this.routeSubscription = route.params.subscribe(params => this.criminalCaseId = +params['id']);
 
-    this.criminalCaseService.criminalCases[this.criminalCaseService.criminalCases.map(criminalCase => criminalCase.id).indexOf(this.criminalCaseId)];
     const observer = this.criminalCaseService.getCriminalCase(this.criminalCaseId);
     observer.subscribe(
       data => this.criminalCase = data,

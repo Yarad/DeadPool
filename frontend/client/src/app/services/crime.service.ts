@@ -47,7 +47,8 @@ export class CrimeService {
   getCrimeTypes(): Observable<Object[]> {
     return this.mainService.getAuthorizedRequest("/crimes/types_list")
     .map(res => {
-      if(!res.error && res.enums) {      
+      if(!res.error && res.enums) { 
+        console.log(res.enums);     
         return res.enums;
       }
       return [];

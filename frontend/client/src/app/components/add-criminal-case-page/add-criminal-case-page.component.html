@@ -1,32 +1,34 @@
 <app-navbar></app-navbar>
 <div class="container">
   <div class="form-horizontal">
-    <fieldset>
+    <fieldset class="col-md-offset-2 col-md-8">
       <legend class="my-3"><h2>Новое дело</h2></legend>
       <div class="form-group row">
-        <label for="criminal-case-number" class="col-sm-2 col-form-label" required>Номер дела</label>
-        <div class="col-sm-4 col-md-3">
+        <label for="criminal-case-number" class="col-sm-4 col-form-label" required>Номер дела</label>
+        <div class="col-sm-8 col-md-8">
           <input type="text" id="criminal-case-number" class="form-control" [(ngModel)]="criminalCase.number"
             [ngClass]="{'is-invalid':(!criminalCase.number)}">          
         </div>
       </div>
       <div class="form-group row">
-        <label for="detective" class="col-sm-2 col-form-label">Детектив</label>
-        <select class="form-control col-sm-4 col-md-3 ml-3" id="detective" (change)="changeSelectedDetective($event)">
+        <label for="detective" class="col-sm-4 col-form-label">Детектив</label>
+        <div class="col-sm-8">
+        <select class="form-control col-sm-12 col-md-12" id="detective" (change)="changeSelectedDetective($event)">
           <option *ngFor="let detective of detectives" value="{{detective.id}}">{{detective.name}} {{detective.surname}}</option>
         </select>
+        </div>
       </div>
       <div class="form-group row">
-        <label for="create-date" class="col-sm-2 col-form-label">Дата открытия</label>
-        <div class="col-sm-4 col-md-3">
+        <label for="create-date" class="col-sm-4 col-form-label">Дата открытия</label>
+        <div class="col-sm-8 col-md-8">
           <input id="create-date" class="form-control" type="date" [(ngModel)]="criminalCase.createDate"
           [ngClass]="{'is-invalid':(!criminalCase.createDate)}">    
         </div>
       </div> 
+      <div class="col-md-9 mx-auto mt-4">
+        <button type="submit" role="submit" class="btn mt-4 col-sm-4 col-md-4 btn-secondary" (click)="addNewCriminalCase()">Добавить</button>
+        <button type="submit" class="btn btn-secondary col-sm-4 col-md-4 ml-4 mt-4" routerLink="/">Отмена</button>
+      </div>
     </fieldset>
-    <div class="pt-3">
-      <button type="submit" role="submit" class="btn btn-secondary" (click)="addNewCriminalCase()">Добавить</button>
-      <button type="submit" class="btn btn-secondary ml-5" routerLink="/">Отмена</button>
-    </div>
   </div>
 </div>

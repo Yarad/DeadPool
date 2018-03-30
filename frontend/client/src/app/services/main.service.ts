@@ -32,7 +32,11 @@ export class MainService {
       this.addHeaders(headers);
       this.addAuthorizationHeaders(headers);
       return this.http.get(this.serverUrl + urlPattern, {headers})
-          .map(res => res.json());
+          .map(res => res.json())
+          .map(res => {
+            console.log("main",res);
+            return res;
+          });
     }
     return null;
   }
@@ -43,7 +47,11 @@ export class MainService {
       this.addHeaders(headers);
       this.addAuthorizationHeaders(headers);
       return this.http.post(this.serverUrl + urlPattern, JSON.stringify(params), {headers})
-          .map(res => res.json());
+          .map(res => res.json())
+          .map(res => {
+            console.log("main",res);
+            return res;
+          });
     }
     return null;
   }
@@ -53,6 +61,10 @@ export class MainService {
     const headers = new Headers();
     this.addHeaders(headers);
     return this.http.post(this.serverUrl + urlPattern, JSON.stringify(params), {headers})
-      .map(res => res.json());
+      .map(res => res.json())
+      .map(res => {
+        console.log("main",res);
+        return res;
+      });
   }
 }

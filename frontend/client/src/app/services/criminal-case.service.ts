@@ -18,7 +18,6 @@ export class CriminalCaseService {
     return this.mainService.getAuthorizedRequest("/criminal_cases")
     .map(res => {
       if(!res.result.error && res.result.criminalCases) {
-console.log(res.result)
         return res.result.criminalCases.map(criminalCase => {
           return new CriminalCase(criminalCase);
         });
@@ -78,9 +77,7 @@ console.log(res.result)
   getCriminalCase(id): Observable<CriminalCase> {
     return this.mainService.getAuthorizedRequest("/criminal_cases/" + id)
     .map(res => {
-      if(!res.error && res.result) {
-        // const criminalCaseJson = res.result;
-        // return criminalCaseJson as CriminalCase; 
+      if(!res.error && res.result) { 
         return new CriminalCase(res.result);
       }
       return {};

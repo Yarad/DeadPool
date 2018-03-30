@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" routerLink="/">DEADPOOL</a>
-  <button class="btn btn-secondary" routerLink="/add_criminal_case">Добавить дело</button>
+  <button *ngIf='user != null' class="btn btn-secondary" routerLink="/add_criminal_case">Добавить дело</button>
    
 
 
@@ -15,8 +15,8 @@
       <ul class="nav navbar-nav">
         <li class="dropdown"  dropdown *ngIf="username"> 
           <a dropdown-open  id="user-menu" >{{username}}</a>             
-        <li *ngIf='currentUser == null'><button type="submit" id="btn-sign-in" routerLink="/login" class="btn btn-secondary">Войти</button></li>
-        <li *ngIf='currentUser != null'><button type="submit" id="btn-exit" (click)="logout($event)" class="btn btn-secondary">Выйти</button></li>
+        <li *ngIf='user == null'><button type="submit" id="btn-sign-in" routerLink="/login" class="btn btn-secondary">Войти</button></li>
+        <li *ngIf='user != null'><button type="submit" id="btn-exit" (click)="logout($event)" class="btn btn-secondary">Выйти</button></li>
       </ul>
     </form>
   </div>

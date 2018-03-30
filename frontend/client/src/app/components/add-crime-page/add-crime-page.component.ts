@@ -12,28 +12,33 @@ import { ActivatedRoute} from '@angular/router';
 })
 export class AddCrimePageComponent implements OnInit {
   
-  crimeTypes = ["Убийство",
-  "Ограбление",
-  "Изнасилование",
-  "Поджог",
-  "Самоубийство"];
+  crimeEnumTypes = [];
+  crimeTypes = [];
 
   crime = new Crime({
     type: this.crimeTypes[0],
     criminalCase: {
       id: -1
-    }
+    },
   });
+  criminalCaseId;
+
 
   private routeSubscription: Subscription;
   constructor( private router: Router,
     private route: ActivatedRoute,
     private crimeService: CrimeService
-  ) { 
-    this.routeSubscription = route.params.subscribe(params => this.crime.criminalCase.id = params.criminal_case);
+  ) {
+    //this.routeSubscription = route.params.subscribe(params => this.criminalCaseId = params['criminal_case']);
+    route.queryParams.subscribe(params => console.log(+params['criminal_case']))
+
+    this.routeSubscription = route.queryParams.subscribe(params => this.crime.criminalCase.id = +params['criminal_case']);
     this.crimeService.getCrimeTypes()
     .subscribe(
-      data => {this.crimeTypes = data.map(type => type.name)},
+      data => {
+        this.crimeEnumTypes = data;
+        this.crime.type = this.crimeEnumTypes[0].enumValue;        
+      },
       error => {}
     );
   }
@@ -53,12 +58,11 @@ export class AddCrimePageComponent implements OnInit {
   }
 
   addNewCrime() {
-    console.log(this.crime);
     if (this.isCrimeValidate(this.crime)) { 
       console.log(this.crime);
       this.crimeService.addNewCrime(this.crime)
       .subscribe(
-        result => {if(result) this.router.navigate(['/criminalCase'+this.crime.criminalCase.id])},
+        result => {if(result) this.router.navigate(['criminal_case/'+this.crime.criminalCase.id])},
         error => {console.log("error" + error)}
       );
     }

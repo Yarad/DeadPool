@@ -1,4 +1,5 @@
 import { Component, OnInit, Input} from '@angular/core';
+import { Router} from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -6,6 +7,8 @@ import { Component, OnInit, Input} from '@angular/core';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+
+  user;
 
   @Input() data;
 
@@ -38,8 +41,12 @@ export class NavbarComponent implements OnInit {
 
   breadcrumbs = [];
 
-  constructor() { 
-    console.log(window.location.href);
+  constructor(private router: Router) { 
+    if(localStorage.getItem('user')){
+      this.user = localStorage.getItem('user');  
+    }
+
+
     const currentUrl = window.location.href;
     let currentLeaves = this.tree.leaves;
     let i = 0;
@@ -62,6 +69,14 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  logout($event): void{
+    event.preventDefault();
+    if(localStorage.getItem('user')){
+      localStorage.removeItem('user'); 
+      this.router.navigate(['login']); 
+    }
   }
 
 }
