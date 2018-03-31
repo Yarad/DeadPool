@@ -63,6 +63,7 @@ public final class LogicAdditionals {
     public static EvidenceOfCrime getCustomEvidenceOfCrime() {
         EvidenceOfCrime evidenceOfCrime = new EvidenceOfCrime();
         evidenceOfCrime.parentEvidence = getCustomEvidence();
+        evidenceOfCrime.parentCrime = getCustomCrime();
         evidenceOfCrime.setEvidenceType("OBJECT_FROM_CRIME_SCENE");
         evidenceOfCrime.setPhotoPath("photo");
         evidenceOfCrime.setDetails("details");

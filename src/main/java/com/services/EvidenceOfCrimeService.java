@@ -1,6 +1,8 @@
 package com.services;
 
 import com.DAO.interfaces.IDAOEvidenceOfCrime;
+import com.logic.Crime;
+import com.logic.Evidence;
 import com.logic.EvidenceOfCrime;
 import com.logic.EvidenceType;
 import com.services.interfaces.IEvidenceOfCrimeService;
@@ -44,6 +46,8 @@ public class EvidenceOfCrimeService implements IEvidenceOfCrimeService {
     @Override
     public boolean addEvidenceOfCrime(long evidenceId, long crimeId, String type, LocalDateTime dateAdded, String details, String photoPath) {
         EvidenceOfCrime evidenceOfCrime = new EvidenceOfCrime();
+        evidenceOfCrime.parentEvidence = new Evidence();
+        evidenceOfCrime.parentCrime = new Crime();
         evidenceOfCrime.parentEvidence.setEvidenceId(evidenceId);
         evidenceOfCrime.parentCrime.setCrimeId(crimeId);
         evidenceOfCrime.setEvidenceType(type);
@@ -57,6 +61,8 @@ public class EvidenceOfCrimeService implements IEvidenceOfCrimeService {
     @Override
     public boolean updateEvidenceOfCrime(long evidenceId, long crimeId, String type, LocalDateTime dateAdded, String details, String photoPath) {
         EvidenceOfCrime evidenceOfCrime = new EvidenceOfCrime();
+        evidenceOfCrime.parentEvidence = new Evidence();
+        evidenceOfCrime.parentCrime = new Crime();
         evidenceOfCrime.parentEvidence.setEvidenceId(evidenceId);
         evidenceOfCrime.parentCrime.setCrimeId(crimeId);
         evidenceOfCrime.setEvidenceType(type);

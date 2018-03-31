@@ -48,8 +48,8 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
     }
 
     private static final DateTimeFormatter FORMATTER_DATE = ofPattern("yyyy-MM-dd");
-    private static final DateTimeFormatter FORMATTER_TIME = ofPattern("hh:mm");
-    private static final DateTimeFormatter FORMATTER_DATETIME = ofPattern("yyyy-MM-dd hh:mm");
+    private static final DateTimeFormatter FORMATTER_TIME = ofPattern("HH:mm");
+    private static final DateTimeFormatter FORMATTER_DATETIME = ofPattern("yyyy-MM-dd HH:mm");
 
     @Bean
     public MappingJackson2HttpMessageConverter customJackson2HttpMessageConverter() {
