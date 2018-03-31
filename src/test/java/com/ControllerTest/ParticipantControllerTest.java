@@ -33,7 +33,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest
-@Configuration("MVCConfig")
 public class ParticipantControllerTest {
     private MockMvc mockMvc;
 

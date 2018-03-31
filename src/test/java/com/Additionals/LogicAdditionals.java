@@ -66,8 +66,8 @@ public final class LogicAdditionals {
     public static CriminalCase getCustomCriminalCase() {
         CriminalCase crCase = new CriminalCase();
         crCase.setCriminalCaseId(1);
-        crCase.setCloseDate(null);
-        crCase.setCreateDate(null);
+        crCase.setCloseDate(localDate);
+        crCase.setCreateDate(localDate);
         crCase.setClosed(true);
         crCase.setDetectiveId(1);
         Detective det = new Detective();
@@ -89,10 +89,10 @@ public final class LogicAdditionals {
     public static Crime getCustomCrime() {
         Crime crime = new Crime();
         crime.setCrimeId(1);
-        crime.setCrimeDate(null);
+        crime.setCrimeDate(localDate);
         crime.setCrimeType("ARSON");
         crime.setCrimePlace("Minsk");
-        crime.setCrimeTime(null);
+        crime.setCrimeTime(localTime);
         crime.setDescription("Long long");
         crime.setCriminalCaseId(1);
         crime.setParentCriminalCase(getCustomCriminalCase());
@@ -113,7 +113,7 @@ public final class LogicAdditionals {
         evidenceOfCrime.setEvidenceType("OBJECT_FROM_CRIME_SCENE");
         evidenceOfCrime.setPhotoPath("photo");
         evidenceOfCrime.setDetails("details");
-        evidenceOfCrime.setDateAdded(null);
+        evidenceOfCrime.setDateAdded(localDateTime);
         return evidenceOfCrime;
     }
 
@@ -146,11 +146,11 @@ public final class LogicAdditionals {
         participant.setName("name");
         participant.setPhotoPath("photo");
         participant.setHomeAddress("addr");
-        participant.setBirthDay(null);
+        participant.setBirthDay(localDate);
         participant.setWitnessReport("report");
         participant.setAlibi("none");
         participant.setCrimeId(1);
-        participant.setDateAdded(null);
+        participant.setDateAdded(localDateTime);
         participant.setCrime(getCustomCrime());
         return participant;
     }
@@ -175,7 +175,7 @@ public final class LogicAdditionals {
         man.setName("name");
         man.setPhotoPath("photo");
         man.setHomeAddress("addr");
-        man.setBirthDay(null);
+        man.setBirthDay(localDate);
         return man;
     }
 
@@ -186,7 +186,7 @@ public final class LogicAdditionals {
         man.setName("name");
         man.setPhotoPath("photo");
         man.setHomeAddress("addr");
-        man.setBirthDay(null);
+        man.setBirthDay(localDate);
         man.setLogin("login");
         man.setHashOfPassword("hash");
         man.setEmail("email");
