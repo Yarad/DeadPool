@@ -1,15 +1,60 @@
 package com.Additionals;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import com.logic.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.time.format.DateTimeFormatter.ofPattern;
+
 public final class LogicAdditionals {
     private LogicAdditionals() {}
+
+    private static final DateTimeFormatter FORMATTER_DATE = ofPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter FORMATTER_TIME = ofPattern("HH:mm");
+    private static final DateTimeFormatter FORMATTER_DATETIME = ofPattern("yyyy-MM-dd HH:mm");
+
+    //TODO: настроить для mockMVC WebMvcConfigurerAdapter
+    private static final LocalDate localDate =
+            null
+            //LocalDate.of(2012,12,2)
+            ;
+    private static final LocalTime localTime =
+            null
+            //LocalTime.of(15,57)
+            ;
+    private static final LocalDateTime localDateTime =
+            null
+            //LocalDateTime.of(2014,6,28,17,34)
+            ;
+
+    public static ObjectMapper objectMapper() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule()
+                .addSerializer(LocalDate.class, new LocalDateSerializer(FORMATTER_DATE))
+                .addSerializer(LocalTime.class, new LocalTimeSerializer(FORMATTER_TIME))
+                .addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(FORMATTER_DATETIME))
+                .addDeserializer(LocalDate.class, new LocalDateDeserializer(FORMATTER_DATE))
+                .addDeserializer(LocalTime.class, new LocalTimeDeserializer(FORMATTER_TIME))
+                .addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(FORMATTER_DATETIME)));
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        return objectMapper;
+    }
 
     public static List<CriminalCase> getCriminalCases() {
         List<CriminalCase> cases = new ArrayList<>();
@@ -50,6 +95,7 @@ public final class LogicAdditionals {
         crime.setCrimeTime(null);
         crime.setDescription("Long long");
         crime.setCriminalCaseId(1);
+        crime.setParentCriminalCase(getCustomCriminalCase());
         return crime;
     }
 
@@ -68,6 +114,12 @@ public final class LogicAdditionals {
         evidenceOfCrime.setPhotoPath("photo");
         evidenceOfCrime.setDetails("details");
         evidenceOfCrime.setDateAdded(null);
+        return evidenceOfCrime;
+    }
+
+    public static EvidenceOfCrime getCustomEvidenceOfCrimeWithDate() {
+        EvidenceOfCrime evidenceOfCrime = getCustomEvidenceOfCrime();
+        evidenceOfCrime.setDateAdded(LocalDateTime.of(2012,5,12,12,56));
         return evidenceOfCrime;
     }
 
@@ -100,6 +152,12 @@ public final class LogicAdditionals {
         participant.setCrimeId(1);
         participant.setDateAdded(null);
         participant.setCrime(getCustomCrime());
+        return participant;
+    }
+
+    public static Participant getCustomParticipantWithDate() {
+        Participant participant = getCustomParticipant();
+        participant.setDateAdded(LocalDateTime.of(2012,5,12,12,56));
         return participant;
     }
 

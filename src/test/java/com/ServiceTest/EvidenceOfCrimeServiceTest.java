@@ -71,23 +71,112 @@ public class EvidenceOfCrimeServiceTest {
 
     @Test
     public void addEvidenceOfCrime() throws Exception {
-        EvidenceOfCrime evidenceOfCrime = LogicAdditionals.getCustomEvidenceOfCrime();
+        EvidenceOfCrime evidenceOfCrime = LogicAdditionals.getCustomEvidenceOfCrimeWithDate();
         boolean expectedResult = true;
         when(daoEvidenceOfCrime.addEvidenceOfCrime(any(EvidenceOfCrime.class))).thenReturn(expectedResult);
 
-        boolean actualResult = service.addEvidenceOfCrime(evidenceOfCrime.parentEvidence.getEvidenceId(), evidenceOfCrime.parentCrime.getCrimeId(), evidenceOfCrime.getEvidenceType().toString(), evidenceOfCrime.getDateAdded().toLocalDate(), evidenceOfCrime.getDateAdded().toLocalTime(), evidenceOfCrime.getDetails(), evidenceOfCrime.getPhotoPath());
+        boolean actualResult = service.addEvidenceOfCrime(
+                evidenceOfCrime.parentEvidence.getEvidenceId(),
+                evidenceOfCrime.parentCrime.getCrimeId(),
+                evidenceOfCrime.getEvidenceType().toString(),
+                (evidenceOfCrime.getDateAdded() != null) ? evidenceOfCrime.getDateAdded().toLocalDate() : null,
+                (evidenceOfCrime.getDateAdded() != null) ? evidenceOfCrime.getDateAdded().toLocalTime() : null,
+                evidenceOfCrime.getDetails(),
+                evidenceOfCrime.getPhotoPath()
+        );
+
+        assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    public void addEvidenceOfCrime_NotCorrectDate() throws Exception {
+        EvidenceOfCrime evidenceOfCrime = LogicAdditionals.getCustomEvidenceOfCrimeWithDate();
+        boolean expectedResult = false;
+        when(daoEvidenceOfCrime.addEvidenceOfCrime(any(EvidenceOfCrime.class))).thenReturn(expectedResult);
+
+        boolean actualResult = service.addEvidenceOfCrime(
+                evidenceOfCrime.parentEvidence.getEvidenceId(),
+                evidenceOfCrime.parentCrime.getCrimeId(),
+                evidenceOfCrime.getEvidenceType().toString(),
+                (evidenceOfCrime.getDateAdded() != null) ? evidenceOfCrime.getDateAdded().toLocalDate() : null,
+                null,
+                evidenceOfCrime.getDetails(),
+                evidenceOfCrime.getPhotoPath()
+        );
+
+        assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    public void addEvidenceOfCrime_NotCorrectStatus() throws Exception {
+        EvidenceOfCrime evidenceOfCrime = LogicAdditionals.getCustomEvidenceOfCrimeWithDate();
+        boolean expectedResult = false;
+        when(daoEvidenceOfCrime.addEvidenceOfCrime(any(EvidenceOfCrime.class))).thenReturn(expectedResult);
+
+        boolean actualResult = service.addEvidenceOfCrime(
+                evidenceOfCrime.parentEvidence.getEvidenceId(),
+                evidenceOfCrime.parentCrime.getCrimeId(),
+                evidenceOfCrime.getEvidenceType().getName(),
+                (evidenceOfCrime.getDateAdded() != null) ? evidenceOfCrime.getDateAdded().toLocalDate() : null,
+                (evidenceOfCrime.getDateAdded() != null) ? evidenceOfCrime.getDateAdded().toLocalTime() : null,
+                evidenceOfCrime.getDetails(),
+                evidenceOfCrime.getPhotoPath()
+        );
 
         assertEquals(expectedResult, actualResult);
     }
 
     @Test
     public void updateEvidenceOfCrime() throws Exception {
-        EvidenceOfCrime evidenceOfCrime = LogicAdditionals.getCustomEvidenceOfCrime();
+        EvidenceOfCrime evidenceOfCrime = LogicAdditionals.getCustomEvidenceOfCrimeWithDate();
         boolean expectedResult = true;
         when(daoEvidenceOfCrime.updateEvidenceOfCrime(any(EvidenceOfCrime.class))).thenReturn(expectedResult);
 
-        boolean actualResult = service.updateEvidenceOfCrime(evidenceOfCrime.parentEvidence.getEvidenceId(), evidenceOfCrime.parentCrime.getCrimeId(), evidenceOfCrime.getEvidenceType().toString(), evidenceOfCrime.getDateAdded().toLocalDate(), evidenceOfCrime.getDateAdded().toLocalTime(), evidenceOfCrime.getDetails(), evidenceOfCrime.getPhotoPath());
+        boolean actualResult = service.updateEvidenceOfCrime(
+                evidenceOfCrime.parentEvidence.getEvidenceId(),
+                evidenceOfCrime.parentCrime.getCrimeId(),
+                evidenceOfCrime.getEvidenceType().toString(),
+                (evidenceOfCrime.getDateAdded() != null) ? evidenceOfCrime.getDateAdded().toLocalDate() : null,
+                (evidenceOfCrime.getDateAdded() != null) ? evidenceOfCrime.getDateAdded().toLocalTime() : null,
+                evidenceOfCrime.getDetails(),
+                evidenceOfCrime.getPhotoPath()
+        );
+        assertEquals(expectedResult, actualResult);
+    }
 
+    @Test
+    public void updateEvidenceOfCrime_NotCorrectDate() throws Exception {
+        EvidenceOfCrime evidenceOfCrime = LogicAdditionals.getCustomEvidenceOfCrimeWithDate();
+        boolean expectedResult = false;
+        when(daoEvidenceOfCrime.updateEvidenceOfCrime(any(EvidenceOfCrime.class))).thenReturn(expectedResult);
+
+        boolean actualResult = service.updateEvidenceOfCrime(
+                evidenceOfCrime.parentEvidence.getEvidenceId(),
+                evidenceOfCrime.parentCrime.getCrimeId(),
+                evidenceOfCrime.getEvidenceType().toString(),
+                null,
+                (evidenceOfCrime.getDateAdded() != null) ? evidenceOfCrime.getDateAdded().toLocalTime() : null,
+                evidenceOfCrime.getDetails(),
+                evidenceOfCrime.getPhotoPath()
+        );
+        assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    public void updateEvidenceOfCrime_NotCorrectStatus() throws Exception {
+        EvidenceOfCrime evidenceOfCrime = LogicAdditionals.getCustomEvidenceOfCrimeWithDate();
+        boolean expectedResult = false;
+        when(daoEvidenceOfCrime.updateEvidenceOfCrime(any(EvidenceOfCrime.class))).thenReturn(expectedResult);
+
+        boolean actualResult = service.updateEvidenceOfCrime(
+                evidenceOfCrime.parentEvidence.getEvidenceId(),
+                evidenceOfCrime.parentCrime.getCrimeId(),
+                evidenceOfCrime.getEvidenceType().getName(),
+                (evidenceOfCrime.getDateAdded() != null) ? evidenceOfCrime.getDateAdded().toLocalDate() : null,
+                (evidenceOfCrime.getDateAdded() != null) ? evidenceOfCrime.getDateAdded().toLocalTime() : null,
+                evidenceOfCrime.getDetails(),
+                evidenceOfCrime.getPhotoPath()
+        );
         assertEquals(expectedResult, actualResult);
     }
 }

@@ -71,12 +71,34 @@ public class CrimeServiceTest {
     }
 
     @Test
+    public void addCrime_NotCorrectStatus() throws Exception {
+        Crime crime = LogicAdditionals.getCustomCrime();
+        boolean expectedResult = false;
+        when(daoCrime.addCrime(any(Crime.class))).thenReturn(expectedResult);
+
+        boolean actualResult = service.addCrime(crime.getCriminalCaseId(), crime.getCrimeType().getName(), crime.getDescription(), crime.getCrimeDate(),crime.getCrimeTime(), crime.getCrimePlace());
+
+        assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
     public void updateCrime() throws Exception {
         Crime crime = LogicAdditionals.getCustomCrime();
         boolean expectedResult = true;
         when(daoCrime.updateCrime(any(Crime.class))).thenReturn(expectedResult);
 
         boolean actualResult = service.updateCrime(crime.getCrimeId(), crime.getCriminalCaseId(), crime.getCrimeType().toString(), crime.getDescription(), crime.getCrimeDate(),crime.getCrimeTime(), crime.getCrimePlace());
+
+        assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    public void updateCrime_NotCorrectStatus() throws Exception {
+        Crime crime = LogicAdditionals.getCustomCrime();
+        boolean expectedResult = false;
+        when(daoCrime.updateCrime(any(Crime.class))).thenReturn(expectedResult);
+
+        boolean actualResult = service.updateCrime(crime.getCrimeId(), crime.getCriminalCaseId(), crime.getCrimeType().getName(), crime.getDescription(), crime.getCrimeDate(),crime.getCrimeTime(), crime.getCrimePlace());
 
         assertEquals(expectedResult, actualResult);
     }

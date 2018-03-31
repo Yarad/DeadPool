@@ -65,22 +65,114 @@ public class ParticipantServiceTest {
 
     @Test
     public void addParticipant() throws Exception {
-        Participant participant = LogicAdditionals.getCustomParticipant();
+        Participant participant = LogicAdditionals.getCustomParticipantWithDate();
         boolean expectedResult = true;
         when(daoParticipant.addParticipant(any(Participant.class))).thenReturn(expectedResult);
 
-        boolean actualResult = service.addParticipant(participant.getManId(), participant.getCrimeId(), participant.getParticipantStatus().toString(), participant.getDateAdded().toLocalDate(), participant.getDateAdded().toLocalTime(), participant.getAlibi(), participant.getWitnessReport());
+        boolean actualResult = service.addParticipant(
+                participant.getManId(),
+                participant.getCrimeId(),
+                participant.getParticipantStatus().toString(),
+                (participant.getDateAdded() != null) ? participant.getDateAdded().toLocalDate() : null,
+                (participant.getDateAdded() != null) ? participant.getDateAdded().toLocalTime() : null,
+                participant.getAlibi(),
+                participant.getWitnessReport()
+        );
+
+        assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    public void addParticipant_NotCorrectDate() throws Exception {
+        Participant participant = LogicAdditionals.getCustomParticipantWithDate();
+        boolean expectedResult = false;
+        when(daoParticipant.addParticipant(any(Participant.class))).thenReturn(expectedResult);
+
+        boolean actualResult = service.addParticipant(
+                participant.getManId(),
+                participant.getCrimeId(),
+                participant.getParticipantStatus().toString(),
+                null,
+                (participant.getDateAdded() != null) ? participant.getDateAdded().toLocalTime() : null,
+                participant.getAlibi(),
+                participant.getWitnessReport()
+        );
+
+        assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    public void addParticipant_NotCorrectStatus() throws Exception {
+        Participant participant = LogicAdditionals.getCustomParticipantWithDate();
+        boolean expectedResult = false;
+        when(daoParticipant.addParticipant(any(Participant.class))).thenReturn(expectedResult);
+
+        boolean actualResult = service.addParticipant(
+                participant.getManId(),
+                participant.getCrimeId(),
+                participant.getParticipantStatus().getName(),
+                (participant.getDateAdded() != null) ? participant.getDateAdded().toLocalDate() : null,
+                (participant.getDateAdded() != null) ? participant.getDateAdded().toLocalTime() : null,
+                participant.getAlibi(),
+                participant.getWitnessReport()
+        );
 
         assertEquals(expectedResult, actualResult);
     }
 
     @Test
     public void updateParticipant() throws Exception {
-        Participant participant = LogicAdditionals.getCustomParticipant();
+        Participant participant = LogicAdditionals.getCustomParticipantWithDate();
         boolean expectedResult = true;
         when(daoParticipant.updateParticipant(any(Participant.class))).thenReturn(expectedResult);
 
-        boolean actualResult = service.updateParticipant(participant.getManId(), participant.getCrimeId(), participant.getParticipantStatus().toString(), participant.getDateAdded().toLocalDate(), participant.getDateAdded().toLocalTime(), participant.getAlibi(), participant.getWitnessReport());
+        boolean actualResult = service.updateParticipant(
+                participant.getManId(),
+                participant.getCrimeId(),
+                participant.getParticipantStatus().toString(),
+                (participant.getDateAdded() != null) ? participant.getDateAdded().toLocalDate() : null,
+                (participant.getDateAdded() != null) ? participant.getDateAdded().toLocalTime() : null,
+                participant.getAlibi(),
+                participant.getWitnessReport()
+        );
+
+        assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    public void updateParticipant_NotCorrectDate() throws Exception {
+        Participant participant = LogicAdditionals.getCustomParticipantWithDate();
+        boolean expectedResult = false;
+        when(daoParticipant.updateParticipant(any(Participant.class))).thenReturn(expectedResult);
+
+        boolean actualResult = service.updateParticipant(
+                participant.getManId(),
+                participant.getCrimeId(),
+                participant.getParticipantStatus().toString(),
+                null,
+                (participant.getDateAdded() != null) ? participant.getDateAdded().toLocalTime() : null,
+                participant.getAlibi(),
+                participant.getWitnessReport()
+        );
+
+        assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    public void updateParticipant_NotCorrectStatus() throws Exception {
+        Participant participant = LogicAdditionals.getCustomParticipantWithDate();
+        boolean expectedResult = false;
+        when(daoParticipant.updateParticipant(any(Participant.class))).thenReturn(expectedResult);
+
+        boolean actualResult = service.updateParticipant(
+                participant.getManId(),
+                participant.getCrimeId(),
+                participant.getParticipantStatus().getName(),
+                (participant.getDateAdded() != null) ? participant.getDateAdded().toLocalDate() : null,
+                (participant.getDateAdded() != null) ? participant.getDateAdded().toLocalTime() : null,
+                participant.getAlibi(),
+                participant.getWitnessReport()
+        );
 
         assertEquals(expectedResult, actualResult);
     }

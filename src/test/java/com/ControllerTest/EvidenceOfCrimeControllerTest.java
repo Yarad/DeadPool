@@ -5,6 +5,7 @@ import com.Additionals.TokensForTests;
 import com.DTO.*;
 import com.DTO.parsers.EvidenceOfCrimeParser;
 import com.DTO.parsers.EvidenceParser;
+import com.config.CORSFilter;
 import com.controller.EvidenceOfCrimeController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.logic.Evidence;
@@ -17,7 +18,9 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -34,6 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest
+@Configuration("MVCConfig")
 public class EvidenceOfCrimeControllerTest {
     private MockMvc mockMvc;
 
@@ -53,12 +57,13 @@ public class EvidenceOfCrimeControllerTest {
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders
                 .standaloneSetup(controller)
+                .addFilters(new CORSFilter())
                 .build();
     }
 
     @BeforeClass
     public static void getDAO() {
-        objectMapper = new ObjectMapper();
+        objectMapper = LogicAdditionals.objectMapper();
     }
 
     @Test
