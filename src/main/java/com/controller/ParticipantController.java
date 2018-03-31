@@ -28,7 +28,8 @@ public class ParticipantController {
                 participant.getMan().getId(),
                 participant.getCrime().getId(),
                 participant.getStatus(),
-                LocalDateTime.of(participant.getDateAdded(), participant.getTimeAdded()),
+                participant.getDateAdded(),
+                participant.getTimeAdded(),
                 participant.getAlibi(),
                 participant.getWitnessReport()
         );
@@ -43,7 +44,8 @@ public class ParticipantController {
                 participant.getMan().getId(),
                 participant.getCrime().getId(),
                 participant.getStatus(),
-                LocalDateTime.of(participant.getDateAdded(), participant.getTimeAdded()),
+                participant.getDateAdded(),
+                participant.getTimeAdded(),
                 participant.getAlibi(),
                 participant.getWitnessReport()
         );

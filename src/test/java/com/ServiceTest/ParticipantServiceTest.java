@@ -69,7 +69,7 @@ public class ParticipantServiceTest {
         boolean expectedResult = true;
         when(daoParticipant.addParticipant(any(Participant.class))).thenReturn(expectedResult);
 
-        boolean actualResult = service.addParticipant(participant.getManId(), participant.getCrimeId(), participant.getParticipantStatus().toString(), participant.getDateAdded(), participant.getAlibi(), participant.getWitnessReport());
+        boolean actualResult = service.addParticipant(participant.getManId(), participant.getCrimeId(), participant.getParticipantStatus().toString(), participant.getDateAdded().toLocalDate(), participant.getDateAdded().toLocalTime(), participant.getAlibi(), participant.getWitnessReport());
 
         assertEquals(expectedResult, actualResult);
     }
@@ -80,7 +80,7 @@ public class ParticipantServiceTest {
         boolean expectedResult = true;
         when(daoParticipant.updateParticipant(any(Participant.class))).thenReturn(expectedResult);
 
-        boolean actualResult = service.updateParticipant(participant.getManId(), participant.getCrimeId(), participant.getParticipantStatus().toString(), participant.getDateAdded(), participant.getAlibi(), participant.getWitnessReport());
+        boolean actualResult = service.updateParticipant(participant.getManId(), participant.getCrimeId(), participant.getParticipantStatus().toString(), participant.getDateAdded().toLocalDate(), participant.getDateAdded().toLocalTime(), participant.getAlibi(), participant.getWitnessReport());
 
         assertEquals(expectedResult, actualResult);
     }

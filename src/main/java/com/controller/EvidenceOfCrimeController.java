@@ -55,7 +55,8 @@ public class EvidenceOfCrimeController {
                 evidenceOfCrime.getEvidence().getId(),
                 evidenceOfCrime.getCrime().getId(),
                 evidenceOfCrime.getType(),
-                LocalDateTime.of(evidenceOfCrime.getDateAdded(), evidenceOfCrime.getTimeAdded()),
+                evidenceOfCrime.getDateAdded(),
+                evidenceOfCrime.getTimeAdded(),
                 evidenceOfCrime.getDetails(),
                 evidenceOfCrime.getPhotoPath()
         );
@@ -70,7 +71,8 @@ public class EvidenceOfCrimeController {
                 evidenceOfCrime.getEvidence().getId(),
                 evidenceOfCrime.getCrime().getId(),
                 evidenceOfCrime.getType(),
-                LocalDateTime.of(evidenceOfCrime.getDateAdded(), evidenceOfCrime.getTimeAdded()),
+                evidenceOfCrime.getDateAdded(),
+                evidenceOfCrime.getTimeAdded(),
                 evidenceOfCrime.getDetails(),
                 evidenceOfCrime.getPhotoPath()
         );

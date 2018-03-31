@@ -60,7 +60,7 @@ public class ParticipantControllerTest {
         inputJson.setCrime(new IdOnlyDTO());
         OperationResultDTO response = new OperationResultDTO(true);
 
-        when(participantService.addParticipant(inputJson.getMan().getId(), inputJson.getCrime().getId(), inputJson.getStatus(), LocalDateTime.of(inputJson.getDateAdded(), inputJson.getTimeAdded()), inputJson.getAlibi(), inputJson.getWitnessReport())).thenReturn(true);
+        when(participantService.addParticipant(inputJson.getMan().getId(), inputJson.getCrime().getId(), inputJson.getStatus(), inputJson.getDateAdded(), inputJson.getTimeAdded(), inputJson.getAlibi(), inputJson.getWitnessReport())).thenReturn(true);
 
         mockMvc.perform(
                 post("/participants/add")
@@ -79,7 +79,7 @@ public class ParticipantControllerTest {
         inputJson.setCrime(new IdOnlyDTO());
         OperationResultDTO response = new OperationResultDTO(true);
 
-        when(participantService.updateParticipant(inputJson.getMan().getId(), inputJson.getCrime().getId(), inputJson.getStatus(), LocalDateTime.of(inputJson.getDateAdded(), inputJson.getTimeAdded()), inputJson.getAlibi(), inputJson.getWitnessReport())).thenReturn(true);
+        when(participantService.updateParticipant(inputJson.getMan().getId(), inputJson.getCrime().getId(), inputJson.getStatus(), inputJson.getDateAdded(), inputJson.getTimeAdded(), inputJson.getAlibi(), inputJson.getWitnessReport())).thenReturn(true);
 
         mockMvc.perform(
                 post("/participants/update")

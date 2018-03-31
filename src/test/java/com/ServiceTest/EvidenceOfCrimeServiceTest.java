@@ -75,7 +75,7 @@ public class EvidenceOfCrimeServiceTest {
         boolean expectedResult = true;
         when(daoEvidenceOfCrime.addEvidenceOfCrime(any(EvidenceOfCrime.class))).thenReturn(expectedResult);
 
-        boolean actualResult = service.addEvidenceOfCrime(evidenceOfCrime.parentEvidence.getEvidenceId(), evidenceOfCrime.parentCrime.getCrimeId(), evidenceOfCrime.getEvidenceType().toString(), evidenceOfCrime.getDateAdded(), evidenceOfCrime.getDetails(), evidenceOfCrime.getPhotoPath());
+        boolean actualResult = service.addEvidenceOfCrime(evidenceOfCrime.parentEvidence.getEvidenceId(), evidenceOfCrime.parentCrime.getCrimeId(), evidenceOfCrime.getEvidenceType().toString(), evidenceOfCrime.getDateAdded().toLocalDate(), evidenceOfCrime.getDateAdded().toLocalTime(), evidenceOfCrime.getDetails(), evidenceOfCrime.getPhotoPath());
 
         assertEquals(expectedResult, actualResult);
     }
@@ -86,7 +86,7 @@ public class EvidenceOfCrimeServiceTest {
         boolean expectedResult = true;
         when(daoEvidenceOfCrime.updateEvidenceOfCrime(any(EvidenceOfCrime.class))).thenReturn(expectedResult);
 
-        boolean actualResult = service.updateEvidenceOfCrime(evidenceOfCrime.parentEvidence.getEvidenceId(), evidenceOfCrime.parentCrime.getCrimeId(), evidenceOfCrime.getEvidenceType().toString(), evidenceOfCrime.getDateAdded(), evidenceOfCrime.getDetails(), evidenceOfCrime.getPhotoPath());
+        boolean actualResult = service.updateEvidenceOfCrime(evidenceOfCrime.parentEvidence.getEvidenceId(), evidenceOfCrime.parentCrime.getCrimeId(), evidenceOfCrime.getEvidenceType().toString(), evidenceOfCrime.getDateAdded().toLocalDate(), evidenceOfCrime.getDateAdded().toLocalTime(), evidenceOfCrime.getDetails(), evidenceOfCrime.getPhotoPath());
 
         assertEquals(expectedResult, actualResult);
     }
