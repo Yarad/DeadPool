@@ -1,0 +1,7 @@
+    public static Date localDateTimeToSqlDate(LocalDateTime localDateTime) {
+
+        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
+        return (Date) Date.from(zonedDateTime.toInstant());
+    }
+
+Есть подозрение что не работает. У меня на ней вылетает исключение.
