@@ -1,11 +1,19 @@
 package com.DAOTest;
 
+import com.Additionals.LogicAdditionals;
+import com.DAO.DAOCrime;
 import com.DAO.DAODetective;
 import com.DAO.DAOMan;
+import com.DAO.DAOParticipant;
+import com.DAO.interfaces.IDAOCrime;
 import com.DAO.interfaces.IDAOMan;
+import com.DAO.interfaces.IDAOParticipant;
+import com.logic.Crime;
 import com.logic.Man;
+import com.logic.Participant;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.test.annotation.Rollback;
 
 import java.time.LocalDate;
 import java.util.Map;
@@ -15,87 +23,186 @@ import static org.junit.Assert.*;
 
 public class DAOManTests {
     private static IDAOMan daoMan;
-    private Man man;
-    private Man actualMan;
+    private static IDAOCrime daoCrime;
+    private static IDAOParticipant daoParticipant;
 
     @BeforeClass
     public static void getDAO() {
         daoMan = new DAOMan();
+        daoCrime = new DAOCrime();
+        daoParticipant = new DAOParticipant();
     }
 
     @Test
-    public void nullValues()  {
+    public void addMan_NullInput()  {
         assertEquals(false, daoMan.addMan(null));
+    }
+
+    @Test
+    public void updateMan_NullInput()  {
         assertEquals(false, daoMan.updateMan(null));
     }
 
+    @Rollback
     @Test
-    public void complexCorrectWork()  {
-        Man man = new Man();
-        man.setName("someName");
-        man.setSurname("someSurname");
-        assertEquals(true, daoMan.addMan(man));
+    public void getFullManInfo() throws Exception  {
+        Man man = LogicAdditionals.getCustomMan();
+        if (!daoMan.addMan(man))
+            throw new Exception();
 
         Man actualMan = daoMan.getFullManInfo(man.getManId());
+
         assertManEquals(man, actualMan);
-
-        man.setName("10letters_20letters_30letters_40letters_");
-        man.setSurname("Surname_10Surname_20Surname_30Surname_40");
-        man.setPhotoPath("IDAOEvidence & IDAOEvidenceOfCrime имеют один и тот же метод getAllEvidencesByCrime. Надо оптимизировать. Что мне надо? Все EvidenceOfCrime, у которых заполнено Evidence & EvidenceType. Я использую только у себбя только метод IDAOEvidenceOfCrime. Над");
-        man.setHomeAddress("someText");
-        man.setBirthDay(LocalDate.of(2016, 12,31));
-        assertEquals(true, daoMan.updateMan(man));
-
-        actualMan = daoMan.getFullManInfo(man.getManId());
-        assertManEquals(man, actualMan);
-
-        //TODO: откомментировать после написания ДАО
-        /*
-        Map<Man,Long> mapping = daoMan.getAllManWithCrimeAmount();
-        assertNotNull(mapping);
-        assertEquals(0, mapping.get(actualMan).longValue());
-        */
     }
-
+/*
     @Test
-    public void limitAndExceptionWork()  {
-        // given
-        Man man = new Man();
-        man.setName("10letters_20letters_30letters_40letters_L");
-        man.setSurname("someSurname");
+    public void getFullManInfo_NotExistingId() {
+        Man expectedMan = null;
+        long notCorrectId = -1;
 
-        // execution
+        Man actualMan = daoMan.getFullManInfo(notCorrectId);
+
+        assertManEquals(expectedMan, actualMan);
+    }
+*/
+    @Rollback
+    @Test
+    public void addMan()  {
+        Man man = LogicAdditionals.getCustomMan();
+        boolean expectedResult = true;
+
         boolean actualResult = daoMan.addMan(man);
 
-        // verify
-        assertEquals(false, actualResult);
+        assertEquals(actualResult, expectedResult);
+    }
 
-        man.setName("no_limitation");
-        man.setSurname("10letters_20letters_30letters_40letters_L");
-        assertEquals(false, daoMan.addMan(man));
+    @Rollback
+    @Test
+    public void addMan_NotCorrectValue()  {
+        Man man = new Man();
+        man.setName("someNameWithoutSurname");
+        boolean expectedResult = false;
 
-        man.setPhotoPath("IDAOEvidence & IDAOEvidenceOfCrime имеют один и тот же метод getAllEvidencesByCrime. Надо оптимизировать. Что мне надо? Все EvidenceOfCrime, у которых заполнено Evidence & EvidenceType. Я использую только у себбя только метод IDAOEvidenceOfCrime. Надо");
-        man.setSurname("no_limitation");
-        assertEquals(false, daoMan.addMan(man));
+        boolean actualResult = daoMan.addMan(man);
 
-        man.setPhotoPath("no_limitation");
-        man.setBirthDay(LocalDate.of(2012,5,31));
-        assertEquals(true, daoMan.addMan(man));
+        assertEquals(actualResult, expectedResult);
+    }
 
-        man.setName("10letters_20letters_30letters_40letters_L");
-        assertEquals(false, daoMan.updateMan(man));
+    @Rollback
+    @Test
+    public void addMan_LimitField()  {
+        Man man = new Man();
+        man.setName("10letters_20letters_30letters_40letters_LIMIT!!!!!!");
+        man.setSurname("Correct");
+        boolean expectedResult = false;
 
-        man.setName("no_limitation");
-        man.setSurname("10letters_20letters_30letters_40letters_L");
-        assertEquals(false, daoMan.updateMan(man));
+        boolean actualResult = daoMan.addMan(man);
 
-        man.setPhotoPath("IDAOEvidence & IDAOEvidenceOfCrime имеют один и тот же метод getAllEvidencesByCrime. Надо оптимизировать. Что мне надо? Все EvidenceOfCrime, у которых заполнено Evidence & EvidenceType. Я использую только у себбя только метод IDAOEvidenceOfCrime. Надо");
-        man.setSurname("no_limitation");
-        assertEquals(false, daoMan.updateMan(man));
+        assertEquals(actualResult, expectedResult);
+    }
 
-        man.setPhotoPath("no_limitation");
-        man.setBirthDay(null);
-        assertEquals(true, daoMan.updateMan(man));
+    @Rollback
+    @Test
+    public void updateMan() throws Exception {
+        Man man = LogicAdditionals.getCustomMan();
+        if (!daoMan.addMan(man))
+            throw new Exception();
+        man.setHomeAddress("Виздзор Гарден, Лондон");
+        man.setName("Sherlock");
+        man.setPhotoPath("my best photo will be created soon");
+        man.setBirthDay(LocalDate.of(2015,12,25));
+        man.setSurname("Holms, sir!");
+        boolean expectedResult = true;
+
+        boolean actualResult = daoMan.updateMan(man);
+        Man actualMan = daoMan.getFullManInfo(man.getManId());
+
+        assertEquals(actualResult, expectedResult);
+        assertManEquals(man, actualMan);
+    }
+
+    /*@Rollback
+    @Test
+    public void updateMan_NotCorrectId() throws Exception {
+        Man man = LogicAdditionals.getCustomMan();
+        if (!daoMan.addMan(man))
+            throw new Exception();
+        man.setManId(-2);
+        boolean expectedResult = false;
+
+        boolean actualResult = daoMan.updateMan(man);
+
+        assertEquals(actualResult, expectedResult);
+    }
+*/
+    @Rollback
+    @Test
+    public void updateMan_LimitOfField() throws Exception {
+        Man man = LogicAdditionals.getCustomMan();
+        if (!daoMan.addMan(man))
+            throw new Exception();
+        man.setName("10letters_20letters_30letters_40letters_LIMIT!!!!!!");
+        boolean expectedResult = false;
+
+        boolean actualResult = daoMan.updateMan(man);
+
+        assertEquals(actualResult, expectedResult);
+    }
+
+    //TODO: look after method realization
+    @Rollback
+    @Test
+    public void getAllManWithCrimeAmount_NoCrimes() throws Exception {
+        Man man = LogicAdditionals.getCustomMan();
+        if (!daoMan.addMan(man))
+            throw new Exception();
+
+        Map<Man,Long> mapping = daoMan.getAllManWithCrimeAmount();
+
+        assertNotNull(mapping);
+        assertNotEquals(0, mapping.size());
+        long crimesAmount = mapping.get(man);
+        assertEquals(0, crimesAmount);
+    }
+
+    @Rollback
+    @Test
+    public void getAllManWithCrimeAmount_CrimesExist() throws Exception {
+        Man man = LogicAdditionals.getCustomMan();
+        if (!daoMan.addMan(man))
+            throw new Exception();
+        Crime crime = LogicAdditionals.getCustomCrime();
+        //TODO: убрать псоел исправления конфигураций для контроллера
+        crime.setCrimeDate(LocalDate.of(2012,2,25));
+        if (!daoCrime.addCrime(crime))
+            throw new Exception();
+        Participant participant = LogicAdditionals.getCustomParticipantWithDate();
+        if (!daoParticipant.addParticipant(participant))
+            throw new Exception();
+
+        Map<Man,Long> mapping = daoMan.getAllManWithCrimeAmount();
+
+        assertNotNull(mapping);
+        assertNotEquals(0, mapping.size());
+        long crimesAmount = mapping.get(man);
+        assertEquals(1, crimesAmount);
+    }
+
+    @Rollback
+    @Test
+    public void getAllManWithCrimeAmount_NoManInMap() throws Exception {
+        Man man = LogicAdditionals.getCustomMan();
+
+        Map<Man,Long> mapping = daoMan.getAllManWithCrimeAmount();
+
+        assertNotNull(mapping);
+        boolean wasThorwn = false;
+        try {
+            long value = mapping.get(man);
+        } catch (Exception ex) {
+            wasThorwn = true;
+        }
+        assertEquals(true, wasThorwn);
     }
 
     private void assertManEquals(Man expectedMan, Man actualMan) {
