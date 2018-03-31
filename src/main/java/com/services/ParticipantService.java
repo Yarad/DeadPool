@@ -41,7 +41,11 @@ public class ParticipantService implements IParticipantService {
         Participant participant = new Participant();
         participant.setManId(manId);
         participant.setCrimeId(crimeId);
-        participant.setParticipantStatus(status);
+        try {
+            participant.setParticipantStatus(status);
+        } catch (IllegalArgumentException ex) {
+            return false;
+        }
         participant.setDateAdded(dateAdded);
         participant.setAlibi(alibi);
         participant.setWitnessReport(witnessReport);
@@ -54,7 +58,11 @@ public class ParticipantService implements IParticipantService {
         Participant participant = new Participant();
         participant.setManId(manId);
         participant.setCrimeId(crimeId);
-        participant.setParticipantStatus(status);
+        try {
+            participant.setParticipantStatus(status);
+        } catch (IllegalArgumentException ex) {
+            return false;
+        }
         participant.setDateAdded(dateAdded);
         participant.setAlibi(alibi);
         participant.setWitnessReport(witnessReport);

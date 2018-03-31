@@ -50,7 +50,11 @@ public class EvidenceOfCrimeService implements IEvidenceOfCrimeService {
         evidenceOfCrime.parentCrime = new Crime();
         evidenceOfCrime.parentEvidence.setEvidenceId(evidenceId);
         evidenceOfCrime.parentCrime.setCrimeId(crimeId);
-        evidenceOfCrime.setEvidenceType(type);
+        try {
+            evidenceOfCrime.setEvidenceType(type);
+        } catch (IllegalArgumentException ex) {
+            return false;
+        }
         evidenceOfCrime.setDateAdded(dateAdded);
         evidenceOfCrime.setDetails(details);
         evidenceOfCrime.setPhotoPath(photoPath);
@@ -65,7 +69,11 @@ public class EvidenceOfCrimeService implements IEvidenceOfCrimeService {
         evidenceOfCrime.parentCrime = new Crime();
         evidenceOfCrime.parentEvidence.setEvidenceId(evidenceId);
         evidenceOfCrime.parentCrime.setCrimeId(crimeId);
-        evidenceOfCrime.setEvidenceType(type);
+        try {
+            evidenceOfCrime.setEvidenceType(type);
+        } catch (IllegalArgumentException ex) {
+            return false;
+        }
         evidenceOfCrime.setDateAdded(dateAdded);
         evidenceOfCrime.setDetails(details);
         evidenceOfCrime.setPhotoPath(photoPath);
