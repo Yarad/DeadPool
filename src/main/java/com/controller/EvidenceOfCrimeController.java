@@ -11,6 +11,7 @@ import com.services.interfaces.IEvidenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,6 +56,7 @@ public class EvidenceOfCrimeController {
                 evidenceOfCrime.getCrime().getId(),
                 evidenceOfCrime.getType(),
                 evidenceOfCrime.getDateAdded(),
+                evidenceOfCrime.getTimeAdded(),
                 evidenceOfCrime.getDetails(),
                 evidenceOfCrime.getPhotoPath()
         );
@@ -70,6 +72,7 @@ public class EvidenceOfCrimeController {
                 evidenceOfCrime.getCrime().getId(),
                 evidenceOfCrime.getType(),
                 evidenceOfCrime.getDateAdded(),
+                evidenceOfCrime.getTimeAdded(),
                 evidenceOfCrime.getDetails(),
                 evidenceOfCrime.getPhotoPath()
         );
@@ -79,12 +82,12 @@ public class EvidenceOfCrimeController {
     @IsDetective
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
-    public GenericDTO<ListEvidenceOfCrimeShortedWithCrimeList> getAllCrimes() {
+    public GenericDTO<ListEvidenceOfCrimeShortedWithCrimeList> getAllEvidenceOfCrime() {
         List<EvidenceOfCrime> inputEvidencesOfCrime = evidenceOfCrimeService.getAllEvidencesOfCrime();
         List<EvidenceOfCrimeShortedWithCrimeDTO> results = inputEvidencesOfCrime.stream()
                 .map(curEvidence -> EvidenceOfCrimeParser.parseEvidenceOfCrimeShortedWithCrime(curEvidence))
                 .collect(Collectors.toList());
-        return new GenericDTO<ListEvidenceOfCrimeShortedWithCrimeList>(false, new ListEvidenceOfCrimeShortedWithCrimeList(results));
+        return new GenericDTO<>(false, new ListEvidenceOfCrimeShortedWithCrimeList(results));
     }
 
     @IsDetective
@@ -96,8 +99,8 @@ public class EvidenceOfCrimeController {
     ) {
         EvidenceOfCrime evidenceOfCrime = evidenceOfCrimeService.getEvidenceOfCrimeByEvidenceAndCrime(evidenceId, crimeId);
         return (evidenceOfCrime != null)
-                ? new GenericDTO<EvidenceOfCrimeExtendedDTO>(false, EvidenceOfCrimeParser.parseEvidenceOfCrimeExtended(evidenceOfCrime))
-                : new GenericDTO<EvidenceOfCrimeExtendedDTO>(true, null);
+                ? new GenericDTO<>(false, EvidenceOfCrimeParser.parseEvidenceOfCrimeExtended(evidenceOfCrime))
+                : new GenericDTO<>(true, null);
     }
 
     //TODO: потестировать, когда будет реализован метод получения списка EvidenceOfCrime
@@ -108,8 +111,8 @@ public class EvidenceOfCrimeController {
         Evidence evidence = evidenceService.getEvidenceById(id);
         List<EvidenceOfCrime> evidencesOfCrime = evidenceOfCrimeService.getEvidencesOfCrimeByEvidenceId(id);
         return (evidence != null)
-                ? new GenericDTO<EvidenceExtendedDTO>(false, EvidenceParser.parseEvidenceExtended(evidence, evidencesOfCrime))
-                : new GenericDTO<EvidenceExtendedDTO>(true, null);
+                ? new GenericDTO<>(false, EvidenceParser.parseEvidenceExtended(evidence, evidencesOfCrime))
+                : new GenericDTO<>(true, null);
     }
 
     @IsDetective

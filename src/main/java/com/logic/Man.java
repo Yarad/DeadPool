@@ -6,9 +6,9 @@ import java.time.format.DateTimeParseException;
 import static com.mysql.jdbc.StringUtils.isNullOrEmpty;
 
 public class Man {
-    protected long manId = -1;
-    protected String name = "NoName";
-    protected String surname = "NoSurname";
+    protected long manId;
+    protected String name;
+    protected String surname;
     protected LocalDate birthDay/* = LocalDate.of(2012, 12, 31)*/;
     protected String homeAddress;
     protected String photoPath;

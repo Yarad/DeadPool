@@ -66,7 +66,7 @@ public class CrimeController {
         List<CrimeObjectDTO> results = inputCrimes.stream()
                 .map(curCrime -> CrimeParser.parseCrime(curCrime))
                 .collect(Collectors.toList());
-        return new GenericDTO<ListCrimesDTO>(false, new ListCrimesDTO(results));
+        return new GenericDTO<>(false, new ListCrimesDTO(results));
     }
 
     @IsDetective
@@ -77,8 +77,8 @@ public class CrimeController {
         List<Participant> participants = participantService.getParticipantsByCrimeId(id);
         List<EvidenceOfCrime> evidencesOfCrime = evidenceOfCrimeService.getEvidencesOfCrimeByCrimeId(id);
         return (crime != null)
-                ? new GenericDTO<CrimeExtendedDTO>(false, CrimeParser.parseCrimeFullInformation(crime, participants, evidencesOfCrime))
-                : new GenericDTO<CrimeExtendedDTO>(true, null);
+                ? new GenericDTO<>(false, CrimeParser.parseCrimeFullInformation(crime, participants, evidencesOfCrime))
+                : new GenericDTO<>(true, null);
     }
 
     @IsDetective

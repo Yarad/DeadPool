@@ -85,7 +85,6 @@ public class DAOMan extends DAO implements IDAOMan {
     }
 
     protected boolean fillInfoFromManTableById(long id, Man objectToFill) {
-        //List<HashMap<String, Object>> retArray = currConnection.queryFind("SELECT * FROM `Man` WHERE `man_id` = " + id);
         PreparedStatement preparedQuery = currConnection.prepareStatement("SELECT * FROM `Man` WHERE `man_id` = ?");
         try {
             preparedQuery.setLong(1, id);

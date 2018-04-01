@@ -7,6 +7,7 @@ import com.services.interfaces.IManService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Map;
@@ -17,6 +18,7 @@ public class ManService implements IManService {
     @Qualifier("DAOMan")
     private IDAOMan daoMan;
 
+    @Transactional
     @Override
     public boolean addMan(String name, String surname, LocalDate birthday, String homeAddress, String photoPath) {
         Man newMan = new Participant();
@@ -28,6 +30,7 @@ public class ManService implements IManService {
         return daoMan.addMan(newMan);
     }
 
+    @Transactional
     @Override
     public boolean updateMan(long id, String name, String surname, LocalDate birthday, String homeAddress, String photoPath) {
         Man newMan = new Participant();
@@ -40,11 +43,13 @@ public class ManService implements IManService {
         return daoMan.updateMan(newMan);
     }
 
+    @Transactional
     @Override
     public Map<Man, Long> getAllManWithCrimeAmount() {
         return daoMan.getAllManWithCrimeAmount();
     }
 
+    @Transactional
     @Override
     public Man getFullManInfo(long id) {
         return daoMan.getFullManInfo(id);

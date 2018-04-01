@@ -61,8 +61,8 @@ public class ManController {
         Man man = manService.getFullManInfo(id);
         List<Participant> participants = participantService.getParticipantsByManId(id);
         return (man != null)
-                ? new GenericDTO<ManExtendedDTO>(false, ManParser.parseManExtended(man, participants))
-                : new GenericDTO<ManExtendedDTO>(true, null);
+                ? new GenericDTO<>(false, ManParser.parseManExtended(man, participants))
+                : new GenericDTO<>(true, null);
     }
 
     //TODO: потестить
@@ -75,6 +75,6 @@ public class ManController {
         men.forEach((key,value) -> {
             results.add(ManParser.parseManForList(key, value));
         });
-        return new GenericDTO<ListMenDTO>(false, new ListMenDTO(results));
+        return new GenericDTO<>(false, new ListMenDTO(results));
     }
 }

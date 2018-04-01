@@ -17,12 +17,6 @@ public class ProjectFunctions {
     //ищет setters с использованием рефлексии
     //возвращает часть исходного массива, setter-ы для которого не были найдены
 
-    public static Date localDateTimeToSqlDate(LocalDateTime localDateTime) {
-
-        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
-        return (Date) Date.from(zonedDateTime.toInstant());
-    }
-
     public static HashMap<String, Object> tryFillObjectByDbArray(Object object, HashMap<String, Object> dbArray) {
         List<Method> existingSetters = getSetters(object.getClass().getMethods());
         HashMap<String, Object> avoidedElementsOfArray = new HashMap<String, Object>();

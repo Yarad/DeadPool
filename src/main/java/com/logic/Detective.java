@@ -16,13 +16,8 @@ public class Detective extends Man {
         return login;
     }
 
-    public boolean setLogin(String login) {
-        if (ifLoginValid(login)) {
-            this.login = login;
-            return true;
-        } else {
-            return false;
-        }
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getHashOfPassword() {
@@ -39,11 +34,5 @@ public class Detective extends Man {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    private boolean ifLoginValid(String login) {
-        Pattern p = Pattern.compile("[a-zA-Z]+[a-zA-Z0-9_]+");
-        Matcher m = p.matcher(login);
-        return m.matches();
     }
 }

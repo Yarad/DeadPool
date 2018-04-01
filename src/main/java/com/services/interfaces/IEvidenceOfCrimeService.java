@@ -2,7 +2,8 @@ package com.services.interfaces;
 
 import com.logic.EvidenceOfCrime;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 public interface IEvidenceOfCrimeService {
@@ -10,6 +11,6 @@ public interface IEvidenceOfCrimeService {
     List<EvidenceOfCrime> getAllEvidencesOfCrime();
     EvidenceOfCrime getEvidenceOfCrimeByEvidenceAndCrime(long evidenceId, long crimeId);
     List<EvidenceOfCrime> getEvidencesOfCrimeByEvidenceId(long id);
-    boolean addEvidenceOfCrime(long evidenceId, long crimeId, String type, LocalDateTime dateAdded, String details, String photoPath);
-    boolean updateEvidenceOfCrime(long evidenceId, long crimeId, String type, LocalDateTime dateAdded, String details, String photoPath);
+    boolean addEvidenceOfCrime(long evidenceId, long crimeId, String type, LocalDate dateAdded, LocalTime timeAdded, String details, String photoPath);
+    boolean updateEvidenceOfCrime(long evidenceId, long crimeId, String type, LocalDate dateAdded, LocalTime timeAdded, String details, String photoPath);
 }

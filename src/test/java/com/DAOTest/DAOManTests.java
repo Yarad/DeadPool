@@ -1,101 +1,192 @@
 package com.DAOTest;
 
-import com.DAO.DAODetective;
+import com.Additionals.AllClassesList;
+import com.Additionals.DAOAdditionals;
+import com.Additionals.LogicAdditionals;
+import com.DAO.DAOCrime;
 import com.DAO.DAOMan;
+import com.DAO.DAOParticipant;
+import com.DAO.interfaces.IDAOCrime;
 import com.DAO.interfaces.IDAOMan;
+import com.DAO.interfaces.IDAOParticipant;
+import com.logic.Crime;
 import com.logic.Man;
+import com.logic.Participant;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.time.LocalDate;
 import java.util.Map;
 
-import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
 public class DAOManTests {
     private static IDAOMan daoMan;
-    private Man man;
-    private Man actualMan;
+    private static IDAOCrime daoCrime;
+    private static IDAOParticipant daoParticipant;
+    private static DAOAdditionals daoAdditionals;
 
     @BeforeClass
     public static void getDAO() {
         daoMan = new DAOMan();
+        daoCrime = new DAOCrime();
+        daoParticipant = new DAOParticipant();
+        daoAdditionals = new DAOAdditionals();
     }
 
     @Test
-    public void nullValues()  {
+    public void addMan_NullInput()  {
         assertEquals(false, daoMan.addMan(null));
+    }
+
+    @Test
+    public void updateMan_NullInput()  {
         assertEquals(false, daoMan.updateMan(null));
     }
 
     @Test
-    public void complexCorrectWork()  {
-        Man man = new Man();
-        man.setName("someName");
-        man.setSurname("someSurname");
-        assertEquals(true, daoMan.addMan(man));
+    public void getFullManInfo() throws Exception  {
+        Man man = LogicAdditionals.getCustomMan();
+        if (!daoMan.addMan(man))
+            throw new Exception();
 
-        Man actualMan = daoMan.getFullManInfo(man.getManId());
-        assertManEquals(man, actualMan);
+        try {
+            Man actualMan = daoMan.getFullManInfo(man.getManId());
 
-        man.setName("10letters_20letters_30letters_40letters_");
-        man.setSurname("Surname_10Surname_20Surname_30Surname_40");
-        man.setPhotoPath("IDAOEvidence & IDAOEvidenceOfCrime имеют один и тот же метод getAllEvidencesByCrime. Надо оптимизировать. Что мне надо? Все EvidenceOfCrime, у которых заполнено Evidence & EvidenceType. Я использую только у себбя только метод IDAOEvidenceOfCrime. Над");
-        man.setHomeAddress("someText");
-        man.setBirthDay(LocalDate.of(2016, 12,31));
-        assertEquals(true, daoMan.updateMan(man));
-
-        actualMan = daoMan.getFullManInfo(man.getManId());
-        assertManEquals(man, actualMan);
-
-        //TODO: откомментировать после написания ДАО
-        /*
-        Map<Man,Long> mapping = daoMan.getAllManWithCrimeAmount();
-        assertNotNull(mapping);
-        assertEquals(0, mapping.get(actualMan).longValue());
-        */
+            assertManEquals(man, actualMan);
+        } finally {
+            daoAdditionals.deleteMan(man);
+        }
     }
 
     @Test
-    public void limitAndExceptionWork()  {
-        // given
-        Man man = new Man();
-        man.setName("10letters_20letters_30letters_40letters_L");
-        man.setSurname("someSurname");
+    public void addMan()  {
+        Man man = LogicAdditionals.getCustomMan();
+        boolean expectedResult = true;
 
-        // execution
+        try {
+            boolean actualResult = daoMan.addMan(man);
+
+            assertEquals(actualResult, expectedResult);
+        } finally {
+            daoAdditionals.deleteMan(man);
+        }
+    }
+
+    @Test
+    public void addMan_NotCorrectValue()  {
+        Man man = new Man();
+        man.setName("someNameWithoutSurname");
+        boolean expectedResult = false;
+
         boolean actualResult = daoMan.addMan(man);
 
-        // verify
-        assertEquals(false, actualResult);
+        assertEquals(actualResult, expectedResult);
+    }
 
-        man.setName("no_limitation");
-        man.setSurname("10letters_20letters_30letters_40letters_L");
-        assertEquals(false, daoMan.addMan(man));
+    @Test
+    public void addMan_LimitField()  {
+        Man man = new Man();
+        man.setName("10letters_20letters_30letters_40letters_LIMIT!!!!!!");
+        man.setSurname("Correct");
+        boolean expectedResult = false;
 
-        man.setPhotoPath("IDAOEvidence & IDAOEvidenceOfCrime имеют один и тот же метод getAllEvidencesByCrime. Надо оптимизировать. Что мне надо? Все EvidenceOfCrime, у которых заполнено Evidence & EvidenceType. Я использую только у себбя только метод IDAOEvidenceOfCrime. Надо");
-        man.setSurname("no_limitation");
-        assertEquals(false, daoMan.addMan(man));
+        boolean actualResult = daoMan.addMan(man);
 
-        man.setPhotoPath("no_limitation");
-        man.setBirthDay(LocalDate.of(2012,5,31));
-        assertEquals(true, daoMan.addMan(man));
+        assertEquals(actualResult, expectedResult);
+    }
 
-        man.setName("10letters_20letters_30letters_40letters_L");
-        assertEquals(false, daoMan.updateMan(man));
+    @Test
+    public void updateMan() throws Exception {
+        Man man = LogicAdditionals.getCustomMan();
+        if (!daoMan.addMan(man))
+            throw new Exception();
+        man.setHomeAddress("Виздзор Гарден, Лондон");
+        man.setName("Sherlock");
+        man.setPhotoPath("my best photo will be created soon");
+        man.setBirthDay(LocalDate.of(2015,12,25));
+        man.setSurname("Holms, sir!");
+        boolean expectedResult = true;
 
-        man.setName("no_limitation");
-        man.setSurname("10letters_20letters_30letters_40letters_L");
-        assertEquals(false, daoMan.updateMan(man));
+        try {
+            boolean actualResult = daoMan.updateMan(man);
+            Man actualMan = daoMan.getFullManInfo(man.getManId());
 
-        man.setPhotoPath("IDAOEvidence & IDAOEvidenceOfCrime имеют один и тот же метод getAllEvidencesByCrime. Надо оптимизировать. Что мне надо? Все EvidenceOfCrime, у которых заполнено Evidence & EvidenceType. Я использую только у себбя только метод IDAOEvidenceOfCrime. Надо");
-        man.setSurname("no_limitation");
-        assertEquals(false, daoMan.updateMan(man));
+            assertEquals(actualResult, expectedResult);
+            assertManEquals(man, actualMan);
+        } finally {
+            daoAdditionals.deleteMan(man);
+        }
+    }
 
-        man.setPhotoPath("no_limitation");
-        man.setBirthDay(null);
-        assertEquals(true, daoMan.updateMan(man));
+    @Test
+    public void updateMan_LimitOfField() throws Exception {
+        Man man = LogicAdditionals.getCustomMan();
+        if (!daoMan.addMan(man))
+            throw new Exception();
+        man.setName("10letters_20letters_30letters_40letters_LIMIT!!!!!!");
+        boolean expectedResult = false;
+
+        try {
+            boolean actualResult = daoMan.updateMan(man);
+
+            assertEquals(actualResult, expectedResult);
+        } finally {
+            daoAdditionals.deleteMan(man);
+        }
+    }
+
+    //TODO: look after method realization
+    @Test
+    public void getAllManWithCrimeAmount_NoCrimes() throws Exception {
+        Man man = LogicAdditionals.getCustomMan();
+        if (!daoMan.addMan(man))
+            throw new Exception();
+
+        try {
+            Map<Man,Long> mapping = daoMan.getAllManWithCrimeAmount();
+
+            assertNotNull(mapping);
+            assertNotEquals(0, mapping.size());
+            long crimesAmount = mapping.get(man);
+            assertEquals(0, crimesAmount);
+        } finally {
+            daoAdditionals.deleteMan(man);
+        }
+    }
+
+    //TODO: look after method realization
+    @Test
+    public void getAllManWithCrimeAmount_CrimesExist() throws Exception {
+        AllClassesList entities = new AllClassesList();
+        entities.addCustomParticipantToDatabase();
+
+        try {
+            Map<Man,Long> mapping = daoMan.getAllManWithCrimeAmount();
+
+            assertNotNull(mapping);
+            assertNotEquals(0, mapping.size());
+            long crimesAmount = mapping.get(entities.getMan());
+            assertEquals(1, crimesAmount);
+        } finally {
+            entities.deleteAllAddedEntities();
+        }
+    }
+
+    @Test
+    public void getAllManWithCrimeAmount_NoManInMap() throws Exception {
+        Man man = LogicAdditionals.getCustomMan();
+
+        Map<Man,Long> mapping = daoMan.getAllManWithCrimeAmount();
+
+        assertNotNull(mapping);
+        boolean wasThorwn = false;
+        try {
+            long value = mapping.get(man);
+        } catch (Exception ex) {
+            wasThorwn = true;
+        }
+        assertEquals(true, wasThorwn);
     }
 
     private void assertManEquals(Man expectedMan, Man actualMan) {

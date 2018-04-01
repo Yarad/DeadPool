@@ -95,7 +95,7 @@ public class DAODetective extends DAOMan implements IDAODetective {
 
     @Override
     public boolean existDetectiveWithLogin(String login) {
-        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT COUNT(*) FROM `detective` WHERE `login` = ?");
+        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM `detective` WHERE `login` = ?");
         try {
             preparedStatement.setString(1, login);
         } catch (SQLException e) {

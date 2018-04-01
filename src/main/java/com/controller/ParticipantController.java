@@ -11,6 +11,7 @@ import com.services.interfaces.IParticipantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -28,6 +29,7 @@ public class ParticipantController {
                 participant.getCrime().getId(),
                 participant.getStatus(),
                 participant.getDateAdded(),
+                participant.getTimeAdded(),
                 participant.getAlibi(),
                 participant.getWitnessReport()
         );
@@ -43,6 +45,7 @@ public class ParticipantController {
                 participant.getCrime().getId(),
                 participant.getStatus(),
                 participant.getDateAdded(),
+                participant.getTimeAdded(),
                 participant.getAlibi(),
                 participant.getWitnessReport()
         );
@@ -59,8 +62,8 @@ public class ParticipantController {
     ) {
         Participant participant = participantService.getParticipantByCrimeAndMan(manId, crimeId);
         return (participant != null)
-                ? new GenericDTO<ParticipantFullInfoDTO>(false, ParticipantParser.parseParticipantFullInfo(participant))
-                : new GenericDTO<ParticipantFullInfoDTO>(true, null);
+                ? new GenericDTO<>(false, ParticipantParser.parseParticipantFullInfo(participant))
+                : new GenericDTO<>(true, null);
     }
 
     @IsDetective
