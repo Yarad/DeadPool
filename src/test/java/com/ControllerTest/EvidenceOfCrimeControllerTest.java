@@ -5,6 +5,7 @@ import com.Additionals.TokensForTests;
 import com.DTO.*;
 import com.DTO.parsers.EvidenceOfCrimeParser;
 import com.DTO.parsers.EvidenceParser;
+import com.config.CORSFilter;
 import com.controller.EvidenceOfCrimeController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.logic.Evidence;
@@ -22,7 +23,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,12 +53,13 @@ public class EvidenceOfCrimeControllerTest {
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders
                 .standaloneSetup(controller)
+                .addFilters(new CORSFilter())
                 .build();
     }
 
     @BeforeClass
     public static void getDAO() {
-        objectMapper = new ObjectMapper();
+        objectMapper = LogicAdditionals.objectMapper();
     }
 
     @Test
@@ -102,7 +103,7 @@ public class EvidenceOfCrimeControllerTest {
         inputJson.setEvidence(new IdOnlyDTO());
         OperationResultDTO response = new OperationResultDTO(true);
 
-        when(evidenceOfCrimeService.addEvidenceOfCrime(inputJson.getEvidence().getId(), inputJson.getCrime().getId(), inputJson.getType(), LocalDateTime.of(inputJson.getDateAdded(), inputJson.getTimeAdded()), inputJson.getDetails(), inputJson.getPhotoPath())).thenReturn(true);
+        when(evidenceOfCrimeService.addEvidenceOfCrime(inputJson.getEvidence().getId(), inputJson.getCrime().getId(), inputJson.getType(), inputJson.getDateAdded(), inputJson.getTimeAdded(), inputJson.getDetails(), inputJson.getPhotoPath())).thenReturn(true);
 
         mockMvc.perform(
                 post("/evidences/add_for_crime")
@@ -121,7 +122,7 @@ public class EvidenceOfCrimeControllerTest {
         inputJson.setEvidence(new IdOnlyDTO());
         OperationResultDTO response = new OperationResultDTO(true);
 
-        when(evidenceOfCrimeService.updateEvidenceOfCrime(inputJson.getEvidence().getId(), inputJson.getCrime().getId(), inputJson.getType(), LocalDateTime.of(inputJson.getDateAdded(), inputJson.getTimeAdded()), inputJson.getDetails(), inputJson.getPhotoPath())).thenReturn(true);
+        when(evidenceOfCrimeService.updateEvidenceOfCrime(inputJson.getEvidence().getId(), inputJson.getCrime().getId(), inputJson.getType(), inputJson.getDateAdded(), inputJson.getTimeAdded(), inputJson.getDetails(), inputJson.getPhotoPath())).thenReturn(true);
 
         mockMvc.perform(
                 post("/evidences/update_for_crime")

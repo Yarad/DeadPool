@@ -4,6 +4,7 @@ import com.Additionals.LogicAdditionals;
 import com.Additionals.TokensForTests;
 import com.DTO.*;
 import com.DTO.parsers.ParticipantParser;
+import com.config.CORSFilter;
 import com.controller.ParticipantController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.logic.Participant;
@@ -18,8 +19,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import java.time.LocalDateTime;
 
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
@@ -45,12 +44,13 @@ public class ParticipantControllerTest {
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders
                 .standaloneSetup(controller)
+                .addFilters(new CORSFilter())
                 .build();
     }
 
     @BeforeClass
     public static void getDAO() {
-        objectMapper = new ObjectMapper();
+        objectMapper = LogicAdditionals.objectMapper();
     }
 
     @Test
@@ -60,7 +60,7 @@ public class ParticipantControllerTest {
         inputJson.setCrime(new IdOnlyDTO());
         OperationResultDTO response = new OperationResultDTO(true);
 
-        when(participantService.addParticipant(inputJson.getMan().getId(), inputJson.getCrime().getId(), inputJson.getStatus(), LocalDateTime.of(inputJson.getDateAdded(), inputJson.getTimeAdded()), inputJson.getAlibi(), inputJson.getWitnessReport())).thenReturn(true);
+        when(participantService.addParticipant(inputJson.getMan().getId(), inputJson.getCrime().getId(), inputJson.getStatus(), inputJson.getDateAdded(), inputJson.getTimeAdded(), inputJson.getAlibi(), inputJson.getWitnessReport())).thenReturn(true);
 
         mockMvc.perform(
                 post("/participants/add")
@@ -79,7 +79,7 @@ public class ParticipantControllerTest {
         inputJson.setCrime(new IdOnlyDTO());
         OperationResultDTO response = new OperationResultDTO(true);
 
-        when(participantService.updateParticipant(inputJson.getMan().getId(), inputJson.getCrime().getId(), inputJson.getStatus(), LocalDateTime.of(inputJson.getDateAdded(), inputJson.getTimeAdded()), inputJson.getAlibi(), inputJson.getWitnessReport())).thenReturn(true);
+        when(participantService.updateParticipant(inputJson.getMan().getId(), inputJson.getCrime().getId(), inputJson.getStatus(), inputJson.getDateAdded(), inputJson.getTimeAdded(), inputJson.getAlibi(), inputJson.getWitnessReport())).thenReturn(true);
 
         mockMvc.perform(
                 post("/participants/update")

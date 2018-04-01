@@ -1,14 +1,17 @@
 package com.services;
 
 import com.DAO.interfaces.IDAOEvidenceOfCrime;
+import com.logic.Crime;
+import com.logic.Evidence;
 import com.logic.EvidenceOfCrime;
-import com.logic.EvidenceType;
 import com.services.interfaces.IEvidenceOfCrimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -42,12 +45,22 @@ public class EvidenceOfCrimeService implements IEvidenceOfCrimeService {
 
     @Transactional
     @Override
-    public boolean addEvidenceOfCrime(long evidenceId, long crimeId, String type, LocalDateTime dateAdded, String details, String photoPath) {
+    public boolean addEvidenceOfCrime(long evidenceId, long crimeId, String type, LocalDate dateAdded, LocalTime timeAdded, String details, String photoPath) {
         EvidenceOfCrime evidenceOfCrime = new EvidenceOfCrime();
+        evidenceOfCrime.parentEvidence = new Evidence();
+        evidenceOfCrime.parentCrime = new Crime();
         evidenceOfCrime.parentEvidence.setEvidenceId(evidenceId);
         evidenceOfCrime.parentCrime.setCrimeId(crimeId);
-        evidenceOfCrime.setEvidenceType(type);
-        evidenceOfCrime.setDateAdded(dateAdded);
+        try {
+            evidenceOfCrime.setEvidenceType(type);
+        } catch (IllegalArgumentException ex) {
+            return false;
+        }
+        if (dateAdded != null && timeAdded != null) {
+            evidenceOfCrime.setDateAdded(LocalDateTime.of(dateAdded, timeAdded));
+        } else {
+            return false;
+        }
         evidenceOfCrime.setDetails(details);
         evidenceOfCrime.setPhotoPath(photoPath);
         return daoEvidenceOfCrime.addEvidenceOfCrime(evidenceOfCrime);
@@ -55,12 +68,22 @@ public class EvidenceOfCrimeService implements IEvidenceOfCrimeService {
 
     @Transactional
     @Override
-    public boolean updateEvidenceOfCrime(long evidenceId, long crimeId, String type, LocalDateTime dateAdded, String details, String photoPath) {
+    public boolean updateEvidenceOfCrime(long evidenceId, long crimeId, String type, LocalDate dateAdded, LocalTime timeAdded, String details, String photoPath) {
         EvidenceOfCrime evidenceOfCrime = new EvidenceOfCrime();
+        evidenceOfCrime.parentEvidence = new Evidence();
+        evidenceOfCrime.parentCrime = new Crime();
         evidenceOfCrime.parentEvidence.setEvidenceId(evidenceId);
         evidenceOfCrime.parentCrime.setCrimeId(crimeId);
-        evidenceOfCrime.setEvidenceType(type);
-        evidenceOfCrime.setDateAdded(dateAdded);
+        try {
+            evidenceOfCrime.setEvidenceType(type);
+        } catch (IllegalArgumentException ex) {
+            return false;
+        }
+        if (dateAdded != null && timeAdded != null) {
+            evidenceOfCrime.setDateAdded(LocalDateTime.of(dateAdded, timeAdded));
+        } else {
+            return false;
+        }
         evidenceOfCrime.setDetails(details);
         evidenceOfCrime.setPhotoPath(photoPath);
         return daoEvidenceOfCrime.updateEvidenceOfCrime(evidenceOfCrime);

@@ -4,6 +4,7 @@ import com.Additionals.LogicAdditionals;
 import com.Additionals.TokensForTests;
 import com.DTO.*;
 import com.DTO.parsers.CrimeParser;
+import com.config.CORSFilter;
 import com.controller.CrimeController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.logic.Crime;
@@ -21,7 +22,11 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.RequestPostProcessor;
+import org.springframework.test.web.servlet.setup.ConfigurableMockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcConfigurerAdapter;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -56,12 +61,13 @@ public class CrimeControllerTest {
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders
                 .standaloneSetup(controller)
+                .addFilters(new CORSFilter())
                 .build();
     }
 
     @BeforeClass
     public static void getDAO() {
-        objectMapper = new ObjectMapper();
+        objectMapper = LogicAdditionals.objectMapper();
     }
 
     @Test

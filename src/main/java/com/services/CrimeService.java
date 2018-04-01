@@ -39,7 +39,11 @@ public class CrimeService implements ICrimeService {
     public boolean addCrime(long criminalCaseId, String type, String description, LocalDate date, LocalTime time, String place) {
         Crime crime = new Crime();
         crime.setCriminalCaseId(criminalCaseId);
-        crime.setCrimeType(type);
+        try {
+            crime.setCrimeType(type);
+        } catch (IllegalArgumentException ex) {
+            return false;
+        }
         crime.setDescription(description);
         crime.setCrimeDate(date);
         crime.setCrimeTime(time);
@@ -53,7 +57,11 @@ public class CrimeService implements ICrimeService {
         Crime crime = new Crime();
         crime.setCrimeId(id);
         crime.setCriminalCaseId(criminalCaseId);
-        crime.setCrimeType(type);
+        try {
+            crime.setCrimeType(type);
+        } catch (IllegalArgumentException ex) {
+            return false;
+        }
         crime.setDescription(description);
         crime.setCrimeDate(date);
         crime.setCrimeTime(time);

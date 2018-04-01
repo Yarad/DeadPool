@@ -4,6 +4,7 @@ import com.Additionals.LogicAdditionals;
 import com.Additionals.TokensForTests;
 import com.DTO.*;
 import com.DTO.parsers.ManParser;
+import com.config.CORSFilter;
 import com.controller.DetectiveController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.logic.Man;
@@ -45,12 +46,13 @@ public class DetectiveControllerTest {
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders
                 .standaloneSetup(controller)
+                .addFilters(new CORSFilter())
                 .build();
     }
 
     @BeforeClass
     public static void getDAO() {
-        objectMapper = new ObjectMapper();
+        objectMapper = LogicAdditionals.objectMapper();
     }
 
     @Test

@@ -77,29 +77,21 @@ public class DAOMan extends DAO implements IDAOMan {
 
     @Override
     public Man getFullManInfo(long manId) {
-        Man man = new Man();
-        if (fillInfoFromManTableById(manId, man))
-            return man;
-        else
-            return null;
-    }
-
-    protected boolean fillInfoFromManTableById(long id, Man objectToFill) {
-        //List<HashMap<String, Object>> retArray = currConnection.queryFind("SELECT * FROM `Man` WHERE `man_id` = " + id);
         PreparedStatement preparedQuery = currConnection.prepareStatement("SELECT * FROM `Man` WHERE `man_id` = ?");
         try {
-            preparedQuery.setLong(1, id);
-        } catch (SQLException  e) {
+            preparedQuery.setLong(1, manId);
+        } catch (SQLException e) {
             DAOLog.log(e.toString());
-            return false;
+            return null;
         }
 
         List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedQuery);
 
-        if (retArray.isEmpty()) return false;
+        if (retArray.isEmpty()) return null;
 
-        ProjectFunctions.tryFillObjectByDbArray(objectToFill, retArray.get(0));
-        return true;
+        Man man = new Man();
+        ProjectFunctions.tryFillObjectByDbArray(man, retArray.get(0));
+        return man;
     }
 
     //TODO: реализовать!!!

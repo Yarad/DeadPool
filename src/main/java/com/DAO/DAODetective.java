@@ -3,6 +3,7 @@ package com.DAO;
 import com.DAO.interfaces.IDAODetective;
 import com.logic.Detective;
 import com.logic.Man;
+import com.logic.Participant;
 import com.logic.ProjectFunctions;
 import org.springframework.stereotype.Repository;
 
@@ -19,18 +20,22 @@ public class DAODetective extends DAOMan implements IDAODetective {
     }
 
     public Detective getDetectiveById(long id) {
+        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM detective JOIN man ON detective_id = man_id WHERE detective_id = ?");
 
-        Detective retDetectiveRecord = new Detective();
-        retDetectiveRecord.setManId(id);
-
-        boolean b1 = fillInfoFromManTableById(id, retDetectiveRecord);
-
-        b1 = b1 && fillInfoFromDetectiveTableById(id, retDetectiveRecord);
-
-        if (b1)
-            return retDetectiveRecord;
-        else
+        try {
+            preparedStatement.setLong(1, id);
+        } catch (SQLException e) {
+            DAOLog.log(e.toString());
             return null;
+        }
+
+        List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
+
+        if (retArray.isEmpty()) return null;
+        Detective detective = new Detective();
+
+        ProjectFunctions.tryFillObjectByDbArray(detective, retArray.get(0));
+        return detective;
     }
 
     public boolean addDetective(Detective detectiveToAdd) {
@@ -109,25 +114,21 @@ public class DAODetective extends DAOMan implements IDAODetective {
 
     @Override
     public List<Man> getAllDetectives() {
-        //TODO: реализовать. Все люди, которым есть эквивалент в таблице `Detective`
-        return new ArrayList<>();
-    }
-
-    private boolean fillInfoFromDetectiveTableById(long id, Detective objectToFill) {
-        //TODO Join
-        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM `detective` WHERE `detective_id` = ?");
-        try {
-            preparedStatement.setLong(1, id);
-        } catch (SQLException e) {
-            DAOLog.log(e.toString());
-            return false;
-        }
+        //Все люди, которым есть эквивалент в таблице `Detective`
+        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM detective JOIN man ON detective_id = man_id");
 
         List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
 
-        if (retArray.isEmpty()) return false;
+        List<Man> manList = new ArrayList<>();
 
-        ProjectFunctions.tryFillObjectByDbArray(objectToFill, retArray.get(0));
-        return true;
+        if (retArray.isEmpty()) return manList;
+
+        for (int i = 0; i < retArray.size(); i++) {
+            Detective tempDetective = new Detective();
+            ProjectFunctions.tryFillObjectByDbArray(tempDetective, retArray.get(i));
+            manList.add(tempDetective);
+        }
+
+        return manList;
     }
 }

@@ -4,11 +4,13 @@ import com.Additionals.LogicAdditionals;
 import com.Additionals.TokensForTests;
 import com.DTO.*;
 import com.DTO.parsers.CriminalCaseParser;
+import com.config.CORSFilter;
 import com.controller.CriminalCaseController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.logic.Crime;
 import com.logic.CriminalCase;
-import com.services.interfaces.*;
+import com.services.interfaces.ICrimeService;
+import com.services.interfaces.ICriminalCaseService;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -20,13 +22,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -50,12 +52,13 @@ public class CriminalCaseControllerTest {
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders
                 .standaloneSetup(controller)
+                .addFilters(new CORSFilter())
                 .build();
     }
 
     @BeforeClass
     public static void getDAO() {
-        objectMapper = new ObjectMapper();
+        objectMapper = LogicAdditionals.objectMapper();
     }
 
     @Test

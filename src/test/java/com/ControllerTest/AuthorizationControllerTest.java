@@ -1,9 +1,11 @@
 package com.ControllerTest;
 
+import com.Additionals.LogicAdditionals;
 import com.DTO.AuthDTO;
 import com.DTO.DetectiveWithoutManIdDTO;
 import com.DTO.GenericDTO;
 import com.DTO.ManInfoWithoutIdDTO;
+import com.config.CORSFilter;
 import com.controller.AuthorizationController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.logic.Detective;
@@ -17,6 +19,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -28,6 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@WebMvcTest
 public class AuthorizationControllerTest {
     private MockMvc mockMvc;
 
@@ -50,7 +54,7 @@ public class AuthorizationControllerTest {
     @BeforeClass
     public static void getDAO() {
         hashService = new HashService();
-        objectMapper = new ObjectMapper();
+        objectMapper = LogicAdditionals.objectMapper();
     }
 
     @Before
@@ -58,6 +62,7 @@ public class AuthorizationControllerTest {
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders
                 .standaloneSetup(controller)
+                .addFilters(new CORSFilter())
                 .build();
     }
 
