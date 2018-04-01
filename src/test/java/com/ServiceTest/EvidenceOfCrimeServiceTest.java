@@ -71,7 +71,7 @@ public class EvidenceOfCrimeServiceTest {
 
     @Test
     public void addEvidenceOfCrime() throws Exception {
-        EvidenceOfCrime evidenceOfCrime = LogicAdditionals.getCustomEvidenceOfCrimeWithDate();
+        EvidenceOfCrime evidenceOfCrime = LogicAdditionals.getEvidenceOfCrimeWithDates();
         boolean expectedResult = true;
         when(daoEvidenceOfCrime.addEvidenceOfCrime(any(EvidenceOfCrime.class))).thenReturn(expectedResult);
 
@@ -90,7 +90,7 @@ public class EvidenceOfCrimeServiceTest {
 
     @Test
     public void addEvidenceOfCrime_NotCorrectDate() throws Exception {
-        EvidenceOfCrime evidenceOfCrime = LogicAdditionals.getCustomEvidenceOfCrimeWithDate();
+        EvidenceOfCrime evidenceOfCrime = LogicAdditionals.getEvidenceOfCrimeWithDates();
         boolean expectedResult = false;
         when(daoEvidenceOfCrime.addEvidenceOfCrime(any(EvidenceOfCrime.class))).thenReturn(expectedResult);
 
@@ -109,7 +109,7 @@ public class EvidenceOfCrimeServiceTest {
 
     @Test
     public void addEvidenceOfCrime_NotCorrectStatus() throws Exception {
-        EvidenceOfCrime evidenceOfCrime = LogicAdditionals.getCustomEvidenceOfCrimeWithDate();
+        EvidenceOfCrime evidenceOfCrime = LogicAdditionals.getEvidenceOfCrimeWithDates();
         boolean expectedResult = false;
         when(daoEvidenceOfCrime.addEvidenceOfCrime(any(EvidenceOfCrime.class))).thenReturn(expectedResult);
 
@@ -128,7 +128,7 @@ public class EvidenceOfCrimeServiceTest {
 
     @Test
     public void updateEvidenceOfCrime() throws Exception {
-        EvidenceOfCrime evidenceOfCrime = LogicAdditionals.getCustomEvidenceOfCrimeWithDate();
+        EvidenceOfCrime evidenceOfCrime = LogicAdditionals.getEvidenceOfCrimeWithDates();
         boolean expectedResult = true;
         when(daoEvidenceOfCrime.updateEvidenceOfCrime(any(EvidenceOfCrime.class))).thenReturn(expectedResult);
 
@@ -146,7 +146,7 @@ public class EvidenceOfCrimeServiceTest {
 
     @Test
     public void updateEvidenceOfCrime_NotCorrectDate() throws Exception {
-        EvidenceOfCrime evidenceOfCrime = LogicAdditionals.getCustomEvidenceOfCrimeWithDate();
+        EvidenceOfCrime evidenceOfCrime = LogicAdditionals.getEvidenceOfCrimeWithDates();
         boolean expectedResult = false;
         when(daoEvidenceOfCrime.updateEvidenceOfCrime(any(EvidenceOfCrime.class))).thenReturn(expectedResult);
 
@@ -164,7 +164,7 @@ public class EvidenceOfCrimeServiceTest {
 
     @Test
     public void updateEvidenceOfCrime_NotCorrectStatus() throws Exception {
-        EvidenceOfCrime evidenceOfCrime = LogicAdditionals.getCustomEvidenceOfCrimeWithDate();
+        EvidenceOfCrime evidenceOfCrime = LogicAdditionals.getEvidenceOfCrimeWithDates();
         boolean expectedResult = false;
         when(daoEvidenceOfCrime.updateEvidenceOfCrime(any(EvidenceOfCrime.class))).thenReturn(expectedResult);
 

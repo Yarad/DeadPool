@@ -43,6 +43,10 @@ public final class LogicAdditionals {
             //LocalDateTime.of(2014,6,28,17,34)
             ;
 
+    private static final LocalDate localDateAdd = LocalDate.of(2012,12,2);
+    private static final LocalTime localTimeAdd = LocalTime.of(15,57);
+    private static final LocalDateTime localDateTimeAdd = LocalDateTime.of(2014,6,28,17,34);
+
     public static ObjectMapper objectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule()
@@ -61,6 +65,13 @@ public final class LogicAdditionals {
         cases.add(getCustomCriminalCase());
         cases.add(getCustomCriminalCase());
         return cases;
+    }
+
+    public static CriminalCase getCriminalCaseWithDates() {
+        CriminalCase crCase = getCustomCriminalCase();
+        crCase.setCloseDate(localDateAdd);
+        crCase.setCreateDate(localDateAdd);
+        return crCase;
     }
 
     public static CriminalCase getCustomCriminalCase() {
@@ -86,6 +97,13 @@ public final class LogicAdditionals {
         return crimes;
     }
 
+    public static Crime getCrimeWithDates() {
+        Crime crime = getCustomCrime();
+        crime.setCrimeDate(localDateAdd);
+        crime.setCrimeTime(localTimeAdd);
+        return crime;
+    }
+
     public static Crime getCustomCrime() {
         Crime crime = new Crime();
         crime.setCrimeId(1);
@@ -106,6 +124,12 @@ public final class LogicAdditionals {
         return list;
     }
 
+    public static EvidenceOfCrime getEvidenceOfCrimeWithDates() {
+        EvidenceOfCrime evidenceOfCrime = getCustomEvidenceOfCrime();
+        evidenceOfCrime.setDateAdded(localDateTimeAdd);
+        return evidenceOfCrime;
+    }
+
     public static EvidenceOfCrime getCustomEvidenceOfCrime() {
         EvidenceOfCrime evidenceOfCrime = new EvidenceOfCrime();
         evidenceOfCrime.parentEvidence = getCustomEvidence();
@@ -114,12 +138,6 @@ public final class LogicAdditionals {
         evidenceOfCrime.setPhotoPath("photo");
         evidenceOfCrime.setDetails("details");
         evidenceOfCrime.setDateAdded(localDateTime);
-        return evidenceOfCrime;
-    }
-
-    public static EvidenceOfCrime getCustomEvidenceOfCrimeWithDate() {
-        EvidenceOfCrime evidenceOfCrime = getCustomEvidenceOfCrime();
-        evidenceOfCrime.setDateAdded(LocalDateTime.of(2012,5,12,12,56));
         return evidenceOfCrime;
     }
 
@@ -155,9 +173,10 @@ public final class LogicAdditionals {
         return participant;
     }
 
-    public static Participant getCustomParticipantWithDate() {
+    public static Participant getParticipantWithDates() {
         Participant participant = getCustomParticipant();
-        participant.setDateAdded(LocalDateTime.of(2012,5,12,12,56));
+        participant.setDateAdded(localDateTimeAdd);
+        participant.setBirthDay(localDateAdd);
         return participant;
     }
 
@@ -168,6 +187,12 @@ public final class LogicAdditionals {
         return list;
     }
 
+    public static Man getManWithDates() {
+        Man man = getCustomMan();
+        man.setBirthDay(localDateAdd);
+        return man;
+    }
+
     public static Man getCustomMan() {
         Man man = new Man();
         man.setManId(1);
@@ -176,6 +201,12 @@ public final class LogicAdditionals {
         man.setPhotoPath("photo");
         man.setHomeAddress("addr");
         man.setBirthDay(localDate);
+        return man;
+    }
+
+    public static Detective getDetectiveWithDates() {
+        Detective man = getCustomDetective();
+        man.setBirthDay(localDateAdd);
         return man;
     }
 

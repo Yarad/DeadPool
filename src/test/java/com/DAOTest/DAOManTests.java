@@ -1,8 +1,9 @@
 package com.DAOTest;
 
+import com.Additionals.AllClassesList;
+import com.Additionals.DAOAdditionals;
 import com.Additionals.LogicAdditionals;
 import com.DAO.DAOCrime;
-import com.DAO.DAODetective;
 import com.DAO.DAOMan;
 import com.DAO.DAOParticipant;
 import com.DAO.interfaces.IDAOCrime;
@@ -13,24 +14,24 @@ import com.logic.Man;
 import com.logic.Participant;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.test.annotation.Rollback;
 
 import java.time.LocalDate;
 import java.util.Map;
 
-import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
 public class DAOManTests {
     private static IDAOMan daoMan;
     private static IDAOCrime daoCrime;
     private static IDAOParticipant daoParticipant;
+    private static DAOAdditionals daoAdditionals;
 
     @BeforeClass
     public static void getDAO() {
         daoMan = new DAOMan();
         daoCrime = new DAOCrime();
         daoParticipant = new DAOParticipant();
+        daoAdditionals = new DAOAdditionals();
     }
 
     @Test
@@ -43,40 +44,35 @@ public class DAOManTests {
         assertEquals(false, daoMan.updateMan(null));
     }
 
-    @Rollback
     @Test
     public void getFullManInfo() throws Exception  {
         Man man = LogicAdditionals.getCustomMan();
         if (!daoMan.addMan(man))
             throw new Exception();
 
-        Man actualMan = daoMan.getFullManInfo(man.getManId());
+        try {
+            Man actualMan = daoMan.getFullManInfo(man.getManId());
 
-        assertManEquals(man, actualMan);
+            assertManEquals(man, actualMan);
+        } finally {
+            daoAdditionals.deleteMan(man);
+        }
     }
-/*
-    @Test
-    public void getFullManInfo_NotExistingId() {
-        Man expectedMan = null;
-        long notCorrectId = -1;
 
-        Man actualMan = daoMan.getFullManInfo(notCorrectId);
-
-        assertManEquals(expectedMan, actualMan);
-    }
-*/
-    @Rollback
     @Test
     public void addMan()  {
         Man man = LogicAdditionals.getCustomMan();
         boolean expectedResult = true;
 
-        boolean actualResult = daoMan.addMan(man);
+        try {
+            boolean actualResult = daoMan.addMan(man);
 
-        assertEquals(actualResult, expectedResult);
+            assertEquals(actualResult, expectedResult);
+        } finally {
+            daoAdditionals.deleteMan(man);
+        }
     }
 
-    @Rollback
     @Test
     public void addMan_NotCorrectValue()  {
         Man man = new Man();
@@ -88,7 +84,6 @@ public class DAOManTests {
         assertEquals(actualResult, expectedResult);
     }
 
-    @Rollback
     @Test
     public void addMan_LimitField()  {
         Man man = new Man();
@@ -101,7 +96,6 @@ public class DAOManTests {
         assertEquals(actualResult, expectedResult);
     }
 
-    @Rollback
     @Test
     public void updateMan() throws Exception {
         Man man = LogicAdditionals.getCustomMan();
@@ -114,28 +108,17 @@ public class DAOManTests {
         man.setSurname("Holms, sir!");
         boolean expectedResult = true;
 
-        boolean actualResult = daoMan.updateMan(man);
-        Man actualMan = daoMan.getFullManInfo(man.getManId());
+        try {
+            boolean actualResult = daoMan.updateMan(man);
+            Man actualMan = daoMan.getFullManInfo(man.getManId());
 
-        assertEquals(actualResult, expectedResult);
-        assertManEquals(man, actualMan);
+            assertEquals(actualResult, expectedResult);
+            assertManEquals(man, actualMan);
+        } finally {
+            daoAdditionals.deleteMan(man);
+        }
     }
 
-    /*@Rollback
-    @Test
-    public void updateMan_NotCorrectId() throws Exception {
-        Man man = LogicAdditionals.getCustomMan();
-        if (!daoMan.addMan(man))
-            throw new Exception();
-        man.setManId(-2);
-        boolean expectedResult = false;
-
-        boolean actualResult = daoMan.updateMan(man);
-
-        assertEquals(actualResult, expectedResult);
-    }
-*/
-    @Rollback
     @Test
     public void updateMan_LimitOfField() throws Exception {
         Man man = LogicAdditionals.getCustomMan();
@@ -144,51 +127,52 @@ public class DAOManTests {
         man.setName("10letters_20letters_30letters_40letters_LIMIT!!!!!!");
         boolean expectedResult = false;
 
-        boolean actualResult = daoMan.updateMan(man);
+        try {
+            boolean actualResult = daoMan.updateMan(man);
 
-        assertEquals(actualResult, expectedResult);
+            assertEquals(actualResult, expectedResult);
+        } finally {
+            daoAdditionals.deleteMan(man);
+        }
     }
 
     //TODO: look after method realization
-    @Rollback
     @Test
     public void getAllManWithCrimeAmount_NoCrimes() throws Exception {
         Man man = LogicAdditionals.getCustomMan();
         if (!daoMan.addMan(man))
             throw new Exception();
 
-        Map<Man,Long> mapping = daoMan.getAllManWithCrimeAmount();
+        try {
+            Map<Man,Long> mapping = daoMan.getAllManWithCrimeAmount();
 
-        assertNotNull(mapping);
-        assertNotEquals(0, mapping.size());
-        long crimesAmount = mapping.get(man);
-        assertEquals(0, crimesAmount);
+            assertNotNull(mapping);
+            assertNotEquals(0, mapping.size());
+            long crimesAmount = mapping.get(man);
+            assertEquals(0, crimesAmount);
+        } finally {
+            daoAdditionals.deleteMan(man);
+        }
     }
 
-    @Rollback
+    //TODO: look after method realization
     @Test
     public void getAllManWithCrimeAmount_CrimesExist() throws Exception {
-        Man man = LogicAdditionals.getCustomMan();
-        if (!daoMan.addMan(man))
-            throw new Exception();
-        Crime crime = LogicAdditionals.getCustomCrime();
-        //TODO: убрать псоел исправления конфигураций для контроллера
-        crime.setCrimeDate(LocalDate.of(2012,2,25));
-        if (!daoCrime.addCrime(crime))
-            throw new Exception();
-        Participant participant = LogicAdditionals.getCustomParticipantWithDate();
-        if (!daoParticipant.addParticipant(participant))
-            throw new Exception();
+        AllClassesList entities = new AllClassesList();
+        entities.addCustomParticipantToDatabase();
 
-        Map<Man,Long> mapping = daoMan.getAllManWithCrimeAmount();
+        try {
+            Map<Man,Long> mapping = daoMan.getAllManWithCrimeAmount();
 
-        assertNotNull(mapping);
-        assertNotEquals(0, mapping.size());
-        long crimesAmount = mapping.get(man);
-        assertEquals(1, crimesAmount);
+            assertNotNull(mapping);
+            assertNotEquals(0, mapping.size());
+            long crimesAmount = mapping.get(entities.getMan());
+            assertEquals(1, crimesAmount);
+        } finally {
+            entities.deleteAllAddedEntities();
+        }
     }
 
-    @Rollback
     @Test
     public void getAllManWithCrimeAmount_NoManInMap() throws Exception {
         Man man = LogicAdditionals.getCustomMan();

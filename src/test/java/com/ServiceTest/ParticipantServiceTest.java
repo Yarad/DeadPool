@@ -65,7 +65,7 @@ public class ParticipantServiceTest {
 
     @Test
     public void addParticipant() throws Exception {
-        Participant participant = LogicAdditionals.getCustomParticipantWithDate();
+        Participant participant = LogicAdditionals.getParticipantWithDates();
         boolean expectedResult = true;
         when(daoParticipant.addParticipant(any(Participant.class))).thenReturn(expectedResult);
 
@@ -84,7 +84,7 @@ public class ParticipantServiceTest {
 
     @Test
     public void addParticipant_NotCorrectDate() throws Exception {
-        Participant participant = LogicAdditionals.getCustomParticipantWithDate();
+        Participant participant = LogicAdditionals.getParticipantWithDates();
         boolean expectedResult = false;
         when(daoParticipant.addParticipant(any(Participant.class))).thenReturn(expectedResult);
 
@@ -103,7 +103,7 @@ public class ParticipantServiceTest {
 
     @Test
     public void addParticipant_NotCorrectStatus() throws Exception {
-        Participant participant = LogicAdditionals.getCustomParticipantWithDate();
+        Participant participant = LogicAdditionals.getParticipantWithDates();
         boolean expectedResult = false;
         when(daoParticipant.addParticipant(any(Participant.class))).thenReturn(expectedResult);
 
@@ -122,7 +122,7 @@ public class ParticipantServiceTest {
 
     @Test
     public void updateParticipant() throws Exception {
-        Participant participant = LogicAdditionals.getCustomParticipantWithDate();
+        Participant participant = LogicAdditionals.getParticipantWithDates();
         boolean expectedResult = true;
         when(daoParticipant.updateParticipant(any(Participant.class))).thenReturn(expectedResult);
 
@@ -141,7 +141,7 @@ public class ParticipantServiceTest {
 
     @Test
     public void updateParticipant_NotCorrectDate() throws Exception {
-        Participant participant = LogicAdditionals.getCustomParticipantWithDate();
+        Participant participant = LogicAdditionals.getParticipantWithDates();
         boolean expectedResult = false;
         when(daoParticipant.updateParticipant(any(Participant.class))).thenReturn(expectedResult);
 
@@ -160,7 +160,7 @@ public class ParticipantServiceTest {
 
     @Test
     public void updateParticipant_NotCorrectStatus() throws Exception {
-        Participant participant = LogicAdditionals.getCustomParticipantWithDate();
+        Participant participant = LogicAdditionals.getParticipantWithDates();
         boolean expectedResult = false;
         when(daoParticipant.updateParticipant(any(Participant.class))).thenReturn(expectedResult);
 

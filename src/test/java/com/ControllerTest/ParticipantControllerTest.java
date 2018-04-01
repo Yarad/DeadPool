@@ -5,7 +5,6 @@ import com.Additionals.TokensForTests;
 import com.DTO.*;
 import com.DTO.parsers.ParticipantParser;
 import com.config.CORSFilter;
-import com.config.MVCConfig;
 import com.controller.ParticipantController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.logic.Participant;
@@ -16,14 +15,10 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import java.time.LocalDateTime;
 
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
