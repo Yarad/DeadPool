@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.time.LocalDate;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,7 +67,7 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
             else
                 preparedStatement.setNull(3, 0);
 
-            preparedStatement.setDate(4, ProjectFunctions.localDateTimeToSqlDate(participantToUpdate.getDateAdded()));
+            preparedStatement.setTimestamp(4, Timestamp.valueOf(participantToUpdate.getDateAdded()));
             preparedStatement.setLong(5, participantToUpdate.getManId());
         } catch (SQLException e) {
             DAOLog.log(e.toString());
@@ -120,7 +120,7 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
                 preparedStatement.setNull(4, 0);
             preparedStatement.setString(5, participantToAdd.getParticipantStatus().toString());
 
-            preparedStatement.setDate(6, ProjectFunctions.localDateTimeToSqlDate(participantToAdd.getDateAdded()));
+            preparedStatement.setTimestamp(6, Timestamp.valueOf(participantToAdd.getDateAdded()));
         } catch (SQLException e) {
             DAOLog.log(e.toString());
             return false;

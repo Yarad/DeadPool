@@ -74,7 +74,7 @@ public class Crime {
         return parentCriminalCase;
     }
 
-    public void setParentCriminalCase(CriminalCase crimeTime) {
+    public void setParentCriminalCase(CriminalCase parentCriminalCase) {
         this.parentCriminalCase = parentCriminalCase;
     }
 }

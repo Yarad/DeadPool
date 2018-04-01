@@ -36,8 +36,11 @@ public class DAOCriminalCase extends DAO implements IDAOCriminalCase {
             DAOLog.log(e.toString());
             return false;
         }
-        criminalCase.setCriminalCaseId(currConnection.getLastAddedId(preparedStatement));
-        return currConnection.queryDataEdit(preparedStatement);
+        boolean queryIsOk = currConnection.queryDataEdit(preparedStatement);
+        if (queryIsOk) {
+            criminalCase.setCriminalCaseId(currConnection.getLastAddedId(preparedStatement));
+        }
+        return queryIsOk;
     }
 
     @Override
