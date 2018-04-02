@@ -25,7 +25,7 @@ public class EvidenceOfCrimeServiceTest {
     private EvidenceOfCrimeService service;
 
     @Before
-    public void init(){
+    public void init() {
         MockitoAnnotations.initMocks(this);
     }
 
@@ -64,7 +64,7 @@ public class EvidenceOfCrimeServiceTest {
         EvidenceOfCrime evidenceOfCrime = LogicAdditionals.getCustomEvidenceOfCrime();
         when(daoEvidenceOfCrime.getEvidenceOfCrime(anyLong(), anyLong())).thenReturn(evidenceOfCrime);
 
-        EvidenceOfCrime actualEvidenceOfCrime = service.getEvidenceOfCrimeByEvidenceAndCrime(1,1);
+        EvidenceOfCrime actualEvidenceOfCrime = service.getEvidenceOfCrimeByEvidenceAndCrime(1, 1);
 
         assertEquals(evidenceOfCrime, actualEvidenceOfCrime);
     }
@@ -76,8 +76,8 @@ public class EvidenceOfCrimeServiceTest {
         when(daoEvidenceOfCrime.addEvidenceOfCrime(any(EvidenceOfCrime.class))).thenReturn(expectedResult);
 
         boolean actualResult = service.addEvidenceOfCrime(
-                evidenceOfCrime.parentEvidence.getEvidenceId(),
-                evidenceOfCrime.parentCrime.getCrimeId(),
+                evidenceOfCrime.getParentEvidence().getEvidenceId(),
+                evidenceOfCrime.getParentCrime().getCrimeId(),
                 evidenceOfCrime.getEvidenceType().toString(),
                 (evidenceOfCrime.getDateAdded() != null) ? evidenceOfCrime.getDateAdded().toLocalDate() : null,
                 (evidenceOfCrime.getDateAdded() != null) ? evidenceOfCrime.getDateAdded().toLocalTime() : null,
@@ -95,8 +95,8 @@ public class EvidenceOfCrimeServiceTest {
         when(daoEvidenceOfCrime.addEvidenceOfCrime(any(EvidenceOfCrime.class))).thenReturn(expectedResult);
 
         boolean actualResult = service.addEvidenceOfCrime(
-                evidenceOfCrime.parentEvidence.getEvidenceId(),
-                evidenceOfCrime.parentCrime.getCrimeId(),
+                evidenceOfCrime.getParentEvidence().getEvidenceId(),
+                evidenceOfCrime.getParentCrime().getCrimeId(),
                 evidenceOfCrime.getEvidenceType().toString(),
                 (evidenceOfCrime.getDateAdded() != null) ? evidenceOfCrime.getDateAdded().toLocalDate() : null,
                 null,
@@ -114,8 +114,8 @@ public class EvidenceOfCrimeServiceTest {
         when(daoEvidenceOfCrime.addEvidenceOfCrime(any(EvidenceOfCrime.class))).thenReturn(expectedResult);
 
         boolean actualResult = service.addEvidenceOfCrime(
-                evidenceOfCrime.parentEvidence.getEvidenceId(),
-                evidenceOfCrime.parentCrime.getCrimeId(),
+                evidenceOfCrime.getParentEvidence().getEvidenceId(),
+                evidenceOfCrime.getParentCrime().getCrimeId(),
                 evidenceOfCrime.getEvidenceType().getName(),
                 (evidenceOfCrime.getDateAdded() != null) ? evidenceOfCrime.getDateAdded().toLocalDate() : null,
                 (evidenceOfCrime.getDateAdded() != null) ? evidenceOfCrime.getDateAdded().toLocalTime() : null,
@@ -133,8 +133,8 @@ public class EvidenceOfCrimeServiceTest {
         when(daoEvidenceOfCrime.updateEvidenceOfCrime(any(EvidenceOfCrime.class))).thenReturn(expectedResult);
 
         boolean actualResult = service.updateEvidenceOfCrime(
-                evidenceOfCrime.parentEvidence.getEvidenceId(),
-                evidenceOfCrime.parentCrime.getCrimeId(),
+                evidenceOfCrime.getParentEvidence().getEvidenceId(),
+                evidenceOfCrime.getParentCrime().getCrimeId(),
                 evidenceOfCrime.getEvidenceType().toString(),
                 (evidenceOfCrime.getDateAdded() != null) ? evidenceOfCrime.getDateAdded().toLocalDate() : null,
                 (evidenceOfCrime.getDateAdded() != null) ? evidenceOfCrime.getDateAdded().toLocalTime() : null,
@@ -151,8 +151,8 @@ public class EvidenceOfCrimeServiceTest {
         when(daoEvidenceOfCrime.updateEvidenceOfCrime(any(EvidenceOfCrime.class))).thenReturn(expectedResult);
 
         boolean actualResult = service.updateEvidenceOfCrime(
-                evidenceOfCrime.parentEvidence.getEvidenceId(),
-                evidenceOfCrime.parentCrime.getCrimeId(),
+                evidenceOfCrime.getParentEvidence().getEvidenceId(),
+                evidenceOfCrime.getParentCrime().getCrimeId(),
                 evidenceOfCrime.getEvidenceType().toString(),
                 null,
                 (evidenceOfCrime.getDateAdded() != null) ? evidenceOfCrime.getDateAdded().toLocalTime() : null,
@@ -169,8 +169,8 @@ public class EvidenceOfCrimeServiceTest {
         when(daoEvidenceOfCrime.updateEvidenceOfCrime(any(EvidenceOfCrime.class))).thenReturn(expectedResult);
 
         boolean actualResult = service.updateEvidenceOfCrime(
-                evidenceOfCrime.parentEvidence.getEvidenceId(),
-                evidenceOfCrime.parentCrime.getCrimeId(),
+                evidenceOfCrime.getParentEvidence().getEvidenceId(),
+                evidenceOfCrime.getParentCrime().getCrimeId(),
                 evidenceOfCrime.getEvidenceType().getName(),
                 (evidenceOfCrime.getDateAdded() != null) ? evidenceOfCrime.getDateAdded().toLocalDate() : null,
                 (evidenceOfCrime.getDateAdded() != null) ? evidenceOfCrime.getDateAdded().toLocalTime() : null,

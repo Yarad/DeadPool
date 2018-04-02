@@ -14,17 +14,18 @@ import java.util.List;
 
 @Repository
 public class DAOEvidenceOfCrime extends DAO implements IDAOEvidenceOfCrime {
-    private DAOCrime parentDaoCrime;
-    private DAOEvidence parentDaoEvidence;
 
     public DAOEvidenceOfCrime() {
         setConnectionToUse(new SQLConnection());
 
+/*
         parentDaoCrime = new DAOCrime();
+
         parentDaoEvidence = new DAOEvidence();
 
         parentDaoEvidence.setConnectionToUse(currConnection);
         parentDaoCrime.setConnectionToUse(currConnection);
+        */
     }
 
     //TODO: потестить
@@ -32,8 +33,14 @@ public class DAOEvidenceOfCrime extends DAO implements IDAOEvidenceOfCrime {
     public EvidenceOfCrime getEvidenceOfCrime(long crimeId, long evidenceId) {
         EvidenceOfCrime evidenceOfCrime = new EvidenceOfCrime();
 
+
+        /*
+        не нужно. при вызове evidenceOfCrime.getParentCrime() всё автоматом подгружается
+
         evidenceOfCrime.parentCrime = parentDaoCrime.getCrimeById(crimeId);
         evidenceOfCrime.parentEvidence = parentDaoEvidence.getEvidenceById(evidenceId);
+
+        */
 
         PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM evidence_of_crime WHERE crime_id = ? AND evidence_id  = ? ");
 
