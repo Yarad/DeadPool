@@ -16,9 +16,6 @@ import java.util.List;
 
 @Repository
 public class DAOCrime extends DAO implements IDAOCrime {
-    public DAOCrime() {
-        setConnectionToUse(new SQLConnection());
-    }
 
     @Override
     public boolean addCrime(Crime crimeToAdd) {

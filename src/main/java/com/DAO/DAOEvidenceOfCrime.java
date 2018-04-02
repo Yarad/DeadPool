@@ -15,19 +15,6 @@ import java.util.List;
 @Repository
 public class DAOEvidenceOfCrime extends DAO implements IDAOEvidenceOfCrime {
 
-    public DAOEvidenceOfCrime() {
-        setConnectionToUse(new SQLConnection());
-
-/*
-        parentDaoCrime = new DAOCrime();
-
-        parentDaoEvidence = new DAOEvidence();
-
-        parentDaoEvidence.setConnectionToUse(currConnection);
-        parentDaoCrime.setConnectionToUse(currConnection);
-        */
-    }
-
     //TODO: потестить
     @Override
     public EvidenceOfCrime getEvidenceOfCrime(long crimeId, long evidenceId) {

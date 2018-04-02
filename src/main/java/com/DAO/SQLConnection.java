@@ -11,18 +11,23 @@ public class SQLConnection implements IConnection {
 
     private String url = "jdbc:mysql://localhost:3306/DeadPoolDB";
     private String user = "root";
-    private String password = "uthfkmn";
+    //private String password = "uthfkmn";
+    private String password = "root";
 
     private static Connection con;
     private static Statement stmt;
     private static ResultSet rs;
 
-    public SQLConnection() {/*оставлю пустой конструктор, дабы можно было оставить изначально инициализированные значения*/}
+    private static SQLConnection instance;
 
-    public SQLConnection(String url, String userName, String password) {
-        this.url = url;
-        this.user = userName;
-        this.password = password;
+    private SQLConnection() {/*оставлю пустой конструктор, дабы можно было оставить изначально инициализированные значения*/}
+
+    public static SQLConnection getInstance() {
+        if (instance == null) {
+            instance = new SQLConnection();
+            instance.connect();
+        }
+        return instance;
     }
 
     public List<HashMap<String, Object>> queryFind(PreparedStatement queryPrepared) {
@@ -123,7 +128,7 @@ public class SQLConnection implements IConnection {
             //в этом месте я немножко схалявил
             //по-хорошему Statement.RETURN_GENERATED_KEYS должен быть вариативным
             //но примем, будто он нужен всегда
-            retValue = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+            retValue = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         } catch (SQLException e) {
             DAOLog.log(e.toString());
         }

@@ -17,9 +17,6 @@ import java.util.Map;
 
 @Repository
 public class DAOMan extends DAO implements IDAOMan {
-    public DAOMan() {
-        setConnectionToUse(new SQLConnection());
-    }
 
     public boolean addMan(Man manToAdd) {
         if (manToAdd == null) return false;
