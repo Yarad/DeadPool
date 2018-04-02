@@ -1,7 +1,8 @@
 package com.logic;
 
+import com.DAO.DAOCriminalCase;
+
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class Crime {
@@ -30,7 +31,7 @@ public class Crime {
         this.crimeId = Math.abs(crimeId);
     }
 
-    public long getCriminalCaseId() {
+    private long getCriminalCaseId() {
         return criminalCaseId;
     }
 
@@ -71,6 +72,10 @@ public class Crime {
     }
 
     public CriminalCase getParentCriminalCase() {
+        if (parentCriminalCase == null) {
+            DAOCriminalCase daoCriminalCase = new DAOCriminalCase();
+            parentCriminalCase = daoCriminalCase.getCriminalCaseById(criminalCaseId);
+        }
         return parentCriminalCase;
     }
 
