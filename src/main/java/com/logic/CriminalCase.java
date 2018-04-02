@@ -21,12 +21,13 @@ public class CriminalCase {
         this.closed = closed;
     }
 
-    private long getDetectiveId() {
+    public long getDetectiveId() {
         return detectiveId;
     }
 
     public void setDetectiveId(long detectiveId) {
         this.detectiveId = detectiveId;
+        parentDetective = null;
     }
 
     public String getCriminalCaseNumber() {
@@ -72,5 +73,6 @@ public class CriminalCase {
 
     public void setParentDetective(Detective parentDetective) {
         this.parentDetective = parentDetective;
+        this.detectiveId = parentDetective.getManId();
     }
 }

@@ -16,20 +16,22 @@ public class EvidenceOfCrime {
     private EvidenceType evidenceType = EvidenceType.OBJECT_FROM_CRIME_SCENE;
     private LocalDateTime dateAdded;
 
-    private long getCrimeId() {
+    public long getCrimeId() {
         return crimeId;
     }
 
-    private long getEvidenceId() {
+    public long getEvidenceId() {
         return evidenceId;
     }
 
     public void setCrimeId(long crimeId) {
         this.crimeId = crimeId;
+        parentCrime = null;
     }
 
     public void setEvidenceId(long evidenceId) {
         this.evidenceId = evidenceId;
+        parentEvidence = null;
     }
 
     public Crime getParentCrime() {
@@ -43,6 +45,7 @@ public class EvidenceOfCrime {
 
     public void setParentCrime(Crime parentCrime) {
         this.parentCrime = parentCrime;
+        crimeId = parentCrime.getCrimeId();
     }
 
     public Evidence getParentEvidence() {
@@ -56,6 +59,7 @@ public class EvidenceOfCrime {
 
     public void setParentEvidence(Evidence parentEvidence) {
         this.parentEvidence = parentEvidence;
+        evidenceId = parentEvidence.getEvidenceId();
     }
 
     public EvidenceType getEvidenceType() {

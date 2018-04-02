@@ -13,7 +13,6 @@ public class Participant extends Man {
     private Crime parentCrime;
     private ParticipantStatus participantStatus = ParticipantStatus.SUSPECTED;
 
-
     public Crime getParentCrime() {
         if (parentCrime == null) {
             DAOCrime daoCrime = new DAOCrime();
@@ -45,18 +44,20 @@ public class Participant extends Man {
 
     public void setCrime(Crime crime) {
         this.parentCrime = crime;
+        this.crimeId = crime.getCrimeId();
     }
 
     public Crime getCrime() {
         return parentCrime;
     }
 
-    private long getCrimeId() {
+    public long getCrimeId() {
         return crimeId;
     }
 
     public void setCrimeId(long crimeId) {
         this.crimeId = crimeId;
+        this.parentCrime = null;
     }
 
     public String getAlibi() {

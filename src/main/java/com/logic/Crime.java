@@ -28,15 +28,17 @@ public class Crime {
     }
 
     public void setCrimeId(long crimeId) {
+
         this.crimeId = Math.abs(crimeId);
     }
 
-    private long getCriminalCaseId() {
+    public long getCriminalCaseId() {
         return criminalCaseId;
     }
 
     public void setCriminalCaseId(long criminalCaseId) {
-        this.criminalCaseId = Math.abs(criminalCaseId);
+        this.criminalCaseId = criminalCaseId;
+        this.parentCriminalCase = null;
     }
 
     public String getCrimePlace() {
@@ -81,5 +83,6 @@ public class Crime {
 
     public void setParentCriminalCase(CriminalCase parentCriminalCase) {
         this.parentCriminalCase = parentCriminalCase;
+        this.criminalCaseId = parentCriminalCase.getCriminalCaseId();
     }
 }
