@@ -143,7 +143,26 @@ public class DAOCrime extends DAO implements IDAOCrime {
 
     @Override
     public List<Crime> getCrimesWhereEvidenceExists(long evidenceId) {
-        //TODO
-        return new ArrayList<>();
+        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT *"+
+                "        FROM `crime` as `c`" +
+                "        JOIN `evidence_of_crime` as `e`" +
+                "        ON `c`.`crime_id` = `e`.`crime_id`" +
+                "        WHERE `e`.`evidence_id` = ?");
+        List<Crime> crimes = new ArrayList<Crime>();
+
+        try {
+            preparedStatement.setLong(1, evidenceId);
+        } catch (Exception e) {
+            DAOLog.log(e.toString());
+        }
+
+        List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
+
+        for (int i = 0; i < retArray.size(); i++) {
+            Crime retCrimeRecord = new Crime();
+            ProjectFunctions.tryFillObjectByDbArray(retCrimeRecord, retArray.get(i));
+            crimes.add(retCrimeRecord);
+        }
+        return crimes;
     }
 }

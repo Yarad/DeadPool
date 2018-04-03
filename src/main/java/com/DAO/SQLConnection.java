@@ -57,7 +57,8 @@ public class SQLConnection implements IConnection {
         } finally {
             //close connection ,stmt and resultset here
             try {
-                rs.close();
+                if (rs != null)
+                    rs.close();
             } catch (SQLException se) { /*can't do anything  */}
         }
         return list;
