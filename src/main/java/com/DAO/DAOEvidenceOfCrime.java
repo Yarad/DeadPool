@@ -46,7 +46,7 @@ public class DAOEvidenceOfCrime extends DAO implements IDAOEvidenceOfCrime {
         return evidenceOfCrime;
     }
 
-    //TODO: надо заполнять parentEvidence & EvidenceType
+    //FIXED in prev commit надо заполнять parentEvidence & EvidenceType
     @Override
     public List<EvidenceOfCrime> getAllEvidencesOfCrime() {
         List<EvidenceOfCrime> retArr = new ArrayList<>();
@@ -59,6 +59,7 @@ public class DAOEvidenceOfCrime extends DAO implements IDAOEvidenceOfCrime {
         for (int i = 0; i < retArray.size(); i++) {
             EvidenceOfCrime tempObj = new EvidenceOfCrime();
             ProjectFunctions.tryFillObjectByDbArray(tempObj, retArray.get(i));
+
             retArr.add(tempObj);
         }
         return retArr;

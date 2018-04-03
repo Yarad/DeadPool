@@ -1,12 +1,16 @@
 package com.logic;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
+import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.*;
-import java.util.*;
-import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ProjectFunctions {
     public static boolean ifDbObjectContainsKey(HashMap<String, Object> dbRetObject, String key) {
@@ -43,9 +47,7 @@ public class ProjectFunctions {
                             methodToRun.invoke(object, LocalTime.parse(item.getValue().toString(), ProjectConstants.myTimeFormatter));
                         } else if (item.getValue() instanceof Date) {
                             methodToRun.invoke(object, LocalDate.parse(item.getValue().toString(), ProjectConstants.myDateFormatter));
-                        }
-                        else if(item.getValue() instanceof Timestamp)
-                        {
+                        } else if (item.getValue() instanceof Timestamp) {
                             methodToRun.invoke(object, LocalDateTime.parse(item.getValue().toString(), ProjectConstants.myDateTimeFormatter));
                         }
 
