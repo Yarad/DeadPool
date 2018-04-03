@@ -16,9 +16,6 @@ import java.util.List;
 
 @Repository
 public class DAOParticipant extends DAOMan implements IDAOParticipant {
-    public DAOParticipant() {
-        setConnectionToUse(new SQLConnection());
-    }
 
     @Override
     public Participant getParticipantById(long manId, long crimeId) {

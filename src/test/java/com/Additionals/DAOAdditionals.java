@@ -12,8 +12,8 @@ public class DAOAdditionals {
     private IConnection currConnection;
 
     public DAOAdditionals() {
-        currConnection = new SQLConnection();
-        currConnection.connect();
+        currConnection = SQLConnection.getInstance();
+        //currConnection.connect();
     }
 
     public boolean deleteMan(Man man) {

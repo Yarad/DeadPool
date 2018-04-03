@@ -15,9 +15,6 @@ import java.util.List;
 
 @Repository
 public class DAODetective extends DAOMan implements IDAODetective {
-    public DAODetective() {
-        setConnectionToUse(new SQLConnection());
-    }
 
     public Detective getDetectiveById(long id) {
         PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM detective JOIN man ON detective_id = man_id WHERE detective_id = ?");

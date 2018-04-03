@@ -1,17 +1,14 @@
 package com.logic;
 
-import com.DAO.*;
+import com.DAO.DAOMan;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.List;
+import java.util.Map;
 
 public class tempMainCode {
     public static void main(String[] args) {
 
-        DAODetective daoDetective = new DAODetective();
-        Detective detective = daoDetective.getDetectiveById(9);
-        Detective detective2 = daoDetective.getDetectiveById(2);
+        DAOMan daoMan = new DAOMan();
+        Map<Man, Long> l = daoMan.getAllManWithCrimeAmount();
 
         /*
         DAOEvidenceOfCrime daoEvidenceOfCrime = new DAOEvidenceOfCrime();

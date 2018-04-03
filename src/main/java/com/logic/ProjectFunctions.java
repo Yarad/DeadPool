@@ -1,12 +1,16 @@
 package com.logic;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
+import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.*;
-import java.util.*;
-import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ProjectFunctions {
     public static boolean ifDbObjectContainsKey(HashMap<String, Object> dbRetObject, String key) {
@@ -27,27 +31,52 @@ public class ProjectFunctions {
 
             for (int i = 0; i < existingSetters.size(); i++)
                 if (existingSetters.get(i).getName().toLowerCase().equals("set".concat(tempStr)) /* && existingSetters.get(i).getGenericParameterTypes()[0] == item.getClass()*/) {
-                    //TODO: починить LocalDate initialization
                     methodToRun = existingSetters.get(i);
                     break;
                 }
 
             if (methodToRun != null) {
                 try {
+                    String typeName = methodToRun.getGenericParameterTypes()[0].getTypeName();
+
+                    if (typeName.equalsIgnoreCase("java.lang.String")) {
+                        methodToRun.invoke(object, item.getValue().toString());
+                        continue;
+                    }
+
+                    if (typeName.equalsIgnoreCase("long")) {
+                        methodToRun.invoke(object, Long.parseLong(item.getValue().toString()));
+                        continue;
+                    }
+
+                    if (typeName.equalsIgnoreCase("java.time.LocalDate")) {
+                        methodToRun.invoke(object, LocalDate.parse(item.getValue().toString(), ProjectConstants.myDateFormatter));
+                        continue;
+                    }
+
+                    if (typeName.equalsIgnoreCase("java.time.LocalTime")) {
+                        methodToRun.invoke(object, LocalTime.parse(item.getValue().toString(), ProjectConstants.myTimeFormatter));
+                        continue;
+                    }
+
+                    if (typeName.equalsIgnoreCase("java.time.LocalDateTime")) {
+                        methodToRun.invoke(object, LocalDateTime.parse(item.getValue().toString(), ProjectConstants.myDateTimeFormatter));
+                        continue;
+                    }
 
                     methodToRun.invoke(object, item.getValue());
                 } catch (Exception e) {
                     try {
+                        //No need, but for confidence
 
                         if (item.getValue() instanceof Time) {
                             methodToRun.invoke(object, LocalTime.parse(item.getValue().toString(), ProjectConstants.myTimeFormatter));
                         } else if (item.getValue() instanceof Date) {
                             methodToRun.invoke(object, LocalDate.parse(item.getValue().toString(), ProjectConstants.myDateFormatter));
-                        }
-                        else if(item.getValue() instanceof Timestamp)
-                        {
+                        } else if (item.getValue() instanceof Timestamp) {
                             methodToRun.invoke(object, LocalDateTime.parse(item.getValue().toString(), ProjectConstants.myDateTimeFormatter));
                         }
+                        methodToRun.invoke(object, Date.valueOf(item.getValue().toString()));
 
                     } catch (Exception e2) {
                         avoidedElementsOfArray.put(item.getKey(), item.getValue());
