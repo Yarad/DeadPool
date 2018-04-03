@@ -88,7 +88,6 @@ public class DAOMan extends DAO implements IDAOMan {
         return man;
     }
 
-    //TODO: реализовать!!!
     @Override
     public Map<Man, Long> getAllManWithCrimeAmount() {
 

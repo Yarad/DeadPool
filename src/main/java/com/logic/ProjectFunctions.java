@@ -31,17 +31,43 @@ public class ProjectFunctions {
 
             for (int i = 0; i < existingSetters.size(); i++)
                 if (existingSetters.get(i).getName().toLowerCase().equals("set".concat(tempStr)) /* && existingSetters.get(i).getGenericParameterTypes()[0] == item.getClass()*/) {
-                    //TODO: починить LocalDate initialization
                     methodToRun = existingSetters.get(i);
                     break;
                 }
 
             if (methodToRun != null) {
                 try {
+                    String typeName = methodToRun.getGenericParameterTypes()[0].getTypeName();
+
+                    if (typeName.equalsIgnoreCase("java.lang.String")) {
+                        methodToRun.invoke(object, item.getValue().toString());
+                        continue;
+                    }
+
+                    if (typeName.equalsIgnoreCase("long")) {
+                        methodToRun.invoke(object, Long.parseLong(item.getValue().toString()));
+                        continue;
+                    }
+
+                    if (typeName.equalsIgnoreCase("java.time.LocalDate")) {
+                        methodToRun.invoke(object, LocalDate.parse(item.getValue().toString(), ProjectConstants.myDateFormatter));
+                        continue;
+                    }
+
+                    if (typeName.equalsIgnoreCase("java.time.LocalTime")) {
+                        methodToRun.invoke(object, LocalTime.parse(item.getValue().toString(), ProjectConstants.myTimeFormatter));
+                        continue;
+                    }
+
+                    if (typeName.equalsIgnoreCase("java.time.LocalDateTime")) {
+                        methodToRun.invoke(object, LocalDateTime.parse(item.getValue().toString(), ProjectConstants.myDateTimeFormatter));
+                        continue;
+                    }
 
                     methodToRun.invoke(object, item.getValue());
                 } catch (Exception e) {
                     try {
+                        //No need, but for confidence
 
                         if (item.getValue() instanceof Time) {
                             methodToRun.invoke(object, LocalTime.parse(item.getValue().toString(), ProjectConstants.myTimeFormatter));
@@ -50,6 +76,7 @@ public class ProjectFunctions {
                         } else if (item.getValue() instanceof Timestamp) {
                             methodToRun.invoke(object, LocalDateTime.parse(item.getValue().toString(), ProjectConstants.myDateTimeFormatter));
                         }
+                        methodToRun.invoke(object, Date.valueOf(item.getValue().toString()));
 
                     } catch (Exception e2) {
                         avoidedElementsOfArray.put(item.getKey(), item.getValue());
