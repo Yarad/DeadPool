@@ -136,7 +136,6 @@ public class DAOManTests {
         }
     }
 
-    //TODO: look after method realization
     @Test
     public void getAllManWithCrimeAmount_NoCrimes() throws Exception {
         Man man = LogicAdditionals.getCustomMan();
@@ -147,15 +146,13 @@ public class DAOManTests {
             Map<Man,Long> mapping = daoMan.getAllManWithCrimeAmount();
 
             assertNotNull(mapping);
-            assertNotEquals(0, mapping.size());
-            long crimesAmount = mapping.get(man);
-            assertEquals(0, crimesAmount);
+            Long crimesAmount = mapping.get(man);
+            assertNull(crimesAmount);
         } finally {
             daoAdditionals.deleteMan(man);
         }
     }
 
-    //TODO: look after method realization
     @Test
     public void getAllManWithCrimeAmount_CrimesExist() throws Exception {
         AllClassesList entities = new AllClassesList();
@@ -166,8 +163,8 @@ public class DAOManTests {
 
             assertNotNull(mapping);
             assertNotEquals(0, mapping.size());
-            long crimesAmount = mapping.get(entities.getMan());
-            assertEquals(1, crimesAmount);
+            Long crimesAmount = mapping.get(entities.getMan());
+            assertEquals(1, crimesAmount.longValue());
         } finally {
             entities.deleteAllAddedEntities();
         }

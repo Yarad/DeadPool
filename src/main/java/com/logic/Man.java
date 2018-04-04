@@ -9,7 +9,7 @@ public class Man {
     protected long manId;
     protected String name;
     protected String surname;
-    protected LocalDate birthDay/* = LocalDate.of(2012, 12, 31)*/;
+    protected LocalDate birthDay;
     protected String homeAddress;
     protected String photoPath;
 
@@ -26,7 +26,7 @@ public class Man {
     }
 
     public void setName(String name) {
-        if (isNullOrEmpty(name))  // почему это плохо?
+        if (isNullOrEmpty(name))
             this.name = null;
         else
             this.name = name;
@@ -65,5 +65,31 @@ public class Man {
 
     public void setPhotoPath(String photoPath) {
         this.photoPath = photoPath;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (101 + (isNullOrEmpty(name) ? 313 : 31 * name.hashCode())
+                + (isNullOrEmpty(name) ? 181 : 29 * surname.hashCode())) % Integer.MAX_VALUE;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Man man = (Man)obj;
+        if (manId != man.getManId() || !name.equals(man.getName()) || !surname.equals(man.getSurname()) ||
+                !birthDay.equals(man.getBirthDay()) || !photoPath.equals(man.getPhotoPath())
+                || !homeAddress.equals(man.getHomeAddress())) {
+            return false;
+        }
+        return true;
     }
 }
