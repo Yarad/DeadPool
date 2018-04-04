@@ -12,8 +12,8 @@ public class DAOAdditionals {
     private IConnection currConnection;
 
     public DAOAdditionals() {
-        currConnection = new SQLConnection();
-        currConnection.connect();
+        currConnection = SQLConnection.getInstance();
+        //currConnection.connect();
     }
 
     public boolean deleteMan(Man man) {
@@ -90,8 +90,8 @@ public class DAOAdditionals {
 
         PreparedStatement preparedQuery = currConnection.prepareStatement("DELETE FROM `evidence_of_crime` WHERE `evidence_id` = ? AND `crime_id` = ?");
         try {
-            preparedQuery.setLong(1, evidenceOfCrime.parentEvidence.getEvidenceId());
-            preparedQuery.setLong(2, evidenceOfCrime.parentCrime.getCrimeId());
+            preparedQuery.setLong(1, evidenceOfCrime.getParentEvidence().getEvidenceId());
+            preparedQuery.setLong(2, evidenceOfCrime.getParentCrime().getCrimeId());
         } catch (SQLException e) {
             DAOLog.log(e.toString());
             return false;

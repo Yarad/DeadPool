@@ -13,9 +13,6 @@ import java.util.List;
 
 @Repository
 public class DAOEvidence extends DAO implements IDAOEvidence {
-    public DAOEvidence() {
-        setConnectionToUse(new SQLConnection());
-    }
 
     @Override
     public Evidence getEvidenceById(long evidenceId) {

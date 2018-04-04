@@ -27,7 +27,7 @@ public class Detective extends Man {
     public void setHashOfPassword(String hashOfPassword) {
         this.hashOfPassword = hashOfPassword;
     }
-  
+
     public String getEmail() {
         return email;
     }

@@ -47,10 +47,10 @@ public class EvidenceOfCrimeService implements IEvidenceOfCrimeService {
     @Override
     public boolean addEvidenceOfCrime(long evidenceId, long crimeId, String type, LocalDate dateAdded, LocalTime timeAdded, String details, String photoPath) {
         EvidenceOfCrime evidenceOfCrime = new EvidenceOfCrime();
-        evidenceOfCrime.parentEvidence = new Evidence();
-        evidenceOfCrime.parentCrime = new Crime();
-        evidenceOfCrime.parentEvidence.setEvidenceId(evidenceId);
-        evidenceOfCrime.parentCrime.setCrimeId(crimeId);
+        evidenceOfCrime.setParentEvidence(new Evidence());
+        evidenceOfCrime.setParentCrime(new Crime());
+        evidenceOfCrime.getParentEvidence().setEvidenceId(evidenceId);
+        evidenceOfCrime.getParentCrime().setCrimeId(crimeId);
         try {
             evidenceOfCrime.setEvidenceType(type);
         } catch (IllegalArgumentException ex) {
@@ -70,10 +70,10 @@ public class EvidenceOfCrimeService implements IEvidenceOfCrimeService {
     @Override
     public boolean updateEvidenceOfCrime(long evidenceId, long crimeId, String type, LocalDate dateAdded, LocalTime timeAdded, String details, String photoPath) {
         EvidenceOfCrime evidenceOfCrime = new EvidenceOfCrime();
-        evidenceOfCrime.parentEvidence = new Evidence();
-        evidenceOfCrime.parentCrime = new Crime();
-        evidenceOfCrime.parentEvidence.setEvidenceId(evidenceId);
-        evidenceOfCrime.parentCrime.setCrimeId(crimeId);
+        evidenceOfCrime.setParentEvidence(new Evidence());
+        evidenceOfCrime.setParentCrime(new Crime());
+        evidenceOfCrime.getParentEvidence().setEvidenceId(evidenceId);
+        evidenceOfCrime.getParentCrime().setCrimeId(crimeId);
         try {
             evidenceOfCrime.setEvidenceType(type);
         } catch (IllegalArgumentException ex) {

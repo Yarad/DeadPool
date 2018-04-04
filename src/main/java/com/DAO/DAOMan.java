@@ -1,25 +1,19 @@
 package com.DAO;
 
 import com.DAO.interfaces.IDAOMan;
-import com.logic.Detective;
 import com.logic.Man;
 import com.logic.ProjectFunctions;
-import com.mysql.jdbc.MysqlDataTruncation;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Repository
 public class DAOMan extends DAO implements IDAOMan {
-    public DAOMan() {
-        setConnectionToUse(new SQLConnection());
-    }
 
     public boolean addMan(Man manToAdd) {
         if (manToAdd == null) return false;
@@ -36,7 +30,7 @@ public class DAOMan extends DAO implements IDAOMan {
             preparedQuery.setString(4, manToAdd.getSurname());
             preparedQuery.setString(5, manToAdd.getPhotoPath());
 
-        } catch (SQLException  e) {
+        } catch (SQLException e) {
             DAOLog.log(e.toString());
             return false;
         }
@@ -67,7 +61,7 @@ public class DAOMan extends DAO implements IDAOMan {
             preparedStatement2.setString(4, manToUpdate.getHomeAddress());
             preparedStatement2.setString(5, manToUpdate.getPhotoPath());
             preparedStatement2.setLong(6, manToUpdate.getManId());
-        } catch (SQLException  e) {
+        } catch (SQLException e) {
             DAOLog.log(e.toString());
             return false;
         }
@@ -77,33 +71,42 @@ public class DAOMan extends DAO implements IDAOMan {
 
     @Override
     public Man getFullManInfo(long manId) {
-        Man man = new Man();
-        if (fillInfoFromManTableById(manId, man))
-            return man;
-        else
-            return null;
-    }
-
-    protected boolean fillInfoFromManTableById(long id, Man objectToFill) {
         PreparedStatement preparedQuery = currConnection.prepareStatement("SELECT * FROM `Man` WHERE `man_id` = ?");
         try {
-            preparedQuery.setLong(1, id);
-        } catch (SQLException  e) {
+            preparedQuery.setLong(1, manId);
+        } catch (SQLException e) {
             DAOLog.log(e.toString());
-            return false;
+            return null;
         }
 
         List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedQuery);
 
-        if (retArray.isEmpty()) return false;
+        if (retArray.isEmpty()) return null;
 
-        ProjectFunctions.tryFillObjectByDbArray(objectToFill, retArray.get(0));
-        return true;
+        Man man = new Man();
+        ProjectFunctions.tryFillObjectByDbArray(man, retArray.get(0));
+        return man;
     }
 
-    //TODO: реализовать!!!
     @Override
     public Map<Man, Long> getAllManWithCrimeAmount() {
-        return new HashMap<>();
+
+        PreparedStatement preparedQuery = currConnection.prepareStatement("SELECT " +
+                "count(1) as `crimes_count`, `man`.`man_id`,`name`, `surname`, `birthday`, `home_address`, `photo_path`  FROM `man` \n" +
+                "JOIN `participant`\n" +
+                "ON `man`.`man_id` = `participant`.`man_id`\n" +
+                "GROUP BY `participant`.`man_id`");
+        Map<Man, Long> retMap = new HashMap<>();
+
+        List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedQuery);
+
+        if (retArray.isEmpty()) return retMap;
+        for (int i = 0; i < retArray.size(); i++) {
+
+            Man man = new Man();
+            ProjectFunctions.tryFillObjectByDbArray(man, retArray.get(i));
+            retMap.put(man, Long.parseLong(retArray.get(i).get("crimes_count").toString()));
+        }
+        return retMap;
     }
 }

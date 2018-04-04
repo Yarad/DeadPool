@@ -1,5 +1,7 @@
 package com.logic;
 
+import com.DAO.DAODetective;
+
 import java.time.LocalDate;
 
 public class CriminalCase {
@@ -25,6 +27,7 @@ public class CriminalCase {
 
     public void setDetectiveId(long detectiveId) {
         this.detectiveId = detectiveId;
+        parentDetective = null;
     }
 
     public String getCriminalCaseNumber() {
@@ -60,10 +63,16 @@ public class CriminalCase {
     }
 
     public Detective getParentDetective() {
+        if (parentDetective == null) {
+            DAODetective daoDetective = new DAODetective();
+            parentDetective = daoDetective.getDetectiveById(this.getDetectiveId());
+        }
+
         return parentDetective;
     }
 
     public void setParentDetective(Detective parentDetective) {
         this.parentDetective = parentDetective;
+        this.detectiveId = parentDetective.getManId();
     }
 }

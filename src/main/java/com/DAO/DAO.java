@@ -12,7 +12,7 @@ public abstract class DAO {
 
     DAO()
     {
-
+        setConnectionToUse(SQLConnection.getInstance());
     }
 
     public Boolean setConnectionToUse(IConnection connectionToUse)
