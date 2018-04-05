@@ -5,13 +5,13 @@ import java.time.LocalTime;
 
 public class EvidenceOfCrimeForListOfEvidenceDTO {
     private CrimeForOthersShortedDTO crime;
-    private String type;
+    private EnumDTO type;
     private String photoPath;
     private LocalDate dateAdded;
     private LocalTime timeAdded;
     private String details;
 
-    public EvidenceOfCrimeForListOfEvidenceDTO(CrimeForOthersShortedDTO crime, String type, String photoPath,
+    public EvidenceOfCrimeForListOfEvidenceDTO(CrimeForOthersShortedDTO crime, EnumDTO type, String photoPath,
                                                LocalDate dateAdded, LocalTime timeAdded, String details) {
         this.crime = crime;
         this.type = type;
@@ -29,11 +29,11 @@ public class EvidenceOfCrimeForListOfEvidenceDTO {
         this.crime = crime;
     }
 
-    public String getType() {
+    public EnumDTO getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(EnumDTO type) {
         this.type = type;
     }
 

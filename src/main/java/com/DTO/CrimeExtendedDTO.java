@@ -11,7 +11,7 @@ public class CrimeExtendedDTO extends CrimeShortedDTO {
     private List<ParticipantByCrimeDTO> participants;
     private List<EvidenceOfCrimeShortedDTO> evidencesOfCrime;
 
-    public CrimeExtendedDTO(long id, String type, LocalDate date, String place,
+    public CrimeExtendedDTO(long id, EnumDTO type, LocalDate date, String place,
                             CriminalCaseShortedWithDetectiveDTO criminalCase, String description,
                             LocalTime time, List<ParticipantByCrimeDTO> participants,
                             List<EvidenceOfCrimeShortedDTO> evidencesOfCrime) {

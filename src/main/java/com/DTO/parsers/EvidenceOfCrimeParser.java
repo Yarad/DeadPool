@@ -15,7 +15,7 @@ public final class EvidenceOfCrimeParser {
         if (evidenceOfCrime != null) {
             return new EvidenceOfCrimeShortedDTO(
                     EvidenceParser.parseEvidenceShorted(evidenceOfCrime.getParentEvidence()),
-                    evidenceOfCrime.getEvidenceType().getName(),
+                    new EnumDTO(evidenceOfCrime.getEvidenceType().toString(), evidenceOfCrime.getEvidenceType().getName()),
                     evidenceOfCrime.getPhotoPath()
             );
         } else {
@@ -27,7 +27,7 @@ public final class EvidenceOfCrimeParser {
         if (evidenceOfCrime != null) {
             return new EvidenceOfCrimeShortedWithCrimeDTO(
                     EvidenceParser.parseEvidenceShorted(evidenceOfCrime.getParentEvidence()),
-                    evidenceOfCrime.getEvidenceType().getName(),
+                    new EnumDTO(evidenceOfCrime.getEvidenceType().toString(), evidenceOfCrime.getEvidenceType().getName()),
                     evidenceOfCrime.getPhotoPath(),
                     CrimeParser.parseShortedCrimeForOthers(evidenceOfCrime.getParentCrime())
             );
@@ -40,7 +40,7 @@ public final class EvidenceOfCrimeParser {
         if (evidenceOfCrime != null) {
             return new EvidenceOfCrimeForListOfEvidenceDTO(
                     CrimeParser.parseShortedCrimeForOthers(evidenceOfCrime.getParentCrime()),
-                    evidenceOfCrime.getEvidenceType().getName(),
+                    new EnumDTO(evidenceOfCrime.getEvidenceType().toString(), evidenceOfCrime.getEvidenceType().getName()),
                     evidenceOfCrime.getPhotoPath(),
                     (evidenceOfCrime.getDateAdded() != null) ? evidenceOfCrime.getDateAdded().toLocalDate() : null,
                     (evidenceOfCrime.getDateAdded() != null) ? evidenceOfCrime.getDateAdded().toLocalTime() : null,
@@ -56,7 +56,7 @@ public final class EvidenceOfCrimeParser {
             return new EvidenceOfCrimeExtendedDTO(
                     EvidenceParser.parseEvidence(evidenceOfCrime.getParentEvidence()),
                     CrimeParser.parseShortedCrimeForOthers(evidenceOfCrime.getParentCrime()),
-                    evidenceOfCrime.getEvidenceType().getName(),
+                    new EnumDTO(evidenceOfCrime.getEvidenceType().toString(), evidenceOfCrime.getEvidenceType().getName()),
                     evidenceOfCrime.getPhotoPath(),
                     (evidenceOfCrime.getDateAdded() != null) ? evidenceOfCrime.getDateAdded().toLocalDate() : null,
                     (evidenceOfCrime.getDateAdded() != null) ? evidenceOfCrime.getDateAdded().toLocalTime() : null,

@@ -3,7 +3,7 @@ package com.DTO;
 public class EvidenceOfCrimeShortedWithCrimeDTO extends EvidenceOfCrimeShortedDTO {
     private CrimeForOthersShortedDTO crime;
 
-    public EvidenceOfCrimeShortedWithCrimeDTO(EvidenceShortedDTO evidence, String type, String photoPath,
+    public EvidenceOfCrimeShortedWithCrimeDTO(EvidenceShortedDTO evidence, EnumDTO type, String photoPath,
                                               CrimeForOthersShortedDTO crime) {
         super(evidence, type, photoPath);
         this.crime = crime;
