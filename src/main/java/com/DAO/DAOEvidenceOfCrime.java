@@ -1,13 +1,13 @@
 package com.DAO;
 
 import com.DAO.interfaces.IDAOEvidenceOfCrime;
-import com.logic.Evidence;
 import com.logic.EvidenceOfCrime;
 import com.logic.ProjectFunctions;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -115,7 +115,26 @@ public class DAOEvidenceOfCrime extends DAO implements IDAOEvidenceOfCrime {
 
     @Override
     public boolean addEvidenceOfCrime(EvidenceOfCrime evidenceOfCrime) {
-        return false;
+        //в объекте должны быть установлены либо id crime&evidence, либо
+        //в лоб прям ссылки на эти объекты (тогда id автоматом становятся такими же)
+
+        if (evidenceOfCrime == null)
+            return false;
+
+        PreparedStatement preparedStatement = currConnection.prepareStatement("INSERT INTO `evidence_of_crime`(`evidence_id`, `crime_id`, `evidence_type`, `date_added`, `details`, `photo_path`) VALUES (?,?,?,?,?,?)");
+        try {
+            preparedStatement.setLong(1, evidenceOfCrime.getEvidenceId());
+            preparedStatement.setLong(2, evidenceOfCrime.getCrimeId());
+            preparedStatement.setString(3, evidenceOfCrime.getEvidenceType().toString());
+            preparedStatement.setTimestamp(4, Timestamp.valueOf(evidenceOfCrime.getDateAdded()));
+            preparedStatement.setString(5, evidenceOfCrime.getDetails());
+            preparedStatement.setString(6, evidenceOfCrime.getPhotoPath());
+        } catch (SQLException e) {
+            DAOLog.log(e.toString());
+            return false;
+        }
+
+        return currConnection.queryDataEdit(preparedStatement);
     }
 
     @Override
