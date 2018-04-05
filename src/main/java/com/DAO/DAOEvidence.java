@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -30,6 +29,7 @@ public class DAOEvidence extends DAO implements IDAOEvidence {
         ProjectFunctions.tryFillObjectByDbArray(retEvidenceRecord, retArray.get(0));
         return retEvidenceRecord;
     }
+
 /*
     //потестить
     @Override
@@ -53,13 +53,42 @@ public class DAOEvidence extends DAO implements IDAOEvidence {
         return evidences;
     }
 */
+
     @Override
     public boolean addEvidence(Evidence evidence) {
-        return false;
+        if (evidence == null)
+            return false;
+        PreparedStatement preparedStatement = currConnection.prepareStatement("INSERT INTO `evidence`(`name`, `description`) VALUES (?,?)");
+        try {
+            preparedStatement.setString(1, evidence.getName());
+            preparedStatement.setString(2, evidence.getDescription());
+        } catch (SQLException e) {
+            DAOLog.log(e.toString());
+            return false;
+        }
+
+        boolean queryIsOk = currConnection.queryDataEdit(preparedStatement);
+        if (queryIsOk) {
+            evidence.setEvidenceId(currConnection.getLastAddedId(preparedStatement));
+            return true;
+        } else
+            return false;
     }
 
     @Override
     public boolean updateEvidence(Evidence evidence) {
-        return false;
+        if (evidence == null)
+            return false;
+        PreparedStatement preparedStatement = currConnection.prepareStatement("UPDATE `evidence` SET `name`=?,`description`=? WHERE `evidence_id` = ?");
+        try {
+            preparedStatement.setString(1, evidence.getName());
+            preparedStatement.setString(2, evidence.getDescription());
+            preparedStatement.setLong(3, evidence.getEvidenceId());
+        } catch (SQLException e) {
+            DAOLog.log(e.toString());
+            return false;
+        }
+
+        return currConnection.queryDataEdit(preparedStatement);
     }
 }
