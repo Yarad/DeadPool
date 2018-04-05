@@ -97,12 +97,11 @@ public class DAODetectiveTests {
     public void addDetective_NotCorrectValue() {
         Detective detective = LogicAdditionals.getDetectiveWithDates();
         detective.setEmail(null);
-        boolean expectedResult = false;
 
         try {
             boolean actualResult = daoDetective.addDetective(detective);
 
-            assertEquals(actualResult, expectedResult);
+            assertFalse(actualResult);
         } finally {
             daoAdditionals.deleteMan(detective);
         }
@@ -121,13 +120,12 @@ public class DAODetectiveTests {
         detective.setLogin("NewLoginForCheaterTests");
         detective.setHashOfPassword("greatMD5Hash,godblessit");
         detective.setEmail("newyorker@email.com");
-        boolean expectedResult = true;
 
         try {
             boolean actualResult = daoDetective.updateDetective(detective);
             Detective actualDetective = daoDetective.getDetectiveById(detective.getManId());
 
-            assertEquals(actualResult, expectedResult);
+            assertTrue(actualResult);
             ClassEqualsAsserts.assertDetectiveEquals(detective, actualDetective);
         } finally {
             daoAdditionals.deleteDetective(detective);
@@ -160,12 +158,11 @@ public class DAODetectiveTests {
         Detective someDetective = LogicAdditionals.getDetectiveWithDates();
         if (!daoDetective.addDetective(someDetective))
             throw new Exception();
-        boolean expectedResult = true;
 
         try {
             boolean actualResult = daoDetective.existDetectiveWithLogin(someDetective.getLogin());
 
-            assertEquals(actualResult, expectedResult);
+            assertTrue(actualResult);
         } finally {
             daoAdditionals.deleteDetective(someDetective);
         }
@@ -173,11 +170,9 @@ public class DAODetectiveTests {
 
     @Test
     public void existDetectiveWithLogin_NoSuchDetective() {
-        boolean expectedResult = false;
-
         boolean actualResult = daoDetective.existDetectiveWithLogin(null);
 
-        assertEquals(expectedResult, actualResult);
+        assertFalse(actualResult);
     }
 
     @Test
@@ -192,7 +187,7 @@ public class DAODetectiveTests {
             assertNotNull(men);
             assertFalse(men.isEmpty());
 
-            assertTrue(men.stream().filter(o -> o.getManId() == someDetective.getManId()).findFirst().isPresent());
+            assertTrue(men.stream().anyMatch(o -> o.getManId() == someDetective.getManId()));
         } finally {
             daoAdditionals.deleteDetective(someDetective);
         }

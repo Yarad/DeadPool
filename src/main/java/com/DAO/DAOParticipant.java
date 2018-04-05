@@ -53,17 +53,8 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
                 "WHERE man_id = ?");
         try {
             preparedStatement.setString(1, participantToUpdate.getParticipantStatus().toString());
-
-            if (participantToUpdate.getAlibi() != null)
-                preparedStatement.setString(2, participantToUpdate.getAlibi());
-            else
-                preparedStatement.setNull(2, 0);
-
-            if (participantToUpdate.getWitnessReport() != null)
-                preparedStatement.setString(3, participantToUpdate.getWitnessReport());
-            else
-                preparedStatement.setNull(3, 0);
-
+            preparedStatement.setString(2, participantToUpdate.getAlibi());
+            preparedStatement.setString(3, participantToUpdate.getWitnessReport());
             preparedStatement.setTimestamp(4, Timestamp.valueOf(participantToUpdate.getDateAdded()));
             preparedStatement.setLong(5, participantToUpdate.getManId());
         } catch (SQLException e) {
@@ -72,8 +63,7 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
         }
 
         boolean res1 = currConnection.queryDataEdit(preparedStatement);
-        /*boolean res2 = updateMan(participantToUpdate);*/
-        return res1 /*&& res2*/;
+        return res1;
     }
 
     @Override
@@ -105,18 +95,9 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
         try {
             preparedStatement.setLong(1, participantToAdd.getCrimeId());
             preparedStatement.setLong(2, participantToAdd.getManId());
-
-            if (participantToAdd.getAlibi() != null)
-                preparedStatement.setString(3, participantToAdd.getAlibi());
-            else
-                preparedStatement.setNull(3, 0);
-
-            if (participantToAdd.getWitnessReport() != null)
-                preparedStatement.setString(4, participantToAdd.getWitnessReport());
-            else
-                preparedStatement.setNull(4, 0);
+            preparedStatement.setString(3, participantToAdd.getAlibi());
+            preparedStatement.setString(4, participantToAdd.getWitnessReport());
             preparedStatement.setString(5, participantToAdd.getParticipantStatus().toString());
-
             preparedStatement.setTimestamp(6, Timestamp.valueOf(participantToAdd.getDateAdded()));
         } catch (SQLException e) {
             DAOLog.log(e.toString());

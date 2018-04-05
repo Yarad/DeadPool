@@ -8,11 +8,11 @@ import java.time.LocalTime;
 public class Crime {
     private long crimeId = -1;
     private long criminalCaseId = -1;
-    private CrimeType crimeType = CrimeType.MURDER;
-    private String crimePlace = "noAddress";
-    private String description = "noDescription";
-    private LocalDate crimeDate = LocalDate.now();
-    private LocalTime crimeTime = null;
+    private CrimeType crimeType;
+    private String crimePlace;
+    private String description;
+    private LocalDate crimeDate;
+    private LocalTime crimeTime;
     private CriminalCase parentCriminalCase;
 
     public CrimeType getCrimeType() {

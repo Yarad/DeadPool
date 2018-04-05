@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static java.sql.Types.DATE;
+
 @Repository
 public class DAOCriminalCase extends DAO implements IDAOCriminalCase {
 
@@ -24,7 +26,7 @@ public class DAOCriminalCase extends DAO implements IDAOCriminalCase {
             preparedStatement.setString(1, criminalCase.getCriminalCaseNumber());
             preparedStatement.setDate(2, Date.valueOf(criminalCase.getCreateDate()));
             if (criminalCase.getCloseDate() == null)
-                preparedStatement.setNull(3, 0);
+                preparedStatement.setNull(3, DATE);
             else
                 preparedStatement.setDate(3, Date.valueOf(criminalCase.getCloseDate()));
             preparedStatement.setBoolean(4, criminalCase.isClosed());
@@ -69,7 +71,8 @@ public class DAOCriminalCase extends DAO implements IDAOCriminalCase {
                 "`criminal_case_number`=?," +
                 "`create_date`=?," +
                 "`close_date`=?," + //nullable
-                "`closed`=?" +
+                "`closed`=?," +
+                "`detective_id`=?" +
                 " WHERE `criminal_case_id` = ?");
         try {
             preparedStatement.setString(1, criminalCaseToUpdate.getCriminalCaseNumber());
@@ -78,10 +81,11 @@ public class DAOCriminalCase extends DAO implements IDAOCriminalCase {
             if (criminalCaseToUpdate.getCloseDate() != null)
                 preparedStatement.setDate(3, Date.valueOf(criminalCaseToUpdate.getCloseDate()));
             else
-                preparedStatement.setNull(3, 0);
+                preparedStatement.setNull(3, DATE);
 
             preparedStatement.setBoolean(4, criminalCaseToUpdate.isClosed());
-            preparedStatement.setLong(5, criminalCaseToUpdate.getCriminalCaseId());
+            preparedStatement.setLong(5, criminalCaseToUpdate.getDetectiveId());
+            preparedStatement.setLong(6, criminalCaseToUpdate.getCriminalCaseId());
         } catch (Exception e) {
             DAOLog.log(e.toString());
         }
@@ -168,8 +172,7 @@ public class DAOCriminalCase extends DAO implements IDAOCriminalCase {
 
         try{
             preparedStatement.setLong(1,detectiveID);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             DAOLog.log(e.toString());
             return criminalCases;
         }

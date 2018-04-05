@@ -18,6 +18,7 @@ import org.junit.Test;
 
 import java.time.LocalDate;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -69,12 +70,11 @@ public class DAOManTests {
     @Test
     public void addMan()  {
         Man man = LogicAdditionals.getCustomMan();
-        boolean expectedResult = true;
 
         try {
             boolean actualResult = daoMan.addMan(man);
 
-            assertEquals(actualResult, expectedResult);
+            assertTrue(actualResult);
         } finally {
             daoAdditionals.deleteMan(man);
         }
@@ -84,11 +84,10 @@ public class DAOManTests {
     public void addMan_NotCorrectValue()  {
         Man man = new Man();
         man.setName("someNameWithoutSurname");
-        boolean expectedResult = false;
 
         boolean actualResult = daoMan.addMan(man);
 
-        assertEquals(actualResult, expectedResult);
+        assertFalse(actualResult);
     }
 
     @Test
@@ -96,11 +95,10 @@ public class DAOManTests {
         Man man = new Man();
         man.setName("10letters_20letters_30letters_40letters_LIMIT!!!!!!");
         man.setSurname("Correct");
-        boolean expectedResult = false;
 
         boolean actualResult = daoMan.addMan(man);
 
-        assertEquals(actualResult, expectedResult);
+        assertFalse(actualResult);
     }
 
     @Test
@@ -113,13 +111,12 @@ public class DAOManTests {
         man.setPhotoPath("my best photo will be created soon");
         man.setBirthDay(LocalDate.of(2015,12,25));
         man.setSurname("Holms, sir!");
-        boolean expectedResult = true;
 
         try {
             boolean actualResult = daoMan.updateMan(man);
             Man actualMan = daoMan.getFullManInfo(man.getManId());
 
-            assertEquals(actualResult, expectedResult);
+            assertTrue(actualResult);
             ClassEqualsAsserts.assertManEquals(man, actualMan);
         } finally {
             daoAdditionals.deleteMan(man);
@@ -132,12 +129,11 @@ public class DAOManTests {
         if (!daoMan.addMan(man))
             throw new Exception();
         man.setName("10letters_20letters_30letters_40letters_LIMIT!!!!!!");
-        boolean expectedResult = false;
 
         try {
             boolean actualResult = daoMan.updateMan(man);
 
-            assertEquals(actualResult, expectedResult);
+            assertFalse(actualResult);
         } finally {
             daoAdditionals.deleteMan(man);
         }
@@ -163,7 +159,7 @@ public class DAOManTests {
     @Test
     public void getAllManWithCrimeAmount_CrimesExist() throws Exception {
         AllClassesList entities = new AllClassesList();
-        entities.addCustomParticipantToDatabase();
+        entities.addCustomParticipantToDatabase(UUID.randomUUID().toString().substring(0,30));
 
         try {
             Map<Man,Long> mapping = daoMan.getAllManWithCrimeAmount();
@@ -190,6 +186,6 @@ public class DAOManTests {
         } catch (Exception ex) {
             wasThorwn = true;
         }
-        assertEquals(true, wasThorwn);
+        assertTrue(wasThorwn);
     }
 }
