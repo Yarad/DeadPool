@@ -1,6 +1,7 @@
 package com.DAOTest;
 
 import com.Additionals.AllClassesList;
+import com.Additionals.ClassEqualsAsserts;
 import com.Additionals.DAOAdditionals;
 import com.Additionals.LogicAdditionals;
 import com.DAO.DAOCrime;
@@ -53,10 +54,16 @@ public class DAOManTests {
         try {
             Man actualMan = daoMan.getFullManInfo(man.getManId());
 
-            assertManEquals(man, actualMan);
+            ClassEqualsAsserts.assertManEquals(man, actualMan);
         } finally {
             daoAdditionals.deleteMan(man);
         }
+    }
+
+    @Test
+    public void getFullManInfo_NoMan() throws Exception  {
+        Man actualMan = daoMan.getFullManInfo(-1);
+        assertNull(actualMan);
     }
 
     @Test
@@ -113,7 +120,7 @@ public class DAOManTests {
             Man actualMan = daoMan.getFullManInfo(man.getManId());
 
             assertEquals(actualResult, expectedResult);
-            assertManEquals(man, actualMan);
+            ClassEqualsAsserts.assertManEquals(man, actualMan);
         } finally {
             daoAdditionals.deleteMan(man);
         }
@@ -184,14 +191,5 @@ public class DAOManTests {
             wasThorwn = true;
         }
         assertEquals(true, wasThorwn);
-    }
-
-    private void assertManEquals(Man expectedMan, Man actualMan) {
-        assertEquals(expectedMan.getManId(), actualMan.getManId());
-        assertEquals(expectedMan.getName(), actualMan.getName());
-        assertEquals(expectedMan.getPhotoPath(), actualMan.getPhotoPath());
-        assertEquals(expectedMan.getSurname(), actualMan.getSurname());
-        assertEquals(expectedMan.getBirthDay(), actualMan.getBirthDay());
-        assertEquals(expectedMan.getHomeAddress(), actualMan.getHomeAddress());
     }
 }
