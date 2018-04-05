@@ -1,5 +1,6 @@
 package com.Additionals;
 
+import com.logic.Crime;
 import com.logic.CriminalCase;
 import com.logic.Detective;
 import com.logic.Man;
@@ -37,5 +38,15 @@ public final class ClassEqualsAsserts {
         assertEquals(expected.isClosed(), actual.isClosed());
         assertEquals(expected.getDetectiveId(), actual.getDetectiveId());
         assertEquals(expected.getCreateDate(), actual.getCreateDate());
+    }
+
+    public static void assertCrimesEquals(Crime expected, Crime actual) {
+        assertEquals(expected.getCriminalCaseId(), actual.getCriminalCaseId());
+        assertEquals(expected.getCrimeId(), actual.getCrimeId());
+        assertEquals(expected.getCrimeType(), actual.getCrimeType());
+        assertEquals(expected.getCrimeDate(), actual.getCrimeDate());
+        assertEquals(expected.getCrimePlace(), actual.getCrimePlace());
+        assertEquals(expected.getCrimeTime(), actual.getCrimeTime());
+        assertEquals(expected.getDescription(), actual.getDescription());
     }
 }

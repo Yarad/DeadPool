@@ -72,7 +72,7 @@ public class DAOCrime extends DAO implements IDAOCrime {
     @Override
     public boolean updateCrime(Crime crimeToUpdate) {
         if (crimeToUpdate == null) return false;
-        PreparedStatement preparedStatement = currConnection.prepareStatement("UPDATE `crime` SET `description`=?,`crime_date`=?,`crime_time`=?,`crime_place`=?,`crime_type`=? WHERE `crime_id` = ?");
+        PreparedStatement preparedStatement = currConnection.prepareStatement("UPDATE `crime` SET `description`=?,`crime_date`=?,`crime_time`=?,`crime_place`=?,`crime_type`=?,`criminal_case_id`=? WHERE `crime_id` = ?");
         try {
             preparedStatement.setString(1, crimeToUpdate.getDescription());
             preparedStatement.setDate(2, Date.valueOf(crimeToUpdate.getCrimeDate()));
@@ -82,7 +82,8 @@ public class DAOCrime extends DAO implements IDAOCrime {
                 preparedStatement.setNull(3, TIME);
             preparedStatement.setString(4, crimeToUpdate.getCrimePlace());
             preparedStatement.setString(5, crimeToUpdate.getCrimeType().toString());
-            preparedStatement.setLong(6, crimeToUpdate.getCrimeId());
+            preparedStatement.setLong(6, crimeToUpdate.getCriminalCaseId());
+            preparedStatement.setLong(7, crimeToUpdate.getCrimeId());
         } catch (Exception e) {
             DAOLog.log(e.toString());
         }
@@ -109,8 +110,8 @@ public class DAOCrime extends DAO implements IDAOCrime {
         PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM crime WHERE `crime_date` BETWEEN ? AND ? ");
 
         try {
-            preparedStatement.setDate(1, dateStart != null ? Date.valueOf(dateStart) : Date.valueOf(LocalDate.MIN));
-            preparedStatement.setDate(2, dateStart != null ? Date.valueOf(dateEnd) : Date.valueOf(LocalDate.MAX));
+            preparedStatement.setDate(1, dateStart != null ? Date.valueOf(dateStart) : Date.valueOf(LocalDate.of(1,1,1)));
+            preparedStatement.setDate(2, dateStart != null ? Date.valueOf(dateEnd) : Date.valueOf(LocalDate.of(9999,12,31)));
         } catch (Exception e) {
             DAOLog.log(e.toString());
             return crimes;
