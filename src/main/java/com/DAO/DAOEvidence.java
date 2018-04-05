@@ -77,6 +77,18 @@ public class DAOEvidence extends DAO implements IDAOEvidence {
 
     @Override
     public boolean updateEvidence(Evidence evidence) {
-        return false;
+        if (evidence == null)
+            return false;
+        PreparedStatement preparedStatement = currConnection.prepareStatement("UPDATE `evidence` SET `name`=?,`description`=? WHERE `evidence_id` = ?");
+        try {
+            preparedStatement.setString(1, evidence.getName());
+            preparedStatement.setString(2, evidence.getDescription());
+            preparedStatement.setLong(3, evidence.getEvidenceId());
+        } catch (SQLException e) {
+            DAOLog.log(e.toString());
+            return false;
+        }
+
+        return currConnection.queryDataEdit(preparedStatement);
     }
 }

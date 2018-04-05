@@ -6,12 +6,10 @@ public class tempMainCode {
     public static void main(String[] args) {
 
         DAOEvidence daoEvidence = new DAOEvidence();
-        Evidence evidence = new Evidence();
-        evidence.setDescription("No description");
-        evidence.setName("No name");
 
-        boolean f = daoEvidence.addEvidence(evidence);
-
+        Evidence evidence = daoEvidence.getEvidenceById(3);
+        evidence.setDescription("New description");
+        boolean f = daoEvidence.updateEvidence(evidence);
         /*
         DAOEvidenceOfCrime daoEvidenceOfCrime = new DAOEvidenceOfCrime();
 
