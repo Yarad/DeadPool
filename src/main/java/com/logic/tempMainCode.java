@@ -2,22 +2,15 @@ package com.logic;
 
 import com.DAO.DAOEvidenceOfCrime;
 
-import java.time.LocalDateTime;
-
 public class tempMainCode {
     public static void main(String[] args) {
 
         DAOEvidenceOfCrime daoEvidenceOfCrime = new DAOEvidenceOfCrime();
 
-        EvidenceOfCrime evidenceOfCrime = new EvidenceOfCrime();
+        EvidenceOfCrime evidenceOfCrime = daoEvidenceOfCrime.getEvidenceOfCrime(3, 2);
+        evidenceOfCrime.setDetails("From Yarad");
+        boolean f = daoEvidenceOfCrime.updateEvidenceOfCrime(evidenceOfCrime);
 
-        evidenceOfCrime.setCrimeId(3);
-        evidenceOfCrime.setEvidenceId(3);
-
-        evidenceOfCrime.setDateAdded(LocalDateTime.now());
-        evidenceOfCrime.setDetails("No details");
-
-        boolean f = daoEvidenceOfCrime.addEvidenceOfCrime(evidenceOfCrime);
         /*
         DAOEvidenceOfCrime daoEvidenceOfCrime = new DAOEvidenceOfCrime();
 

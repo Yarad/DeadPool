@@ -139,7 +139,24 @@ public class DAOEvidenceOfCrime extends DAO implements IDAOEvidenceOfCrime {
 
     @Override
     public boolean updateEvidenceOfCrime(EvidenceOfCrime evidenceOfCrime) {
-        return false;
+
+        if (evidenceOfCrime == null)
+            return false;
+
+        PreparedStatement preparedStatement = currConnection.prepareStatement("UPDATE `evidence_of_crime` SET `evidence_type`=?,`date_added`=?,`details`=?,`photo_path`=? WHERE `evidence_id`=? AND `crime_id`=?");
+        try {
+            preparedStatement.setString(1, evidenceOfCrime.getEvidenceType().toString());
+            preparedStatement.setTimestamp(2, Timestamp.valueOf(evidenceOfCrime.getDateAdded()));
+            preparedStatement.setString(3, evidenceOfCrime.getDetails());
+            preparedStatement.setString(4, evidenceOfCrime.getPhotoPath());
+            preparedStatement.setLong(5, evidenceOfCrime.getEvidenceId());
+            preparedStatement.setLong(6, evidenceOfCrime.getCrimeId());
+        } catch (SQLException e) {
+            DAOLog.log(e.toString());
+            return false;
+        }
+
+        return currConnection.queryDataEdit(preparedStatement);
     }
 }
 
