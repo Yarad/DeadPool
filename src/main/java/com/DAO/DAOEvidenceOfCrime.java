@@ -3,6 +3,7 @@ package com.DAO;
 import com.DAO.interfaces.IDAOEvidenceOfCrime;
 import com.logic.EvidenceOfCrime;
 import com.logic.ProjectFunctions;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
@@ -14,20 +15,11 @@ import java.util.List;
 
 @Repository
 public class DAOEvidenceOfCrime extends DAO implements IDAOEvidenceOfCrime {
+    static Logger log = Logger.getLogger(DAOEvidenceOfCrime.class.getName());
 
-    //TODO: потестить
     @Override
     public EvidenceOfCrime getEvidenceOfCrime(long crimeId, long evidenceId) {
         EvidenceOfCrime evidenceOfCrime = new EvidenceOfCrime();
-
-
-        /*
-        не нужно. при вызове evidenceOfCrime.getParentCrime() всё автоматом подгружается
-
-        evidenceOfCrime.parentCrime = parentDaoCrime.getCrimeById(crimeId);
-        evidenceOfCrime.parentEvidence = parentDaoEvidence.getEvidenceById(evidenceId);
-
-        */
 
         PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM evidence_of_crime WHERE crime_id = ? AND evidence_id  = ? ");
 
@@ -35,7 +27,7 @@ public class DAOEvidenceOfCrime extends DAO implements IDAOEvidenceOfCrime {
             preparedStatement.setLong(1, crimeId);
             preparedStatement.setLong(2, evidenceId);
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return null;
         }
         List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
@@ -73,7 +65,7 @@ public class DAOEvidenceOfCrime extends DAO implements IDAOEvidenceOfCrime {
         try {
             preparedStatement.setLong(1, crimeId);
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return retArr;
         }
         List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
@@ -97,7 +89,7 @@ public class DAOEvidenceOfCrime extends DAO implements IDAOEvidenceOfCrime {
         try {
             preparedStatement.setLong(1, evidenceId);
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return retArr;
         }
         List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
@@ -130,7 +122,7 @@ public class DAOEvidenceOfCrime extends DAO implements IDAOEvidenceOfCrime {
             preparedStatement.setString(5, evidenceOfCrime.getDetails());
             preparedStatement.setString(6, evidenceOfCrime.getPhotoPath());
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return false;
         }
 
@@ -152,7 +144,7 @@ public class DAOEvidenceOfCrime extends DAO implements IDAOEvidenceOfCrime {
             preparedStatement.setLong(5, evidenceOfCrime.getEvidenceId());
             preparedStatement.setLong(6, evidenceOfCrime.getCrimeId());
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return false;
         }
 

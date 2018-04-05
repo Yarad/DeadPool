@@ -4,6 +4,7 @@ import com.DAO.interfaces.IDAOParticipant;
 import com.logic.Man;
 import com.logic.Participant;
 import com.logic.ProjectFunctions;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @Repository
 public class DAOParticipant extends DAOMan implements IDAOParticipant {
+    static Logger log = Logger.getLogger(DAOParticipant.class.getName());
 
     @Override
     public Participant getParticipantById(long manId, long crimeId) {
@@ -27,7 +29,7 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
             preparedStatement.setLong(1, crimeId);
             preparedStatement.setLong(2, manId);
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return null;
         }
         List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
@@ -59,7 +61,7 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
             preparedStatement.setLong(5, participantToUpdate.getManId());
             preparedStatement.setLong(6, participantToUpdate.getCrimeId());
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return false;
         }
 
@@ -74,7 +76,7 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
         try {
             preparedStatement.setLong(1, manId);
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return null;
         }
         List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
@@ -100,7 +102,7 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
             preparedStatement.setString(5, participantToAdd.getParticipantStatus().toString());
             preparedStatement.setTimestamp(6, Timestamp.valueOf(participantToAdd.getDateAdded()));
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return false;
         }
 
@@ -117,7 +119,7 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
         try {
             preparedStatement.setLong(1, crimeId);
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return retParticipantCrimesArray;
         }
 

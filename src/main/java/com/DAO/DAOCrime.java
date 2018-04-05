@@ -3,6 +3,8 @@ package com.DAO;
 import com.DAO.interfaces.IDAOCrime;
 import com.logic.Crime;
 import com.logic.ProjectFunctions;
+import com.services.AuthorizationService;
+import org.apache.log4j.Logger;
 import org.omg.CORBA.TIMEOUT;
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +21,7 @@ import static java.sql.Types.TIME;
 
 @Repository
 public class DAOCrime extends DAO implements IDAOCrime {
+    static Logger log = Logger.getLogger(DAOCrime.class.getName());
 
     @Override
     public boolean addCrime(Crime crimeToAdd) {
@@ -37,7 +40,7 @@ public class DAOCrime extends DAO implements IDAOCrime {
             preparedStatement.setString(5, crimeToAdd.getCrimePlace());
             preparedStatement.setString(6, crimeToAdd.getCrimeType().toString());
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return false;
         }
         boolean b1 = currConnection.queryDataEdit(preparedStatement);
@@ -54,7 +57,7 @@ public class DAOCrime extends DAO implements IDAOCrime {
         try {
             preparedStatement.setLong(1, crimeId);
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return null;
         }
 
@@ -85,7 +88,7 @@ public class DAOCrime extends DAO implements IDAOCrime {
             preparedStatement.setLong(6, crimeToUpdate.getCriminalCaseId());
             preparedStatement.setLong(7, crimeToUpdate.getCrimeId());
         } catch (Exception e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
         }
         return currConnection.queryDataEdit(preparedStatement);
     }
@@ -113,7 +116,7 @@ public class DAOCrime extends DAO implements IDAOCrime {
             preparedStatement.setDate(1, dateStart != null ? Date.valueOf(dateStart) : Date.valueOf(LocalDate.of(1,1,1)));
             preparedStatement.setDate(2, dateStart != null ? Date.valueOf(dateEnd) : Date.valueOf(LocalDate.of(9999,12,31)));
         } catch (Exception e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return crimes;
         }
 
@@ -135,7 +138,7 @@ public class DAOCrime extends DAO implements IDAOCrime {
         try {
             preparedStatement.setLong(1, caseId);
         } catch (Exception e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
         }
 
         List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
@@ -160,7 +163,7 @@ public class DAOCrime extends DAO implements IDAOCrime {
         try {
             preparedStatement.setLong(1, evidenceId);
         } catch (Exception e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
         }
 
         List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
