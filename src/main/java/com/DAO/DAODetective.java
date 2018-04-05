@@ -28,9 +28,10 @@ public class DAODetective extends DAOMan implements IDAODetective {
 
         List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
 
-        if (retArray.isEmpty()) return null;
-        Detective detective = new Detective();
+        if (retArray.isEmpty())
+            return null;
 
+        Detective detective = new Detective();
         ProjectFunctions.tryFillObjectByDbArray(detective, retArray.get(0));
         return detective;
     }
@@ -55,7 +56,8 @@ public class DAODetective extends DAOMan implements IDAODetective {
 
     @Override
     public boolean updateDetective(Detective detectiveToUpdate) {
-        if (detectiveToUpdate == null) return false;
+        if (detectiveToUpdate == null)
+            return false;
         PreparedStatement preparedStatement = currConnection.prepareStatement("UPDATE `detective` SET `login`=?,`hash_of_password`=?,`email`=? WHERE `detective_id` = ?");
         try {
             preparedStatement.setString(1, detectiveToUpdate.getLogin());
@@ -72,7 +74,7 @@ public class DAODetective extends DAOMan implements IDAODetective {
 
     @Override
     public Detective getDetectiveByLogin(String login) {
-        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM `detective` WHERE `login` = ?");
+        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM detective JOIN man ON detective_id = man_id WHERE `login` = ?");
         try {
             preparedStatement.setString(1, login);
         } catch (SQLException e) {
@@ -85,7 +87,6 @@ public class DAODetective extends DAOMan implements IDAODetective {
         if (retArray.isEmpty()) return null;
 
         Detective detective = new Detective();
-
         ProjectFunctions.tryFillObjectByDbArray(detective, retArray.get(0));
         return detective;
     }
@@ -102,9 +103,8 @@ public class DAODetective extends DAOMan implements IDAODetective {
 
         List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
 
-        if (retArray.isEmpty()) return false;
-
-        if (retArray.size() == 1) return true;
+        if (!retArray.isEmpty() && retArray.size() == 1)
+            return true;
 
         return false;
     }

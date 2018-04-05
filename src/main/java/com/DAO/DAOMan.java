@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.sql.Types.DATE;
+
 @Repository
 public class DAOMan extends DAO implements IDAOMan {
 
@@ -26,7 +28,7 @@ public class DAOMan extends DAO implements IDAOMan {
             if (manToAdd.getBirthDay() != null)
                 preparedQuery.setDate(3, Date.valueOf(manToAdd.getBirthDay()));
             else
-                preparedQuery.setNull(3, 0);
+                preparedQuery.setNull(3, DATE);
             preparedQuery.setString(4, manToAdd.getSurname());
             preparedQuery.setString(5, manToAdd.getPhotoPath());
 
@@ -57,7 +59,7 @@ public class DAOMan extends DAO implements IDAOMan {
             if (manToUpdate.getBirthDay() != null)
                 preparedStatement2.setDate(3, Date.valueOf(manToUpdate.getBirthDay()));
             else
-                preparedStatement2.setNull(3, 0);
+                preparedStatement2.setNull(3, DATE);
             preparedStatement2.setString(4, manToUpdate.getHomeAddress());
             preparedStatement2.setString(5, manToUpdate.getPhotoPath());
             preparedStatement2.setLong(6, manToUpdate.getManId());

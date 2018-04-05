@@ -3,6 +3,7 @@ package com.DAO;
 import com.DAO.interfaces.IDAOCrime;
 import com.logic.Crime;
 import com.logic.ProjectFunctions;
+import org.omg.CORBA.TIMEOUT;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
@@ -13,6 +14,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static java.sql.Types.TIME;
 
 @Repository
 public class DAOCrime extends DAO implements IDAOCrime {
@@ -30,7 +33,7 @@ public class DAOCrime extends DAO implements IDAOCrime {
             if (crimeToAdd.getCrimeTime() != null)
                 preparedStatement.setTime(4, Time.valueOf(crimeToAdd.getCrimeTime()));
             else
-                preparedStatement.setNull(4, 0);
+                preparedStatement.setNull(4, TIME);
             preparedStatement.setString(5, crimeToAdd.getCrimePlace());
             preparedStatement.setString(6, crimeToAdd.getCrimeType().toString());
         } catch (SQLException e) {
@@ -73,7 +76,10 @@ public class DAOCrime extends DAO implements IDAOCrime {
         try {
             preparedStatement.setString(1, crimeToUpdate.getDescription());
             preparedStatement.setDate(2, Date.valueOf(crimeToUpdate.getCrimeDate()));
-            preparedStatement.setTime(3, Time.valueOf(crimeToUpdate.getCrimeTime()));
+            if (crimeToUpdate.getCrimeTime() != null)
+                preparedStatement.setTime(3, Time.valueOf(crimeToUpdate.getCrimeTime()));
+            else
+                preparedStatement.setNull(3, TIME);
             preparedStatement.setString(4, crimeToUpdate.getCrimePlace());
             preparedStatement.setString(5, crimeToUpdate.getCrimeType().toString());
             preparedStatement.setLong(6, crimeToUpdate.getCrimeId());
@@ -103,8 +109,8 @@ public class DAOCrime extends DAO implements IDAOCrime {
         PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM crime WHERE `crime_date` BETWEEN ? AND ? ");
 
         try {
-            preparedStatement.setDate(1, Date.valueOf(dateStart));
-            preparedStatement.setDate(2, Date.valueOf(dateEnd));
+            preparedStatement.setDate(1, dateStart != null ? Date.valueOf(dateStart) : Date.valueOf(LocalDate.MIN));
+            preparedStatement.setDate(2, dateStart != null ? Date.valueOf(dateEnd) : Date.valueOf(LocalDate.MAX));
         } catch (Exception e) {
             DAOLog.log(e.toString());
             return crimes;

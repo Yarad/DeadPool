@@ -41,10 +41,6 @@ public class AllClassesList {
         return crime;
     }
 
-    public void setCrime(Crime crime) {
-        this.crime = crime;
-    }
-
     public CriminalCase getCriminalCase() {
         return criminalCase;
     }
@@ -55,18 +51,6 @@ public class AllClassesList {
 
     public Man getMan() {
         return man;
-    }
-
-    public void setCriminalCase(CriminalCase criminalCase) {
-        this.criminalCase = criminalCase;
-    }
-
-    public void setDetective(Detective detective) {
-        this.detective = detective;
-    }
-
-    public void setMan(Man man) {
-        this.man = man;
     }
 
     public Evidence getEvidence() {
@@ -81,30 +65,46 @@ public class AllClassesList {
         return participant;
     }
 
-    public void setEvidence(Evidence evidence) {
-        this.evidence = evidence;
-    }
-
-    public void setEvidenceOfCrime(EvidenceOfCrime evidenceOfCrime) {
-        this.evidenceOfCrime = evidenceOfCrime;
-    }
-
-    public void setParticipant(Participant participant) {
-        this.participant = participant;
-    }
-
-    public void addCustomParticipantToDatabase() throws Exception {
+    public void addCustomManToDatabase() throws Exception {
         man = LogicAdditionals.getManWithDates();
         if (!daoMan.addMan(man))
             throw new Exception();
+    }
+
+    public void addCustomDetectiveToDatabase(String detectiveLogin) throws Exception {
         detective = LogicAdditionals.getDetectiveWithDates();
-        detective.setManId(man.getManId());
+        detective.setLogin(detectiveLogin);
         if (!daoDetective.addDetective(detective))
             throw new Exception();
-        criminalCase = LogicAdditionals.getCriminalCaseWithDates();
+    }
+
+    public void addSolvedCriminalCaseToDatabase(String detectiveLogin) throws Exception {
+        addCustomDetectiveToDatabase(detectiveLogin);
+        criminalCase = LogicAdditionals.getCriminalCaseSolved();
         criminalCase.setDetectiveId(detective.getManId());
         if (!daoCriminalCase.addCriminalCase(criminalCase))
             throw new Exception();
+    }
+
+    public void addUnsolvedCriminalCaseToDatabase(String detectiveLogin) throws Exception {
+        addCustomDetectiveToDatabase(detectiveLogin);
+        criminalCase = LogicAdditionals.getCriminalCaseUnsolved();
+        criminalCase.setDetectiveId(detective.getManId());
+        if (!daoCriminalCase.addCriminalCase(criminalCase))
+            throw new Exception();
+    }
+
+    public void addOpenCriminalCaseToDatabase(String detectiveLogin) throws Exception {
+        addCustomDetectiveToDatabase(detectiveLogin);
+        criminalCase = LogicAdditionals.getCriminalCaseOpen();
+        criminalCase.setDetectiveId(detective.getManId());
+        if (!daoCriminalCase.addCriminalCase(criminalCase))
+            throw new Exception();
+    }
+
+    public void addCustomParticipantToDatabase(String detectiveLogin) throws Exception {
+        addCustomManToDatabase();
+        addSolvedCriminalCaseToDatabase(detectiveLogin);
         crime = LogicAdditionals.getCrimeWithDates();
         crime.setCriminalCaseId(criminalCase.getCriminalCaseId());
         if (!daoCrime.addCrime(crime))

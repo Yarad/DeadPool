@@ -6,12 +6,12 @@ import java.time.LocalDate;
 
 public class CriminalCase {
     private long criminalCaseId = -1;
-    private boolean closed = false;
+    private boolean closed;
     private long detectiveId = -1;
-    private String criminalCaseNumber = "NoCriminalCaseNumber";
-    private LocalDate createDate = LocalDate.now();
-    private LocalDate closeDate = null;
-    private Detective parentDetective = null;
+    private String criminalCaseNumber;
+    private LocalDate createDate;
+    private LocalDate closeDate;
+    private Detective parentDetective;
 
     public boolean isClosed() {
         return closed;
