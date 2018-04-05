@@ -49,7 +49,7 @@ public class DAODetectiveTests {
 
         try {
             Detective actualDetective = daoDetective.getDetectiveById(detective.getManId());
-
+            assertNotNull(actualDetective);
             ClassEqualsAsserts.assertDetectiveEquals(detective, actualDetective);
         } finally {
             daoAdditionals.deleteDetective(detective);

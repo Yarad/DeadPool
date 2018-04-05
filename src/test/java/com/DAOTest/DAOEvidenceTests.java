@@ -4,16 +4,11 @@ import com.Additionals.AllClassesList;
 import com.Additionals.ClassEqualsAsserts;
 import com.Additionals.DAOAdditionals;
 import com.Additionals.LogicAdditionals;
-import com.DAO.DAOCrime;
 import com.DAO.DAOEvidence;
-import com.DAO.interfaces.IDAOCrime;
 import com.DAO.interfaces.IDAOEvidence;
-import com.logic.Crime;
 import com.logic.Evidence;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -44,7 +39,7 @@ public class DAOEvidenceTests {
 
         try {
             Evidence actualEvidence = daoEvidence.getEvidenceById(entities.getEvidence().getEvidenceId());
-
+            assertNotNull(actualEvidence);
             ClassEqualsAsserts.assertEvidencesEquals(entities.getEvidence(), actualEvidence);
         } finally {
             entities.deleteAllAddedEntities();

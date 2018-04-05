@@ -45,7 +45,7 @@ public class DAOCrimeTests {
 
         try {
             Crime actualCrime = daoCrime.getCrimeById(entities.getCrime().getCrimeId());
-
+            assertNotNull(actualCrime);
             ClassEqualsAsserts.assertCrimesEquals(entities.getCrime(), actualCrime);
         } finally {
             entities.deleteAllAddedEntities();

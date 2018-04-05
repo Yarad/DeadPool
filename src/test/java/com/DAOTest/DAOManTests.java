@@ -54,7 +54,7 @@ public class DAOManTests {
 
         try {
             Man actualMan = daoMan.getFullManInfo(man.getManId());
-
+            assertNotNull(actualMan);
             ClassEqualsAsserts.assertManEquals(man, actualMan);
         } finally {
             daoAdditionals.deleteMan(man);
