@@ -1,14 +1,15 @@
 package com.logic;
 
-import com.DAO.DAOMan;
-
-import java.util.Map;
+import com.DAO.DAOEvidenceOfCrime;
 
 public class tempMainCode {
     public static void main(String[] args) {
 
-        DAOMan daoMan = new DAOMan();
-        Map<Man, Long> l = daoMan.getAllManWithCrimeAmount();
+        DAOEvidenceOfCrime daoEvidenceOfCrime = new DAOEvidenceOfCrime();
+
+        EvidenceOfCrime evidenceOfCrime = daoEvidenceOfCrime.getEvidenceOfCrime(3, 2);
+        evidenceOfCrime.setDetails("From Yarad");
+        boolean f = daoEvidenceOfCrime.updateEvidenceOfCrime(evidenceOfCrime);
 
         /*
         DAOEvidenceOfCrime daoEvidenceOfCrime = new DAOEvidenceOfCrime();
