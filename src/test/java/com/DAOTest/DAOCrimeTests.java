@@ -7,7 +7,6 @@ import com.Additionals.LogicAdditionals;
 import com.DAO.DAOCrime;
 import com.DAO.interfaces.IDAOCrime;
 import com.logic.Crime;
-import com.logic.CrimeType;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
