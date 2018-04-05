@@ -124,7 +124,6 @@ public class DAOEvidenceOfCrimeTests {
         AllClassesList entities = new AllClassesList();
         entities.addCustomEvidenceOfCrimeToDatabase(UUID.randomUUID().toString().substring(0,30));
 
-        long crimeId = entities.getEvidenceOfCrime().getCrimeId();
         entities.getEvidenceOfCrime().setCrimeId(-1);
 
         try {
@@ -132,7 +131,7 @@ public class DAOEvidenceOfCrimeTests {
 
             assertFalse(actualResult);
         } finally {
-            entities.getEvidenceOfCrime().setCrimeId(crimeId);
+            entities.getEvidenceOfCrime().setCrimeId(entities.getCrime().getCrimeId());
             entities.deleteAllAddedEntities();
         }
     }

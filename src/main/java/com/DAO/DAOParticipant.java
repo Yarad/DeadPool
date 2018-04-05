@@ -48,22 +48,22 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
         PreparedStatement preparedStatement = currConnection.prepareStatement("UPDATE `participant` SET " +
                 "`participant_status`=?," +
                 "`alibi`=?," + //nullable
-                "`witness_report`=? " + //nullable
+                "`witness_report`=?," + //nullable
                 "`date_added`=? " +
-                "WHERE man_id = ?");
+                "WHERE man_id = ? AND crime_id = ?");
         try {
             preparedStatement.setString(1, participantToUpdate.getParticipantStatus().toString());
             preparedStatement.setString(2, participantToUpdate.getAlibi());
             preparedStatement.setString(3, participantToUpdate.getWitnessReport());
             preparedStatement.setTimestamp(4, Timestamp.valueOf(participantToUpdate.getDateAdded()));
             preparedStatement.setLong(5, participantToUpdate.getManId());
+            preparedStatement.setLong(6, participantToUpdate.getCrimeId());
         } catch (SQLException e) {
             DAOLog.log(e.toString());
             return false;
         }
 
-        boolean res1 = currConnection.queryDataEdit(preparedStatement);
-        return res1;
+        return currConnection.queryDataEdit(preparedStatement);
     }
 
     @Override
