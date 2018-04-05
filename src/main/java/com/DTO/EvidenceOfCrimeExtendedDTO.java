@@ -7,7 +7,7 @@ public class EvidenceOfCrimeExtendedDTO extends EvidenceOfCrimeForListOfEvidence
     private EvidenceObjectDTO evidence;
 
     public EvidenceOfCrimeExtendedDTO(EvidenceObjectDTO evidence, CrimeForOthersShortedDTO crime,
-                                      String type, String photoPath, LocalDate dateAdded, LocalTime timeAdded, String details) {
+                                      EnumDTO type, String photoPath, LocalDate dateAdded, LocalTime timeAdded, String details) {
         super(crime, type, photoPath, dateAdded, timeAdded, details);
         this.evidence = evidence;
     }

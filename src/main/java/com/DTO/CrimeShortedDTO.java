@@ -4,11 +4,11 @@ import java.time.LocalDate;
 
 public class CrimeShortedDTO {
     private long id;
-    private String type;
+    private EnumDTO type;
     private LocalDate date;
     private String place;
 
-    public CrimeShortedDTO(long id, String type, LocalDate date, String place) {
+    public CrimeShortedDTO(long id, EnumDTO type, LocalDate date, String place) {
         this.id = id;
         this.type = type;
         this.date = date;
@@ -23,11 +23,11 @@ public class CrimeShortedDTO {
         this.id = id;
     }
 
-    public String getType() {
+    public EnumDTO getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(EnumDTO type) {
         this.type = type;
     }
 

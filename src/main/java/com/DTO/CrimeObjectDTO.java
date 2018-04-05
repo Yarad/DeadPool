@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public class CrimeObjectDTO extends CrimeShortedDTO {
     private CriminalCaseShortedDTO criminalCase;
 
-    public CrimeObjectDTO(long id, String type, LocalDate date, String place, CriminalCaseShortedDTO criminalCase) {
+    public CrimeObjectDTO(long id, EnumDTO type, LocalDate date, String place, CriminalCaseShortedDTO criminalCase) {
         super(id, type, date, place);
         this.criminalCase = criminalCase;
     }
