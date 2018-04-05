@@ -5,6 +5,7 @@ import com.logic.Detective;
 import com.logic.Man;
 import com.logic.Participant;
 import com.logic.ProjectFunctions;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @Repository
 public class DAODetective extends DAOMan implements IDAODetective {
+    static Logger log = Logger.getLogger(DAODetective.class.getName());
 
     public Detective getDetectiveById(long id) {
         PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM detective JOIN man ON detective_id = man_id WHERE detective_id = ?");
@@ -22,7 +24,7 @@ public class DAODetective extends DAOMan implements IDAODetective {
         try {
             preparedStatement.setLong(1, id);
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return null;
         }
 
@@ -47,7 +49,7 @@ public class DAODetective extends DAOMan implements IDAODetective {
             preparedStatement.setLong(3, detectiveToAdd.getManId());
             preparedStatement.setString(4, detectiveToAdd.getEmail());
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return false;
         }
 
@@ -65,7 +67,7 @@ public class DAODetective extends DAOMan implements IDAODetective {
             preparedStatement.setString(3, detectiveToUpdate.getEmail());
             preparedStatement.setLong(4, detectiveToUpdate.getManId());
         } catch (Exception e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
         }
         boolean res1 = currConnection.queryDataEdit(preparedStatement);
         boolean res2 = updateMan(detectiveToUpdate);
@@ -78,7 +80,7 @@ public class DAODetective extends DAOMan implements IDAODetective {
         try {
             preparedStatement.setString(1, login);
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return null;
         }
 
@@ -97,7 +99,7 @@ public class DAODetective extends DAOMan implements IDAODetective {
         try {
             preparedStatement.setString(1, login);
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return false;
         }
 

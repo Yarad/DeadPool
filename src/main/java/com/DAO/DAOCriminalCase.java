@@ -3,6 +3,7 @@ package com.DAO;
 import com.DAO.interfaces.IDAOCriminalCase;
 import com.logic.CriminalCase;
 import com.logic.ProjectFunctions;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
@@ -16,6 +17,7 @@ import static java.sql.Types.DATE;
 
 @Repository
 public class DAOCriminalCase extends DAO implements IDAOCriminalCase {
+    static Logger log = Logger.getLogger(DAOCriminalCase.class.getName());
 
     @Override
     public boolean addCriminalCase(CriminalCase criminalCase) {
@@ -32,7 +34,7 @@ public class DAOCriminalCase extends DAO implements IDAOCriminalCase {
             preparedStatement.setBoolean(4, criminalCase.isClosed());
             preparedStatement.setLong(5, criminalCase.getDetectiveId());
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return false;
         }
         boolean queryIsOk = currConnection.queryDataEdit(preparedStatement);
@@ -49,7 +51,7 @@ public class DAOCriminalCase extends DAO implements IDAOCriminalCase {
         try {
             preparedStatement.setLong(1, id);
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return null;
         }
 
@@ -87,7 +89,7 @@ public class DAOCriminalCase extends DAO implements IDAOCriminalCase {
             preparedStatement.setLong(5, criminalCaseToUpdate.getDetectiveId());
             preparedStatement.setLong(6, criminalCaseToUpdate.getCriminalCaseId());
         } catch (Exception e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
         }
         return currConnection.queryDataEdit(preparedStatement);
     }
@@ -173,7 +175,7 @@ public class DAOCriminalCase extends DAO implements IDAOCriminalCase {
         try{
             preparedStatement.setLong(1,detectiveID);
         } catch (Exception e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return criminalCases;
         }
 

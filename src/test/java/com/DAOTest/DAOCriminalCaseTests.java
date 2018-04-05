@@ -50,7 +50,7 @@ public class DAOCriminalCaseTests {
 
         try {
             CriminalCase actualCriminalCase = daoCriminalCase.getCriminalCaseById(entities.getCriminalCase().getCriminalCaseId());
-
+            assertNotNull(actualCriminalCase);
             ClassEqualsAsserts.assertCriminalCasesEquals(entities.getCriminalCase(), actualCriminalCase);
         } finally {
             entities.deleteAllAddedEntities();

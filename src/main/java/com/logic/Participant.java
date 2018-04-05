@@ -11,7 +11,7 @@ public class Participant extends Man {
     private LocalDateTime dateAdded;
 
     private Crime parentCrime;
-    private ParticipantStatus participantStatus = ParticipantStatus.SUSPECTED;
+    private ParticipantStatus participantStatus;
 
     public Crime getParentCrime() {
         if (parentCrime == null) {

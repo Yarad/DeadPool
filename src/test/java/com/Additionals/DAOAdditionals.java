@@ -1,14 +1,16 @@
 package com.Additionals;
 
-import com.DAO.DAOLog;
 import com.DAO.SQLConnection;
 import com.DAO.interfaces.IConnection;
 import com.logic.*;
+import org.apache.log4j.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class DAOAdditionals {
+    static Logger log = Logger.getLogger(DAOAdditionals.class.getName());
+
     private IConnection currConnection;
 
     public DAOAdditionals() {
@@ -22,7 +24,7 @@ public class DAOAdditionals {
         try {
             preparedQuery.setLong(1, man.getManId());
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return false;
         }
         return currConnection.queryDataEdit(preparedQuery);
@@ -35,7 +37,7 @@ public class DAOAdditionals {
         try {
             preparedQuery.setLong(1, detective.getManId());
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return false;
         }
         if (currConnection.queryDataEdit(preparedQuery)) {
@@ -51,7 +53,7 @@ public class DAOAdditionals {
         try {
             preparedQuery.setLong(1, crime.getCrimeId());
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return false;
         }
         return currConnection.queryDataEdit(preparedQuery);
@@ -64,7 +66,7 @@ public class DAOAdditionals {
         try {
             preparedQuery.setLong(1, criminalCase.getCriminalCaseId());
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return false;
         }
         return currConnection.queryDataEdit(preparedQuery);
@@ -78,7 +80,7 @@ public class DAOAdditionals {
             preparedQuery.setLong(1, participant.getManId());
             preparedQuery.setLong(2, participant.getCrimeId());
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return false;
         }
         return currConnection.queryDataEdit(preparedQuery);
@@ -89,10 +91,10 @@ public class DAOAdditionals {
 
         PreparedStatement preparedQuery = currConnection.prepareStatement("DELETE FROM `evidence_of_crime` WHERE `evidence_id` = ? AND `crime_id` = ?");
         try {
-            preparedQuery.setLong(1, evidenceOfCrime.getParentEvidence().getEvidenceId());
-            preparedQuery.setLong(2, evidenceOfCrime.getParentCrime().getCrimeId());
+            preparedQuery.setLong(1, evidenceOfCrime.getEvidenceId());
+            preparedQuery.setLong(2, evidenceOfCrime.getCrimeId());
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return false;
         }
         return currConnection.queryDataEdit(preparedQuery);
@@ -105,7 +107,7 @@ public class DAOAdditionals {
         try {
             preparedQuery.setLong(1, evidence.getEvidenceId());
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return false;
         }
         return currConnection.queryDataEdit(preparedQuery);

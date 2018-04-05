@@ -71,6 +71,12 @@ public class AllClassesList {
             throw new Exception();
     }
 
+    public void addCustomEvidenceToDatabase() throws Exception {
+        evidence = LogicAdditionals.getCustomEvidence();
+        if (!daoEvidence.addEvidence(evidence))
+            throw new Exception();
+    }
+
     public void addCustomDetectiveToDatabase(String detectiveLogin) throws Exception {
         detective = LogicAdditionals.getDetectiveWithDates();
         detective.setLogin(detectiveLogin);
@@ -102,17 +108,31 @@ public class AllClassesList {
             throw new Exception();
     }
 
-    public void addCustomParticipantToDatabase(String detectiveLogin) throws Exception {
-        addCustomManToDatabase();
+    public void addCrimeToDatabase(String detectiveLogin) throws Exception {
         addSolvedCriminalCaseToDatabase(detectiveLogin);
         crime = LogicAdditionals.getCrimeWithDates();
         crime.setCriminalCaseId(criminalCase.getCriminalCaseId());
         if (!daoCrime.addCrime(crime))
             throw new Exception();
+    }
+
+    public void addCustomParticipantToDatabase(String detectiveLogin) throws Exception {
+        addCustomManToDatabase();
+        addCrimeToDatabase(detectiveLogin);
         participant = LogicAdditionals.getParticipantWithDates();
         participant.setCrimeId(crime.getCrimeId());
         participant.setManId(man.getManId());
         if (!daoParticipant.addParticipant(participant))
+            throw new Exception();
+    }
+
+    public void addCustomEvidenceOfCrimeToDatabase(String detectiveLogin) throws Exception {
+        addCustomEvidenceToDatabase();
+        addCrimeToDatabase(detectiveLogin);
+        evidenceOfCrime = LogicAdditionals.getEvidenceOfCrimeWithDates();
+        evidenceOfCrime.setCrimeId(crime.getCrimeId());
+        evidenceOfCrime.setEvidenceId(evidence.getEvidenceId());
+        if (!daoEvidenceOfCrime.addEvidenceOfCrime(evidenceOfCrime))
             throw new Exception();
     }
 
