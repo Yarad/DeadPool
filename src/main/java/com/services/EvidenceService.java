@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class EvidenceService implements IEvidenceService {
     @Autowired
@@ -35,5 +37,10 @@ public class EvidenceService implements IEvidenceService {
         evidence.setName(name);
         evidence.setDescription(description);
         return daoEvidence.updateEvidence(evidence);
+    }
+
+    @Override
+    public List<Evidence> getAllEvidences() {
+        return daoEvidence.getAllEvidences();
     }
 }

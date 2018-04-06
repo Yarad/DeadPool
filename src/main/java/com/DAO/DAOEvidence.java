@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -68,5 +69,23 @@ public class DAOEvidence extends DAO implements IDAOEvidence {
         }
 
         return currConnection.queryDataEdit(preparedStatement);
+    }
+
+    @Override
+    public List<Evidence> getAllEvidences() {
+        List<Evidence> retArr = new ArrayList<>();
+        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM evidence");
+
+        List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
+
+        if (retArray.isEmpty()) return retArr;
+
+        for (int i = 0; i < retArray.size(); i++) {
+            Evidence tempObj = new Evidence();
+            ProjectFunctions.tryFillObjectByDbArray(tempObj, retArray.get(i));
+
+            retArr.add(tempObj);
+        }
+        return retArr;
     }
 }
