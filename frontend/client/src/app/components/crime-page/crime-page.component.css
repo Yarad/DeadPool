@@ -7,6 +7,6 @@
     cursor: pointer;
 }
 
-#menu {
-   position: fixed;
+textarea{
+    resize: none;
 }

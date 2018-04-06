@@ -18,12 +18,31 @@ export class DetectiveService {
     return this.mainService.getAuthorizedRequest("/detectives")
     .map(res => {
       if(!res.error && res.result.men) {
-        console.log(res.result);
         return res.result.men.map(detective => {
           return new Detective(detective);
         });
       }
       return [];
+    })
+    .catch((error: any)=> { 
+      return Observable.throw(error);
+    });
+  }
+
+  addNewDetective(detective): Observable<Boolean> {
+    return this.mainService.postAuthorizedRequest("/detectives/add", detective)
+    .map(res => {
+      return res.success
+    })
+    .catch((error: any)=> { 
+      return Observable.throw(error);
+    });
+  }
+
+  updateDetective(detective): Observable<Boolean> {
+    return this.mainService.postAuthorizedRequest("/detectives/update", detective)
+    .map(res => {
+      return res.success;
     })
     .catch((error: any)=> { 
       return Observable.throw(error);

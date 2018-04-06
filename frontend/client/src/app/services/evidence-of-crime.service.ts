@@ -29,6 +29,40 @@ export class EvidenceOfCrimeService {
     });
   }
 
+
+  getCrimeEvidence(evidenceId, crimeId): Observable<EvidenceOfCrime> {
+    return this.mainService.getAuthorizedRequest("/evidences/" + evidenceId + "/" + crimeId)
+    .map(res => {
+      if(!res.error && res.result) { 
+        return new EvidenceOfCrime(res.result);
+      }
+      return {};
+    })
+    .catch((error: any) => { 
+      return Observable.throw(error);
+    });
+  }
+
+  addNewEvidenceOfCrime(evidence): Observable<Boolean> {
+    return this.mainService.postAuthorizedRequest("/evidences/add_for_crime", evidence)
+    .map(res => {
+        return res.success;
+    })
+    .catch((error: any)=> { 
+      return Observable.throw(error);
+    });
+  }
+
+  updateEvidenceOfCrime(evidence): Observable<Boolean> {
+    return this.mainService.postAuthorizedRequest("/evidences/update_for_crime", evidence)
+    .map(res => {
+      return res.success;
+    })
+    .catch((error: any)=> {
+      return Observable.throw(error);
+    });
+  }
+
   evidences = [
     {
       evidence: {

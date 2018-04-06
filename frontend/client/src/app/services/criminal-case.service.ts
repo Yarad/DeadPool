@@ -90,18 +90,15 @@ export class CriminalCaseService {
   addNewCriminalCase(criminalCase): Observable<Boolean> {
     return this.mainService.postAuthorizedRequest("/criminal_cases/add", criminalCase)
     .map(res => {
-      if(!res.error && res.success) {
-        return res.success
-      }
-      return false;
+        return res.success;
     })
     .catch((error: any)=> { 
-      this.criminalCases.push(criminalCase);
       return Observable.throw(error);
     });
   }
 
-  updateNewCriminalCase(criminalCase): Observable<Boolean> {
+  updateCriminalCase(criminalCase): Observable<Boolean> {
+    console.log()
     return this.mainService.postAuthorizedRequest("/criminal_cases/update", {      
       id: criminalCase.id,
       detective:
@@ -110,20 +107,13 @@ export class CriminalCaseService {
       },
       number: criminalCase.number,
       createDate: criminalCase.createDate,
-      closed: false,
-      closeDate: null    
+      closed: criminalCase.closed,
+      closeDate: criminalCase.closeDate    
     })
     .map(res => {
-      if(!res.error && res.success) {
-        return res.success
-      }
-      return false;
+      return res.success;
     })
-    .catch((error: any)=> { 
-      const index = this.criminalCases.map(criminalCase => criminalCase.id).indexOf(criminalCase.id);
-      if(index > -1) {
-        this.criminalCases[index] = criminalCase;
-      }
+    .catch((error: any)=> {
       return Observable.throw(error);
     });
   }

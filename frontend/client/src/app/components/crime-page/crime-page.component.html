@@ -6,49 +6,57 @@
         <h3 class="list-group-item bg-dark">
           Действия
         </h3>
-        <p class="list-group-item list-group-item-action" routerLink="/crime/{{crime.id}}/add_evidence">Добавить улику</p>
+        <p class="list-group-item list-group-item-action" routerLink="/add_evidence" [queryParams]="{'crime':crimeId}">Добавить улику</p>
         <p class="list-group-item list-group-item-action" >Добавить участника</p>
         <p class="list-group-item list-group-item-action"  (click)="switchMode(false)" >Редактировать данные</p>
         <p class="list-group-item list-group-item-action" >Удалить преступление</p>
       </div>
     </div>
     
-    <div class="col-lg-offset-3 col-lg-9">
-      <form>
-        <fieldset>
-          <legend><h2>Преступление</h2></legend>
-          <div class="form-group row">
-            <label for="criminal-case-number" class="col-sm-2 col-form-label">Дело</label>
-            <div class="col-sm-10">
-              <input type="text" readonly="" class="form-control-plaintext" id="criminal-case-number" value="{{crime.criminalCase.number}}"
-                routerLink="/criminal_case/{{crime.criminalCase.id}}">
-            </div>
+    <div class="col-lg-9">  
+      <fieldset *ngIf="crime">
+        <legend><h2>Преступление</h2></legend> 
+        <div class="form-group row">
+          <label for="crime-type" class="col-sm-2 col-form-label">Тип</label>
+          <div class="col-sm-8 col-md-8">
+            <input *ngIf="readMode" 
+            type="text" [readonly]="readMode" class="form-control"
+            [class.form-control-plaintext]="readMode"
+            id="crime-type"  [(ngModel)]="crime.type.name">
+            <select *ngIf="!readMode" class="form-control" id="crime-type" (change)="changeSelectedCrimeType($event)">
+              <option *ngFor="let type of crimeEnumTypes" value="{{type.enumValue}}">{{type.name}}</option>
+            </select>
           </div>
-          <div class="form-group row">
-            <label for="detective" class="col-sm-2 col-form-label">Детектив</label>
-            <div class="col-sm-10">
-              <input type="text" readonly="" class="form-control-plaintext" id="detective" value="{{crime.detective.name}} {{crime.detective.surname}}">
-            </div>
+        </div>           
+        <div class="form-group row">
+          <label for="crime-date" class="col-sm-2 col-form-label">Дата</label>
+          <div class="col-sm-5 col-md-4">
+            <input id="crime-date" [readonly]="readMode" class="form-control"
+            [class.form-control-plaintext]="readMode" type="date" [(ngModel)]="crime.date"
+            [ngClass]="{'is-invalid':(!crime.date)}">         
           </div>
-          <div class="form-group row">
-            <label for="status" class="col-sm-2 col-form-label">Статус</label>
-            <div class="col-sm-10">
-              <input type="text" readonly="" class="form-control-plaintext" id="status" value="{{crime.criminalCase.status}}">
-            </div>
+          <label for="crime-time" class="col-sm-2 col-form-label">Время</label>
+          <div *ngIf="crime.time || !readMode" class="col-sm-5 col-md-4">
+            <input id="crime-time" [readonly]="readMode" class="form-control"
+            [class.form-control-plaintext]="readMode" type="time" [(ngModel)]="crime.time">         
           </div>
-          <div class="form-group row">
-            <label for="open-date" class="col-sm-2 col-form-label">Дата преступления</label>
-            <div class="col-sm-2">
-              <input type="text" readonly="" class="form-control-plaintext" id="open-date" value="{{crime.date}}">
-            </div>
+        </div> 
+        <div class="form-group row">
+          <label for="crime-place" class="col-sm-2 col-form-label">Место</label>
+          <div class="col-sm-8 col-md-8">
+            <input type="text" [readonly]="readMode" class="form-control"
+            [class.form-control-plaintext]="readMode"
+            id="crime-place" [(ngModel)]="crime.place" [ngClass]="{'is-invalid':(!crime.place)}">
           </div>
-          <div class="form-group row">
-            <label for="open-date" class="col-sm-2 col-form-label">Место преступления</label>
-            <div class="col-sm-2">
-              <input type="text" readonly="" class="form-control-plaintext" id="open-date" value="{{crime.place}}">
-            </div>
-          </div>    
-        </fieldset>
+        </div>
+        <div class="form-group row">
+          <label for="crime-description" class="col-sm-2 col-form-label" required>Описание</label>
+          <div class="col-sm-8 col-md-8">
+            <textarea id="crime-description"  rows="5" [readonly]="readMode" class="form-control"
+            [class.form-control-plaintext]="readMode" [(ngModel)]="crime.description"
+            > </textarea>        
+          </div>
+        </div>
         <tabset class=" col-md-12" (onSelect)="tabSelect($event)">     
           <tab class="" title="" [active]="true">
             <span *tabHeading>
@@ -67,7 +75,12 @@
             </div>
           </tab>         
         </tabset>
-      </form>
+
+        <div class="my-3" *ngIf="!readMode">
+          <button class="btn btn-secondary" (click)="saveChanges()">Сохранить изменения</button>
+          <button class="btn btn-secondary" (click)="cancellationOfChanges()">Отмена</button>
+        </div> 
+      </fieldset> 
     </div> 
   </div>
 </div>

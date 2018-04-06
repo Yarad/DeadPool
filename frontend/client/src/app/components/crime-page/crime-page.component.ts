@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router} from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
+import { ActivatedRoute} from '@angular/router';
+import { CrimeService } from '../../services/crime.service';
+import { Crime } from '../../classes/crime';
 
 @Component({
   selector: 'app-crime-page',
@@ -6,54 +11,69 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./crime-page.component.css']
 })
 export class CrimePageComponent implements OnInit {
-  crime = {
-    id: 1,
-    criminalCase: {
-            id: 1,
-            number: "УПН1854",
-            status: "Открыто",
-    },
-    type: "Убийство",
-    description: "Убита Агата Кристи. Убийца нанёс 3 удара ножом в грудь виновной",
-    date: "2018-02-26",
-    time: "12:00:00",
-    place: "БГУИР, каб. 213а",
-    detective: {
-        id: 2,
-        name: "Шерлок",
-        surname: "Холмс"
-    },
-    participants: [
-      {
-        photoPath: "https://res.cloudinary.com/dyzdll94h/image/upload/v1512924240/mpv69dvnolst2gtjjljh.jpg",
-        name: "Ангелина",
-        surname: "Хилькевич",
-        status: "Подозреваемый"
-      },
-      {
-        photoPath: "https://res.cloudinary.com/dyzdll94h/image/upload/v1513188126/kxj1l9ekt31bp67ir8db.jpg",
-        name: "Алина",
-        surname: "Ивченко",
-        status: "Очевидец"
-      }
-    ],
-    evidences: [
-      {
-        photoPath: "https://i2.rozetka.ua/goods/8796/cold_steel_jungle_machete_97jms_images_8796146.jpg",
-        name: "Мачете Cold Steel Jungle Machete 97JMS",
-        type: "орудие убийства"
-      },
-      {
-        photoPath: "https://cdnmedia.220-volt.ru/content/products/485/485859/images/thumb_220/n1200x800/1.jpeg",
-        name: "Бензопила КАЛИБР БП-1500/16У",
-        type: "что-то"
-      }
-    ]
-  }
+  crime;
   readMode = true;
-  oldCrime = {};
+  oldCrime;
+  crimeEnumTypes = [];
+ 
+  criminalCase:
+  {
+      id: 1,
+      number: "УПН1854",
+      type: "открыто"
+  }
 
-  constructor() { }
+  private routeSubscription: Subscription;
+  constructor( private router: Router,
+    private route: ActivatedRoute,
+    private crimeService:CrimeService
+  ) {
+    let crimeId;
+    this.routeSubscription = route.params.subscribe(params => crimeId = +params['id']);
+ 
+    this.crimeService.getCrimeTypes()
+    .subscribe(
+      data => {
+        this.crimeEnumTypes = data;
+       
+        this.crimeService.getCrime(crimeId)
+        .subscribe(
+          data => {
+            this.crime = data;
+          },
+          error => this.crime = new Crime(this.crimeService.crimes[this.crimeService.crimes.map(crime => crime.id).indexOf(crimeId)])
+        );       
+      },
+      error => {}
+    );
+   }
+
+
+  saveChanges() {
+    if (this.crime.date && this.crime.place && this.crime.type) {
+    //  this.crime.type = this.crimeEnumTypes[this.crimeEnumTypes.map(type=> type.name).indexOf(this.crime.type.name)].enumValue;
+      this.crimeService.updateCrime(this.crime)
+      .subscribe(
+        result => this.switchMode(true),
+        error => this.switchMode(true)
+      );
+    }
+  }
+
+  cancellationOfChanges() {
+    this.crime = this.oldCrime;
+    this.switchMode(true);
+  }
+
+  changeSelectedCrimeType($event) {
+    // const index = this.allDetectives.map(detective => detective.id).indexOf(+$event.target.value);
+    // if (index > -1) {
+    //   this.criminalCase.detective = this.allDetectives[index];
+    // }
+    console.log(this.crimeEnumTypes[this.crimeEnumTypes.map(type=> type.enumValue).indexOf($event.target.value)])
+    this.crime.type = this.crimeEnumTypes[this.crimeEnumTypes.map(type=> type.enumValue).indexOf($event.target.value)];
+
+  }
 
   ngOnInit() {
   }

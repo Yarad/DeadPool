@@ -33,6 +33,7 @@ export class CriminalCasePageComponent implements OnInit {
       data => this.criminalCase = data,
       error => this.criminalCase = new CriminalCase(this.criminalCaseService.criminalCases[this.criminalCaseService.criminalCases.map(criminalCase => criminalCase.id).indexOf(this.criminalCaseId)])
     );    
+    
    }
 
   ngOnInit() {
@@ -52,7 +53,7 @@ export class CriminalCasePageComponent implements OnInit {
 
   saveChanges() {
     if (this.criminalCase.isValidate()) {
-      this.criminalCaseService.updateNewCriminalCase(this.criminalCase)
+      this.criminalCaseService.updateCriminalCase(this.criminalCase)
       .subscribe(
         result => this.switchMode(true),
         error => this.switchMode(true)
@@ -77,6 +78,7 @@ export class CriminalCasePageComponent implements OnInit {
     const closeDate = new Date();
     this.criminalCase.closeDate = closeDate.getFullYear() + '-' + ('0' + (closeDate.getMonth() + 1)).slice(-2) + '-' + ('0' + closeDate.getDate()).slice(-2);
     this.criminalCase.type = "Закрыто";
+    this.saveChanges();
   }
 
   copyObject(currObject) {

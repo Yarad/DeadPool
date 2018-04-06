@@ -29,6 +29,39 @@ export class ManService {
     });
   }
 
+  getMan(manId): Observable<Man> {
+    return this.mainService.getAuthorizedRequest("/man/" + manId)
+    .map(res => {
+      if(!res.error && res.result) { 
+        return new Man(res.result);
+      }
+      return {};
+    })
+    .catch((error: any) => { 
+      return Observable.throw(error);
+    });
+  }
+
+  addNewMan(man): Observable<Boolean> {
+    return this.mainService.postAuthorizedRequest("/man/add", man)
+    .map(res => {
+      return res.success
+    })
+    .catch((error: any)=> { 
+      return Observable.throw(error);
+    });
+  }
+
+  updateMan(man): Observable<Boolean> {
+    return this.mainService.postAuthorizedRequest("/man/update", man)
+    .map(res => {
+      return res.success;
+    })
+    .catch((error: any)=> { 
+      return Observable.throw(error);
+    });
+  }
+
   men = [
     {
       id: 1,

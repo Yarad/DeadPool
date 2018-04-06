@@ -17,6 +17,8 @@ import { EvidenceOfCrimeService } from './services/evidence-of-crime.service';
 import { ParticipantService } from './services/participant.service';
 import { ManService } from './services/man.service';
 
+import { SecurityGuard }   from './components/security.guard';
+
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { AuthorizationPageComponent } from './components/authorization-page/authorization-page.component';
@@ -32,16 +34,19 @@ import { config } from './app.config';
 import { AddEvidencePageComponent } from './components/add-evidence-page/add-evidence-page.component';
 import { AddCriminalCasePageComponent } from './components/add-criminal-case-page/add-criminal-case-page.component';
 import { AddCrimePageComponent } from './components/add-crime-page/add-crime-page.component';
+import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
+import { AddManPageComponent } from './components/add-man-page/add-man-page.component';
 
 const appRoutes: Routes = [
-  {path: '', component: MainPageComponent},
+  {path: '', component: MainPageComponent, canActivate: [SecurityGuard], pathMatch:'full'},
   {path: 'login', component: AuthorizationPageComponent},
-  {path: 'registration', component: RegistrationPageComponent},
-  {path: 'criminal_case/:id', component: CriminalCasePageComponent},
-  {path: 'crime/:id', component: CrimePageComponent},
-  {path: 'crime/:id/add_evidence', component: AddEvidencePageComponent},
-  {path: 'add_criminal_case', component: AddCriminalCasePageComponent},
-  {path: 'add_crime', component: AddCrimePageComponent}
+  {path: 'registration', component: RegistrationPageComponent, pathMatch:'full'},
+  {path: 'criminal_case/:id', component: CriminalCasePageComponent, canActivate: [SecurityGuard], pathMatch:'full'},
+  {path: 'crime/:id', component: CrimePageComponent, canActivate: [SecurityGuard], pathMatch:'full'},
+  {path: 'add_evidence', component: AddEvidencePageComponent, canActivate: [SecurityGuard], pathMatch:'full'},
+  {path: 'add_criminal_case', component: AddCriminalCasePageComponent, canActivate: [SecurityGuard], pathMatch:'full'},
+  {path: 'add_crime', component: AddCrimePageComponent, canActivate: [SecurityGuard], pathMatch:'full'},
+  {path: '**', component: NotFoundPageComponent}
 ];
 
 
@@ -60,7 +65,9 @@ const appRoutes: Routes = [
     EvidenceTableComponent,
     AddEvidencePageComponent,
     AddCriminalCasePageComponent,
-    AddCrimePageComponent
+    AddCrimePageComponent,
+    NotFoundPageComponent,
+    AddManPageComponent
   ],
   imports: [
     BrowserModule,
@@ -80,6 +87,7 @@ const appRoutes: Routes = [
     EvidenceOfCrimeService,
     ParticipantService,
     ManService,
+    SecurityGuard,
   ],
   bootstrap: [AppComponent]
 })

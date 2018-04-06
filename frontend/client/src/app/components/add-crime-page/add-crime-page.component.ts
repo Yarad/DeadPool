@@ -37,7 +37,7 @@ export class AddCrimePageComponent implements OnInit {
     .subscribe(
       data => {
         this.crimeEnumTypes = data;
-        this.crime.type = this.crimeEnumTypes[0].enumValue;        
+        this.crime.type = this.crimeEnumTypes[0];        
       },
       error => {}
     );
@@ -47,7 +47,8 @@ export class AddCrimePageComponent implements OnInit {
   }
 
   changeSelectedCrimeType($event) {
-    this.crime.type = $event.target.value;
+    console.log(this.crimeEnumTypes.map(type=> type.name))
+    this.crime.type = this.crimeEnumTypes[this.crimeEnumTypes.map(type=> type.enumValue).indexOf($event.target.value)];
   }
 
   isCrimeValidate(crime) {
@@ -58,8 +59,9 @@ export class AddCrimePageComponent implements OnInit {
   }
 
   addNewCrime() {
+    console.log(this.crime);
+    
     if (this.isCrimeValidate(this.crime)) { 
-      console.log(this.crime);
       this.crimeService.addNewCrime(this.crime)
       .subscribe(
         result => {if(result) this.router.navigate(['criminal_case/'+this.crime.criminalCase.id])},

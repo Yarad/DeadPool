@@ -43,6 +43,7 @@ export class MainService {
 
   public postAuthorizedRequest(urlPattern, params) {
     if (this.isCurrentUserAuthorized()) {
+      console.log("main req", params);
       const headers = new Headers();
       this.addHeaders(headers);
       this.addAuthorizationHeaders(headers);

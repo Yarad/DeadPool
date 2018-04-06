@@ -6,6 +6,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import { MainService } from './main.service';
 import { Crime } from '../classes/crime';
+import { Enum } from '../classes/enum';
 
 
 @Injectable()
@@ -18,8 +19,7 @@ export class CrimeService {
   getAllCrimes(): Observable<Crime[]> { 
     return this.mainService.getAuthorizedRequest("/crimes")
     .map(res => {
-      if(!res.result.error && res.result.crimes) {  
-        console.log(res.result.crimes)      
+      if(!res.result.error && res.result.crimes) { 
         return res.result.crimes.map(crime => {
           return new Crime(crime);
         });
@@ -31,25 +31,65 @@ export class CrimeService {
     });
   }
 
-  addNewCrime(crime): Observable<Boolean> {
-    return this.mainService.postAuthorizedRequest("/crimes/add", crime)
+  getCrime(id): Observable<Crime> {
+    return this.mainService.getAuthorizedRequest("/crimes/" + id)
     .map(res => {
-      if(!res.error && res.success) {
-        return res.success
+      if(!res.error && res.result) { 
+        return new Crime(res.result);
       }
-      return false;
+      return {};
+    })
+    .catch((error: any) => { 
+      return Observable.throw(error);
+    });
+  }
+
+  addNewCrime(crime): Observable<Boolean> {
+    return this.mainService.postAuthorizedRequest("/crimes/add", { 
+      criminalCase: {
+        id: crime.criminalCase.id
+      },
+      type: crime.type.enumValue,
+      description: crime.description,
+      date: crime.date,
+      time: crime.time,
+      place: crime.place
+    })
+    .map(res => {
+      return res.success
     })
     .catch((error: any)=> { 
       return Observable.throw(error);
     });
   }
 
-  getCrimeTypes(): Observable<Object[]> {
+  updateCrime(crime): Observable<Boolean> {
+    console.log(crime);
+    return this.mainService.postAuthorizedRequest("/crimes/update", { 
+      criminalCase: {
+        id: crime.criminalCase.id
+      },
+      type: crime.type.enumValue,
+      description: crime.description,
+      date: crime.date,
+      time: crime.time,
+      place: crime.place
+    })
+    .map(res => {
+      return res.success;
+    })
+    .catch((error: any)=> {
+      return Observable.throw(error);
+    });
+  }
+
+  getCrimeTypes(): Observable<Enum[]> {
     return this.mainService.getAuthorizedRequest("/crimes/types_list")
     .map(res => {
-      if(!res.error && res.enums) { 
-        console.log(res.enums);     
-        return res.enums;
+      if(!res.error && res.enums) {     
+        return res.enums.map(status => {
+          return new Enum(status);
+        });
       }
       return [];
     })

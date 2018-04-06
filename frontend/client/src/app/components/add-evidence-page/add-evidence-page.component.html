@@ -1,4 +1,4 @@
-<app-navbar></app-navbar> 
+<!--app-navbar></app-navbar> 
 <div class="container">
   <form>
     <fieldset>
@@ -13,7 +13,7 @@
       <div class="form-group row">
         <label for="criminal-case-number" class="col-sm-2 col-form-label">Преступление</label>
         <div class="col-sm-10">
-          <input type="text" readonly="" class="form-control-plaintext" id="criminal-case-number" value="{{crime.name}}"
+          <input type="text" readonly="" class="form-control-plaintext" id="criminal-case-number" value="{{crime.type}}"
             routerLink="/criminal_case/{{crime.criminalCase.id}}">
         </div>
       </div>
@@ -25,4 +25,60 @@
       </div>
     </fieldset>    
   </form>
+</div-->
+
+<app-navbar></app-navbar>
+<div class="container">
+  <div class="form-horizontal">
+    <fieldset class="col-md-offset-2 col-md-8">
+      <legend class="my-3"><h2>Новая улика преступления</h2></legend>
+      <div class="form-group row">
+        <label for="criminal-case-number" class="col-sm-2 col-form-label" required>Номер дела</label>
+        <div class="col-sm-4 col-md-3">
+          <input type="text" id="criminal-case-number" class="form-control" [(ngModel)]="evidence.crime.criminalCase.number"
+            readonly="true">      
+        </div>
+      </div>
+      <!--div class="form-group row">
+        <label for="crime-type" class="col-sm-4 col-form-label">Тип</label>
+        <div class="col-sm-8">
+          <select class="form-control col-sm-12 col-md-12" id="crime-type" (change)="changeSelectedCrimeType($event)">
+            <option *ngFor="let type of crimeEnumTypes" value="{{type.enumValue}}">{{type.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="crime-place" class="col-sm-4 col-form-label" required>Место преступления</label>
+        <div class="col-sm-8 col-md-8">
+          <input type="text" id="crime-place" class="form-control" [(ngModel)]="crime.place"
+            [ngClass]="{'is-invalid':(!crime.place)}">          
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="crime-date" class="col-sm-4 col-form-label">Дата преступления</label>
+        <div class="col-sm-8 col-md-8">
+          <input id="crime-date" class="form-control" type="date" [(ngModel)]="crime.date"
+          [ngClass]="{'is-invalid':(!crime.date)}">         
+        </div>
+      </div> 
+      <div class="form-group row">
+        <label for="crime-time" class="col-sm-4 col-form-label">Время преступления</label>
+        <div class="col-sm-8 col-md-8">
+          <input id="crime-time" class="form-control" type="time" [(ngModel)]="crime.time"
+          [ngClass]="{'is-invalid':(!crime.time)}">         
+        </div>
+      </div> 
+      <div class="form-group row">
+        <label for="crime-description" class="col-sm-4 col-form-label" required>Описание</label>
+        <div class="col-sm-8 col-md-8">
+          <textarea id="crime-description" class="form-control" rows="3" [(ngModel)]="crime.description"
+          > </textarea>        
+        </div>
+      </div>
+      <div class="col-md-9 mx-auto mt-4">
+        <button type="submit" role="submit" class="btn col-sm-3 col-md-4 mt-4 btn-secondary" (click)="addNewCrime()">Добавить</button>
+        <button type="submit" class="btn btn-secondary col-sm-3 col-md-4 mt-4 ml-5" routerLink="/">Отмена</button>
+      </div-->
+    </fieldset>
+  </div>
 </div>
