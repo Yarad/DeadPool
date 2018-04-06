@@ -28,6 +28,11 @@ public class CrimeService implements ICrimeService {
         return daoCrime.getCrimesByCriminalCase(id);
     }
 
+    @Override
+    public List<Crime> getCrimesBetweenDates(LocalDate dateStart, LocalDate dateEnd) {
+        return daoCrime.getCrimesBetweenDates(dateStart, dateEnd);
+    }
+
     @Transactional
     @Override
     public Crime getCrimeById(long id) {
