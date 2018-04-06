@@ -81,6 +81,17 @@ public class EvidenceOfCrimeController {
 
     @IsDetective
     @CrossOrigin
+    @RequestMapping(path = "/all_singles", method = RequestMethod.GET)
+    public GenericDTO<ListEvidencesDTO> getAllEvidences() {
+        List<Evidence> inputEvidences = evidenceService.getAllEvidences();
+        List<EvidenceObjectDTO> results = inputEvidences.stream()
+                .map(curEvidence -> EvidenceParser.parseEvidence(curEvidence))
+                .collect(Collectors.toList());
+        return new GenericDTO<>(false, new ListEvidencesDTO(results));
+    }
+
+    @IsDetective
+    @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
     public GenericDTO<ListEvidenceOfCrimeShortedWithCrimeList> getAllEvidenceOfCrime() {
         List<EvidenceOfCrime> inputEvidencesOfCrime = evidenceOfCrimeService.getAllEvidencesOfCrime();
