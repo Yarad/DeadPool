@@ -23,12 +23,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.time.format.DateTimeFormatter.ofPattern;
+import static com.logic.ProjectConstants.*;
 
 @Configuration
 @EnableWebMvc
@@ -46,26 +45,21 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         registry.addMapping("/**");
     }
 
-    private static final DateTimeFormatter FORMATTER_DATE = ofPattern("yyyy-MM-dd");
-    private static final DateTimeFormatter FORMATTER_TIME = ofPattern("HH:mm");
-    private static final DateTimeFormatter FORMATTER_DATETIME = ofPattern("yyyy-MM-dd HH:mm");
-
     @Bean
     public MappingJackson2HttpMessageConverter customJackson2HttpMessageConverter() {
         MappingJackson2HttpMessageConverter jsonConverter = new MappingJackson2HttpMessageConverter();
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule()
-                .addSerializer(LocalDate.class, new LocalDateSerializer(FORMATTER_DATE))
-                .addSerializer(LocalTime.class, new LocalTimeSerializer(FORMATTER_TIME))
-                .addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(FORMATTER_DATETIME))
-                .addDeserializer(LocalDate.class, new LocalDateDeserializer(FORMATTER_DATE))
-                .addDeserializer(LocalTime.class, new LocalTimeDeserializer(FORMATTER_TIME))
-                .addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(FORMATTER_DATETIME)));
+                .addSerializer(LocalDate.class, new LocalDateSerializer(JSON_FORMATTER_DATE))
+                .addSerializer(LocalTime.class, new LocalTimeSerializer(JSON_FORMATTER_TIME))
+                .addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(JSON_FORMATTER_DATETIME))
+                .addDeserializer(LocalDate.class, new LocalDateDeserializer(JSON_FORMATTER_DATE))
+                .addDeserializer(LocalTime.class, new LocalTimeDeserializer(JSON_FORMATTER_TIME))
+                .addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(JSON_FORMATTER_DATETIME)));
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         jsonConverter.setObjectMapper(objectMapper);
         return jsonConverter;
     }
-
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {

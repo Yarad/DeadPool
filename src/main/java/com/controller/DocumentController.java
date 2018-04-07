@@ -24,7 +24,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+
+import static com.logic.ProjectConstants.fileDateTimeFormatter;
 
 @Controller
 @RequestMapping(value = "/reports")
@@ -43,18 +46,16 @@ public class DocumentController {
 
     @IsDetective
     @CrossOrigin
-    @RequestMapping(path = "{report_type}/{doc_type}/{date_start}/{date_end}", method = RequestMethod.GET,
+    @RequestMapping(path = "crimes_between_dates/{doc_type}/{date_start}/{date_end}", method = RequestMethod.GET,
             produces = {"text/csv", "application/pdf",
                     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/vnd.ms-excel"})
     public ResponseEntity<InputStreamResource> getReportCrimesBetweenDates(
-            @PathVariable("report_type") String reportType,
             @PathVariable("doc_type") String documentFormat,
             @PathVariable("date_start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateStart,
             @PathVariable("date_end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateEnd) {
         IReportView view;
         String contentType;
         String path;
-        File file = null;
 
         switch(documentFormat) {
             case "pdf":
@@ -74,15 +75,18 @@ public class DocumentController {
         }
 
         try {
-            switch(reportType) {
-                case "crimes_between_dates":
-                    List<Crime> crimes = crimeService.getCrimesBetweenDates(dateStart, dateEnd);
-                    path = view.generateReport(crimes);
-                    break;
-                default:
-                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
+            List<Crime> crimes = crimeService.getCrimesBetweenDates(dateStart, dateEnd);
+            path = view.generateReport(crimes);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
+        return sendGeneratedFile(path, "crimes_between_dates_" + dateStart + "_and_" + dateEnd, documentFormat, contentType);
+    }
+
+    private ResponseEntity<InputStreamResource> sendGeneratedFile(String path, String reportName, String docType, String contentType) {
+        File file = null;
+        try {
             file = new File(path);
 
             InputStream inputstream = new FileInputStream(file);
@@ -91,7 +95,8 @@ public class DocumentController {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentLength(file.length());
             headers.setContentType(MediaType.parseMediaType(contentType));
-            headers.add("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"");
+            headers.add("Content-Disposition", "attachment; filename=\"report_" +
+                    reportName + "_(generated_" + LocalDateTime.now().format(fileDateTimeFormatter) + ")." + docType +  "\"");
             headers.setCacheControl("no-cache, no-store, must-revalidate");
             headers.setPragma("no-cache");
             headers.setExpires(0);
