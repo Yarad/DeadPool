@@ -9,7 +9,9 @@ export class EvidenceTableComponent implements OnInit {
 
   @Input() evidences;
 
-  constructor() { }
+  constructor() { 
+    console.log('evidence-table',this.evidences)
+  }
 
   ngOnInit() {
   }

@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import {Http, Headers} from '@angular/http';
 import 'rxjs/add/operator/map';
 
+const CLOUDYNARY_URL = 'https://api.cloudinary.com/v1_1/dkdzgw7kp/image/upload';
+const CLOUDYNARY_UPLOAD_PRESET = 'jr7zzle9';
+
 @Injectable()
 export class MainService {
 
@@ -67,5 +70,30 @@ export class MainService {
         console.log("main",res);
         return res;
       });
+  }
+
+  public uploadFile(file) { 
+    
+    const xhr = new XMLHttpRequest(); 
+    const fd = new FormData(); 
+    
+    xhr.open('POST', CLOUDYNARY_URL, true); 
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest'); 
+    
+    xhr.onreadystatechange = (e) => { 
+      if (xhr.readyState === 4 && xhr.status === 200) { 
+        console.log(JSON.parse(xhr.responseText)); 
+        const response = JSON.parse(xhr.responseText); 
+        const imgs = document.getElementsByTagName('img'); 
+        for (let i = 0; i < imgs.length; i++) { 
+          const img = imgs[i]; 
+          if (img.id === 'user-image') { 
+          } 
+        } 
+      } 
+    };
+    fd.append('upload_preset', CLOUDYNARY_UPLOAD_PRESET ); 
+    fd.append('file', file); 
+    xhr.send(fd);  
   }
 }

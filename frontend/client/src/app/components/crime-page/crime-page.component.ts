@@ -16,36 +16,27 @@ export class CrimePageComponent implements OnInit {
   oldCrime;
   crimeEnumTypes = [];
  
-  criminalCase:
-  {
-      id: 1,
-      number: "УПН1854",
-      type: "открыто"
-  }
+  crimeId;
 
   private routeSubscription: Subscription;
   constructor( private router: Router,
     private route: ActivatedRoute,
     private crimeService:CrimeService
   ) {
-    let crimeId;
-    this.routeSubscription = route.params.subscribe(params => crimeId = +params['id']);
+    this.routeSubscription = route.params.subscribe(params => this.crimeId = +params['id']);
  
+    this.crimeService.getCrime(this.crimeId)
+    .subscribe(
+      data => {this.crime = data;
+        console.log(this.crime.evidencesOfCrime)},
+      error => this.crime = new Crime(this.crimeService.crimes[this.crimeService.crimes.map(crime => crime.id).indexOf(this.crimeId)])
+    );    
+
     this.crimeService.getCrimeTypes()
     .subscribe(
-      data => {
-        this.crimeEnumTypes = data;
-       
-        this.crimeService.getCrime(crimeId)
-        .subscribe(
-          data => {
-            this.crime = data;
-          },
-          error => this.crime = new Crime(this.crimeService.crimes[this.crimeService.crimes.map(crime => crime.id).indexOf(crimeId)])
-        );       
-      },
+      data => this.crimeEnumTypes = data,
       error => {}
-    );
+    );    
    }
 
 

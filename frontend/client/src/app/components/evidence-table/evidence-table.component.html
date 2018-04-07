@@ -7,10 +7,10 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let evidence of evidences">
-      <th scope="row"> <img class="img" src="{{evidence.photoPath}}" alt=""></th>
-      <td>{{evidence.name}}</td>
-      <td>{{evidence.type}}</td>
+    <tr *ngFor="let evidenceOfCrime of evidences" routerLink="/evidence" [queryParams]="{'crime_id':crimeId, 'evidence_id': evidenceOfCrime.evidence.id}">
+      <th scope="row"> <img class="img" src="{{evidenceOfCrime.photoPath}}" alt=""></th>
+      <td>{{evidenceOfCrime.evidence.name}}</td>
+      <td>{{evidenceOfCrime.type.name}}</td>
     </tr>
   </tbody>
 </table> 

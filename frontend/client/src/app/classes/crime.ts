@@ -12,7 +12,7 @@ export class Crime {
     date: string;
     time: string;
     place: string
-    
+    evidencesOfCrime= [];
     
     constructor(object) {
         console.log('con',object)
@@ -27,6 +27,7 @@ export class Crime {
             number: "asdf",
             type: "открыто"
         });
-        this.description = object.description
+        this.description = object.description;
+        this.evidencesOfCrime = object.evidencesOfCrime;
     }
 }

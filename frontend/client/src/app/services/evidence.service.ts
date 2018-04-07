@@ -15,6 +15,21 @@ export class EvidenceService {
     private mainService: MainService
   ) {}
 
+  getAllEvidences(): Observable<Evidence[]> { 
+    return this.mainService.getAuthorizedRequest("/evidences/all_singles")
+    .map(res => {
+      if(!res.error && res.result.evidences) {
+        return res.result.evidences.map(evidence => {
+          return new Evidence(evidence);
+        });
+      }
+      return [];
+    })
+    .catch((error: any)=> { 
+      return Observable.throw(error);
+    });
+  }
+
   getEvidence(evidenceId): Observable<Evidence> {
     return this.mainService.getAuthorizedRequest("/evidences/" + evidenceId)
     .map(res => {
@@ -49,7 +64,7 @@ export class EvidenceService {
   }
 
   getEvidenceTypes(): Observable<Object[]> {
-    return this.mainService.getAuthorizedRequest("/crimes/types_list")
+    return this.mainService.getAuthorizedRequest("/evidences/types_list")
     .map(res => {
       if(!res.error && res.enums) {     
         return res.enums.map(status => {
