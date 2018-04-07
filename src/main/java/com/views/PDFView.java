@@ -1,9 +1,6 @@
 package com.views;
 
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.logic.*;
@@ -14,9 +11,49 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
 
+import static com.logic.ProjectConstants.JSON_FORMATTER_DATE;
+import static com.logic.ProjectConstants.JSON_FORMATTER_TIME;
+import static com.views.ReportFunctions.getStatusWithData;
+
 @Component
 public class PDFView implements IReportView {
-     @Override
+    private static final Font standardFont = new Font(Font.FontFamily.TIMES_ROMAN, 14, 0, BaseColor.BLACK);
+    private static final Font standardBoldFont = new Font(Font.FontFamily.TIMES_ROMAN, 14, Font.BOLD, BaseColor.BLACK);
+    private static final Font header1Font = new Font(Font.FontFamily.TIMES_ROMAN, 20, Font.BOLDITALIC, BaseColor.MAGENTA);
+
+    private Paragraph getStandardParagraph() {
+        Paragraph p = new Paragraph();
+        p.setAlignment(Element.ALIGN_JUSTIFIED);
+        p.setFont(standardFont);
+        p.setLeading(10);
+        p.setSpacingAfter(4F);
+        return p;
+    }
+
+    private Paragraph getStandardParagraphBold() {
+        Paragraph p = getStandardParagraph();
+        p.setFont(standardBoldFont);
+        return p;
+    }
+
+    private Paragraph createStandardParagraph(String boldText, String text) {
+        Paragraph p = getStandardParagraphBold();
+        p.add(boldText + ": ");
+        p.setFont(standardFont);
+        p.add(text);
+        return p;
+    }
+
+    private Paragraph createHeader1Paragraph(String text) {
+        Paragraph p = new Paragraph();
+        p.setFont(header1Font);
+        p.setAlignment(Element.ALIGN_CENTER);
+        p.setSpacingAfter(10);
+        p.add(text);
+        return p;
+    }
+
+    @Override
     public String generateReportByCrimes(List<Crime> crimes) throws Exception {
          Document document = new Document();
          File tempFile = File.createTempFile("report", ".pdf");
@@ -51,7 +88,24 @@ public class PDFView implements IReportView {
 
     @Override
     public String generateReportByCrime(Crime crime, List<EvidenceOfCrime> evidencesOfCrime, List<Participant> participants) throws Exception {
-        return null;
+        Document document = new Document();
+        File tempFile = File.createTempFile("report", ".pdf");
+        PdfWriter.getInstance(document, new FileOutputStream(tempFile));
+        document.addTitle("Report by crime #" + crime.getCrimeId());
+        document.open();
+
+        document.add(createHeader1Paragraph("Report by crime #" + crime.getCrimeId()));
+
+        document.add(createStandardParagraph("Criminal case", crime.getParentCriminalCase().getCriminalCaseNumber()
+                + " (" + getStatusWithData(crime.getParentCriminalCase()) + ")"));
+        document.add(createStandardParagraph("Type", crime.getCrimeType().toString()));
+        document.add(createStandardParagraph("Date", crime.getCrimeDate().format(JSON_FORMATTER_DATE)));
+        if (crime.getCrimeTime() != null) {
+            document.add(createStandardParagraph("Time", crime.getCrimeTime().format(JSON_FORMATTER_TIME)));
+        }
+
+        document.close();
+        return tempFile.getAbsolutePath();
     }
 
     @Override
