@@ -3,7 +3,10 @@ package com.controller;
 import com.logic.Crime;
 import com.security.annotations.IsDetective;
 import com.services.interfaces.ICrimeService;
+import com.views.CSVView;
 import com.views.PDFView;
+import com.views.XLSXView;
+import com.views.interfaces.IReportView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -30,24 +33,55 @@ public class DocumentController {
     private PDFView pdfView;
 
     @Autowired
+    private XLSXView xlsxView;
+
+    @Autowired
+    private CSVView csvView;
+
+    @Autowired
     private ICrimeService crimeService;
 
     @IsDetective
     @CrossOrigin
-    @RequestMapping(path = "crimes_between_dates/{doc_type}/{date_start}/{date_end}", method = RequestMethod.GET,
-            /*produces = MediaType.APPLICATION_PDF_VALUE*/
+    @RequestMapping(path = "{report_type}/{doc_type}/{date_start}/{date_end}", method = RequestMethod.GET,
             produces = {"text/csv", "application/pdf",
                     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/vnd.ms-excel"})
     public ResponseEntity<InputStreamResource> getReportCrimesBetweenDates(
+            @PathVariable("report_type") String reportType,
             @PathVariable("doc_type") String documentFormat,
             @PathVariable("date_start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateStart,
             @PathVariable("date_end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateEnd) {
-        List<Crime> crimes = crimeService.getCrimesBetweenDates(dateStart, dateEnd);
+        IReportView view;
+        String contentType;
         String path;
         File file = null;
 
+        switch(documentFormat) {
+            case "pdf":
+                view = pdfView;
+                contentType = "application/pdf";
+                break;
+            case "xlsx":
+                view = xlsxView;
+                contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                break;
+            case "csv":
+                view = csvView;
+                contentType = "text/csv";
+                break;
+            default:
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         try {
-            path = pdfView.generateReport(crimes);
+            switch(reportType) {
+                case "crimes_between_dates":
+                    List<Crime> crimes = crimeService.getCrimesBetweenDates(dateStart, dateEnd);
+                    path = view.generateReport(crimes);
+                    break;
+                default:
+                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
 
             file = new File(path);
 
@@ -56,8 +90,7 @@ public class DocumentController {
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentLength(file.length());
-            headers.setContentType(MediaType.parseMediaType("application/pdf"));
-            //headers.setContentDispositionFormData("inline", file.getName());
+            headers.setContentType(MediaType.parseMediaType(contentType));
             headers.add("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"");
             headers.setCacheControl("no-cache, no-store, must-revalidate");
             headers.setPragma("no-cache");

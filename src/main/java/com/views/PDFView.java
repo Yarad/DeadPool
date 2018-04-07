@@ -7,6 +7,7 @@ import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.logic.Crime;
+import com.views.interfaces.IReportView;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -14,7 +15,7 @@ import java.io.FileOutputStream;
 import java.util.List;
 
 @Component
-public class PDFView {
+public class PDFView implements IReportView {
     public String generateReport(List<Crime> crimes) throws Exception {
         Document document = new Document();
         File tempFile = File.createTempFile("report", ".pdf");
