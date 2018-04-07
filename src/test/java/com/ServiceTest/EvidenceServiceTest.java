@@ -10,6 +10,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -57,5 +59,15 @@ public class EvidenceServiceTest {
         boolean actualResult = service.updateEvidence(evidence.getEvidenceId(), evidence.getName(), evidence.getDescription());
 
         assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    public void getAllEvidences() throws Exception {
+        List<Evidence> evidences = LogicAdditionals.getEvidenceList();
+        when(daoEvidence.getAllEvidences()).thenReturn(evidences);
+
+        List<Evidence> actualEvidences = service.getAllEvidences();
+
+        assertEquals(evidences, actualEvidences);
     }
 }

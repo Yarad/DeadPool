@@ -135,6 +135,13 @@ public final class LogicAdditionals {
         return evidenceOfCrime;
     }
 
+    public static List<Evidence> getEvidenceList() {
+        List<Evidence> list = new ArrayList<>();
+        list.add(getCustomEvidence());
+        list.add(getCustomEvidence());
+        return list;
+    }
+
     public static Evidence getCustomEvidence() {
         Evidence evidence = new Evidence();
         evidence.setEvidenceId(1);

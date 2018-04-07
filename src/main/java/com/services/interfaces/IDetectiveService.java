@@ -12,6 +12,7 @@ public interface IDetectiveService {
     boolean updateDetective(long id, String name, String surname, LocalDate birthday, String homeAddress, String photoPath,
                             String login, String password, String email);
     Detective getDetectiveByLogin(String login);
+    Detective getDetectiveById(long id);
     boolean existDetectiveWithLogin(String login);
     List<Man> getAllDetectives();
 }

@@ -135,6 +135,24 @@ public class EvidenceOfCrimeControllerTest {
     }
 
     @Test
+    public void getAllEvidences() throws Exception {
+        List<Evidence> inputEvidences = LogicAdditionals.getEvidenceList();
+        List<EvidenceObjectDTO> results = inputEvidences.stream()
+                .map(curEvidence -> EvidenceParser.parseEvidence(curEvidence))
+                .collect(Collectors.toList());
+        GenericDTO<ListEvidencesDTO> response = new GenericDTO<>(false, new ListEvidencesDTO(results));
+
+        when(evidenceService.getAllEvidences()).thenReturn(inputEvidences);
+
+        mockMvc.perform(
+                get("/evidences/all_singles")
+                        .header("deadpool-token", TokensForTests.getCorrectTokenUnlimited()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(objectMapper.writeValueAsString(response)));
+    }
+
+    @Test
     public void getAllEvidenceOfCrime() throws Exception {
         List<EvidenceOfCrime> inputEvidencesOfCrime = LogicAdditionals.getEvidenceOfCrimeList();
         List<EvidenceOfCrimeShortedWithCrimeDTO> results = inputEvidencesOfCrime.stream()

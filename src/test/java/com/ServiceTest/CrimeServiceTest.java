@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -45,6 +46,16 @@ public class CrimeServiceTest {
         when(daoCrime.getCrimesByCriminalCase(anyLong())).thenReturn(crimes);
 
         List<Crime> actualCrimes = service.getCrimesByCriminalCase(1);
+
+        assertEquals(crimes, actualCrimes);
+    }
+
+    @Test
+    public void getCrimesBetweenDates() throws Exception {
+        List<Crime> crimes = LogicAdditionals.getCrimesList();
+        when(daoCrime.getCrimesBetweenDates(LocalDate.MIN, LocalDate.MAX)).thenReturn(crimes);
+
+        List<Crime> actualCrimes = service.getCrimesBetweenDates(LocalDate.MIN, LocalDate.MAX);
 
         assertEquals(crimes, actualCrimes);
     }

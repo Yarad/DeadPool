@@ -39,6 +39,11 @@ public class CriminalCaseService implements ICriminalCaseService {
         return daoCriminalCase.getAllOpenCrimes();
     }
 
+    @Override
+    public List<CriminalCase> getCriminalCasesByDetectiveId(long detectiveId) {
+        return daoCriminalCase.getAllCrimesOfDetective(detectiveId);
+    }
+
     @Transactional
     @Override
     public CriminalCase getCriminalCaseById(long id) {

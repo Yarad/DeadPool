@@ -64,6 +64,16 @@ public class DetectiveServiceTest {
     }
 
     @Test
+    public void getDetectiveById() throws Exception {
+        Detective detective = LogicAdditionals.getCustomDetective();
+        when(daoDetective.getDetectiveById(detective.getManId())).thenReturn(detective);
+
+        Detective actualDetective = service.getDetectiveById(detective.getManId());
+
+        assertEquals(detective, actualDetective);
+    }
+
+    @Test
     public void existDetectiveWithLogin() throws Exception {
         boolean expectedResult = true;
         when(daoDetective.existDetectiveWithLogin(anyString())).thenReturn(expectedResult);

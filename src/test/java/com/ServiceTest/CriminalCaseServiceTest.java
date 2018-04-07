@@ -70,6 +70,16 @@ public class CriminalCaseServiceTest {
     }
 
     @Test
+    public void getCriminalCasesByDetectiveId() throws Exception {
+        List<CriminalCase> criminalCases = LogicAdditionals.getCriminalCases();
+        when(daoCriminalCase.getAllCrimesOfDetective(anyLong())).thenReturn(criminalCases);
+
+        List<CriminalCase> actualCriminalCases = service.getCriminalCasesByDetectiveId(anyLong());
+
+        assertEquals(criminalCases, actualCriminalCases);
+    }
+
+    @Test
     public void getCriminalCaseById() throws Exception {
         CriminalCase criminalCase = LogicAdditionals.getCustomCriminalCase();
         when(daoCriminalCase.getCriminalCaseById(anyLong())).thenReturn(criminalCase);

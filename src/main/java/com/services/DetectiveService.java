@@ -59,6 +59,11 @@ public class DetectiveService implements IDetectiveService {
         return daoDetective.getDetectiveByLogin(login);
     }
 
+    @Override
+    public Detective getDetectiveById(long id) {
+        return daoDetective.getDetectiveById(id);
+    }
+
     @Transactional
     @Override
     public boolean existDetectiveWithLogin(String login) {
