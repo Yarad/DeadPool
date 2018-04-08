@@ -6,19 +6,18 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.logic.*;
 import com.views.interfaces.IReportView;
-import org.omg.IOP.Encoding;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.itextpdf.text.xml.xmp.XmpWriter.UTF8;
 import static com.logic.ProjectConstants.*;
-import static org.apache.poi.ss.util.CellUtil.FONT;
 
 @Component
 public class PDFView implements IReportView {
@@ -32,22 +31,22 @@ public class PDFView implements IReportView {
         }
     }
 
-    private static final Font standardFont = new Font(bf, 14, 0, BaseColor.BLACK);
-    private static final Font standardBoldFont = new Font(bf, 14, Font.BOLD, BaseColor.ORANGE);
-    private static final Font header1Font = new Font(bf, 20, Font.BOLDITALIC, BaseColor.MAGENTA);
-    private static final Font header2Font = new Font(bf, 18, Font.BOLD, BaseColor.MAGENTA);
-    private static final Font titleFont = new Font(bf, 26, Font.BOLDITALIC, BaseColor.ORANGE);
-    private static final Font titleSmallFont = new Font(bf, 18, Font.ITALIC, BaseColor.BLUE);
-    private static final Font titleHeaderFont = new Font(bf, 16, Font.BOLD, BaseColor.PINK);
-    private static final Font titleFooterFont = new Font(bf, 12, 0, BaseColor.LIGHT_GRAY);
+    public static final Font standardFont = new Font(bf, 14, 0, BaseColor.BLACK);
+    public static final Font standardBoldFont = new Font(bf, 14, Font.BOLD, new BaseColor(115,205,105));
+    public static final Font header1Font = new Font(bf, 20, Font.BOLDITALIC, new BaseColor(98,98,255));
+    public static final Font header2Font = new Font(bf, 18, Font.BOLD, new BaseColor(98,98,255));
+    public static final Font titleFont = new Font(bf, 26, Font.BOLDITALIC, BaseColor.ORANGE);
+    public static final Font titleSmallFont = new Font(bf, 18, Font.ITALIC, new BaseColor(155,115,255));
+    public static final Font titleHeaderFont = new Font(bf, 16, Font.BOLD, BaseColor.PINK);
+    public static final Font titleFooterFont = new Font(bf, 12, 0, BaseColor.LIGHT_GRAY);
+    public static final Font pageNumberFont = new Font(bf, 14, 0, BaseColor.PINK);
 
     private Paragraph getStandardParagraph(float leftIndent) {
-        Paragraph p = new Paragraph();
+        Paragraph p = new Paragraph(15);
         p.setAlignment(Element.ALIGN_JUSTIFIED);
         p.setIndentationLeft(leftIndent);
         p.setFont(standardFont);
-        p.setLeading(10);
-        p.setSpacingAfter(4F);
+        p.setSpacingAfter(3);
         return p;
     }
 
@@ -59,6 +58,7 @@ public class PDFView implements IReportView {
 
     private Paragraph createStandardParagraph(String boldText, String text, float leftIndent) {
         Paragraph p = getStandardParagraphBold(leftIndent);
+        p.setFont(standardBoldFont);
         p.add(boldText + ": ");
         p.setFont(standardFont);
         p.add(text);
@@ -82,7 +82,7 @@ public class PDFView implements IReportView {
         Paragraph p = new Paragraph();
         p.setFont(header1Font);
         p.setIndentationLeft(30);
-        p.setSpacingAfter(12);
+        p.setSpacingAfter(14);
         p.add(text);
         return p;
     }
@@ -91,14 +91,18 @@ public class PDFView implements IReportView {
         Paragraph p = new Paragraph();
         p.setFont(header2Font);
         p.setIndentationLeft(20);
-        p.setSpacingAfter(8);
+        p.setSpacingAfter(10);
         p.add(text);
         return p;
     }
 
     private Document getTypicalDocument(File file, String title) throws Exception {
-        Document document = new Document();
-        PdfWriter.getInstance(document, new FileOutputStream(file));
+        Rectangle pageSize = new Rectangle(PageSize.A4);
+        pageSize.setBackgroundColor(new BaseColor(255, 238, 238));
+        Document document = new Document(pageSize);
+        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
+        TableHeader event = new TableHeader();
+        writer.setPageEvent(event);
         document.open();
         addMetaData(document, title);
         addTitlePage(document, title);
@@ -118,30 +122,80 @@ public class PDFView implements IReportView {
     }
 
     private void addMetaData(Document document, String title) {
-        document.addTitle("Report: " + title);
-        document.addSubject("Report, generated from DeadPool project");
-        document.addKeywords("Report, DeadPool");
-        document.addAuthor("DeadPool project");
-        document.addCreator("DeadPool automatic generator");
+        document.addTitle("Отчёт: " + title);
+        document.addSubject("Отчёт, сгенерированный проектом DeadPool");
+        document.addKeywords("Отчёт, DeadPool");
+        document.addAuthor("Проект Deadpool");
+        document.addCreator("Автогенератор отчётов DeadPool");
+    }
+
+    private boolean addImageFromInternet(Document document, String url) {
+        boolean result = true;
+        try {
+            Image logo = Image.getInstance(url);
+            logo.setAlignment(Image.ALIGN_LEFT);
+            logo.setSpacingAfter(15);
+            logo.scaleToFit(530, 530);
+            document.add(logo);
+        } catch (Exception e) {
+            result = false;
+        }
+        return result;
+    }
+
+    private void addLink(Paragraph paragraph, String link, String text) {
+        Phrase phrase = new Phrase();
+        Chunk chunk = new Chunk(text);
+        chunk.setAnchor(link);
+        phrase.add(chunk);
+        paragraph.add(phrase);
     }
 
     private void addTitlePage(Document document, String title) throws DocumentException {
+        document.add(getParagraphOfAlignmentAndFont("(c) Проект Deadpool", titleHeaderFont, Element.ALIGN_CENTER));
+        addEmptyLine(document, 2);
+        document.add(getParagraphOfAlignmentAndFont("ОТЧЁТ", titleFont, Element.ALIGN_CENTER));
+        document.add(getParagraphOfAlignmentAndFont(title, titleFont, Element.ALIGN_CENTER));
         addEmptyLine(document, 1);
 
-        document.add(getParagraphOfAlignmentAndFont("(c) Deadpool project", titleHeaderFont, Element.ALIGN_CENTER));
-        addEmptyLine(document, 4);
-        document.add(getParagraphOfAlignmentAndFont("REPORT", titleFont, Element.ALIGN_CENTER));
-        document.add(getParagraphOfAlignmentAndFont(title, titleFont, Element.ALIGN_CENTER));
+        try {
+            Image logo = Image.getInstance(getClass().getClassLoader().getResource("logo.png"));
+            logo.setAlignment(Image.ALIGN_CENTER);
+            logo.setSpacingAfter(10);
+            logo.setSpacingBefore(10);
+            logo.scaleToFit(200, 150);
+            document.add(logo);
+        } catch (Exception e) {}
+
+        addEmptyLine(document, 3);
+        document.add(getParagraphOfAlignmentAndFont("Отчёт был автоматически сгенерирован системой DeadPool после пользовательского запроса",
+                titleSmallFont, Element.ALIGN_CENTER));
+        addEmptyLine(document, 2);
+
+        try {
+            Paragraph paragraph = new Paragraph();
+            Phrase phrase = new Phrase();
+            Image logo = Image.getInstance(getClass().getClassLoader().getResource("followus.png"));
+            logo.setAlignment(Image.ALIGN_CENTER);
+            logo.setSpacingAfter(10);
+            logo.setSpacingBefore(10);
+            logo.scaleToFit(500, 200);
+            Chunk chunk = new Chunk(logo,0,0, true);
+            chunk.setAnchor("http://localhost:4200");
+            phrase.add(chunk);
+            paragraph.add(phrase);
+            document.add(paragraph);
+        } catch (Exception e) {
+            Phrase phrase = new Phrase();
+            phrase.add("Welcome to ");
+            Chunk chunk = new Chunk("our app");
+            chunk.setAnchor("http://localhost:4200");
+            phrase.add(chunk);
+            phrase.add(" in WEB!");
+        }
 
         addEmptyLine(document, 5);
-        document.add(getParagraphOfAlignmentAndFont("Report was generated by DeadPool after user's request",
-                titleSmallFont, Element.ALIGN_CENTER));
-        addEmptyLine(document, 1);
-        document.add(getParagraphOfAlignmentAndFont("Follow our app: http://localhost:8090/",
-                titleSmallFont, Element.ALIGN_CENTER));
-
-        addEmptyLine(document, 10);
-        document.add(getParagraphOfAlignmentAndFont("Generation date: " + LocalDateTime.now().format(reportTitleDateTimeFormatter),
+        document.add(getParagraphOfAlignmentAndFont("Отчёт сгенерирован " + LocalDateTime.now().format(reportTitleDateTimeFormatter),
                 titleFooterFont, Element.ALIGN_CENTER));
 
         document.newPage();
@@ -151,108 +205,177 @@ public class PDFView implements IReportView {
         return detective.getSurname() + ", " + detective.getName();
     }
 
-    private void addCriminalCaseData(Document document, CriminalCase criminalCase, float leftIndent) throws DocumentException {
-        document.add(createStandardParagraph("Number", criminalCase.getCriminalCaseNumber(), leftIndent));
-        document.add(createStandardParagraph("Detective", getDetectiveData(criminalCase.getParentDetective()), leftIndent));
-        document.add(createStandardParagraph("Creation date",
+    private void addCriminalCaseData(Document document, CriminalCase criminalCase, boolean withDetective, float leftIndent) throws DocumentException {
+        document.add(createStandardParagraph("Номер", criminalCase.getCriminalCaseNumber(), leftIndent));
+        if (withDetective) {
+            document.add(createStandardParagraph("Детектив", getDetectiveData(criminalCase.getParentDetective()), leftIndent));
+        }
+        document.add(createStandardParagraph("Дата создания",
                 criminalCase.getCreateDate().format(JSON_FORMATTER_DATE), leftIndent));
         if (!criminalCase.isClosed()) {
-            document.add(createStandardParagraph("Status", "open", leftIndent));
+            document.add(createStandardParagraph("Статус", "открыто", leftIndent));
         } else {
             if (criminalCase.getCloseDate() != null) {
-                document.add(createStandardParagraph("Status", "solved", leftIndent));
-                document.add(createStandardParagraph("Close date",
+                document.add(createStandardParagraph("Статус", "раскрыто", leftIndent));
+                document.add(createStandardParagraph("Дата закрытия",
                         criminalCase.getCloseDate().format(JSON_FORMATTER_DATE), leftIndent));
             } else {
-                document.add(createStandardParagraph("Status", "unsolved", leftIndent));
+                document.add(createStandardParagraph("Статус", "не раскрыто (передано в архив)", leftIndent));
             }
         }
     }
 
     private void addCrimeData(Document document, Crime crime, boolean withCriminalCase, float leftIndent) throws DocumentException {
         if (withCriminalCase) {
-            document.add(createBoldColoredParagraph("Criminal case", leftIndent, BaseColor.ORANGE));
-            addCriminalCaseData(document, crime.getParentCriminalCase(), 10);
+            document.add(createBoldColoredParagraph("Уголовное дело", leftIndent, BaseColor.ORANGE));
+            addCriminalCaseData(document, crime.getParentCriminalCase(), true, leftIndent+15);
         }
-        document.add(createStandardParagraph("Type", crime.getCrimeType().toString(), leftIndent));
-        document.add(createStandardParagraph("Date", crime.getCrimeDate().format(JSON_FORMATTER_DATE), leftIndent));
-        document.add(createStandardParagraph("Time", crime.getCrimeTime() != null ?
-                crime.getCrimeTime().format(JSON_FORMATTER_TIME) : "not defined", leftIndent));
-        document.add(createStandardParagraph("Place", crime.getCrimePlace(), leftIndent));
-        document.add(createStandardParagraph("Description", crime.getDescription(), leftIndent));
+        document.add(createStandardParagraph("Тип", crime.getCrimeType().getName(), leftIndent));
+        document.add(createStandardParagraph("Дата совершения", crime.getCrimeDate().format(JSON_FORMATTER_DATE), leftIndent));
+        document.add(createStandardParagraph("Время совершения", crime.getCrimeTime() != null ?
+                crime.getCrimeTime().format(JSON_FORMATTER_TIME) : "не установлено", leftIndent));
+        document.add(createStandardParagraph("Место совершения", crime.getCrimePlace(), leftIndent));
+        document.add(createStandardParagraph("Описание", crime.getDescription(), leftIndent));
     }
 
     private void addEvidenceData(Document document, Evidence evidence, float leftIndent) throws DocumentException {
-        document.add(createStandardParagraph("Name", evidence.getName(), leftIndent));
-        document.add(createStandardParagraph("Description", evidence.getDescription(), leftIndent));
+        document.add(createStandardParagraph("Название", evidence.getName(), leftIndent));
+        document.add(createStandardParagraph("Описание", evidence.getDescription(), leftIndent));
     }
 
     private void addEvidenceOfCrimeData(Document document, EvidenceOfCrime evidenceOfCrime, boolean withParentEvidence,
                                         boolean withParentCrime, float leftIndent) throws DocumentException {
+        boolean addedImage = addImageFromInternet(document, evidenceOfCrime.getPhotoPath());
         if (withParentEvidence) {
-            document.add(createBoldColoredParagraph("Evidence", leftIndent, BaseColor.ORANGE));
-            addEvidenceData(document, evidenceOfCrime.getParentEvidence(), leftIndent+10);
+            addEvidenceData(document, evidenceOfCrime.getParentEvidence(), leftIndent);
         }
         if (withParentCrime) {
-            document.add(createBoldColoredParagraph("Crime", leftIndent, BaseColor.ORANGE));
-            addCrimeData(document, evidenceOfCrime.getParentCrime(), true,leftIndent+10);
+            document.add(createBoldColoredParagraph("Преступление", leftIndent, BaseColor.ORANGE));
+            addCrimeData(document, evidenceOfCrime.getParentCrime(), true,leftIndent+15);
         }
-        document.add(createStandardParagraph("Evidence type", evidenceOfCrime.getEvidenceType().toString(), leftIndent));
-        document.add(createStandardParagraph("Details", evidenceOfCrime.getDetails(), leftIndent));
-        //TODO: replace all photo paths by real images
-        document.add(createStandardParagraph("Photo path", evidenceOfCrime.getPhotoPath().toString(), leftIndent));
-        document.add(createStandardParagraph("Date added", evidenceOfCrime.getDateAdded().format(JSON_FORMATTER_DATETIME), leftIndent));
+        document.add(createStandardParagraph("Тип улики", evidenceOfCrime.getEvidenceType().getName(), leftIndent));
+        document.add(createStandardParagraph("Детальная иннормация", evidenceOfCrime.getDetails(), leftIndent));
+        document.add(createStandardParagraph("Дата добавления", evidenceOfCrime.getDateAdded().format(JSON_FORMATTER_DATETIME), leftIndent));
+        if (!addedImage) {
+            Paragraph paragraph = createStandardParagraph("Фотография", "", leftIndent);
+            addLink(paragraph, evidenceOfCrime.getPhotoPath(), "link");
+            document.add(paragraph);
+        }
+    }
+
+    private void addManData(Document document, Man man, float leftIndent) throws DocumentException {
+        boolean addedImage = addImageFromInternet(document, man.getPhotoPath());
+        document.add(createStandardParagraph("Имя", man.getName(), leftIndent));
+        document.add(createStandardParagraph("Фамилия", man.getSurname(), leftIndent));
+        document.add(createStandardParagraph("Дата рождения", man.getBirthDay() != null ?
+                man.getBirthDay().format(JSON_FORMATTER_DATE) : "неизвестно", leftIndent));
+        document.add(createStandardParagraph("Домашний адрес", man.getHomeAddress() != null ?
+                man.getHomeAddress() : "неизвестен", leftIndent));
+        if (!addedImage) {
+            Paragraph paragraph = createStandardParagraph("Фотография", "", leftIndent);
+            addLink(paragraph, man.getPhotoPath(), "link");
+            document.add(paragraph);
+        }
+    }
+
+    private void addDetectiveData(Document document, Detective detective, float leftIndent) throws DocumentException {
+        addManData(document, detective, leftIndent);
+        document.add(createStandardParagraph("Логин", detective.getLogin(), leftIndent));
+        document.add(createStandardParagraph("Адрес электронной почты", detective.getEmail(), leftIndent));
+    }
+
+    private void addParticipantData(Document document, Participant participant, boolean withParentMan,
+                                        boolean withParentCrime, float leftIndent) throws DocumentException {
+        if (withParentMan) {
+            addManData(document, participant, leftIndent);
+        }
+        if (withParentCrime) {
+            document.add(createBoldColoredParagraph("Преступление", leftIndent, BaseColor.ORANGE));
+            addCrimeData(document, participant.getParentCrime(), true,leftIndent+15);
+        }
+        document.add(createStandardParagraph("Статус", participant.getParticipantStatus().getName(), leftIndent));
+        document.add(createStandardParagraph("Алиби", participant.getAlibi(), leftIndent));
+        document.add(createStandardParagraph("Отчёт (показания человека)", participant.getWitnessReport().toString(), leftIndent));
+        document.add(createStandardParagraph("Дата добавления", participant.getDateAdded().format(JSON_FORMATTER_DATETIME), leftIndent));
     }
 
     @Override
     public String generateReportByCrimes(List<Crime> crimes, LocalDate startDate, LocalDate endDate) throws Exception {
-         File tempFile = File.createTempFile("report", ".pdf");
-         Document document = getTypicalDocument(tempFile, "crimes between " + startDate.format(JSON_FORMATTER_DATE)
-                 + " and " + endDate.format(JSON_FORMATTER_DATE));
+        File tempFile = File.createTempFile("report", ".pdf");
+        Document document = getTypicalDocument(tempFile, "Преступления, соврешённые с " + startDate.format(JSON_FORMATTER_DATE)
+                + " по " + endDate.format(JSON_FORMATTER_DATE));
 
-         Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
+        document.add(createHeader1Paragraph("Преступления"));
+        for (Crime crime : crimes) {
+            addCrimeData(document, crime,true, 0);
+            addEmptyLine(document, 1);
+        }
+        if (crimes.isEmpty()) {
+            document.add(createBoldParagraph("Не найдены преступления, совершённые в указанный промежуток!", 0));
+        }
 
-         PdfPTable table = new PdfPTable(3);
-         table.setWidths(new int[]{10, 10, 120});
+        document.close();
+        return tempFile.getAbsolutePath();
+    }
 
-         table.addCell("ID");
-         table.addCell("Criminal Case ID");
-         table.addCell("Description");
-
-         for (Crime crime : crimes){
-             table.addCell(String.valueOf(crime.getCrimeId()));
-             table.addCell(String.valueOf(crime.getCriminalCaseId()));
-             table.addCell(crime.getDescription());
-         }
-
-         document.add(table);
-         document.close();
-         return tempFile.getAbsolutePath();
+    private String getTitleForCriminalCases(String status) {
+        switch(status) {
+            case "open":
+                return "Расследуемые уголовные дела";
+            case "solved":
+                return "Раскрытые уголовные дела";
+            case "unsolved":
+                return "Нераскрытые уголовные дела";
+            default:
+                return "Все уголовные дела";
+        }
     }
 
     @Override
-    public String generateReportByCriminalCases(List<CriminalCase> criminalCases) throws Exception {
-        return null;
+    public String generateReportByCriminalCases(List<CriminalCase> criminalCases, String status) throws Exception {
+        File tempFile = File.createTempFile("report", ".pdf");
+        Document document = getTypicalDocument(tempFile, getTitleForCriminalCases(status));
+
+        document.add(createHeader1Paragraph("Уголовные дела"));
+        for (CriminalCase criminalCase : criminalCases) {
+            addCriminalCaseData(document, criminalCase, true, 0);
+            addEmptyLine(document, 1);
+        }
+        if (criminalCases.isEmpty()) {
+            document.add(createBoldParagraph("Не найдены уголовные дела, удовлетворяющие критериям!", 0));
+        }
+
+        document.close();
+        return tempFile.getAbsolutePath();
     }
 
     @Override
     public String generateReportByCrime(Crime crime, List<EvidenceOfCrime> evidencesOfCrime, List<Participant> participants) throws Exception {
         File tempFile = File.createTempFile("report", ".pdf");
-        Document document = getTypicalDocument(tempFile, "crime #" + crime.getCrimeId());
+        Document document = getTypicalDocument(tempFile, "Преступление №" + crime.getCrimeId());
 
-        document.add(createHeader1Paragraph("Crime"));
+        document.add(createHeader1Paragraph("Преступление"));
         addCrimeData(document, crime, true, 0);
-        addEmptyLine(document, 3);
-
-        document.add(createHeader2Paragraph("Evidences for this crime"));
         addEmptyLine(document, 1);
 
+        document.add(createHeader2Paragraph("Прикреплённые улики"));
+        addEmptyLine(document, 1);
         for (EvidenceOfCrime evidenceOfCrime : evidencesOfCrime) {
             addEvidenceOfCrimeData(document, evidenceOfCrime, true, false, 0);
             addEmptyLine(document, 1);
         }
         if (evidencesOfCrime.isEmpty()) {
-            document.add(createBoldParagraph("No evidences for this crime!", 0));
+            document.add(createBoldParagraph("Нет улик, связанных с этим преступлением!", 0));
+        }
+
+        document.add(createHeader2Paragraph("Люди, связанные с преступлением"));
+        addEmptyLine(document, 1);
+        for (Participant participant : participants) {
+            addParticipantData(document, participant, true, false, 0);
+            addEmptyLine(document, 1);
+        }
+        if (participants.isEmpty()) {
+            document.add(createBoldParagraph("Нет людей, связанных с этим преступлением!", 0));
         }
 
         document.close();
@@ -261,21 +384,94 @@ public class PDFView implements IReportView {
 
     @Override
     public String generateReportByMan(Man man, List<Participant> participants) throws Exception {
-        return null;
+        File tempFile = File.createTempFile("report", ".pdf");
+        Document document = getTypicalDocument(tempFile, "Человек " + man.getSurname() + ", " + man.getName());
+
+        document.add(createHeader1Paragraph("Человек"));
+        addManData(document, man, 0);
+        addEmptyLine(document, 1);
+
+        document.add(createHeader2Paragraph("Участие человека в преступлениях"));
+        addEmptyLine(document, 1);
+        for (Participant participant : participants) {
+            addParticipantData(document, participant, false, true, 0);
+            addEmptyLine(document, 1);
+        }
+        if (participants.isEmpty()) {
+            document.add(createBoldParagraph("Нет людей, связанных с этим преступлением!", 0));
+        }
+
+        document.close();
+        return tempFile.getAbsolutePath();
     }
 
     @Override
     public String generateReportByCriminalCase(CriminalCase criminalCase, List<Crime> crimes) throws Exception {
-        return null;
+        File tempFile = File.createTempFile("report", ".pdf");
+        Document document = getTypicalDocument(tempFile, "Уголовное дело" + criminalCase.getCriminalCaseNumber());
+
+        document.add(createHeader1Paragraph("Уголовное дело"));
+        addCriminalCaseData(document, criminalCase, true, 0);
+        addEmptyLine(document, 1);
+
+        document.add(createHeader2Paragraph("Преступления, включённые в состав дела"));
+        addEmptyLine(document, 1);
+        for (Crime crime : crimes) {
+            addCrimeData(document, crime, false, 0);
+            addEmptyLine(document, 1);
+        }
+        if (crimes.isEmpty()) {
+            document.add(createBoldParagraph("Нет преступлений в составе этого дела!", 0));
+        }
+
+        document.close();
+        return tempFile.getAbsolutePath();
     }
 
     @Override
     public String generateReportByEvidence(Evidence evidence, List<EvidenceOfCrime> evidenceOfCrimes) throws Exception {
-        return null;
+        File tempFile = File.createTempFile("report", ".pdf");
+        Document document = getTypicalDocument(tempFile, "Улика №" + evidence.getEvidenceId());
+
+        document.add(createHeader1Paragraph("Улика"));
+        addEvidenceData(document, evidence, 0);
+        addEmptyLine(document, 1);
+
+        document.add(createHeader2Paragraph("Участие улики в преступлениях"));
+        addEmptyLine(document, 1);
+        for (EvidenceOfCrime evidenceOfCrime : evidenceOfCrimes) {
+            addEvidenceOfCrimeData(document, evidenceOfCrime, false, true, 0);
+            addEmptyLine(document, 1);
+        }
+        if (evidenceOfCrimes.isEmpty()) {
+            document.add(createBoldParagraph("Эта улика не связана ни с каким преступлением!", 0));
+        }
+
+        document.close();
+        return tempFile.getAbsolutePath();
     }
 
     @Override
     public String generateReportByDetective(Detective detective, List<CriminalCase> criminalCases) throws Exception {
-        return null;
+        File tempFile = File.createTempFile("report", ".pdf");
+        Document document = getTypicalDocument(tempFile, "Детектив " + detective.getSurname() + ", " + detective.getName()
+                + " (" + detective.getLogin() + ")");
+
+        document.add(createHeader1Paragraph("Детектив"));
+        addDetectiveData(document, detective, 0);
+        addEmptyLine(document, 1);
+
+        document.add(createHeader2Paragraph("Уголовные дела, расследуемые детективом"));
+        addEmptyLine(document, 1);
+        for (CriminalCase criminalCase : criminalCases) {
+            addCriminalCaseData(document, criminalCase, false, 0);
+            addEmptyLine(document, 1);
+        }
+        if (criminalCases.isEmpty()) {
+            document.add(createBoldParagraph("Этот детектив не расследовал ещё ни одного дела!", 0));
+        }
+
+        document.close();
+        return tempFile.getAbsolutePath();
     }
 }

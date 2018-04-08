@@ -15,7 +15,7 @@ public class CSVView implements IReportView {
     }
 
     @Override
-    public String generateReportByCriminalCases(List<CriminalCase> criminalCases) throws Exception {
+    public String generateReportByCriminalCases(List<CriminalCase> criminalCases, String status) throws Exception {
         return null;
     }
 
