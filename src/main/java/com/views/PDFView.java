@@ -494,8 +494,9 @@ public class PDFView implements IReportView {
             File tempFile = File.createTempFile("report", ".pdf");
             PdfReader reader = new PdfReader(oldFile);
             PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(tempFile));
-            stamper.setEncryption("deadpool_user_don't_allow".getBytes(), "deadpoll_created_deadppol_deasallowed".getBytes(),
-                    ~(PdfWriter.ALLOW_COPY), PdfWriter.ENCRYPTION_AES_256 | PdfWriter.DO_NOT_ENCRYPT_METADATA);
+            stamper.setEncryption(null, "deadpoll_created_deadppol_deasallowed".getBytes(),
+                    ~(PdfWriter.ALLOW_COPY) | PdfWriter.ALLOW_PRINTING | PdfWriter.ALLOW_SCREENREADERS,
+                    PdfWriter.ENCRYPTION_AES_256 | PdfWriter.DO_NOT_ENCRYPT_METADATA);
             stamper.close();
             return tempFile.getAbsolutePath();
         } finally {
