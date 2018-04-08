@@ -259,12 +259,14 @@ public class PDFView implements IReportView {
                 evidenceOfCrime.getDetails() : "отсутствует", leftIndent));
         document.add(createStandardParagraph("Дата добавления",
                 evidenceOfCrime.getDateAdded().format(JSON_FORMATTER_DATETIME), leftIndent));
-        if (!addedImage && evidenceOfCrime.getPhotoPath() != null) {
-            Paragraph paragraph = createStandardParagraph("Фотография", "", leftIndent);
-            addLink(paragraph, evidenceOfCrime.getPhotoPath(), "link");
-            document.add(paragraph);
-        } else {
-            document.add(createStandardParagraph("Фотография", "отсутствует", leftIndent));
+        if (!addedImage) {
+            if (evidenceOfCrime.getPhotoPath() != null) {
+                Paragraph paragraph = createStandardParagraph("Фотография", "", leftIndent);
+                addLink(paragraph, evidenceOfCrime.getPhotoPath(), "link");
+                document.add(paragraph);
+            } else {
+                document.add(createStandardParagraph("Фотография", "отсутствует", leftIndent));
+            }
         }
     }
 
@@ -276,12 +278,14 @@ public class PDFView implements IReportView {
                 man.getBirthDay().format(JSON_FORMATTER_DATE) : "неизвестно", leftIndent));
         document.add(createStandardParagraph("Домашний адрес", !isEmpty(man.getHomeAddress()) ?
                 man.getHomeAddress() : "неизвестен", leftIndent));
-        if (!addedImage && man.getPhotoPath() != null) {
-            Paragraph paragraph = createStandardParagraph("Фотография", "", leftIndent);
-            addLink(paragraph, man.getPhotoPath(), "link");
-            document.add(paragraph);
-        } else {
-            document.add(createStandardParagraph("Фотография", "отсутствует", leftIndent));
+        if (!addedImage) {
+            if (man.getPhotoPath() != null) {
+                Paragraph paragraph = createStandardParagraph("Фотография", "", leftIndent);
+                addLink(paragraph, man.getPhotoPath(), "link");
+                document.add(paragraph);
+            } else {
+                document.add(createStandardParagraph("Фотография", "отсутствует", leftIndent));
+            }
         }
     }
 
