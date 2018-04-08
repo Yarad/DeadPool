@@ -267,6 +267,11 @@ public class DocumentController {
     private ResponseEntity<InputStreamResource> sendGeneratedFile(String path, String reportName, String docType, String contentType) {
         File file = null;
         try {
+            if (docType.equals("pdf_s")) {
+                docType = "pdf";
+                path = pdfView.encryptPDF(path);
+            }
+
             file = new File(path);
 
             InputStream inputstream = new FileInputStream(file);
@@ -293,6 +298,7 @@ public class DocumentController {
     private String getContentType(String extension) {
         switch(extension) {
             case "pdf":
+            case "pdf_s":
                 return "application/pdf";
             case "xlsx":
                 return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
@@ -306,6 +312,7 @@ public class DocumentController {
     private IReportView getViewForFileFormat(String extension) {
         switch(extension) {
             case "pdf":
+            case "pdf_s":
                 return pdfView;
             case "xlsx":
                 return xlsxView;

@@ -1,9 +1,7 @@
 package com.views;
 
 import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.*;
 import com.logic.*;
 import com.views.interfaces.IReportView;
 import org.springframework.http.HttpStatus;
@@ -489,5 +487,22 @@ public class PDFView implements IReportView {
 
         document.close();
         return tempFile.getAbsolutePath();
+    }
+
+    public String encryptPDF(String oldFile) throws Exception {
+        try {
+            File tempFile = File.createTempFile("report", ".pdf");
+            PdfReader reader = new PdfReader(oldFile);
+            PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(tempFile));
+            stamper.setEncryption("deadpool_user_don't_allow".getBytes(), "deadpoll_created_deadppol_deasallowed".getBytes(),
+                    ~(PdfWriter.ALLOW_COPY), PdfWriter.ENCRYPTION_AES_256 | PdfWriter.DO_NOT_ENCRYPT_METADATA);
+            stamper.close();
+            return tempFile.getAbsolutePath();
+        } finally {
+            File prevFile = new File(oldFile);
+            if (prevFile.exists()) {
+                prevFile.delete();
+            }
+        }
     }
 }
