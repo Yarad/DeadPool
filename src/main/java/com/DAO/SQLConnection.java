@@ -1,6 +1,7 @@
 package com.DAO;
 
 import com.DAO.interfaces.IConnection;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -8,11 +9,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class SQLConnection implements IConnection {
+    static Logger log = Logger.getLogger(SQLConnection.class.getName());
 
     private String url = "jdbc:mysql://localhost:3306/DeadPoolDB";
     private String user = "root";
-    //private String password = "uthfkmn";
-    private String password = "root";
+    private String password = "uthfkmn";
+    //private String password = "root";
 
     private static Connection con;
     private static Statement stmt;
@@ -90,7 +92,7 @@ public class SQLConnection implements IConnection {
             if (rs.next())
                 ret = rs.getInt(1);
         } catch (Exception e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
         }
         return ret;
     }
@@ -104,7 +106,7 @@ public class SQLConnection implements IConnection {
             // getting Statement object to execute query
             stmt = con.createStatement();
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             retValue = false;
         }
         return retValue;
@@ -131,7 +133,7 @@ public class SQLConnection implements IConnection {
             //но примем, будто он нужен всегда
             retValue = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
         }
 
         return retValue;

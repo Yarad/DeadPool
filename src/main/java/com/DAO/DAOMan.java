@@ -3,17 +3,22 @@ package com.DAO;
 import com.DAO.interfaces.IDAOMan;
 import com.logic.Man;
 import com.logic.ProjectFunctions;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.sql.Types.DATE;
+
 @Repository
 public class DAOMan extends DAO implements IDAOMan {
+    static Logger log = Logger.getLogger(DAOMan.class.getName());
 
     public boolean addMan(Man manToAdd) {
         if (manToAdd == null) return false;
@@ -26,12 +31,12 @@ public class DAOMan extends DAO implements IDAOMan {
             if (manToAdd.getBirthDay() != null)
                 preparedQuery.setDate(3, Date.valueOf(manToAdd.getBirthDay()));
             else
-                preparedQuery.setNull(3, 0);
+                preparedQuery.setNull(3, DATE);
             preparedQuery.setString(4, manToAdd.getSurname());
             preparedQuery.setString(5, manToAdd.getPhotoPath());
 
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return false;
         }
 
@@ -57,12 +62,12 @@ public class DAOMan extends DAO implements IDAOMan {
             if (manToUpdate.getBirthDay() != null)
                 preparedStatement2.setDate(3, Date.valueOf(manToUpdate.getBirthDay()));
             else
-                preparedStatement2.setNull(3, 0);
+                preparedStatement2.setNull(3, DATE);
             preparedStatement2.setString(4, manToUpdate.getHomeAddress());
             preparedStatement2.setString(5, manToUpdate.getPhotoPath());
             preparedStatement2.setLong(6, manToUpdate.getManId());
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return false;
         }
 
@@ -75,7 +80,7 @@ public class DAOMan extends DAO implements IDAOMan {
         try {
             preparedQuery.setLong(1, manId);
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return null;
         }
 
@@ -108,5 +113,22 @@ public class DAOMan extends DAO implements IDAOMan {
             retMap.put(man, Long.parseLong(retArray.get(i).get("crimes_count").toString()));
         }
         return retMap;
+    }
+
+    @Override
+    public List<Man> getAllMan() {
+        PreparedStatement preparedQuery = currConnection.prepareStatement("SELECT *  FROM man " +
+                "WHERE man.man_id NOT IN (SELECT detective_id FROM detective)");
+        List<Man> retList = new ArrayList<>();
+
+        List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedQuery);
+
+        if (retArray.isEmpty()) return retList;
+        for (int i = 0; i < retArray.size(); i++) {
+            Man man = new Man();
+            ProjectFunctions.tryFillObjectByDbArray(man, retArray.get(i));
+            retList.add(man);
+        }
+        return retList;
     }
 }

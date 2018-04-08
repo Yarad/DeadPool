@@ -2,6 +2,7 @@ package com.ServiceTest;
 
 import com.Additionals.LogicAdditionals;
 import com.DAO.interfaces.IDAOMan;
+import com.DTO.AddResult;
 import com.logic.Man;
 import com.services.ManService;
 import org.junit.Before;
@@ -55,9 +56,9 @@ public class ManServiceTest {
         boolean expectedResult = true;
         when(daoMan.addMan(any(Man.class))).thenReturn(expectedResult);
 
-        boolean actualResult = service.addMan(man.getName(), man.getSurname(), man.getBirthDay(), man.getHomeAddress(), man.getPhotoPath());
+        AddResult actualResult = service.addMan(man.getName(), man.getSurname(), man.getBirthDay(), man.getHomeAddress(), man.getPhotoPath());
 
-        assertEquals(expectedResult, actualResult);
+        assertEquals(expectedResult, actualResult.getResult());
     }
 
     @Test

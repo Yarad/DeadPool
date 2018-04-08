@@ -1,6 +1,7 @@
 package com.services;
 
 import com.DAO.interfaces.IDAODetective;
+import com.DTO.AddResult;
 import com.logic.Detective;
 import com.logic.Man;
 import com.services.interfaces.IDetectiveService;
@@ -22,8 +23,8 @@ public class DetectiveService implements IDetectiveService {
 
     @Transactional
     @Override
-    public boolean addDetective(String name, String surname, LocalDate birthday, String homeAddress, String photoPath,
-                                String login, String password, String email) {
+    public AddResult addDetective(String name, String surname, LocalDate birthday, String homeAddress, String photoPath,
+                                  String login, String password, String email) {
         Detective detective = new Detective();
         detective.setName(name);
         detective.setSurname(surname);
@@ -33,7 +34,7 @@ public class DetectiveService implements IDetectiveService {
         detective.setLogin(login);
         detective.setHashOfPassword(hashService.getMD5Hash(password));
         detective.setEmail(email);
-        return daoDetective.addDetective(detective);
+        return new AddResult(daoDetective.addDetective(detective), detective.getManId());
     }
 
     @Transactional
@@ -57,6 +58,11 @@ public class DetectiveService implements IDetectiveService {
     @Override
     public Detective getDetectiveByLogin(String login) {
         return daoDetective.getDetectiveByLogin(login);
+    }
+
+    @Override
+    public Detective getDetectiveById(long id) {
+        return daoDetective.getDetectiveById(id);
     }
 
     @Transactional

@@ -1,6 +1,7 @@
 package com.services;
 
 import com.DAO.interfaces.IDAOCrime;
+import com.DTO.AddResult;
 import com.logic.Crime;
 import com.services.interfaces.ICrimeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,11 @@ public class CrimeService implements ICrimeService {
         return daoCrime.getCrimesByCriminalCase(id);
     }
 
+    @Override
+    public List<Crime> getCrimesBetweenDates(LocalDate dateStart, LocalDate dateEnd) {
+        return daoCrime.getCrimesBetweenDates(dateStart, dateEnd);
+    }
+
     @Transactional
     @Override
     public Crime getCrimeById(long id) {
@@ -36,19 +42,19 @@ public class CrimeService implements ICrimeService {
 
     @Transactional
     @Override
-    public boolean addCrime(long criminalCaseId, String type, String description, LocalDate date, LocalTime time, String place) {
+    public AddResult addCrime(long criminalCaseId, String type, String description, LocalDate date, LocalTime time, String place) {
         Crime crime = new Crime();
         crime.setCriminalCaseId(criminalCaseId);
         try {
             crime.setCrimeType(type);
         } catch (IllegalArgumentException ex) {
-            return false;
+            return new AddResult(false);
         }
         crime.setDescription(description);
         crime.setCrimeDate(date);
         crime.setCrimeTime(time);
         crime.setCrimePlace(place);
-        return daoCrime.addCrime(crime);
+        return new AddResult(daoCrime.addCrime(crime), crime.getCrimeId());
     }
 
     @Transactional

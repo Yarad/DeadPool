@@ -1,11 +1,14 @@
 package com.services;
 
 import com.DAO.interfaces.IDAOEvidence;
+import com.DTO.AddResult;
 import com.logic.Evidence;
 import com.services.interfaces.IEvidenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class EvidenceService implements IEvidenceService {
@@ -20,11 +23,11 @@ public class EvidenceService implements IEvidenceService {
 
     @Transactional
     @Override
-    public boolean addEvidence(String name, String description) {
+    public AddResult addEvidence(String name, String description) {
         Evidence evidence = new Evidence();
         evidence.setName(name);
         evidence.setDescription(description);
-        return daoEvidence.addEvidence(evidence);
+        return new AddResult(daoEvidence.addEvidence(evidence), evidence.getEvidenceId());
     }
 
     @Transactional
@@ -35,5 +38,10 @@ public class EvidenceService implements IEvidenceService {
         evidence.setName(name);
         evidence.setDescription(description);
         return daoEvidence.updateEvidence(evidence);
+    }
+
+    @Override
+    public List<Evidence> getAllEvidences() {
+        return daoEvidence.getAllEvidences();
     }
 }

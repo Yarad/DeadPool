@@ -8,10 +8,10 @@ public class Participant extends Man {
     private long crimeId = -1;
     private String alibi;
     private String witnessReport;
-    private LocalDateTime dateAdded = LocalDateTime.now();
+    private LocalDateTime dateAdded;
 
     private Crime parentCrime;
-    private ParticipantStatus participantStatus = ParticipantStatus.SUSPECTED;
+    private ParticipantStatus participantStatus;
 
     public Crime getParentCrime() {
         if (parentCrime == null) {

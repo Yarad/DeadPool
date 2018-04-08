@@ -1,5 +1,6 @@
 package com.security;
 
+import org.apache.log4j.Logger;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
@@ -18,6 +19,8 @@ import java.util.Collections;
 public class AuthFilter extends AbstractAuthenticationProcessingFilter {
     public static final String TOKEN_HEADER = "deadpool-token";
 
+    static Logger log = Logger.getLogger(AuthFilter.class.getName());
+
     public AuthFilter(RequestMatcher requestMatcher) {
         super(requestMatcher);
     }
@@ -29,9 +32,11 @@ public class AuthFilter extends AbstractAuthenticationProcessingFilter {
         //Проверка наличия нужного заголовка
         if (StringUtils.isEmpty(token)) {
             chain.doFilter(request, response);
+            log.error("No nesecary header in request.");
             return;
         }
 
+        log.trace("Found nesecary header in requst. Chain to other filters.");
         //В случае наличия заголовка
         this.setAuthenticationSuccessHandler((requestNext, responseNext, authentication) -> {
             chain.doFilter(requestNext, responseNext);
@@ -42,7 +47,7 @@ public class AuthFilter extends AbstractAuthenticationProcessingFilter {
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-            throws AuthenticationException, IOException, ServletException {
+            throws AuthenticationException {
         final String tokenValue = getTokenValue(request);
 
         if (StringUtils.isEmpty(tokenValue)) {

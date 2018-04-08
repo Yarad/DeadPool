@@ -59,9 +59,10 @@ public class DetectiveControllerTest {
     public void addDetective() throws Exception {
         DetectiveWithoutManIdDTO inputJson = new DetectiveWithoutManIdDTO();
         inputJson.setMan(new ManInfoWithoutIdDTO());
-        OperationResultDTO response = new OperationResultDTO(true);
+        AddResult result = new AddResult(true,-1);
+        OperationResultAddDTO response = new OperationResultAddDTO(result);
 
-        when(detectiveService.addDetective(inputJson.getMan().getName(), inputJson.getMan().getSurname(), inputJson.getMan().getBirthday(), inputJson.getMan().getHomeAddress(), inputJson.getMan().getPhotoPath(), inputJson.getLogin(), inputJson.getPassword(), inputJson.getEmail() )).thenReturn(true);
+        when(detectiveService.addDetective(inputJson.getMan().getName(), inputJson.getMan().getSurname(), inputJson.getMan().getBirthday(), inputJson.getMan().getHomeAddress(), inputJson.getMan().getPhotoPath(), inputJson.getLogin(), inputJson.getPassword(), inputJson.getEmail() )).thenReturn(result);
 
         mockMvc.perform(
                 post("/detectives/add")

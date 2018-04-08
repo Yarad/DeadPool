@@ -8,7 +8,7 @@ public final class DetectiveParser {
 
     public static DetectivePersonDTO parseDetectivePerson(Detective detective) {
         if (detective != null) {
-            return new DetectivePersonDTO(detective.getManId(), detective.getName(), detective.getHashOfPassword());
+            return new DetectivePersonDTO(detective.getManId(), detective.getName(), detective.getSurname());
         } else {
             return null;
         }

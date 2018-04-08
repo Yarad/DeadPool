@@ -7,9 +7,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Detective extends Man {
-    private String login = "";
-    private String hashOfPassword = "";
-    private String email = "";
+    private String login;
+    private String hashOfPassword;
+    private String email;
     public List<UserRole> roles = Arrays.asList(UserRole.DETECTIVE);
 
     public String getLogin() {

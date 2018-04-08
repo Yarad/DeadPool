@@ -9,11 +9,11 @@ public class EvidenceOfCrime {
     private long crimeId = -1;
     private long evidenceId = -1;
 
-    private Crime parentCrime = null;
-    private Evidence parentEvidence = null;
+    private Crime parentCrime;
+    private Evidence parentEvidence;
     private String photoPath;
     private String details;
-    private EvidenceType evidenceType = EvidenceType.OBJECT_FROM_CRIME_SCENE;
+    private EvidenceType evidenceType;
     private LocalDateTime dateAdded;
 
     public long getCrimeId() {

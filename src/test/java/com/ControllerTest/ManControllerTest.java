@@ -65,9 +65,10 @@ public class ManControllerTest {
     @Test
     public void addMan() throws Exception {
         ManInfoWithoutIdDTO inputJson = new ManInfoWithoutIdDTO();
-        OperationResultDTO response = new OperationResultDTO(true);
+        AddResult result = new AddResult(true,1);
+        OperationResultAddDTO response = new OperationResultAddDTO(result);
 
-        when(manService.addMan(inputJson.getName(), inputJson.getSurname(), inputJson.getBirthday(), inputJson.getHomeAddress(), inputJson.getPhotoPath() )).thenReturn(true);
+        when(manService.addMan(inputJson.getName(), inputJson.getSurname(), inputJson.getBirthday(), inputJson.getHomeAddress(), inputJson.getPhotoPath() )).thenReturn(result);
 
         mockMvc.perform(
                 post("/man/add")
