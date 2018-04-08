@@ -140,7 +140,7 @@ public class DocumentControllerTest {
         File file = File.createTempFile("report", ".xlsx");
 
         when(criminalCaseService.getAllOpenCriminalCases()).thenReturn(criminalCases);
-        when(xlsxView.generateReportByCriminalCases(criminalCases)).thenReturn(file.getAbsolutePath());
+        when(xlsxView.generateReportByCriminalCases(criminalCases, "open")).thenReturn(file.getAbsolutePath());
 
         try {
             mockMvc.perform(
