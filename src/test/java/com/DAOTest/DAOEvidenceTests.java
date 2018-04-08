@@ -10,6 +10,10 @@ import com.logic.Evidence;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 import static org.junit.Assert.*;
 
 public class DAOEvidenceTests {
@@ -92,6 +96,26 @@ public class DAOEvidenceTests {
             assertTrue(actualResult);
             Evidence actualEvidence = daoEvidence.getEvidenceById(entities.getEvidence().getEvidenceId());
             ClassEqualsAsserts.assertEvidencesEquals(entities.getEvidence(), actualEvidence);
+        } finally {
+            entities.deleteAllAddedEntities();
+        }
+    }
+
+    @Test
+    public void getAllEvidences() throws Exception {
+        AllClassesList entities = new AllClassesList();
+        entities.addCustomEvidenceToDatabase();
+
+        try {
+            List<Evidence> evidences = daoEvidence.getAllEvidences();
+
+            assertNotNull(evidences);
+            assertFalse(evidences.isEmpty());
+
+            assertTrue(evidences.stream().anyMatch(o -> o.getEvidenceId() == entities.getEvidence().getEvidenceId()));
+            Optional<Evidence> optional = evidences.stream().
+                    filter(o -> o.getEvidenceId() == entities.getEvidence().getEvidenceId()).findFirst();
+            ClassEqualsAsserts.assertEvidencesEquals(entities.getEvidence(), optional.orElse(null));
         } finally {
             entities.deleteAllAddedEntities();
         }

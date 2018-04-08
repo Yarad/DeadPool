@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,5 +113,22 @@ public class DAOMan extends DAO implements IDAOMan {
             retMap.put(man, Long.parseLong(retArray.get(i).get("crimes_count").toString()));
         }
         return retMap;
+    }
+
+    @Override
+    public List<Man> getAllMan() {
+        PreparedStatement preparedQuery = currConnection.prepareStatement("SELECT *  FROM man " +
+                "WHERE man.man_id NOT IN (SELECT detective_id FROM detective)");
+        List<Man> retList = new ArrayList<>();
+
+        List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedQuery);
+
+        if (retArray.isEmpty()) return retList;
+        for (int i = 0; i < retArray.size(); i++) {
+            Man man = new Man();
+            ProjectFunctions.tryFillObjectByDbArray(man, retArray.get(i));
+            retList.add(man);
+        }
+        return retList;
     }
 }

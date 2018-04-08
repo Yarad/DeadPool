@@ -65,9 +65,10 @@ public class CriminalCaseControllerTest {
     public void addCriminalCase() throws Exception {
         CriminalCaseInputDTO inputJson = new CriminalCaseInputDTO();
         inputJson.setDetective(new IdOnlyDTO());
-        OperationResultDTO response = new OperationResultDTO(true);
+        AddResult result = new AddResult(true,-1);
+        OperationResultAddDTO response = new OperationResultAddDTO(result);
 
-        when(crimeCasesService.addCriminalCase(inputJson.getDetective().getId(), inputJson.getNumber(), inputJson.getCreateDate(), inputJson.getClosed(), inputJson.getCloseDate() )).thenReturn(true);
+        when(crimeCasesService.addCriminalCase(inputJson.getDetective().getId(), inputJson.getNumber(), inputJson.getCreateDate(), inputJson.getClosed(), inputJson.getCloseDate() )).thenReturn(result);
 
         mockMvc.perform(
                 post("/criminal_cases/add")

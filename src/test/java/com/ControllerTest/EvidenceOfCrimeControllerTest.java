@@ -65,9 +65,10 @@ public class EvidenceOfCrimeControllerTest {
     @Test
     public void addEvidenceSingle() throws Exception {
         EvidenceInputDTO inputJson = new EvidenceInputDTO();
-        OperationResultDTO response = new OperationResultDTO(true);
+        AddResult result = new AddResult(true,-1);
+        OperationResultAddDTO response = new OperationResultAddDTO(result);
 
-        when(evidenceService.addEvidence(inputJson.getName(), inputJson.getDescription())).thenReturn(true);
+        when(evidenceService.addEvidence(inputJson.getName(), inputJson.getDescription())).thenReturn(result);
 
         mockMvc.perform(
                 post("/evidences/add_single")
@@ -129,6 +130,24 @@ public class EvidenceOfCrimeControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                         .header("deadpool-token", TokensForTests.getCorrectTokenUnlimited())
                         .content(objectMapper.writeValueAsString(inputJson)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(objectMapper.writeValueAsString(response)));
+    }
+
+    @Test
+    public void getAllEvidences() throws Exception {
+        List<Evidence> inputEvidences = LogicAdditionals.getEvidenceList();
+        List<EvidenceObjectDTO> results = inputEvidences.stream()
+                .map(curEvidence -> EvidenceParser.parseEvidence(curEvidence))
+                .collect(Collectors.toList());
+        GenericDTO<ListEvidencesDTO> response = new GenericDTO<>(false, new ListEvidencesDTO(results));
+
+        when(evidenceService.getAllEvidences()).thenReturn(inputEvidences);
+
+        mockMvc.perform(
+                get("/evidences/all_singles")
+                        .header("deadpool-token", TokensForTests.getCorrectTokenUnlimited()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(content().json(objectMapper.writeValueAsString(response)));

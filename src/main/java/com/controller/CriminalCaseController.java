@@ -25,15 +25,15 @@ public class CriminalCaseController {
     @IsDetective
     @CrossOrigin
     @RequestMapping(path = "/add", method = RequestMethod.POST)
-    public OperationResultDTO addCriminalCase(@RequestBody CriminalCaseInputDTO criminalCase) {
-        boolean result = crimeCasesService.addCriminalCase(
+    public OperationResultAddDTO addCriminalCase(@RequestBody CriminalCaseInputDTO criminalCase) {
+        AddResult result = crimeCasesService.addCriminalCase(
                 criminalCase.getDetective().getId(),
                 criminalCase.getNumber(),
                 criminalCase.getCreateDate(),
                 criminalCase.getClosed(),
                 criminalCase.getCloseDate()
         );
-        return new OperationResultDTO(result);
+        return new OperationResultAddDTO(result);
     }
 
     @IsDetective

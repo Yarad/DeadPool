@@ -27,12 +27,12 @@ public class EvidenceOfCrimeController {
     @IsDetective
     @CrossOrigin
     @RequestMapping(path = "/add_single", method = RequestMethod.POST)
-    public OperationResultDTO addEvidenceSingle(@RequestBody EvidenceInputDTO evidence) {
-        boolean result = evidenceService.addEvidence(
+    public OperationResultAddDTO addEvidenceSingle(@RequestBody EvidenceInputDTO evidence) {
+        AddResult result = evidenceService.addEvidence(
                 evidence.getName(),
                 evidence.getDescription()
         );
-        return new OperationResultDTO(result);
+        return new OperationResultAddDTO(result);
     }
 
     @IsDetective

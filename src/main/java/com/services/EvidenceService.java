@@ -1,6 +1,7 @@
 package com.services;
 
 import com.DAO.interfaces.IDAOEvidence;
+import com.DTO.AddResult;
 import com.logic.Evidence;
 import com.services.interfaces.IEvidenceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +23,11 @@ public class EvidenceService implements IEvidenceService {
 
     @Transactional
     @Override
-    public boolean addEvidence(String name, String description) {
+    public AddResult addEvidence(String name, String description) {
         Evidence evidence = new Evidence();
         evidence.setName(name);
         evidence.setDescription(description);
-        return daoEvidence.addEvidence(evidence);
+        return new AddResult(daoEvidence.addEvidence(evidence), evidence.getEvidenceId());
     }
 
     @Transactional
