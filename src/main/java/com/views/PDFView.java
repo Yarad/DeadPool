@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.logic.ProjectConstants.*;
+import static org.springframework.util.StringUtils.isEmpty;
 
 @Component
 public class PDFView implements IReportView {
@@ -202,7 +203,7 @@ public class PDFView implements IReportView {
     }
 
     private String getDetectiveData(Detective detective) {
-        return detective.getSurname() + ", " + detective.getName();
+        return detective.getSurname() + ", " + detective.getName() + " (" + detective.getLogin() + ")";
     }
 
     private void addCriminalCaseData(Document document, CriminalCase criminalCase, boolean withDetective, float leftIndent) throws DocumentException {
@@ -217,8 +218,8 @@ public class PDFView implements IReportView {
         } else {
             if (criminalCase.getCloseDate() != null) {
                 document.add(createStandardParagraph("Статус", "раскрыто", leftIndent));
-                document.add(createStandardParagraph("Дата закрытия",
-                        criminalCase.getCloseDate().format(JSON_FORMATTER_DATE), leftIndent));
+                document.add(createStandardParagraph("Дата закрытия", criminalCase.getCloseDate() != null
+                        ? criminalCase.getCloseDate().format(JSON_FORMATTER_DATE) : "почему-то не указана", leftIndent));
             } else {
                 document.add(createStandardParagraph("Статус", "не раскрыто (передано в архив)", leftIndent));
             }
@@ -234,8 +235,10 @@ public class PDFView implements IReportView {
         document.add(createStandardParagraph("Дата совершения", crime.getCrimeDate().format(JSON_FORMATTER_DATE), leftIndent));
         document.add(createStandardParagraph("Время совершения", crime.getCrimeTime() != null ?
                 crime.getCrimeTime().format(JSON_FORMATTER_TIME) : "не установлено", leftIndent));
-        document.add(createStandardParagraph("Место совершения", crime.getCrimePlace(), leftIndent));
-        document.add(createStandardParagraph("Описание", crime.getDescription(), leftIndent));
+        document.add(createStandardParagraph("Место совершения", !isEmpty(crime.getCrimePlace())
+                ? crime.getCrimePlace() : "не указано", leftIndent));
+        document.add(createStandardParagraph("Описание", !isEmpty(crime.getDescription())
+                ? crime.getDescription() : "не указано", leftIndent));
     }
 
     private void addEvidenceData(Document document, Evidence evidence, float leftIndent) throws DocumentException {
@@ -245,7 +248,7 @@ public class PDFView implements IReportView {
 
     private void addEvidenceOfCrimeData(Document document, EvidenceOfCrime evidenceOfCrime, boolean withParentEvidence,
                                         boolean withParentCrime, float leftIndent) throws DocumentException {
-        boolean addedImage = addImageFromInternet(document, evidenceOfCrime.getPhotoPath());
+        boolean addedImage = evidenceOfCrime.getPhotoPath() != null && addImageFromInternet(document, evidenceOfCrime.getPhotoPath());
         if (withParentEvidence) {
             addEvidenceData(document, evidenceOfCrime.getParentEvidence(), leftIndent);
         }
@@ -254,27 +257,37 @@ public class PDFView implements IReportView {
             addCrimeData(document, evidenceOfCrime.getParentCrime(), true,leftIndent+15);
         }
         document.add(createStandardParagraph("Тип улики", evidenceOfCrime.getEvidenceType().getName(), leftIndent));
-        document.add(createStandardParagraph("Детальная иннормация", evidenceOfCrime.getDetails(), leftIndent));
-        document.add(createStandardParagraph("Дата добавления", evidenceOfCrime.getDateAdded().format(JSON_FORMATTER_DATETIME), leftIndent));
+        document.add(createStandardParagraph("Детальная иннормация", !isEmpty(evidenceOfCrime.getDetails()) ?
+                evidenceOfCrime.getDetails() : "отсутствует", leftIndent));
+        document.add(createStandardParagraph("Дата добавления",
+                evidenceOfCrime.getDateAdded().format(JSON_FORMATTER_DATETIME), leftIndent));
         if (!addedImage) {
-            Paragraph paragraph = createStandardParagraph("Фотография", "", leftIndent);
-            addLink(paragraph, evidenceOfCrime.getPhotoPath(), "link");
-            document.add(paragraph);
+            if (evidenceOfCrime.getPhotoPath() != null) {
+                Paragraph paragraph = createStandardParagraph("Фотография", "", leftIndent);
+                addLink(paragraph, evidenceOfCrime.getPhotoPath(), "link");
+                document.add(paragraph);
+            } else {
+                document.add(createStandardParagraph("Фотография", "отсутствует", leftIndent));
+            }
         }
     }
 
     private void addManData(Document document, Man man, float leftIndent) throws DocumentException {
-        boolean addedImage = addImageFromInternet(document, man.getPhotoPath());
+        boolean addedImage = man.getPhotoPath() != null && addImageFromInternet(document, man.getPhotoPath());
         document.add(createStandardParagraph("Имя", man.getName(), leftIndent));
         document.add(createStandardParagraph("Фамилия", man.getSurname(), leftIndent));
         document.add(createStandardParagraph("Дата рождения", man.getBirthDay() != null ?
                 man.getBirthDay().format(JSON_FORMATTER_DATE) : "неизвестно", leftIndent));
-        document.add(createStandardParagraph("Домашний адрес", man.getHomeAddress() != null ?
+        document.add(createStandardParagraph("Домашний адрес", !isEmpty(man.getHomeAddress()) ?
                 man.getHomeAddress() : "неизвестен", leftIndent));
         if (!addedImage) {
-            Paragraph paragraph = createStandardParagraph("Фотография", "", leftIndent);
-            addLink(paragraph, man.getPhotoPath(), "link");
-            document.add(paragraph);
+            if (man.getPhotoPath() != null) {
+                Paragraph paragraph = createStandardParagraph("Фотография", "", leftIndent);
+                addLink(paragraph, man.getPhotoPath(), "link");
+                document.add(paragraph);
+            } else {
+                document.add(createStandardParagraph("Фотография", "отсутствует", leftIndent));
+            }
         }
     }
 
@@ -285,7 +298,7 @@ public class PDFView implements IReportView {
     }
 
     private void addParticipantData(Document document, Participant participant, boolean withParentMan,
-                                        boolean withParentCrime, float leftIndent) throws DocumentException {
+                                    boolean withParentCrime, float leftIndent) throws DocumentException {
         if (withParentMan) {
             addManData(document, participant, leftIndent);
         }
@@ -294,15 +307,18 @@ public class PDFView implements IReportView {
             addCrimeData(document, participant.getParentCrime(), true,leftIndent+15);
         }
         document.add(createStandardParagraph("Статус", participant.getParticipantStatus().getName(), leftIndent));
-        document.add(createStandardParagraph("Алиби", participant.getAlibi(), leftIndent));
-        document.add(createStandardParagraph("Отчёт (показания человека)", participant.getWitnessReport().toString(), leftIndent));
-        document.add(createStandardParagraph("Дата добавления", participant.getDateAdded().format(JSON_FORMATTER_DATETIME), leftIndent));
+        document.add(createStandardParagraph("Алиби", !isEmpty(participant.getAlibi())
+                ? participant.getAlibi() : "неизвестно", leftIndent));
+        document.add(createStandardParagraph("Отчёт (показания человека)", !isEmpty(participant.getWitnessReport())
+                ? participant.getWitnessReport() : "неизвестно", leftIndent));
+        document.add(createStandardParagraph("Дата добавления", participant.getDateAdded().format(JSON_FORMATTER_DATETIME),
+                leftIndent));
     }
 
     @Override
     public String generateReportByCrimes(List<Crime> crimes, LocalDate startDate, LocalDate endDate) throws Exception {
         File tempFile = File.createTempFile("report", ".pdf");
-        Document document = getTypicalDocument(tempFile, "Преступления, соврешённые с " + startDate.format(JSON_FORMATTER_DATE)
+        Document document = getTypicalDocument(tempFile, "Преступления, совершённые с " + startDate.format(JSON_FORMATTER_DATE)
                 + " по " + endDate.format(JSON_FORMATTER_DATE));
 
         document.add(createHeader1Paragraph("Преступления"));
