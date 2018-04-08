@@ -255,7 +255,7 @@ public class PDFView implements IReportView {
             addCrimeData(document, evidenceOfCrime.getParentCrime(), true,leftIndent+15);
         }
         document.add(createStandardParagraph("Тип улики", evidenceOfCrime.getEvidenceType().getName(), leftIndent));
-        document.add(createStandardParagraph("Детальная иннормация", !isEmpty(evidenceOfCrime.getDetails()) ?
+        document.add(createStandardParagraph("Детальная информация", !isEmpty(evidenceOfCrime.getDetails()) ?
                 evidenceOfCrime.getDetails() : "отсутствует", leftIndent));
         document.add(createStandardParagraph("Дата добавления",
                 evidenceOfCrime.getDateAdded().format(JSON_FORMATTER_DATETIME), leftIndent));
