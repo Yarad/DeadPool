@@ -80,7 +80,7 @@ public class DocumentController {
 
         List<Crime> crimes = crimeService.getCrimesBetweenDates(dateStart, dateEnd);
         try {
-            path = view.generateReportByCrimes(crimes);
+            path = view.generateReportByCrimes(crimes, dateStart, dateEnd);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

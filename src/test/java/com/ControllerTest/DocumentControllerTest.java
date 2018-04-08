@@ -90,7 +90,8 @@ public class DocumentControllerTest {
 
         when(crimeService.getCrimesBetweenDates(LocalDate.of(2012,12,19),
                 LocalDate.of(2015,11,22))).thenReturn(crimes);
-        when(pdfView.generateReportByCrimes(crimes)).thenReturn(file.getAbsolutePath());
+        when(pdfView.generateReportByCrimes(crimes, LocalDate.of(2012,12,19),
+                LocalDate.of(2015,11,22))).thenReturn(file.getAbsolutePath());
 
         try {
             mockMvc.perform(
@@ -123,7 +124,8 @@ public class DocumentControllerTest {
 
         when(crimeService.getCrimesBetweenDates(LocalDate.of(2012,12,19),
                 LocalDate.of(2015,11,22))).thenReturn(crimes);
-        when(csvView.generateReportByCrimes(crimes)).thenThrow(new Exception());
+        when(csvView.generateReportByCrimes(crimes, LocalDate.of(2012,12,19),
+                LocalDate.of(2015,11,22))).thenThrow(new Exception());
 
         mockMvc.perform(
                 get("/reports/crimes_between_dates/csv/2012-12-19/2015-11-22")

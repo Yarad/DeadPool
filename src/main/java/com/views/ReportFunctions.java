@@ -9,13 +9,12 @@ public final class ReportFunctions {
 
     public static String getStatusWithData(CriminalCase criminalCase) {
         if (!criminalCase.isClosed()) {
-            return "open; creation date " + criminalCase.getCreateDate().format(JSON_FORMATTER_DATE);
+            return "open";
         } else {
             if (criminalCase.getCloseDate() != null) {
-                return "solved; creation date " + criminalCase.getCreateDate().format(JSON_FORMATTER_DATE) +
-                        ", close date " + criminalCase.getCloseDate().format(JSON_FORMATTER_DATE);
+                return "solved";
             } else {
-                return "not solved; creation date " + criminalCase.getCreateDate().format(JSON_FORMATTER_DATE);
+                return "not solved";
             }
         }
     }

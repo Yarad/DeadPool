@@ -4,12 +4,13 @@ import com.logic.*;
 import com.views.interfaces.IReportView;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Component
 public class XLSXView implements IReportView {
     @Override
-    public String generateReportByCrimes(List<Crime> crimes) throws Exception {
+    public String generateReportByCrimes(List<Crime> crimes, LocalDate startDate, LocalDate endDate) throws Exception {
         return null;
     }
 

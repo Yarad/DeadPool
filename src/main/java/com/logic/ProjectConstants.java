@@ -13,6 +13,7 @@ public class ProjectConstants {
     public static DateTimeFormatter myDateTimeFormatter = ofPattern(ProjectConstants.DATETIME_FORMAT);
 
     public static DateTimeFormatter fileDateTimeFormatter = ofPattern("yyyy-MM-dd_HH:mm:ss");
+    public static DateTimeFormatter reportTitleDateTimeFormatter = ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public static final DateTimeFormatter JSON_FORMATTER_DATE = ofPattern("yyyy-MM-dd");
     public static final DateTimeFormatter JSON_FORMATTER_TIME = ofPattern("HH:mm");
