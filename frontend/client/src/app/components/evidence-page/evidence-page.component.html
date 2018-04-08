@@ -1,3 +1,82 @@
-<p>
-  evidence-page works!
-</p>
+<app-navbar></app-navbar> 
+<div class="container">
+  <div class="row">
+    <div class="col-lg-3" >
+      <div class="list-group" id="menu">
+        <h3 class="list-group-item bg-dark">
+          Действия
+        </h3>
+        <p class="list-group-item list-group-item-action"  (click)="switchMode(false)" >Редактировать данные</p>
+        <p class="list-group-item list-group-item-action" >Удалить улику преступления</p>
+      </div>
+    </div>
+    
+    <div class="col-lg-9">  
+      <fieldset *ngIf="evidenceOfCrime">
+        <legend><h2>Улика преступления</h2></legend> 
+          <div class="form-group row">
+            <label for="evidence-name" class="col-sm-4 col-form-label" required>Название</label>
+            <div class="col-sm-8 col-md-8">
+              <input type="text" id="evidence-name" readonly="" class="form-control" [(ngModel)]="evidenceOfCrime.evidence.name">          
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="evidence-description" class="col-sm-4 col-form-label" required>Описание</label>
+            <div class="col-sm-8 col-md-8">
+              <textarea type="text" id="evidence-description" class="form-control" [(ngModel)]="evidenceOfCrime.evidence.description"
+                rows="3" readonly=""></textarea>         
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="evidence-type" class="col-sm-4 col-form-label">Тип</label>
+            <div class="col-sm-8 col-md-8">
+              <input *ngIf="readMode" 
+              type="text" [readonly]="readMode" class="form-control"
+              [class.form-control-plaintext]="readMode"
+              id="evidence-type"  [(ngModel)]="evidenceOfCrime.type.name">
+              <select *ngIf="!readMode" class="form-control" id="crime-type" (change)="changeSelectedEvidenceType($event)">
+                <option *ngFor="let type of evidenceTypes" value="{{type.enumValue}}">{{type.name}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="evidence-details" class="col-sm-4 col-form-label" required>Детальное описание</label>
+            <div class="col-sm-8 col-md-8">
+              <textarea type="text" id="evidence-details" [readonly]="readMode" class="form-control"
+              [class.form-control-plaintext]="readMode" [(ngModel)]="evidenceOfCrime.details"
+                rows="3" ></textarea>         
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="evidence-date" class="col-sm-4 col-form-label">Дата нахождения</label>
+            <div class="col-sm-8 col-md-8">
+              <input id="evidence-date" [readonly]="readMode" class="form-control"
+              [class.form-control-plaintext]="readMode" type="date" [(ngModel)]="evidenceOfCrime.dateAdded"
+              [ngClass]="{'is-invalid':(!evidenceOfCrime.dateAdded)}">         
+            </div>
+          </div> 
+          <div class="form-group row">
+            <label for="evidence-time" class="col-sm-4 col-form-label">Время нахождения</label>
+            <div class="col-sm-8 col-md-8">
+              <input id="evidence-time" [readonly]="readMode" class="form-control"
+              [class.form-control-plaintext]="readMode" type="time" [(ngModel)]="evidenceOfCrime.timeAdded"
+              [ngClass]="{'is-invalid':(!evidenceOfCrime.timeAdded)}">         
+            </div>
+          </div> 
+          <div class="form-group row">
+            <label for="evidence-photo" class="col-sm-4 col-form-label">Фото</label>
+            <div class="col-sm-8 col-md-8">
+              <div class="evidence-image">
+                <img id='evidence-image' src="{{evidenceOfCrime.photoPath}}">
+              </div>
+            </div>
+          </div>         <div class="my-3" *ngIf="!readMode">
+          <button class="btn btn-secondary" (click)="saveChanges()">Сохранить изменения</button>
+          <button class="btn btn-secondary" (click)="cancellationOfChanges()">Отмена</button>
+        </div> 
+      </fieldset> 
+    </div> 
+  </div>
+</div>

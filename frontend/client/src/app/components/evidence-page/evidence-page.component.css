@@ -1,0 +1,8 @@
+textarea{
+    resize: none;
+}
+
+#evidence-image{
+    height: 100px; 
+    text-align: center;   
+}

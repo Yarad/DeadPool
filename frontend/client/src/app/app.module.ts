@@ -47,8 +47,8 @@ const appRoutes: Routes = [
   {path: 'add_evidence', component: AddEvidencePageComponent, canActivate: [SecurityGuard], pathMatch:'full'},
   {path: 'add_criminal_case', component: AddCriminalCasePageComponent, canActivate: [SecurityGuard], pathMatch:'full'},
   {path: 'add_crime', component: AddCrimePageComponent, canActivate: [SecurityGuard], pathMatch:'full'},
-  {path: '**', component: NotFoundPageComponent},
   {path: 'evidence', component: EvidencePageComponent, canActivate: [SecurityGuard], pathMatch:'full'},
+  {path: '**', component: NotFoundPageComponent},
 ];
 
 

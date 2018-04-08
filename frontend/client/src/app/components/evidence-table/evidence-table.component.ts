@@ -8,6 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class EvidenceTableComponent implements OnInit {
 
   @Input() evidences;
+  @Input() crimeId;
 
   constructor() { 
     console.log('evidence-table',this.evidences)

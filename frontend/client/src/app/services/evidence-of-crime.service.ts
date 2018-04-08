@@ -65,8 +65,20 @@ export class EvidenceOfCrimeService {
     });
   }
 
-  updateEvidenceOfCrime(evidence): Observable<Boolean> {
-    return this.mainService.postAuthorizedRequest("/evidences/update_for_crime", evidence)
+  updateEvidenceOfCrime(evidenceOfCrime): Observable<Boolean> {
+    return this.mainService.postAuthorizedRequest("/evidences/update_for_crime",  { 
+      evidence:{
+          id: evidenceOfCrime.evidence.id
+      },
+      crime:{
+          id: evidenceOfCrime.crime.id
+      },
+      type: evidenceOfCrime.type.enumValue,
+      dateAdded: evidenceOfCrime.dateAdded,
+      timeAdded: evidenceOfCrime.timeAdded,
+      details: evidenceOfCrime.details,
+      photoPath: evidenceOfCrime.photoPath
+    })
     .map(res => {
       return res.success;
     })

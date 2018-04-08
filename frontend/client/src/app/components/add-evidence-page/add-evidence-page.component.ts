@@ -110,8 +110,17 @@ export class AddEvidencePageComponent implements OnInit {
         this.evidenceService.addNewEvidence(this.newEvidence)
         .subscribe(
           result => {
-          //  this.evidenceOfCrime.evidence.id = 1;
-            this.addEvidenceOfCrime();
+            this.evidenceService.getAllEvidences()
+            .subscribe(
+              data => {
+                this.evidences = data;                
+                const index =  this.evidences.map(evidence => evidence.name).indexOf(this.newEvidence.name);
+                console.log(index, this.evidences, this.newEvidence)
+                this.evidenceOfCrime.evidence = this.evidences[index];
+                this.addEvidenceOfCrime();
+              },
+              error => console.log('error', error)
+            );
           },
           error => {console.log("error" + error)}
         );
