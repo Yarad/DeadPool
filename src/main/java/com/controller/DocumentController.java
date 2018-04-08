@@ -78,6 +78,9 @@ public class DocumentController {
         if (view == null || contentType == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
+        if (dateStart != null && dateEnd != null && dateStart.isAfter(dateEnd))
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+
         List<Crime> crimes = crimeService.getCrimesBetweenDates(dateStart, dateEnd);
         try {
             path = view.generateReportByCrimes(crimes, dateStart, dateEnd);
@@ -114,12 +117,15 @@ public class DocumentController {
             case "unsolved":
                 criminalCases = criminalCaseService.getAllUnsolvedCriminalCases();
                 break;
+            case "all":
+                criminalCases = criminalCaseService.getAllCriminalCases();
+                break;
             default:
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         try {
-            path = view.generateReportByCriminalCases(criminalCases);
+            path = view.generateReportByCriminalCases(criminalCases, status);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IReportView {
     String generateReportByCrimes(List<Crime> crimes, LocalDate startDate, LocalDate endDate) throws Exception;
-    String generateReportByCriminalCases(List<CriminalCase> criminalCases) throws Exception;
+    String generateReportByCriminalCases(List<CriminalCase> criminalCases, String status) throws Exception;
     String generateReportByCrime(Crime crime, List<EvidenceOfCrime> evidencesOfCrime, List<Participant> participants) throws Exception;
     String generateReportByMan(Man man, List<Participant> participants) throws Exception;
     String generateReportByCriminalCase(CriminalCase criminalCase, List<Crime> crimes) throws Exception;
