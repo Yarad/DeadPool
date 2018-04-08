@@ -20,8 +20,8 @@ public class DetectiveController {
     @IsDetective
     @CrossOrigin
     @RequestMapping(path = "/add", method = RequestMethod.POST)
-    public OperationResultDTO addDetective(@RequestBody DetectiveWithoutManIdDTO detective) {
-        boolean result = detectiveService.addDetective(
+    public OperationResultAddDTO addDetective(@RequestBody DetectiveWithoutManIdDTO detective) {
+        AddResult result = detectiveService.addDetective(
                 detective.getMan().getName(),
                 detective.getMan().getSurname(),
                 detective.getMan().getBirthday(),
@@ -31,7 +31,7 @@ public class DetectiveController {
                 detective.getPassword(),
                 detective.getEmail()
         );
-        return new OperationResultDTO(result);
+        return new OperationResultAddDTO(result);
     }
 
     @IsDetective

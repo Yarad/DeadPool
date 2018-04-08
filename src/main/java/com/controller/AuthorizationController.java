@@ -1,5 +1,6 @@
 package com.controller;
 
+import com.DTO.AddResult;
 import com.DTO.AuthDTO;
 import com.DTO.DetectiveWithoutManIdDTO;
 import com.DTO.GenericDTO;
@@ -52,7 +53,7 @@ public class AuthorizationController {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return new GenericDTO<>(true, "Пользователь с таким именем уже существует!");
         } else {
-            boolean addResult = detectiveService.addDetective(
+            AddResult addResult = detectiveService.addDetective(
                     authData.getMan().getName(),
                     authData.getMan().getSurname(),
                     authData.getMan().getBirthday(),
@@ -62,7 +63,7 @@ public class AuthorizationController {
                     authData.getPassword(),
                     authData.getEmail()
             );
-            if (addResult) {
+            if (addResult.getResult()) {
                 return new GenericDTO<>(false, "Вы успешно зарегистрированы в системе!");
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

@@ -1,5 +1,6 @@
 package com.services.interfaces;
 
+import com.DTO.AddResult;
 import com.logic.CriminalCase;
 
 import java.time.LocalDate;
@@ -12,6 +13,6 @@ public interface ICriminalCaseService {
     List<CriminalCase> getAllOpenCriminalCases();
     List<CriminalCase> getCriminalCasesByDetectiveId(long detectiveId);
     CriminalCase getCriminalCaseById(long id);
-    boolean addCriminalCase(long detectiveId, String number, LocalDate createDate, boolean closed, LocalDate closeDate);
+    AddResult addCriminalCase(long detectiveId, String number, LocalDate createDate, boolean closed, LocalDate closeDate);
     boolean updateCriminalCase(long id, long detectiveId, String number, LocalDate createDate, boolean closed, LocalDate closeDate);
 }

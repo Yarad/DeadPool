@@ -2,6 +2,7 @@ package com.ServiceTest;
 
 import com.Additionals.LogicAdditionals;
 import com.DAO.interfaces.IDAOCrime;
+import com.DTO.AddResult;
 import com.logic.Crime;
 import com.services.CrimeService;
 import org.junit.Before;
@@ -76,9 +77,9 @@ public class CrimeServiceTest {
         boolean expectedResult = true;
         when(daoCrime.addCrime(any(Crime.class))).thenReturn(expectedResult);
 
-        boolean actualResult = service.addCrime(crime.getCriminalCaseId(), crime.getCrimeType().toString(), crime.getDescription(), crime.getCrimeDate(),crime.getCrimeTime(), crime.getCrimePlace());
+        AddResult actualResult = service.addCrime(crime.getCriminalCaseId(), crime.getCrimeType().toString(), crime.getDescription(), crime.getCrimeDate(),crime.getCrimeTime(), crime.getCrimePlace());
 
-        assertEquals(expectedResult, actualResult);
+        assertEquals(expectedResult, actualResult.getResult());
     }
 
     @Test
@@ -87,9 +88,9 @@ public class CrimeServiceTest {
         boolean expectedResult = false;
         when(daoCrime.addCrime(any(Crime.class))).thenReturn(expectedResult);
 
-        boolean actualResult = service.addCrime(crime.getCriminalCaseId(), crime.getCrimeType().getName(), crime.getDescription(), crime.getCrimeDate(),crime.getCrimeTime(), crime.getCrimePlace());
+        AddResult actualResult = service.addCrime(crime.getCriminalCaseId(), crime.getCrimeType().getName(), crime.getDescription(), crime.getCrimeDate(),crime.getCrimeTime(), crime.getCrimePlace());
 
-        assertEquals(expectedResult, actualResult);
+        assertEquals(expectedResult, actualResult.getResult());
     }
 
     @Test

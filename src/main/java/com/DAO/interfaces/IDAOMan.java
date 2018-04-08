@@ -19,4 +19,6 @@ public interface IDAOMan {
    * Получить всех людей Man в БД, указать для каждого кол-во записей в табл. Participant
     */
    Map<Man,Long> getAllManWithCrimeAmount();
+
+   List<Man> getAllMan();
 }

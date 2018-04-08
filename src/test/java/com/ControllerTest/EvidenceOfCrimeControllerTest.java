@@ -65,9 +65,10 @@ public class EvidenceOfCrimeControllerTest {
     @Test
     public void addEvidenceSingle() throws Exception {
         EvidenceInputDTO inputJson = new EvidenceInputDTO();
-        OperationResultDTO response = new OperationResultDTO(true);
+        AddResult result = new AddResult(true,-1);
+        OperationResultAddDTO response = new OperationResultAddDTO(result);
 
-        when(evidenceService.addEvidence(inputJson.getName(), inputJson.getDescription())).thenReturn(true);
+        when(evidenceService.addEvidence(inputJson.getName(), inputJson.getDescription())).thenReturn(result);
 
         mockMvc.perform(
                 post("/evidences/add_single")

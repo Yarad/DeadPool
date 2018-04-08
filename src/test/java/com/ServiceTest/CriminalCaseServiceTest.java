@@ -2,6 +2,7 @@ package com.ServiceTest;
 
 import com.Additionals.LogicAdditionals;
 import com.DAO.interfaces.IDAOCriminalCase;
+import com.DTO.AddResult;
 import com.logic.CriminalCase;
 import com.services.CriminalCaseService;
 import org.junit.Before;
@@ -95,9 +96,9 @@ public class CriminalCaseServiceTest {
         boolean expectedResult = true;
         when(daoCriminalCase.addCriminalCase(any(CriminalCase.class))).thenReturn(expectedResult);
 
-        boolean actualResult = service.addCriminalCase(criminalCase.getDetectiveId(), criminalCase.getCriminalCaseNumber(), criminalCase.getCreateDate(), criminalCase.isClosed(), criminalCase.getCloseDate());
+        AddResult actualResult = service.addCriminalCase(criminalCase.getDetectiveId(), criminalCase.getCriminalCaseNumber(), criminalCase.getCreateDate(), criminalCase.isClosed(), criminalCase.getCloseDate());
 
-        assertEquals(expectedResult, actualResult);
+        assertEquals(expectedResult, actualResult.getResult());
     }
 
     @Test

@@ -1,6 +1,7 @@
 package com.services;
 
 import com.DAO.interfaces.IDAOCriminalCase;
+import com.DTO.AddResult;
 import com.logic.CriminalCase;
 import com.services.interfaces.ICriminalCaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,14 +53,14 @@ public class CriminalCaseService implements ICriminalCaseService {
 
     @Transactional
     @Override
-    public boolean addCriminalCase(long detectiveId, String number, LocalDate createDate, boolean closed, LocalDate closeDate) {
+    public AddResult addCriminalCase(long detectiveId, String number, LocalDate createDate, boolean closed, LocalDate closeDate) {
         CriminalCase criminalCase = new CriminalCase();
         criminalCase.setDetectiveId(detectiveId);
         criminalCase.setCriminalCaseNumber(number);
         criminalCase.setClosed(closed);
         criminalCase.setCreateDate(createDate);
         criminalCase.setCloseDate(closeDate);
-        return daoCriminalCase.addCriminalCase(criminalCase);
+        return new AddResult(daoCriminalCase.addCriminalCase(criminalCase), criminalCase.getCriminalCaseId());
     }
 
     @Transactional

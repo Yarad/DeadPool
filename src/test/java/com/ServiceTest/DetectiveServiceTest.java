@@ -2,6 +2,7 @@ package com.ServiceTest;
 
 import com.Additionals.LogicAdditionals;
 import com.DAO.interfaces.IDAODetective;
+import com.DTO.AddResult;
 import com.logic.Detective;
 import com.logic.Man;
 import com.services.DetectiveService;
@@ -90,9 +91,9 @@ public class DetectiveServiceTest {
         when(daoDetective.addDetective(any(Detective.class))).thenReturn(expectedResult);
         when(hashService.getMD5Hash(anyString())).thenReturn(realHashService.getMD5Hash("anyMd5Hash"));
 
-        boolean actualResult = service.addDetective(detective.getName(), detective.getSurname(), detective.getBirthDay(), detective.getHomeAddress(), detective.getPhotoPath(), detective.getLogin(), detective.getHashOfPassword(), detective.getEmail());
+        AddResult actualResult = service.addDetective(detective.getName(), detective.getSurname(), detective.getBirthDay(), detective.getHomeAddress(), detective.getPhotoPath(), detective.getLogin(), detective.getHashOfPassword(), detective.getEmail());
 
-        assertEquals(expectedResult, actualResult);
+        assertEquals(expectedResult, actualResult.getResult());
     }
 
     @Test
