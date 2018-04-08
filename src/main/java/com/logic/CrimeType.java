@@ -5,7 +5,8 @@ public enum CrimeType {
     ROBBERY("Ограбление"),
     RAPE("Изнасилование"),
     ARSON("Поджог"),
-    SUICIDE("Самоубийство");
+    SUICIDE("Самоубийство"),
+    DELETED("УДАЛЕНО");
     //TODO: дополнить
 
     private final String fieldDescription;
