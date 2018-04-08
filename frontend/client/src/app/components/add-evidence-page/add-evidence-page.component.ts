@@ -115,7 +115,6 @@ export class AddEvidencePageComponent implements OnInit {
               data => {
                 this.evidences = data;                
                 const index =  this.evidences.map(evidence => evidence.name).indexOf(this.newEvidence.name);
-                console.log(index, this.evidences, this.newEvidence)
                 this.evidenceOfCrime.evidence = this.evidences[index];
                 this.addEvidenceOfCrime();
               },

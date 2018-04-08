@@ -37,6 +37,7 @@ import { AddCrimePageComponent } from './components/add-crime-page/add-crime-pag
 import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
 import { AddManPageComponent } from './components/add-man-page/add-man-page.component';
 import { EvidencePageComponent } from './components/evidence-page/evidence-page.component';
+import { AddParticipantPageComponent } from './components/add-participant-page/add-participant-page.component';
 
 const appRoutes: Routes = [
   {path: '', component: MainPageComponent, canActivate: [SecurityGuard], pathMatch:'full'},
@@ -48,6 +49,7 @@ const appRoutes: Routes = [
   {path: 'add_criminal_case', component: AddCriminalCasePageComponent, canActivate: [SecurityGuard], pathMatch:'full'},
   {path: 'add_crime', component: AddCrimePageComponent, canActivate: [SecurityGuard], pathMatch:'full'},
   {path: 'evidence', component: EvidencePageComponent, canActivate: [SecurityGuard], pathMatch:'full'},
+  {path: 'add_participant', component: AddParticipantPageComponent, canActivate: [SecurityGuard], pathMatch:'full'},  
   {path: '**', component: NotFoundPageComponent},
 ];
 
@@ -70,7 +72,8 @@ const appRoutes: Routes = [
     AddCrimePageComponent,
     NotFoundPageComponent,
     AddManPageComponent,
-    EvidencePageComponent
+    EvidencePageComponent,
+    AddParticipantPageComponent
   ],
   imports: [
     BrowserModule,

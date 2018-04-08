@@ -7,7 +7,7 @@
           Действия
         </h3>
         <p class="list-group-item list-group-item-action" routerLink="/add_evidence" [queryParams]="{'crime':crimeId}">Добавить улику</p>
-        <p class="list-group-item list-group-item-action" >Добавить участника</p>
+        <p class="list-group-item list-group-item-action" routerLink="/add_participant" [queryParams]="{'crime':crimeId}">Добавить участника</p>
         <p class="list-group-item list-group-item-action"  (click)="switchMode(false)" >Редактировать данные</p>
         <p class="list-group-item list-group-item-action" >Удалить преступление</p>
       </div>
@@ -57,7 +57,7 @@
             > </textarea>        
           </div>
         </div>
-        <tabset class=" col-md-12" (onSelect)="tabSelect($event)">     
+        <tabset class=" col-md-12" >     
           <tab class="" title="" [active]="true">
             <span *tabHeading>
               Улики

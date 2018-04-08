@@ -24,7 +24,7 @@ export class EvidenceOfCrime {
         } else {
             const nowDate = new Date();
             this.dateAdded = nowDate.getFullYear() + '-' + ('0' + (nowDate.getMonth() + 1)).slice(-2) + '-' + ('0' + nowDate.getDate()).slice(-2);
-            this.timeAdded = nowDate.getHours()+ ':' + nowDate.getMinutes();
+            this.timeAdded = ('0' + (nowDate.getHours() + 1)).slice(-2)+ ':' + ('0' + (nowDate.getMinutes() + 1)).slice(-2);
         }
     }        
     

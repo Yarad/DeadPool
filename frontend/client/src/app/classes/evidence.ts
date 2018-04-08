@@ -18,7 +18,7 @@ export class Evidence {
             this.type = object.type;
             this.dateAdded = object.dateAdded;
             this.details = object.details;
-        }
+        } 
     }        
     
 }

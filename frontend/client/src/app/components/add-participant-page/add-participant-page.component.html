@@ -1,0 +1,114 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <div class="form-horizontal">
+    <fieldset class="col-md-offset-2 col-md-8">
+      <legend class="my-3"><h2>Новый участник преступления</h2></legend>
+
+      <tabset class=" col-md-12" (onSelect)="tabSelect($event)">     
+        <tab class="" title="" [active]="true">
+          <span *tabHeading>
+            Выбрать
+          </span>
+          <div class="mt-4">
+            <div class="form-group row">
+              <label for="man" class="col-sm-4 col-form-label">Человек</label>
+              <div class="col-sm-8">
+                <select class="form-control col-sm-12 col-md-12" id="man" (change)="changeSelectedMan($event)">
+                  <option *ngFor="let man of men" value="{{man.id}}">{{man.name}} {{man.surname}}</option>
+                </select>
+              </div>
+            </div>
+          </div>      
+        </tab>  
+        <tab title="">
+          <span *tabHeading>
+            Добавить нового
+          </span>
+          <div class="mt-4" *ngIf="newMan">
+            <div class="form-group row">
+              <label for="man-name" class="col-sm-4 col-form-label" required>Имя</label>
+              <div class="col-sm-8 col-md-8">
+                <input type="text" id="man-name" class="form-control" [(ngModel)]="newMan.name"
+                  [ngClass]="{'is-invalid':(!newMan.name)}">          
+              </div>
+            </div> 
+            <div class="form-group row">
+              <label for="man-surname" class="col-sm-4 col-form-label" required>Фамилия</label>
+              <div class="col-sm-8 col-md-8">
+                <input type="text" id="man-surname" class="form-control" [(ngModel)]="newMan.surname"
+                  [ngClass]="{'is-invalid':(!newMan.surname)}">          
+              </div>
+            </div> 
+            <div class="form-group row">
+              <label for="newMan-birthday" class="col-sm-4 col-form-label">Дата рождения</label>
+              <div class="col-sm-8 col-md-8">
+                <input id="newMan-birthday" class="form-control" type="date" [(ngModel)]="newMan.birthday"
+                [ngClass]="{'is-invalid':(!newMan.birthday)}">         
+              </div>
+            </div>  
+            <div class="form-group row">
+              <label for="man-address" class="col-sm-4 col-form-label">Домашний адрес</label>
+              <div class="col-sm-8 col-md-8">
+                <input type="text" id="man-address" class="form-control" [(ngModel)]="newMan.address">          
+              </div>
+            </div> 
+            <div class="form-group row">
+              <label for="man-photo" class="col-sm-4 col-form-label">Фото</label>
+              <div class="col-sm-8 col-md-8">
+                  <input type="file" (change)="uploadFile($event)"> 
+              </div>
+            </div> 
+            <div class="form-group row">
+              <label for="man-image" class="col-sm-4 col-form-label"></label>
+              <div class="col-sm-8 col-md-8">
+                <div class="man-image">
+                  <img id='man-image' src="{{newMan.photoPath}}">
+                </div>
+              </div>
+            </div> 
+          </div>    
+        </tab>         
+      </tabset>
+      <div class="form-group row">
+        <label for="participant-status" class="col-sm-4 col-form-label">Статус</label>
+        <div class="col-sm-8">
+          <select class="form-control col-sm-12 col-md-12" id="participant-statuse" (change)="changeSelectedarticipanStatus($event)">
+            <option *ngFor="let status of participantStatuses" value="{{status.enumValue}}">{{status.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="participant-alibi" class="col-sm-4 col-form-label" required>Алиби</label>
+        <div class="col-sm-8 col-md-8">
+          <textarea type="text" id="participant-alibi" class="form-control" [(ngModel)]="participant.alibi"
+            rows="3" ></textarea>         
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="participant-date" class="col-sm-4 col-form-label">Дата добавления</label>
+        <div class="col-sm-8 col-md-8">
+          <input id="participant-date" class="form-control" type="date" [(ngModel)]="participant.dateAdded"
+          [ngClass]="{'is-invalid':(!participant.dateAdded)}">         
+        </div>
+      </div> 
+      <div class="form-group row">
+        <label for="participant-time" class="col-sm-4 col-form-label">Время добавления</label>
+        <div class="col-sm-8 col-md-8">
+          <input id="participant-time" class="form-control" type="time" [(ngModel)]="participant.timeAdded"
+          [ngClass]="{'is-invalid':(!participant.timeAdded)}">         
+        </div>
+      </div>  
+      <div class="form-group row">
+        <label for="participant-witness-report" class="col-sm-4 col-form-label" required>Показания</label>
+        <div class="col-sm-8 col-md-8">
+          <textarea type="text" id="participant-witness-report" class="form-control" [(ngModel)]="participant.witnessReport"
+            rows="3" ></textarea>         
+        </div>
+      </div>
+      <div class="col-md-9 mx-auto mt-4">
+        <button type="submit" role="submit" class="btn col-sm-3 col-md-4 mt-4 btn-secondary" (click)="addMan()">Добавить</button>
+        <button type="submit" class="btn btn-secondary col-sm-3 col-md-4 mt-4 ml-5"  routerLink="/crime/{{crimeId}}">Отмена</button>
+      </div>
+    </fieldset>
+  </div>
+</div>

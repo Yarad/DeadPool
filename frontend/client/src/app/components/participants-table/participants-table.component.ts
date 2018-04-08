@@ -10,7 +10,9 @@ export class ParticipantsTableComponent implements OnInit {
   @Input() participants;
   @Input() tableType;
 
-  constructor() { }
+  constructor() { 
+    console.log('ParticipantsTableComponent',this.participants)
+  }
 
   ngOnInit() {
   }

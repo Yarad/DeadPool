@@ -26,7 +26,19 @@ export class ParticipantService {
   }
 
   addNewParticipant(participant): Observable<Boolean> {
-    return this.mainService.postAuthorizedRequest("/participants/add", participant)
+    return this.mainService.postAuthorizedRequest("/participants/add", { 
+      man: {
+        id: participant.man.id
+      },
+      crime: {
+        id: participant.crime.id
+      },
+      status: participant.status.enumValue,
+      dateAdded: participant.dateAdded,
+      timeAdded: participant.timeAdded,
+      alibi: participant.alibi,
+      witnessReport: participant.witnessReport
+    })
     .map(res => {
         return res.success;
     })

@@ -13,6 +13,7 @@ export class Crime {
     time: string;
     place: string
     evidencesOfCrime= [];
+    participants= [];
     
     constructor(object) {
         console.log('con',object)
@@ -29,5 +30,6 @@ export class Crime {
         });
         this.description = object.description;
         this.evidencesOfCrime = object.evidencesOfCrime;
+        this.participants = object.participants;
     }
 }

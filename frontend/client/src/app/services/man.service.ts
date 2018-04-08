@@ -43,7 +43,14 @@ export class ManService {
   }
 
   addNewMan(man): Observable<Boolean> {
-    return this.mainService.postAuthorizedRequest("/man/add", man)
+    console.log('addNewMan', man)
+    return this.mainService.postAuthorizedRequest("/man/add", { 
+      name: man.name,
+      surname: man.surname,
+      birthday: man.birthday || null,
+      home_address: man.home_address || null,
+      photo_path: man.photo_path || null
+  })
     .map(res => {
       return res.success
     })
