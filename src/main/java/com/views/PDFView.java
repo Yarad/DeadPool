@@ -235,8 +235,10 @@ public class PDFView implements IReportView {
         document.add(createStandardParagraph("Дата совершения", crime.getCrimeDate().format(JSON_FORMATTER_DATE), leftIndent));
         document.add(createStandardParagraph("Время совершения", crime.getCrimeTime() != null ?
                 crime.getCrimeTime().format(JSON_FORMATTER_TIME) : "не установлено", leftIndent));
-        document.add(createStandardParagraph("Место совершения", crime.getCrimePlace(), leftIndent));
-        document.add(createStandardParagraph("Описание", crime.getDescription(), leftIndent));
+        document.add(createStandardParagraph("Место совершения", !isEmpty(crime.getCrimePlace())
+                ? crime.getCrimePlace() : "не указано", leftIndent));
+        document.add(createStandardParagraph("Описание", !isEmpty(crime.getDescription())
+                ? crime.getDescription() : "не указано", leftIndent));
     }
 
     private void addEvidenceData(Document document, Evidence evidence, float leftIndent) throws DocumentException {
