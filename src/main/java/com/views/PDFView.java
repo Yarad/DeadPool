@@ -318,7 +318,7 @@ public class PDFView implements IReportView {
     @Override
     public String generateReportByCrimes(List<Crime> crimes, LocalDate startDate, LocalDate endDate) throws Exception {
         File tempFile = File.createTempFile("report", ".pdf");
-        Document document = getTypicalDocument(tempFile, "Преступления, соврешённые с " + startDate.format(JSON_FORMATTER_DATE)
+        Document document = getTypicalDocument(tempFile, "Преступления, совершённые с " + startDate.format(JSON_FORMATTER_DATE)
                 + " по " + endDate.format(JSON_FORMATTER_DATE));
 
         document.add(createHeader1Paragraph("Преступления"));
