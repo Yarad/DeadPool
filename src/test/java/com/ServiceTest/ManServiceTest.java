@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -46,6 +47,16 @@ public class ManServiceTest {
         when(daoMan.getAllManWithCrimeAmount()).thenReturn(man);
 
         Map<Man,Long> actualMan = service.getAllManWithCrimeAmount();
+
+        assertEquals(man, actualMan);
+    }
+
+    @Test
+    public void getAllMan() throws Exception {
+        List<Man> man = LogicAdditionals.getManList();
+        when(daoMan.getAllMan()).thenReturn(man);
+
+        List<Man> actualMan = service.getAllMan();
 
         assertEquals(man, actualMan);
     }

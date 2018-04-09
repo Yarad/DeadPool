@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
@@ -138,6 +139,24 @@ public class ManControllerTest {
         GenericDTO<ListMenDTO> response = new GenericDTO<>(false, new ListMenDTO(results));
 
         when(manService.getAllManWithCrimeAmount()).thenReturn(men);
+
+        mockMvc.perform(
+                get("/man/with_crimes")
+                        .header("deadpool-token", TokensForTests.getCorrectTokenUnlimited()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(objectMapper.writeValueAsString(response)));
+    }
+
+    @Test
+    public void getAllMan() throws Exception {
+        List<Man> men = LogicAdditionals.getManList();
+        List<ManShortedDTO> results = men.stream()
+                .map(man -> ManParser.parseManShorted(man))
+                .collect(Collectors.toList());
+        GenericDTO<ListMenShortedDTO> response = new GenericDTO<>(false, new ListMenShortedDTO(results));
+
+        when(manService.getAllMan()).thenReturn(men);
 
         mockMvc.perform(
                 get("/man")

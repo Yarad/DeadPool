@@ -17,7 +17,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
@@ -168,6 +170,41 @@ public class DAOManTests {
             assertNotEquals(0, mapping.size());
             Long crimesAmount = mapping.get(entities.getMan());
             assertEquals(1, crimesAmount.longValue());
+        } finally {
+            entities.deleteAllAddedEntities();
+        }
+    }
+/*PreparedStatement preparedQuery = currConnection.prepareStatement("SELECT *  FROM man " +
+                "WHERE man.man_id NOT IN (SELECT detective_id FROM detective)");
+        List<Man> retList = new ArrayList<>();
+
+        List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedQuery);
+
+        if (retArray.isEmpty()) return retList;
+        for (int i = 0; i < retArray.size(); i++) {
+            Man man = new Man();
+            ProjectFunctions.tryFillObjectByDbArray(man, retArray.get(i));
+            retList.add(man);
+        }
+        return retList;*/
+    @Test
+    public void getAllMan() throws Exception {
+        AllClassesList entities = new AllClassesList();
+        entities.addCustomDetectiveToDatabase(UUID.randomUUID().toString().substring(0,30));
+        entities.addCustomManToDatabase();
+
+        try {
+            List<Man> men = daoMan.getAllMan();
+
+            assertNotNull(men);
+            assertNotEquals(0, men.size());
+
+            assertTrue(men.stream().anyMatch(o -> o.getManId() == entities.getMan().getManId()));
+            Optional<Man> optional = men.stream().
+                    filter(o -> o.getManId() == entities.getMan().getManId()).findFirst();
+            ClassEqualsAsserts.assertManEquals(entities.getMan(), optional.orElse(null));
+
+            assertFalse(men.stream().anyMatch(o -> o.getManId() == entities.getDetective().getManId()));
         } finally {
             entities.deleteAllAddedEntities();
         }
