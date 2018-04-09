@@ -1,29 +1,46 @@
 package com.views;
 
+import com.DTO.TableBorder;
 import com.logic.*;
 import com.views.interfaces.IReportView;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.*;
 import org.springframework.stereotype.Component;
+import java.awt.Color;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.logic.ProjectConstants.JSON_FORMATTER_DATE;
-import static com.logic.ProjectConstants.JSON_FORMATTER_DATETIME;
-import static com.logic.ProjectConstants.JSON_FORMATTER_TIME;
+import static com.logic.ProjectConstants.*;
 import static org.springframework.util.StringUtils.isEmpty;
 
 @Component
 public class XLSXView implements IReportView {
+    private Font fontUsual = null;
+    private Font fontBold = null;
+    private Font fontBoldColored = null;
     private XSSFCellStyle styleHeader = null;
     private XSSFCellStyle styleUsual = null;
+    private XSSFCellStyle styleArea = null;
 
     private void initStyles(XSSFWorkbook workbook) {
+        fontUsual = workbook.createFont();
+        fontUsual.setFontName("Times New Roman");
+
+        fontBold = workbook.createFont();
+        fontBold.setFontName("Times New Roman");
+        fontBold.setColor(IndexedColors.ORANGE.getIndex());
+        fontBold.setBold(true);
+
+        fontBoldColored = workbook.createFont();
+        fontBoldColored.setFontName("Times New Roman");
+        fontBoldColored.setBold(true);
+        fontBoldColored.setColor(IndexedColors.MAROON.getIndex());
+
         styleHeader = workbook.createCellStyle();
         styleHeader.setWrapText(true);
         styleHeader.setAlignment(HorizontalAlignment.CENTER);
@@ -32,6 +49,17 @@ public class XLSXView implements IReportView {
         styleHeader.setBorderTop(BorderStyle.MEDIUM);
         styleHeader.setBorderLeft(BorderStyle.MEDIUM);
         styleHeader.setBorderRight(BorderStyle.MEDIUM);
+        styleHeader.setFont(fontBold);
+
+        styleArea = workbook.createCellStyle();
+        styleArea.setWrapText(true);
+        styleArea.setAlignment(HorizontalAlignment.CENTER);
+        styleArea.setVerticalAlignment(VerticalAlignment.CENTER);
+        styleArea.setBorderBottom(BorderStyle.MEDIUM);
+        styleArea.setBorderTop(BorderStyle.MEDIUM);
+        styleArea.setBorderLeft(BorderStyle.MEDIUM);
+        styleArea.setBorderRight(BorderStyle.MEDIUM);
+        styleArea.setFont(fontBoldColored);
 
         styleUsual = workbook.createCellStyle();
         styleUsual.setWrapText(true);
@@ -41,6 +69,7 @@ public class XLSXView implements IReportView {
         styleUsual.setBorderTop(BorderStyle.THIN);
         styleUsual.setBorderLeft(BorderStyle.THIN);
         styleUsual.setBorderRight(BorderStyle.THIN);
+        styleUsual.setFont(fontUsual);
     }
 
     private XSSFWorkbook getWorkbook() {
@@ -62,12 +91,18 @@ public class XLSXView implements IReportView {
         cell.setCellStyle(style);
     }
 
-    private void setParamsToFit(XSSFSheet sheet) {
+    private void setParamsToFit(XSSFWorkbook workbook, XSSFSheet sheet, int columnCount) {
         sheet.setAutobreaks(true);
         PrintSetup ps = sheet.getPrintSetup();
-        ps.setFitHeight((short)1);
+        /*for(int i = 0; i < columnCount; i++) {
+            sheet.autoSizeColumn(i);
+        }
+        sheet.setFitToPage(true);
         ps.setFitWidth((short)1);
-        sheet.setFitToPage(false);
+        ps.setFitHeight((short)0);*/
+        for(int i = 0; i < columnCount; i++) {
+            sheet.setColumnWidth(i, 33200 / columnCount);
+        }
     }
 
     private int addCrimeHeaders(XSSFRow row, int colNum, boolean withCriminalCase) {
@@ -88,6 +123,41 @@ public class XLSXView implements IReportView {
         return colNum;
     }
 
+
+    private int addCriminalCaseHeaders(XSSFRow row, int colNum, boolean withDetective, boolean withClosed) {
+        createCell(row, colNum++, "Номер", styleHeader);
+        if (withDetective) {
+            createCell(row, colNum++, "Детектив", styleHeader);
+        }
+        createCell(row, colNum++, "Дата создания", styleHeader);
+        createCell(row, colNum++, "Статус", styleHeader);
+        if (withClosed) {
+            createCell(row, colNum++, "Дата закрытия", styleHeader);
+        }
+        return colNum;
+    }
+
+    private int addDetectiveHeaders(XSSFRow row, int colNum) {
+        colNum = addManHeaders(row, colNum);
+        createCell(row, colNum++, "Логин", styleHeader);
+        createCell(row, colNum++, "Адрес электронной почты", styleHeader);
+        return colNum;
+    }
+
+    private int addParticipantHeaders(XSSFRow row, int colNum, boolean withParentMan, boolean withParentCrime) {
+        if (withParentMan) {
+            colNum = addManHeaders(row, colNum);
+        }
+        if (withParentCrime) {
+            colNum = addCrimeHeaders(row, colNum, true);
+        }
+        createCell(row, colNum++, "Статус", styleHeader);
+        createCell(row, colNum++, "Алиби", styleHeader);
+        createCell(row, colNum++, "Отчёт (показания человека)", styleHeader);
+        createCell(row, colNum++, "Дата добавления", styleHeader);
+        return colNum;
+    }
+
     private int addEvidenceOfCrimeHeaders(XSSFRow row, int colNum, boolean withParentEvidence, boolean withParentCrime) {
         if (withParentEvidence) {
             colNum = addEvidenceHeaders(row, colNum);
@@ -99,6 +169,30 @@ public class XLSXView implements IReportView {
         createCell(row, colNum++, "Детальная информация", styleHeader);
         createCell(row, colNum++, "Дата добавления", styleHeader);
         createCell(row, colNum++, "Фотография", styleHeader);
+        return colNum;
+    }
+
+    private int addManHeaders(XSSFRow row, int colNum) {
+        createCell(row, colNum++, "Имя", styleHeader);
+        createCell(row, colNum++, "Фамилия", styleHeader);
+        createCell(row, colNum++, "Дата рождения", styleHeader);
+        createCell(row, colNum++, "Домашний адрес", styleHeader);
+        createCell(row, colNum++, "Фотография", styleHeader);
+        return colNum;
+    }
+
+    private int addParticipantContents(XSSFRow row, int colNum, boolean withParentMan,
+                                       boolean withParentCrime, Participant participant) {
+        if (withParentMan) {
+            colNum = addManContents(row, colNum, participant);
+        }
+        if (withParentCrime) {
+            colNum = addCrimeContents(row, colNum, true, participant.getParentCrime());
+        }
+        createCell(row, colNum++, participant.getParticipantStatus().getName(), styleUsual);
+        createCell(row, colNum++, !isEmpty(participant.getAlibi()) ? participant.getAlibi() : "неизвестно", styleUsual);
+        createCell(row, colNum++, !isEmpty(participant.getWitnessReport()) ? participant.getWitnessReport() : "неизвестно", styleUsual);
+        createCell(row, colNum++, participant.getDateAdded().format(JSON_FORMATTER_DATETIME), styleUsual);
         return colNum;
     }
 
@@ -114,9 +208,30 @@ public class XLSXView implements IReportView {
         return colNum;
     }
 
+    private int addCriminalCaseContents(XSSFRow row, int colNum, boolean withDetective, boolean withClosed, CriminalCase criminalCase) {
+        createCell(row, colNum++, criminalCase.getCriminalCaseNumber(), styleUsual);
+        if (withDetective) {
+            createCell(row, colNum++, ReportFunctions.getDetectiveData(criminalCase.getParentDetective()), styleUsual);
+        }
+        createCell(row, colNum++, criminalCase.getCreateDate().format(JSON_FORMATTER_DATE), styleUsual);
+        createCell(row, colNum++, ReportFunctions.getCriminalCaseStatus(criminalCase), styleUsual);
+        if (withClosed) {
+            createCell(row, colNum++, criminalCase.getCloseDate() != null
+                    ? criminalCase.getCloseDate().format(JSON_FORMATTER_DATE) : "не указана", styleUsual);
+        }
+        return colNum;
+    }
+
     private int addEvidenceContents(XSSFRow row, int colNum, Evidence evidence) {
         createCell(row, colNum++, evidence.getName(), styleUsual);
         createCell(row, colNum++, evidence.getDescription(), styleUsual);
+        return colNum;
+    }
+
+    private int addDetectiveContents(XSSFRow row, int colNum, Detective detective) {
+        colNum = addManContents(row, colNum, detective);
+        createCell(row, colNum++, detective.getLogin(), styleUsual);
+        createCell(row, colNum++, detective.getEmail(), styleUsual);
         return colNum;
     }
 
@@ -136,10 +251,32 @@ public class XLSXView implements IReportView {
         return colNum;
     }
 
-    private void addCrimesWithCriminalCaseToSheet(XSSFWorkbook workbook, List<Crime> crimes, boolean withCriminalCase, String title) {
-        int rowNum = 0;
+    private int addManContents(XSSFRow row, int colNum, Man man) {
+        createCell(row, colNum++, man.getName(), styleUsual);
+        createCell(row, colNum++, man.getSurname(), styleUsual);
+        createCell(row, colNum++, man.getBirthDay() != null ? man.getBirthDay().format(JSON_FORMATTER_DATE) : "неизвестно", styleUsual);
+        createCell(row, colNum++, !isEmpty(man.getHomeAddress()) ? man.getHomeAddress() : "неизвестен", styleUsual);
+        createCell(row, colNum++, man.getPhotoPath() != null ? man.getPhotoPath(): "отсутствует", styleUsual);
+        return colNum;
+    }
+
+    private void createMergedCell(XSSFSheet sheet, int headerRow, int resultColumns, String value) {
+        XSSFRow row = sheet.createRow(headerRow);
+        for (int i = 0; i < resultColumns; i++) {
+            if (i == 0) {
+                createCell(row,0,value, styleArea);
+            } else {
+                row.createCell(i).setCellStyle(styleArea);
+            }
+        }
+        sheet.addMergedRegion(new CellRangeAddress(headerRow,headerRow,0,resultColumns-1));
+    }
+
+    private TableBorder addCrimesWithCriminalCaseToSheet(XSSFSheet sheet, int rowNum, List<Crime> crimes,
+                                                         boolean withCriminalCase, String title, int columnsCount) {
         int colNum = 0;
-        XSSFSheet sheet = getSheet(workbook, title);
+        int headerRow = rowNum++;
+
         XSSFRow row = sheet.createRow(rowNum++);
         int resultColumns = addCrimeHeaders(row, colNum, withCriminalCase);
         for(Crime crime : crimes) {
@@ -147,39 +284,58 @@ public class XLSXView implements IReportView {
             colNum = 0;
             addCrimeContents(row, colNum, withCriminalCase, crime);
         }
-        /*for (int i = 0; i < resultColumns; i++) {
-            sheet.autoSizeColumn(i);
-        }*/
-        setParamsToFit(sheet);
+        createMergedCell(sheet, headerRow, resultColumns, title);
+        return new TableBorder(rowNum, columnsCount < resultColumns ? resultColumns : columnsCount);
     }
 
-    private void addEvidenceOfCrimesToSheet(XSSFWorkbook workbook, List<EvidenceOfCrime> evidencesOfCrime, boolean withParentEvidence,
-                                            boolean withParentCrime, String title) {
-        int rowNum = 0;
+    private TableBorder addEvidenceOfCrimesToSheet(XSSFSheet sheet, int rowNum, List<EvidenceOfCrime> evidencesOfCrime,boolean withParentEvidence,
+                                            boolean withParentCrime, String title, int columnsCount) {
         int colNum = 0;
-        XSSFSheet sheet = getSheet(workbook,title);
+        int headerRow = rowNum++;
+
         XSSFRow row = sheet.createRow(rowNum++);
         int resultColumns = addEvidenceOfCrimeHeaders(row, colNum, withParentEvidence, withParentCrime);
-
         for(EvidenceOfCrime evidenceOfCrime : evidencesOfCrime) {
             row = sheet.createRow(rowNum++);
             colNum = 0;
             addEvidenceOfCrimeContents(row, colNum, withParentEvidence, withParentCrime, evidenceOfCrime);
         }
-        /*for (int i = 0; i < resultColumns; i++) {
-            sheet.autoSizeColumn(i);
-        }*/
-        setParamsToFit(sheet);
+        createMergedCell(sheet, headerRow, resultColumns, title);
+        return new TableBorder(rowNum, columnsCount < resultColumns ? resultColumns : columnsCount);
     }
 
+    private TableBorder addParticipantsToSheet(XSSFSheet sheet, int rowNum, List<Participant> participants, boolean withParentMan,
+                                                   boolean withParentCrime, String title, int columnsCount) {
+        int colNum = 0;
+        int headerRow = rowNum++;
+
+        XSSFRow row = sheet.createRow(rowNum++);
+        int resultColumns = addParticipantHeaders(row, colNum, withParentMan, withParentCrime);
+        for(Participant participant : participants) {
+            row = sheet.createRow(rowNum++);
+            colNum = 0;
+            addParticipantContents(row, colNum, withParentMan, withParentCrime, participant);
+        }
+        createMergedCell(sheet, headerRow, resultColumns, title);
+        return new TableBorder(rowNum, columnsCount < resultColumns ? resultColumns : columnsCount);
+    }
 
     @Override
     public String generateReportByCrime(Crime crime, List<EvidenceOfCrime> evidencesOfCrime, List<Participant> participants) throws Exception {
         File tempFile = File.createTempFile("report", ".xlsx");
         XSSFWorkbook workbook = getWorkbook();
+        XSSFSheet sheet = getSheet(workbook,"Отчёт по преступлению");
 
-        addCrimesWithCriminalCaseToSheet(workbook, Arrays.asList(crime), true,"Преступление");
-        addEvidenceOfCrimesToSheet(workbook, evidencesOfCrime, true, false,"Прикреплённные улики");
+        TableBorder borders = new TableBorder();
+        borders = addCrimesWithCriminalCaseToSheet(sheet, borders.getRow(), Arrays.asList(crime), true,
+                "Преступление", borders.getColumn());
+        borders.setRow(borders.getRow() + 2);
+        borders = addEvidenceOfCrimesToSheet(sheet, borders.getRow(), evidencesOfCrime, true, false,
+                "Прикреплённные улики", borders.getColumn());
+        borders.setRow(borders.getRow() + 2);
+        borders = addParticipantsToSheet(sheet, borders.getRow(), participants, true, false,
+                "Участники преступления", borders.getColumn());
+        setParamsToFit(workbook, sheet, borders.getColumn());
 
         FileOutputStream fileOut = new FileOutputStream(tempFile);
         workbook.write(fileOut);
