@@ -21,4 +21,30 @@ public final class ReportFunctions {
             }
         }
     }
+
+    public static String getTitleForCriminalCases(String status) {
+        switch(status) {
+            case "open":
+                return "Расследуемые уголовные дела";
+            case "solved":
+                return "Раскрытые уголовные дела";
+            case "unsolved":
+                return "Нераскрытые уголовные дела";
+            default:
+                return "Все уголовные дела";
+        }
+    }
+
+    public static String getSheetTitleForCriminalCases(String status) {
+        switch(status) {
+            case "open":
+                return "Отчёт по расследуемым уголовным делам";
+            case "solved":
+                return "Отчёт по раскрытым уголовным делам";
+            case "unsolved":
+                return "Отчёт по нераскрытым уголовным делам";
+            default:
+                return "Отчёт по всем уголовным делам";
+        }
+    }
 }

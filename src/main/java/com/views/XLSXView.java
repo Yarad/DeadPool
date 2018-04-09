@@ -3,6 +3,7 @@ package com.views;
 import com.DTO.TableBorder;
 import com.logic.*;
 import com.views.interfaces.IReportView;
+import org.apache.poi.common.usermodel.HyperlinkType;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.*;
@@ -22,14 +23,24 @@ import static org.springframework.util.StringUtils.isEmpty;
 public class XLSXView implements IReportView {
     private Font fontUsual = null;
     private Font fontBold = null;
+    private Font fontLink = null;
     private Font fontBoldColored = null;
     private XSSFCellStyle styleHeader = null;
     private XSSFCellStyle styleUsual = null;
+    private XSSFCellStyle styleLink = null;
     private XSSFCellStyle styleArea = null;
+    private XSSFCreationHelper createHelper = null;
 
     private void initStyles(XSSFWorkbook workbook) {
+        createHelper = workbook.getCreationHelper();
+
         fontUsual = workbook.createFont();
         fontUsual.setFontName("Times New Roman");
+
+        fontLink = workbook.createFont();
+        fontLink.setFontName("Times New Roman");
+        fontLink.setUnderline(Font.U_SINGLE);
+        fontLink.setColor(IndexedColors.BLUE.getIndex());
 
         fontBold = workbook.createFont();
         fontBold.setFontName("Times New Roman");
@@ -70,6 +81,16 @@ public class XLSXView implements IReportView {
         styleUsual.setBorderLeft(BorderStyle.THIN);
         styleUsual.setBorderRight(BorderStyle.THIN);
         styleUsual.setFont(fontUsual);
+
+        styleLink = workbook.createCellStyle();
+        styleLink.setWrapText(true);
+        styleLink.setAlignment(HorizontalAlignment.LEFT);
+        styleLink.setVerticalAlignment(VerticalAlignment.TOP);
+        styleLink.setBorderBottom(BorderStyle.THIN);
+        styleLink.setBorderTop(BorderStyle.THIN);
+        styleLink.setBorderLeft(BorderStyle.THIN);
+        styleLink.setBorderRight(BorderStyle.THIN);
+        styleLink.setFont(fontLink);
     }
 
     private XSSFWorkbook getWorkbook() {
@@ -89,6 +110,15 @@ public class XLSXView implements IReportView {
         XSSFCell cell = row.createCell(colNum);
         cell.setCellValue(value);
         cell.setCellStyle(style);
+    }
+
+    private void createCellHyperlinked(XSSFRow row, int colNum, String value, String linkURL) {
+        XSSFCell cell = row.createCell(colNum);
+        cell.setCellValue(value);
+        Hyperlink link = createHelper.createHyperlink(HyperlinkType.URL);
+        link.setAddress(linkURL);
+        cell.setHyperlink(link);
+        cell.setCellStyle(styleLink);
     }
 
     private void setParamsToFit(XSSFWorkbook workbook, XSSFSheet sheet, int columnCount) {
@@ -247,7 +277,11 @@ public class XLSXView implements IReportView {
         createCell(row, colNum++, !isEmpty(evidenceOfCrime.getDetails()) ?
                 evidenceOfCrime.getDetails() : "отсутствует", styleUsual);
         createCell(row, colNum++, evidenceOfCrime.getDateAdded().format(JSON_FORMATTER_DATETIME), styleUsual);
-        createCell(row, colNum++, evidenceOfCrime.getPhotoPath() != null ? evidenceOfCrime.getPhotoPath(): "отсутствует", styleUsual);
+        if (evidenceOfCrime.getPhotoPath() != null) {
+            createCellHyperlinked(row, colNum++, evidenceOfCrime.getPhotoPath(), evidenceOfCrime.getPhotoPath());
+        } else {
+            createCell(row, colNum++, "отсутствует", styleUsual);
+        }
         return colNum;
     }
 
@@ -256,7 +290,11 @@ public class XLSXView implements IReportView {
         createCell(row, colNum++, man.getSurname(), styleUsual);
         createCell(row, colNum++, man.getBirthDay() != null ? man.getBirthDay().format(JSON_FORMATTER_DATE) : "неизвестно", styleUsual);
         createCell(row, colNum++, !isEmpty(man.getHomeAddress()) ? man.getHomeAddress() : "неизвестен", styleUsual);
-        createCell(row, colNum++, man.getPhotoPath() != null ? man.getPhotoPath(): "отсутствует", styleUsual);
+        if (man.getPhotoPath() != null) {
+            createCellHyperlinked(row, colNum++, man.getPhotoPath(), man.getPhotoPath());
+        } else {
+            createCell(row, colNum++, "отсутствует", styleUsual);
+        }
         return colNum;
     }
 
@@ -272,7 +310,8 @@ public class XLSXView implements IReportView {
         sheet.addMergedRegion(new CellRangeAddress(headerRow,headerRow,0,resultColumns-1));
     }
 
-    private TableBorder addCrimesWithCriminalCaseToSheet(XSSFSheet sheet, int rowNum, List<Crime> crimes,
+
+    private TableBorder addCrimesToSheet(XSSFSheet sheet, int rowNum, List<Crime> crimes,
                                                          boolean withCriminalCase, String title, int columnsCount) {
         int colNum = 0;
         int headerRow = rowNum++;
@@ -320,6 +359,67 @@ public class XLSXView implements IReportView {
         return new TableBorder(rowNum, columnsCount < resultColumns ? resultColumns : columnsCount);
     }
 
+    private TableBorder addCriminalCasesToSheet(XSSFSheet sheet, int rowNum, List<CriminalCase> criminalCases,
+                                               boolean withDetective, boolean withClosed, String title, int columnsCount) {
+        int colNum = 0;
+        int headerRow = rowNum++;
+
+        XSSFRow row = sheet.createRow(rowNum++);
+        int resultColumns = addCriminalCaseHeaders(row, colNum, withDetective, withClosed);
+        for(CriminalCase criminalCase : criminalCases) {
+            row = sheet.createRow(rowNum++);
+            colNum = 0;
+            addCriminalCaseContents(row, colNum, withDetective, withClosed, criminalCase);
+        }
+        createMergedCell(sheet, headerRow, resultColumns, title);
+        return new TableBorder(rowNum, columnsCount < resultColumns ? resultColumns : columnsCount);
+    }
+
+    private TableBorder addDetectiveToSheet(XSSFSheet sheet, int rowNum, List<Detective> detectives, String title, int columnsCount) {
+        int colNum = 0;
+        int headerRow = rowNum++;
+
+        XSSFRow row = sheet.createRow(rowNum++);
+        int resultColumns = addDetectiveHeaders(row, colNum);
+        for(Detective detective : detectives) {
+            row = sheet.createRow(rowNum++);
+            colNum = 0;
+            addDetectiveContents(row, colNum, detective);
+        }
+        createMergedCell(sheet, headerRow, resultColumns, title);
+        return new TableBorder(rowNum, columnsCount < resultColumns ? resultColumns : columnsCount);
+    }
+
+    private TableBorder addMenToSheet(XSSFSheet sheet, int rowNum, List<Man> men, String title, int columnsCount) {
+        int colNum = 0;
+        int headerRow = rowNum++;
+
+        XSSFRow row = sheet.createRow(rowNum++);
+        int resultColumns = addManHeaders(row, colNum);
+        for(Man man : men) {
+            row = sheet.createRow(rowNum++);
+            colNum = 0;
+            addManContents(row, colNum, man);
+        }
+        createMergedCell(sheet, headerRow, resultColumns, title);
+        return new TableBorder(rowNum, columnsCount < resultColumns ? resultColumns : columnsCount);
+    }
+
+    private TableBorder addEvidencesToSheet(XSSFSheet sheet, int rowNum, List<Evidence> evidences, String title, int columnsCount) {
+        int colNum = 0;
+        int headerRow = rowNum++;
+
+        XSSFRow row = sheet.createRow(rowNum++);
+        int resultColumns = addEvidenceHeaders(row, colNum);
+        for(Evidence evidence : evidences) {
+            row = sheet.createRow(rowNum++);
+            colNum = 0;
+            addEvidenceContents(row, colNum, evidence);
+        }
+        createMergedCell(sheet, headerRow, resultColumns, title);
+        return new TableBorder(rowNum, columnsCount < resultColumns ? resultColumns : columnsCount);
+    }
+
     @Override
     public String generateReportByCrime(Crime crime, List<EvidenceOfCrime> evidencesOfCrime, List<Participant> participants) throws Exception {
         File tempFile = File.createTempFile("report", ".xlsx");
@@ -327,7 +427,8 @@ public class XLSXView implements IReportView {
         XSSFSheet sheet = getSheet(workbook,"Отчёт по преступлению");
 
         TableBorder borders = new TableBorder();
-        borders = addCrimesWithCriminalCaseToSheet(sheet, borders.getRow(), Arrays.asList(crime), true,
+
+        borders = addCrimesToSheet(sheet, borders.getRow(), Arrays.asList(crime), true,
                 "Преступление", borders.getColumn());
         borders.setRow(borders.getRow() + 2);
         borders = addEvidenceOfCrimesToSheet(sheet, borders.getRow(), evidencesOfCrime, true, false,
@@ -346,22 +447,122 @@ public class XLSXView implements IReportView {
 
     @Override
     public String generateReportByMan(Man man, List<Participant> participants) throws Exception {
-        return null;
+        File tempFile = File.createTempFile("report", ".xlsx");
+        XSSFWorkbook workbook = getWorkbook();
+        XSSFSheet sheet = getSheet(workbook,"Отчёт по человеку");
+
+        TableBorder borders = new TableBorder();
+        borders = addMenToSheet(sheet, borders.getRow(), Arrays.asList(man), "Человек", borders.getColumn());
+        borders.setRow(borders.getRow() + 2);
+        borders = addParticipantsToSheet(sheet, borders.getRow(), participants, false, true,
+                "Участие человека в преступлениях", borders.getColumn());
+        setParamsToFit(workbook, sheet, borders.getColumn());
+
+        FileOutputStream fileOut = new FileOutputStream(tempFile);
+        workbook.write(fileOut);
+        fileOut.flush();
+        fileOut.close();
+        return tempFile.getAbsolutePath();
     }
 
     @Override
     public String generateReportByCriminalCase(CriminalCase criminalCase, List<Crime> crimes) throws Exception {
-        return null;
+        File tempFile = File.createTempFile("report", ".xlsx");
+        XSSFWorkbook workbook = getWorkbook();
+        XSSFSheet sheet = getSheet(workbook,"Отчёт по уголовному делу");
+
+        TableBorder borders = new TableBorder();
+        borders = addCriminalCasesToSheet(sheet, borders.getRow(), Arrays.asList(criminalCase), true, true,
+                "Уголовное дело", borders.getColumn());
+        borders.setRow(borders.getRow() + 2);
+        borders = addCrimesToSheet(sheet, borders.getRow(), crimes, false,
+                "Улики в составе дела", borders.getColumn());
+        setParamsToFit(workbook, sheet, borders.getColumn());
+
+        FileOutputStream fileOut = new FileOutputStream(tempFile);
+        workbook.write(fileOut);
+        fileOut.flush();
+        fileOut.close();
+        return tempFile.getAbsolutePath();
     }
 
     @Override
     public String generateReportByEvidence(Evidence evidence, List<EvidenceOfCrime> evidenceOfCrimes) throws Exception {
-        return null;
+        File tempFile = File.createTempFile("report", ".xlsx");
+        XSSFWorkbook workbook = getWorkbook();
+        XSSFSheet sheet = getSheet(workbook,"Отчёт по улике");
+
+        TableBorder borders = new TableBorder();
+        borders = addEvidencesToSheet(sheet, borders.getRow(), Arrays.asList(evidence),
+                "Улика", borders.getColumn());
+        borders.setRow(borders.getRow() + 2);
+        borders = addEvidenceOfCrimesToSheet(sheet, borders.getRow(), evidenceOfCrimes, false, true,
+                "Участие улики в преступлениях", borders.getColumn());
+        setParamsToFit(workbook, sheet, borders.getColumn());
+
+        FileOutputStream fileOut = new FileOutputStream(tempFile);
+        workbook.write(fileOut);
+        fileOut.flush();
+        fileOut.close();
+        return tempFile.getAbsolutePath();
     }
 
     @Override
     public String generateReportByDetective(Detective detective, List<CriminalCase> criminalCases) throws Exception {
-        return null;
+        File tempFile = File.createTempFile("report", ".xlsx");
+        XSSFWorkbook workbook = getWorkbook();
+        XSSFSheet sheet = getSheet(workbook,"Отчёт по уголовному делу");
+
+        TableBorder borders = new TableBorder();
+        borders = addDetectiveToSheet(sheet, borders.getRow(), Arrays.asList(detective), "Детектив", borders.getColumn());
+        borders.setRow(borders.getRow() + 2);
+        borders = addCriminalCasesToSheet(sheet, borders.getRow(), criminalCases, false, true,
+                "Расследуемые уголовные дела", borders.getColumn());
+        setParamsToFit(workbook, sheet, borders.getColumn());
+
+        FileOutputStream fileOut = new FileOutputStream(tempFile);
+        workbook.write(fileOut);
+        fileOut.flush();
+        fileOut.close();
+        return tempFile.getAbsolutePath();
+    }
+
+    @Override
+    public String generateReportByCrimes(List<Crime> crimes, LocalDate startDate, LocalDate endDate) throws Exception {
+        File tempFile = File.createTempFile("report", ".xlsx");
+        XSSFWorkbook workbook = getWorkbook();
+        String title = "Отчёт по преступлениям за промежуток с " + startDate.format(JSON_FORMATTER_DATE)
+                + " по " + endDate.format(JSON_FORMATTER_DATE);
+        XSSFSheet sheet = getSheet(workbook,title);
+
+        TableBorder borders = new TableBorder();
+        borders = addCrimesToSheet(sheet, borders.getRow(), crimes, false, title, borders.getColumn());
+        setParamsToFit(workbook, sheet, borders.getColumn());
+
+        FileOutputStream fileOut = new FileOutputStream(tempFile);
+        workbook.write(fileOut);
+        fileOut.flush();
+        fileOut.close();
+        return tempFile.getAbsolutePath();
+    }
+
+    @Override
+    public String generateReportByCriminalCases(List<CriminalCase> criminalCases, String status) throws Exception {
+        File tempFile = File.createTempFile("report", ".xlsx");
+        XSSFWorkbook workbook = getWorkbook();
+        XSSFSheet sheet = getSheet(workbook,ReportFunctions.getSheetTitleForCriminalCases(status));
+
+        TableBorder borders = new TableBorder();
+        borders = addCriminalCasesToSheet(sheet, borders.getRow(), criminalCases, true,
+                status.equals("solved") || status.equals("all"),
+                ReportFunctions.getTitleForCriminalCases(status), borders.getColumn());
+        setParamsToFit(workbook, sheet, borders.getColumn());
+
+        FileOutputStream fileOut = new FileOutputStream(tempFile);
+        workbook.write(fileOut);
+        fileOut.flush();
+        fileOut.close();
+        return tempFile.getAbsolutePath();
     }
 
     @Override
