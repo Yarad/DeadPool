@@ -7,14 +7,14 @@ import java.time.LocalTime;
 public class ParticipantFullInfoDTO {
     private ManOnlyPersonDTO man;
     private CrimeForOthersShortedDTO crime;
-    private String status;
+    private EnumDTO status;
     private String photoPath;
     private LocalDate dateAdded;
     private LocalTime timeAdded;
     private String alibi;
     private String witnessReport;
 
-    public ParticipantFullInfoDTO(ManOnlyPersonDTO man, CrimeForOthersShortedDTO crime, String status,
+    public ParticipantFullInfoDTO(ManOnlyPersonDTO man, CrimeForOthersShortedDTO crime, EnumDTO status,
                                   String photoPath, LocalDate dateAdded, LocalTime timeAdded, String alibi, String witnessReport) {
         this.man = man;
         this.crime = crime;
@@ -42,11 +42,11 @@ public class ParticipantFullInfoDTO {
         this.crime = crime;
     }
 
-    public String getStatus() {
+    public EnumDTO getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(EnumDTO status) {
         this.status = status;
     }
 

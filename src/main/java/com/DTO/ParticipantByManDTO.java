@@ -2,9 +2,9 @@ package com.DTO;
 
 public class ParticipantByManDTO {
     private CrimeForOthersShortedDTO crime;
-    private String status;
+    private EnumDTO status;
 
-    public ParticipantByManDTO(CrimeForOthersShortedDTO crime, String status) {
+    public ParticipantByManDTO(CrimeForOthersShortedDTO crime, EnumDTO status) {
         this.crime = crime;
         this.status = status;
     }
@@ -17,11 +17,11 @@ public class ParticipantByManDTO {
         this.crime = crime;
     }
 
-    public String getStatus() {
+    public EnumDTO getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(EnumDTO status) {
         this.status = status;
     }
 }

@@ -2,10 +2,10 @@ package com.DTO;
 
 public class EvidenceOfCrimeShortedDTO {
     private EvidenceShortedDTO evidence;
-    private String type;
+    private EnumDTO type;
     private String photoPath;
 
-    public EvidenceOfCrimeShortedDTO(EvidenceShortedDTO evidence, String type, String photoPath) {
+    public EvidenceOfCrimeShortedDTO(EvidenceShortedDTO evidence, EnumDTO type, String photoPath) {
         this.evidence = evidence;
         this.type = type;
         this.photoPath = photoPath;
@@ -19,11 +19,11 @@ public class EvidenceOfCrimeShortedDTO {
         this.evidence = evidence;
     }
 
-    public String getType() {
+    public EnumDTO getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(EnumDTO type) {
         this.type = type;
     }
 

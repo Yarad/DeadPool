@@ -5,6 +5,7 @@ import com.logic.Detective;
 import com.logic.Man;
 import com.logic.Participant;
 import com.logic.ProjectFunctions;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
@@ -15,9 +16,7 @@ import java.util.List;
 
 @Repository
 public class DAODetective extends DAOMan implements IDAODetective {
-    public DAODetective() {
-        setConnectionToUse(new SQLConnection());
-    }
+    static Logger log = Logger.getLogger(DAODetective.class.getName());
 
     public Detective getDetectiveById(long id) {
         PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM detective JOIN man ON detective_id = man_id WHERE detective_id = ?");
@@ -25,15 +24,16 @@ public class DAODetective extends DAOMan implements IDAODetective {
         try {
             preparedStatement.setLong(1, id);
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return null;
         }
 
         List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
 
-        if (retArray.isEmpty()) return null;
-        Detective detective = new Detective();
+        if (retArray.isEmpty())
+            return null;
 
+        Detective detective = new Detective();
         ProjectFunctions.tryFillObjectByDbArray(detective, retArray.get(0));
         return detective;
     }
@@ -49,7 +49,7 @@ public class DAODetective extends DAOMan implements IDAODetective {
             preparedStatement.setLong(3, detectiveToAdd.getManId());
             preparedStatement.setString(4, detectiveToAdd.getEmail());
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return false;
         }
 
@@ -58,7 +58,8 @@ public class DAODetective extends DAOMan implements IDAODetective {
 
     @Override
     public boolean updateDetective(Detective detectiveToUpdate) {
-        if (detectiveToUpdate == null) return false;
+        if (detectiveToUpdate == null)
+            return false;
         PreparedStatement preparedStatement = currConnection.prepareStatement("UPDATE `detective` SET `login`=?,`hash_of_password`=?,`email`=? WHERE `detective_id` = ?");
         try {
             preparedStatement.setString(1, detectiveToUpdate.getLogin());
@@ -66,7 +67,7 @@ public class DAODetective extends DAOMan implements IDAODetective {
             preparedStatement.setString(3, detectiveToUpdate.getEmail());
             preparedStatement.setLong(4, detectiveToUpdate.getManId());
         } catch (Exception e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
         }
         boolean res1 = currConnection.queryDataEdit(preparedStatement);
         boolean res2 = updateMan(detectiveToUpdate);
@@ -75,11 +76,11 @@ public class DAODetective extends DAOMan implements IDAODetective {
 
     @Override
     public Detective getDetectiveByLogin(String login) {
-        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM `detective` WHERE `login` = ?");
+        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM detective JOIN man ON detective_id = man_id WHERE `login` = ?");
         try {
             preparedStatement.setString(1, login);
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return null;
         }
 
@@ -88,7 +89,6 @@ public class DAODetective extends DAOMan implements IDAODetective {
         if (retArray.isEmpty()) return null;
 
         Detective detective = new Detective();
-
         ProjectFunctions.tryFillObjectByDbArray(detective, retArray.get(0));
         return detective;
     }
@@ -99,15 +99,14 @@ public class DAODetective extends DAOMan implements IDAODetective {
         try {
             preparedStatement.setString(1, login);
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return false;
         }
 
         List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
 
-        if (retArray.isEmpty()) return false;
-
-        if (retArray.size() == 1) return true;
+        if (!retArray.isEmpty() && retArray.size() == 1)
+            return true;
 
         return false;
     }

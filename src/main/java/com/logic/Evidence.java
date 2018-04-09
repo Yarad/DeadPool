@@ -1,12 +1,6 @@
 package com.logic;
 
 public class Evidence {
-    public long getEvidenceId() {
-        return evidenceId;
-    }
-    public void setEvidenceId(long evidenceId) {
-        this.evidenceId = evidenceId;
-    }
 
     private long evidenceId;
     private String name;
@@ -14,6 +8,14 @@ public class Evidence {
 
     public String getName() {
         return name;
+    }
+
+    public long getEvidenceId() {
+        return evidenceId;
+    }
+
+    public void setEvidenceId(long evidenceId) {
+        this.evidenceId = evidenceId;
     }
 
     public void setName(String name) {

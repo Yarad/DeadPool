@@ -2,6 +2,7 @@ package com.ServiceTest;
 
 import com.Additionals.LogicAdditionals;
 import com.DAO.interfaces.IDAODetective;
+import com.DTO.AddResult;
 import com.logic.Detective;
 import com.logic.Man;
 import com.services.DetectiveService;
@@ -64,6 +65,16 @@ public class DetectiveServiceTest {
     }
 
     @Test
+    public void getDetectiveById() throws Exception {
+        Detective detective = LogicAdditionals.getCustomDetective();
+        when(daoDetective.getDetectiveById(detective.getManId())).thenReturn(detective);
+
+        Detective actualDetective = service.getDetectiveById(detective.getManId());
+
+        assertEquals(detective, actualDetective);
+    }
+
+    @Test
     public void existDetectiveWithLogin() throws Exception {
         boolean expectedResult = true;
         when(daoDetective.existDetectiveWithLogin(anyString())).thenReturn(expectedResult);
@@ -80,9 +91,9 @@ public class DetectiveServiceTest {
         when(daoDetective.addDetective(any(Detective.class))).thenReturn(expectedResult);
         when(hashService.getMD5Hash(anyString())).thenReturn(realHashService.getMD5Hash("anyMd5Hash"));
 
-        boolean actualResult = service.addDetective(detective.getName(), detective.getSurname(), detective.getBirthDay(), detective.getHomeAddress(), detective.getPhotoPath(), detective.getLogin(), detective.getHashOfPassword(), detective.getEmail());
+        AddResult actualResult = service.addDetective(detective.getName(), detective.getSurname(), detective.getBirthDay(), detective.getHomeAddress(), detective.getPhotoPath(), detective.getLogin(), detective.getHashOfPassword(), detective.getEmail());
 
-        assertEquals(expectedResult, actualResult);
+        assertEquals(expectedResult, actualResult.getResult());
     }
 
     @Test

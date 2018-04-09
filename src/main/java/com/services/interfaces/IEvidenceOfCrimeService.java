@@ -1,5 +1,6 @@
 package com.services.interfaces;
 
+import com.DTO.AddResult;
 import com.logic.EvidenceOfCrime;
 
 import java.time.LocalDate;

@@ -2,10 +2,10 @@ package com.DTO;
 
 public class CrimeForOthersShortedDTO {
     private long id;
-    private String type;
+    private EnumDTO type;
     private CriminalCaseOnlyNumberDTO criminalCase;
 
-    public CrimeForOthersShortedDTO(long id, String type, CriminalCaseOnlyNumberDTO criminalCase) {
+    public CrimeForOthersShortedDTO(long id, EnumDTO type, CriminalCaseOnlyNumberDTO criminalCase) {
         this.id = id;
         this.type = type;
         this.criminalCase = criminalCase;
@@ -19,11 +19,11 @@ public class CrimeForOthersShortedDTO {
         this.id = id;
     }
 
-    public String getType() {
+    public EnumDTO getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(EnumDTO type) {
         this.type = type;
     }
 

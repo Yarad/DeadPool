@@ -29,20 +29,6 @@ public final class LogicAdditionals {
     private static final DateTimeFormatter FORMATTER_TIME = ofPattern("HH:mm");
     private static final DateTimeFormatter FORMATTER_DATETIME = ofPattern("yyyy-MM-dd HH:mm");
 
-    //TODO: настроить для mockMVC WebMvcConfigurerAdapter
-    private static final LocalDate localDate =
-            null
-            //LocalDate.of(2012,12,2)
-            ;
-    private static final LocalTime localTime =
-            null
-            //LocalTime.of(15,57)
-            ;
-    private static final LocalDateTime localDateTime =
-            null
-            //LocalDateTime.of(2014,6,28,17,34)
-            ;
-
     private static final LocalDate localDateAdd = LocalDate.of(2012,12,2);
     private static final LocalTime localTimeAdd = LocalTime.of(15,57);
     private static final LocalDateTime localDateTimeAdd = LocalDateTime.of(2014,6,28,17,34);
@@ -67,9 +53,22 @@ public final class LogicAdditionals {
         return cases;
     }
 
-    public static CriminalCase getCriminalCaseWithDates() {
+    public static CriminalCase getCriminalCaseOpen() {
+        CriminalCase crCase = getCustomCriminalCase();
+        crCase.setCreateDate(localDateAdd);
+        crCase.setClosed(false);
+        return crCase;
+    }
+
+    public static CriminalCase getCriminalCaseSolved() {
         CriminalCase crCase = getCustomCriminalCase();
         crCase.setCloseDate(localDateAdd);
+        crCase.setCreateDate(localDateAdd);
+        return crCase;
+    }
+
+    public static CriminalCase getCriminalCaseUnsolved() {
+        CriminalCase crCase = getCustomCriminalCase();
         crCase.setCreateDate(localDateAdd);
         return crCase;
     }
@@ -77,8 +76,6 @@ public final class LogicAdditionals {
     public static CriminalCase getCustomCriminalCase() {
         CriminalCase crCase = new CriminalCase();
         crCase.setCriminalCaseId(1);
-        crCase.setCloseDate(localDate);
-        crCase.setCreateDate(localDate);
         crCase.setClosed(true);
         crCase.setDetectiveId(1);
         Detective det = new Detective();
@@ -107,10 +104,8 @@ public final class LogicAdditionals {
     public static Crime getCustomCrime() {
         Crime crime = new Crime();
         crime.setCrimeId(1);
-        crime.setCrimeDate(localDate);
         crime.setCrimeType("ARSON");
         crime.setCrimePlace("Minsk");
-        crime.setCrimeTime(localTime);
         crime.setDescription("Long long");
         crime.setCriminalCaseId(1);
         crime.setParentCriminalCase(getCustomCriminalCase());
@@ -132,13 +127,19 @@ public final class LogicAdditionals {
 
     public static EvidenceOfCrime getCustomEvidenceOfCrime() {
         EvidenceOfCrime evidenceOfCrime = new EvidenceOfCrime();
-        evidenceOfCrime.parentEvidence = getCustomEvidence();
-        evidenceOfCrime.parentCrime = getCustomCrime();
+        evidenceOfCrime.setParentEvidence(getCustomEvidence());
+        evidenceOfCrime.setParentCrime(getCustomCrime());
         evidenceOfCrime.setEvidenceType("OBJECT_FROM_CRIME_SCENE");
         evidenceOfCrime.setPhotoPath("photo");
         evidenceOfCrime.setDetails("details");
-        evidenceOfCrime.setDateAdded(localDateTime);
         return evidenceOfCrime;
+    }
+
+    public static List<Evidence> getEvidenceList() {
+        List<Evidence> list = new ArrayList<>();
+        list.add(getCustomEvidence());
+        list.add(getCustomEvidence());
+        return list;
     }
 
     public static Evidence getCustomEvidence() {
@@ -164,11 +165,9 @@ public final class LogicAdditionals {
         participant.setName("name");
         participant.setPhotoPath("photo");
         participant.setHomeAddress("addr");
-        participant.setBirthDay(localDate);
         participant.setWitnessReport("report");
         participant.setAlibi("none");
         participant.setCrimeId(1);
-        participant.setDateAdded(localDateTime);
         participant.setCrime(getCustomCrime());
         return participant;
     }
@@ -200,7 +199,6 @@ public final class LogicAdditionals {
         man.setName("name");
         man.setPhotoPath("photo");
         man.setHomeAddress("addr");
-        man.setBirthDay(localDate);
         return man;
     }
 
@@ -217,7 +215,6 @@ public final class LogicAdditionals {
         man.setName("name");
         man.setPhotoPath("photo");
         man.setHomeAddress("addr");
-        man.setBirthDay(localDate);
         man.setLogin("login");
         man.setHashOfPassword("hash");
         man.setEmail("email");
@@ -226,10 +223,10 @@ public final class LogicAdditionals {
 
     public static Map<Man,Long> getMapOfManAndTheirCrime() {
         Map<Man,Long> map = new HashMap<>();
-        map.put(getCustomMan(), Long.valueOf(2));
+        map.put(getCustomMan(), 2L);
         Man man2 = getCustomMan();
         man2.setName("Very other man");
-        map.put(man2, Long.valueOf(0));
+        map.put(man2, 0L);
         return map;
     }
 }

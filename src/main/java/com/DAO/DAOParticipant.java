@@ -4,6 +4,7 @@ import com.DAO.interfaces.IDAOParticipant;
 import com.logic.Man;
 import com.logic.Participant;
 import com.logic.ProjectFunctions;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
@@ -16,9 +17,7 @@ import java.util.List;
 
 @Repository
 public class DAOParticipant extends DAOMan implements IDAOParticipant {
-    public DAOParticipant() {
-        setConnectionToUse(new SQLConnection());
-    }
+    static Logger log = Logger.getLogger(DAOParticipant.class.getName());
 
     @Override
     public Participant getParticipantById(long manId, long crimeId) {
@@ -30,7 +29,7 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
             preparedStatement.setLong(1, crimeId);
             preparedStatement.setLong(2, manId);
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return null;
         }
         List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
@@ -51,32 +50,22 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
         PreparedStatement preparedStatement = currConnection.prepareStatement("UPDATE `participant` SET " +
                 "`participant_status`=?," +
                 "`alibi`=?," + //nullable
-                "`witness_report`=? " + //nullable
+                "`witness_report`=?," + //nullable
                 "`date_added`=? " +
-                "WHERE man_id = ?");
+                "WHERE man_id = ? AND crime_id = ?");
         try {
             preparedStatement.setString(1, participantToUpdate.getParticipantStatus().toString());
-
-            if (participantToUpdate.getAlibi() != null)
-                preparedStatement.setString(2, participantToUpdate.getAlibi());
-            else
-                preparedStatement.setNull(2, 0);
-
-            if (participantToUpdate.getWitnessReport() != null)
-                preparedStatement.setString(3, participantToUpdate.getWitnessReport());
-            else
-                preparedStatement.setNull(3, 0);
-
+            preparedStatement.setString(2, participantToUpdate.getAlibi());
+            preparedStatement.setString(3, participantToUpdate.getWitnessReport());
             preparedStatement.setTimestamp(4, Timestamp.valueOf(participantToUpdate.getDateAdded()));
             preparedStatement.setLong(5, participantToUpdate.getManId());
+            preparedStatement.setLong(6, participantToUpdate.getCrimeId());
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return false;
         }
 
-        boolean res1 = currConnection.queryDataEdit(preparedStatement);
-        /*boolean res2 = updateMan(participantToUpdate);*/
-        return res1 /*&& res2*/;
+        return currConnection.queryDataEdit(preparedStatement);
     }
 
     @Override
@@ -87,7 +76,7 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
         try {
             preparedStatement.setLong(1, manId);
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return null;
         }
         List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
@@ -108,21 +97,12 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
         try {
             preparedStatement.setLong(1, participantToAdd.getCrimeId());
             preparedStatement.setLong(2, participantToAdd.getManId());
-
-            if (participantToAdd.getAlibi() != null)
-                preparedStatement.setString(3, participantToAdd.getAlibi());
-            else
-                preparedStatement.setNull(3, 0);
-
-            if (participantToAdd.getWitnessReport() != null)
-                preparedStatement.setString(4, participantToAdd.getWitnessReport());
-            else
-                preparedStatement.setNull(4, 0);
+            preparedStatement.setString(3, participantToAdd.getAlibi());
+            preparedStatement.setString(4, participantToAdd.getWitnessReport());
             preparedStatement.setString(5, participantToAdd.getParticipantStatus().toString());
-
             preparedStatement.setTimestamp(6, Timestamp.valueOf(participantToAdd.getDateAdded()));
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return false;
         }
 
@@ -139,7 +119,7 @@ public class DAOParticipant extends DAOMan implements IDAOParticipant {
         try {
             preparedStatement.setLong(1, crimeId);
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return retParticipantCrimesArray;
         }
 

@@ -1,10 +1,7 @@
 package com.ControllerTest;
 
 import com.Additionals.LogicAdditionals;
-import com.DTO.AuthDTO;
-import com.DTO.DetectiveWithoutManIdDTO;
-import com.DTO.GenericDTO;
-import com.DTO.ManInfoWithoutIdDTO;
+import com.DTO.*;
 import com.config.CORSFilter;
 import com.controller.AuthorizationController;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -124,11 +121,11 @@ public class AuthorizationControllerTest {
     public void signUpCorrect() throws Exception {
         DetectiveWithoutManIdDTO inputJson = createDetectiveJsonObject("testNewName", "testNewSurname",null,
                 null, null, "testLogin", "testPassword", "test@gmail.com");
-
+        AddResult result = new AddResult(true,1);
         GenericDTO<String> response = new GenericDTO<>(false, "Вы успешно зарегистрированы в системе!");
 
         when(detectiveService.existDetectiveWithLogin(inputJson.getLogin())).thenReturn(false);
-        when(detectiveService.addDetective(inputJson.getMan().getName(), inputJson.getMan().getSurname(), inputJson.getMan().getBirthday(), inputJson.getMan().getHomeAddress(), inputJson.getMan().getPhotoPath(), inputJson.getLogin(), inputJson.getPassword(), inputJson.getEmail())).thenReturn(true);
+        when(detectiveService.addDetective(inputJson.getMan().getName(), inputJson.getMan().getSurname(), inputJson.getMan().getBirthday(), inputJson.getMan().getHomeAddress(), inputJson.getMan().getPhotoPath(), inputJson.getLogin(), inputJson.getPassword(), inputJson.getEmail())).thenReturn(result);
 
         mockMvc.perform(
                 post("/sign_up")
@@ -163,11 +160,11 @@ public class AuthorizationControllerTest {
     public void signUpAddingError() throws Exception {
         DetectiveWithoutManIdDTO inputJson = createDetectiveJsonObject("testNewName", "test", null,
                 null, null, "testLogin", "testPassword", "test@gmail.com");
-
+        AddResult result = new AddResult(false,-1);
         GenericDTO<String> response = new GenericDTO<>(true, "Не удалось добавить пользователя!");
 
         when(detectiveService.existDetectiveWithLogin(inputJson.getLogin())).thenReturn(false);
-        when(detectiveService.addDetective(inputJson.getMan().getName(), inputJson.getMan().getSurname(), inputJson.getMan().getBirthday(), inputJson.getMan().getHomeAddress(), inputJson.getMan().getPhotoPath(), inputJson.getLogin(), inputJson.getPassword(), inputJson.getEmail())).thenReturn(false);
+        when(detectiveService.addDetective(inputJson.getMan().getName(), inputJson.getMan().getSurname(), inputJson.getMan().getBirthday(), inputJson.getMan().getHomeAddress(), inputJson.getMan().getPhotoPath(), inputJson.getLogin(), inputJson.getPassword(), inputJson.getEmail())).thenReturn(result);
 
         mockMvc.perform(
                 post("/sign_up")

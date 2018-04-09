@@ -14,7 +14,7 @@ public final class ParticipantParser {
         if (participant != null) {
             return new ParticipantByCrimeDTO(
                     ManParser.parseManShorted(participant),
-                    participant.getParticipantStatus().getName()
+                    new EnumDTO(participant.getParticipantStatus().toString(), participant.getParticipantStatus().getName())
             );
         } else {
             return null;
@@ -25,7 +25,7 @@ public final class ParticipantParser {
         if (participant != null) {
             return new ParticipantByManDTO(
                     CrimeParser.parseShortedCrimeForOthers(participant.getCrime()),
-                    participant.getParticipantStatus().getName()
+                    new EnumDTO(participant.getParticipantStatus().toString(), participant.getParticipantStatus().getName())
             );
         } else {
             return null;
@@ -37,7 +37,7 @@ public final class ParticipantParser {
             return new ParticipantFullInfoDTO(
                     ManParser.parseManOnlyPerson(participant),
                     CrimeParser.parseShortedCrimeForOthers(participant.getCrime()),
-                    participant.getParticipantStatus().getName(),
+                    new EnumDTO(participant.getParticipantStatus().toString(), participant.getParticipantStatus().getName()),
                     participant.getPhotoPath(),
                     (participant.getDateAdded() != null) ? participant.getDateAdded().toLocalDate() : null,
                     (participant.getDateAdded() != null) ? participant.getDateAdded().toLocalTime() : null,

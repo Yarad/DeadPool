@@ -1,15 +1,30 @@
 package com.logic;
 
-import java.time.LocalDate;
+import com.DAO.DAOCrime;
+
 import java.time.LocalDateTime;
 
 public class Participant extends Man {
-    private long crimeId = -1; //временно
+    private long crimeId = -1;
     private String alibi;
     private String witnessReport;
-    private LocalDateTime dateAdded = LocalDateTime.now();
+    private LocalDateTime dateAdded;
+
     private Crime parentCrime;
-    private ParticipantStatus participantStatus = ParticipantStatus.SUSPECTED;
+    private ParticipantStatus participantStatus;
+
+    public Crime getParentCrime() {
+        if (parentCrime == null) {
+            DAOCrime daoCrime = new DAOCrime();
+            parentCrime = daoCrime.getCrimeById(crimeId);
+        }
+
+        return parentCrime;
+    }
+
+    public void setParentCrime(Crime parentCrime) {
+        this.parentCrime = parentCrime;
+    }
 
     public ParticipantStatus getParticipantStatus() {
         return participantStatus;
@@ -29,6 +44,7 @@ public class Participant extends Man {
 
     public void setCrime(Crime crime) {
         this.parentCrime = crime;
+        this.crimeId = crime.getCrimeId();
     }
 
     public Crime getCrime() {
@@ -41,6 +57,7 @@ public class Participant extends Man {
 
     public void setCrimeId(long crimeId) {
         this.crimeId = crimeId;
+        this.parentCrime = null;
     }
 
     public String getAlibi() {

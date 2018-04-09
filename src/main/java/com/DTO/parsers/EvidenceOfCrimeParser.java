@@ -14,8 +14,8 @@ public final class EvidenceOfCrimeParser {
     public static EvidenceOfCrimeShortedDTO parseEvidenceOfCrimeShorted(EvidenceOfCrime evidenceOfCrime) {
         if (evidenceOfCrime != null) {
             return new EvidenceOfCrimeShortedDTO(
-                    EvidenceParser.parseEvidenceShorted(evidenceOfCrime.parentEvidence),
-                    evidenceOfCrime.getEvidenceType().getName(),
+                    EvidenceParser.parseEvidenceShorted(evidenceOfCrime.getParentEvidence()),
+                    new EnumDTO(evidenceOfCrime.getEvidenceType().toString(), evidenceOfCrime.getEvidenceType().getName()),
                     evidenceOfCrime.getPhotoPath()
             );
         } else {
@@ -26,10 +26,10 @@ public final class EvidenceOfCrimeParser {
     public static EvidenceOfCrimeShortedWithCrimeDTO parseEvidenceOfCrimeShortedWithCrime(EvidenceOfCrime evidenceOfCrime) {
         if (evidenceOfCrime != null) {
             return new EvidenceOfCrimeShortedWithCrimeDTO(
-                    EvidenceParser.parseEvidenceShorted(evidenceOfCrime.parentEvidence),
-                    evidenceOfCrime.getEvidenceType().getName(),
+                    EvidenceParser.parseEvidenceShorted(evidenceOfCrime.getParentEvidence()),
+                    new EnumDTO(evidenceOfCrime.getEvidenceType().toString(), evidenceOfCrime.getEvidenceType().getName()),
                     evidenceOfCrime.getPhotoPath(),
-                    CrimeParser.parseShortedCrimeForOthers(evidenceOfCrime.parentCrime)
+                    CrimeParser.parseShortedCrimeForOthers(evidenceOfCrime.getParentCrime())
             );
         } else {
             return null;
@@ -39,8 +39,8 @@ public final class EvidenceOfCrimeParser {
     public static EvidenceOfCrimeForListOfEvidenceDTO parseEvidenceOfCrimeForList(EvidenceOfCrime evidenceOfCrime) {
         if (evidenceOfCrime != null) {
             return new EvidenceOfCrimeForListOfEvidenceDTO(
-                    CrimeParser.parseShortedCrimeForOthers(evidenceOfCrime.parentCrime),
-                    evidenceOfCrime.getEvidenceType().getName(),
+                    CrimeParser.parseShortedCrimeForOthers(evidenceOfCrime.getParentCrime()),
+                    new EnumDTO(evidenceOfCrime.getEvidenceType().toString(), evidenceOfCrime.getEvidenceType().getName()),
                     evidenceOfCrime.getPhotoPath(),
                     (evidenceOfCrime.getDateAdded() != null) ? evidenceOfCrime.getDateAdded().toLocalDate() : null,
                     (evidenceOfCrime.getDateAdded() != null) ? evidenceOfCrime.getDateAdded().toLocalTime() : null,
@@ -54,9 +54,9 @@ public final class EvidenceOfCrimeParser {
     public static EvidenceOfCrimeExtendedDTO parseEvidenceOfCrimeExtended(EvidenceOfCrime evidenceOfCrime) {
         if (evidenceOfCrime != null) {
             return new EvidenceOfCrimeExtendedDTO(
-                    EvidenceParser.parseEvidence(evidenceOfCrime.parentEvidence),
-                    CrimeParser.parseShortedCrimeForOthers(evidenceOfCrime.parentCrime),
-                    evidenceOfCrime.getEvidenceType().getName(),
+                    EvidenceParser.parseEvidence(evidenceOfCrime.getParentEvidence()),
+                    CrimeParser.parseShortedCrimeForOthers(evidenceOfCrime.getParentCrime()),
+                    new EnumDTO(evidenceOfCrime.getEvidenceType().toString(), evidenceOfCrime.getEvidenceType().getName()),
                     evidenceOfCrime.getPhotoPath(),
                     (evidenceOfCrime.getDateAdded() != null) ? evidenceOfCrime.getDateAdded().toLocalDate() : null,
                     (evidenceOfCrime.getDateAdded() != null) ? evidenceOfCrime.getDateAdded().toLocalTime() : null,

@@ -27,15 +27,15 @@ public class ManController {
     @IsDetective
     @CrossOrigin
     @RequestMapping(path = "/add", method = RequestMethod.POST)
-    public OperationResultDTO addMan(@RequestBody ManInfoWithoutIdDTO man) {
-        boolean result = manService.addMan(
+    public OperationResultAddDTO addMan(@RequestBody ManInfoWithoutIdDTO man) {
+        AddResult result = manService.addMan(
                 man.getName(),
                 man.getSurname(),
                 man.getBirthday(),
                 man.getHomeAddress(),
                 man.getPhotoPath()
         );
-        return new OperationResultDTO(result);
+        return new OperationResultAddDTO(result);
     }
 
     @IsDetective
@@ -53,7 +53,6 @@ public class ManController {
         return new OperationResultDTO(result);
     }
 
-    //TODO: потестить
     @IsDetective
     @CrossOrigin
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
@@ -65,10 +64,20 @@ public class ManController {
                 : new GenericDTO<>(true, null);
     }
 
-    //TODO: потестить
     @IsDetective
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
+    public GenericDTO<ListMenShortedDTO> getAllMan() {
+        List<Man> men = manService.getAllMan();
+        List<ManShortedDTO> results = men.stream()
+                .map(man -> ManParser.parseManShorted(man))
+                .collect(Collectors.toList());
+        return new GenericDTO<>(false, new ListMenShortedDTO(results));
+    }
+
+    @IsDetective
+    @CrossOrigin
+    @RequestMapping(path = "/with_crimes", method = RequestMethod.GET)
     public GenericDTO<ListMenDTO> getAllManWithCrimeAmount() {
         Map<Man,Long> men = manService.getAllManWithCrimeAmount();
         List<ManForListWithCrimesAmountDTO> results = new ArrayList<>();

@@ -12,4 +12,5 @@ public interface IDAOEvidence {
 
     boolean addEvidence(Evidence evidence);
     boolean updateEvidence(Evidence evidence);
+    List<Evidence> getAllEvidences();
 }

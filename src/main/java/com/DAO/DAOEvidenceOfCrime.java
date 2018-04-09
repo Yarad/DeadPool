@@ -1,39 +1,25 @@
 package com.DAO;
 
 import com.DAO.interfaces.IDAOEvidenceOfCrime;
-import com.logic.Evidence;
 import com.logic.EvidenceOfCrime;
 import com.logic.ProjectFunctions;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 @Repository
 public class DAOEvidenceOfCrime extends DAO implements IDAOEvidenceOfCrime {
-    private DAOCrime parentDaoCrime;
-    private DAOEvidence parentDaoEvidence;
+    static Logger log = Logger.getLogger(DAOEvidenceOfCrime.class.getName());
 
-    public DAOEvidenceOfCrime() {
-        setConnectionToUse(new SQLConnection());
-
-        parentDaoCrime = new DAOCrime();
-        parentDaoEvidence = new DAOEvidence();
-
-        parentDaoEvidence.setConnectionToUse(currConnection);
-        parentDaoCrime.setConnectionToUse(currConnection);
-    }
-
-    //TODO: потестить
     @Override
     public EvidenceOfCrime getEvidenceOfCrime(long crimeId, long evidenceId) {
         EvidenceOfCrime evidenceOfCrime = new EvidenceOfCrime();
-
-        evidenceOfCrime.parentCrime = parentDaoCrime.getCrimeById(crimeId);
-        evidenceOfCrime.parentEvidence = parentDaoEvidence.getEvidenceById(evidenceId);
 
         PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM evidence_of_crime WHERE crime_id = ? AND evidence_id  = ? ");
 
@@ -41,7 +27,7 @@ public class DAOEvidenceOfCrime extends DAO implements IDAOEvidenceOfCrime {
             preparedStatement.setLong(1, crimeId);
             preparedStatement.setLong(2, evidenceId);
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return null;
         }
         List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
@@ -52,7 +38,7 @@ public class DAOEvidenceOfCrime extends DAO implements IDAOEvidenceOfCrime {
         return evidenceOfCrime;
     }
 
-    //TODO: надо заполнять parentEvidence & EvidenceType
+    //FIXED in prev commit надо заполнять parentEvidence & EvidenceType
     @Override
     public List<EvidenceOfCrime> getAllEvidencesOfCrime() {
         List<EvidenceOfCrime> retArr = new ArrayList<>();
@@ -65,6 +51,7 @@ public class DAOEvidenceOfCrime extends DAO implements IDAOEvidenceOfCrime {
         for (int i = 0; i < retArray.size(); i++) {
             EvidenceOfCrime tempObj = new EvidenceOfCrime();
             ProjectFunctions.tryFillObjectByDbArray(tempObj, retArray.get(i));
+
             retArr.add(tempObj);
         }
         return retArr;
@@ -78,7 +65,7 @@ public class DAOEvidenceOfCrime extends DAO implements IDAOEvidenceOfCrime {
         try {
             preparedStatement.setLong(1, crimeId);
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return retArr;
         }
         List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
@@ -102,7 +89,7 @@ public class DAOEvidenceOfCrime extends DAO implements IDAOEvidenceOfCrime {
         try {
             preparedStatement.setLong(1, evidenceId);
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return retArr;
         }
         List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
@@ -120,12 +107,48 @@ public class DAOEvidenceOfCrime extends DAO implements IDAOEvidenceOfCrime {
 
     @Override
     public boolean addEvidenceOfCrime(EvidenceOfCrime evidenceOfCrime) {
-        return false;
+        //в объекте должны быть установлены либо id crime&evidence, либо
+        //в лоб прям ссылки на эти объекты (тогда id автоматом становятся такими же)
+
+        if (evidenceOfCrime == null)
+            return false;
+
+        PreparedStatement preparedStatement = currConnection.prepareStatement("INSERT INTO `evidence_of_crime`(`evidence_id`, `crime_id`, `evidence_type`, `date_added`, `details`, `photo_path`) VALUES (?,?,?,?,?,?)");
+        try {
+            preparedStatement.setLong(1, evidenceOfCrime.getEvidenceId());
+            preparedStatement.setLong(2, evidenceOfCrime.getCrimeId());
+            preparedStatement.setString(3, evidenceOfCrime.getEvidenceType().toString());
+            preparedStatement.setTimestamp(4, Timestamp.valueOf(evidenceOfCrime.getDateAdded()));
+            preparedStatement.setString(5, evidenceOfCrime.getDetails());
+            preparedStatement.setString(6, evidenceOfCrime.getPhotoPath());
+        } catch (SQLException e) {
+            log.error(e.toString());
+            return false;
+        }
+
+        return currConnection.queryDataEdit(preparedStatement);
     }
 
     @Override
     public boolean updateEvidenceOfCrime(EvidenceOfCrime evidenceOfCrime) {
-        return false;
+
+        if (evidenceOfCrime == null)
+            return false;
+
+        PreparedStatement preparedStatement = currConnection.prepareStatement("UPDATE `evidence_of_crime` SET `evidence_type`=?,`date_added`=?,`details`=?,`photo_path`=? WHERE `evidence_id`=? AND `crime_id`=?");
+        try {
+            preparedStatement.setString(1, evidenceOfCrime.getEvidenceType().toString());
+            preparedStatement.setTimestamp(2, Timestamp.valueOf(evidenceOfCrime.getDateAdded()));
+            preparedStatement.setString(3, evidenceOfCrime.getDetails());
+            preparedStatement.setString(4, evidenceOfCrime.getPhotoPath());
+            preparedStatement.setLong(5, evidenceOfCrime.getEvidenceId());
+            preparedStatement.setLong(6, evidenceOfCrime.getCrimeId());
+        } catch (SQLException e) {
+            log.error(e.toString());
+            return false;
+        }
+
+        return currConnection.queryDataEdit(preparedStatement);
     }
 }
 

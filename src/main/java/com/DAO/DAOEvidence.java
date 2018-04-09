@@ -3,6 +3,7 @@ package com.DAO;
 import com.DAO.interfaces.IDAOEvidence;
 import com.logic.Evidence;
 import com.logic.ProjectFunctions;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
@@ -13,9 +14,7 @@ import java.util.List;
 
 @Repository
 public class DAOEvidence extends DAO implements IDAOEvidence {
-    public DAOEvidence() {
-        setConnectionToUse(new SQLConnection());
-    }
+    static Logger log = Logger.getLogger(DAOEvidence.class.getName());
 
     @Override
     public Evidence getEvidenceById(long evidenceId) {
@@ -23,7 +22,7 @@ public class DAOEvidence extends DAO implements IDAOEvidence {
         try {
             preparedStatement.setLong(1, evidenceId);
         } catch (SQLException e) {
-            DAOLog.log(e.toString());
+            log.error(e.toString());
             return null;
         }
         List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
@@ -33,36 +32,60 @@ public class DAOEvidence extends DAO implements IDAOEvidence {
         ProjectFunctions.tryFillObjectByDbArray(retEvidenceRecord, retArray.get(0));
         return retEvidenceRecord;
     }
-/*
-    //потестить
-    @Override
-    public List<Evidence> getAllEvidencesByCrime(long crimeId) {
-        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM evidence_of_crime JOIN evidence USING(evidence_id ) WHERE crime_id = ?");
-        List<Evidence> evidences = new ArrayList<Evidence>();
-        try {
-            preparedStatement.setLong(1, crimeId);
-        } catch (SQLException e) {
-            DAOLog.log(e.toString());
-            return null;
-        }
-        List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
 
-        if (retArray.isEmpty()) return evidences;
-        for (int i = 0; i < retArray.size(); i++) {
-            Evidence retEvidenceRecord = new Evidence();
-            ProjectFunctions.tryFillObjectByDbArray(retEvidenceRecord, retArray.get(0));
-            evidences.add(retEvidenceRecord);
-        }
-        return evidences;
-    }
-*/
     @Override
     public boolean addEvidence(Evidence evidence) {
-        return false;
+        if (evidence == null)
+            return false;
+        PreparedStatement preparedStatement = currConnection.prepareStatement("INSERT INTO `evidence`(`name`, `description`) VALUES (?,?)");
+        try {
+            preparedStatement.setString(1, evidence.getName());
+            preparedStatement.setString(2, evidence.getDescription());
+        } catch (SQLException e) {
+            log.error(e.toString());
+            return false;
+        }
+
+        boolean queryIsOk = currConnection.queryDataEdit(preparedStatement);
+        if (queryIsOk) {
+            evidence.setEvidenceId(currConnection.getLastAddedId(preparedStatement));
+            return true;
+        } else
+            return false;
     }
 
     @Override
     public boolean updateEvidence(Evidence evidence) {
-        return false;
+        if (evidence == null)
+            return false;
+        PreparedStatement preparedStatement = currConnection.prepareStatement("UPDATE `evidence` SET `name`=?,`description`=? WHERE `evidence_id` = ?");
+        try {
+            preparedStatement.setString(1, evidence.getName());
+            preparedStatement.setString(2, evidence.getDescription());
+            preparedStatement.setLong(3, evidence.getEvidenceId());
+        } catch (SQLException e) {
+            log.error(e.toString());
+            return false;
+        }
+
+        return currConnection.queryDataEdit(preparedStatement);
+    }
+
+    @Override
+    public List<Evidence> getAllEvidences() {
+        List<Evidence> retArr = new ArrayList<>();
+        PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM evidence");
+
+        List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
+
+        if (retArray.isEmpty()) return retArr;
+
+        for (int i = 0; i < retArray.size(); i++) {
+            Evidence tempObj = new Evidence();
+            ProjectFunctions.tryFillObjectByDbArray(tempObj, retArray.get(i));
+
+            retArr.add(tempObj);
+        }
+        return retArr;
     }
 }

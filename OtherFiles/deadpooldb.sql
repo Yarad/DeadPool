@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Мар 26 2018 г., 21:46
+-- Время создания: Апр 05 2018 г., 12:20
 -- Версия сервера: 5.7.17-log
 -- Версия PHP: 7.1.3
 
@@ -43,8 +43,10 @@ CREATE TABLE `crime` (
 --
 
 INSERT INTO `crime` (`crime_id`, `criminal_case_id`, `crime_type`, `description`, `crime_date`, `crime_time`, `crime_place`) VALUES
-(2, 2, 'Убийство', '', '2018-02-06', NULL, ''),
-(3, 2, 'Ограбление', 'gfb', '2018-02-08', NULL, '');
+(2, 2, 'ARSON', '', '2018-02-06', '18:41:14', ''),
+(3, 2, 'ROBBERY', 'gfb', '2018-02-08', NULL, ''),
+(4, 7, 'MURDER', 'Some decription', '2015-02-28', '15:15:00', 'This is place'),
+(5, 7, 'MURDER', 'Some decription2', '2015-02-28', NULL, 'This is place');
 
 -- --------------------------------------------------------
 
@@ -156,15 +158,16 @@ CREATE TABLE `man` (
 
 INSERT INTO `man` (`man_id`, `name`, `surname`, `birthday`, `home_address`, `photo_path`) VALUES
 (1, 'NoName', 'NoSurname', '1998-09-08', 'NoHomeAddress', NULL),
-(2, 'aaas', 'ss', NULL, NULL, NULL),
+(2, 'name', 'surname', NULL, 'addr', 'photo'),
 (3, 'Sherlock', 'Holms', '2012-02-15', 'some_address in Minsk for Andrew', NULL),
-(4, 'NoName', 'NoSurname', '1998-09-08', 'NoHomeAddress', NULL),
-(5, 'NoName', 'NoSurname', '1998-09-08', 'NoHomeAddress', NULL),
-(6, 'NoName', 'NoSurname', '1998-09-08', 'NoHomeAddress', NULL),
-(7, 'NoName', 'NoSurname', '1998-09-08', 'NoHomeAddress', NULL),
 (8, 'Sherlock', 'Holms', '2012-02-15', 'some_address in Minsk for Andrew', NULL),
 (9, 'Testes', 'Person', NULL, NULL, NULL),
-(49, 'weg', 'wegew', NULL, NULL, NULL);
+(49, 'weg', 'wegew', NULL, NULL, NULL),
+(319, 'name', 'surname', '2012-12-02', 'addr', 'photo'),
+(320, 'name', 'surname', '2012-12-02', 'addr', 'photo'),
+(329, 'name', 'surname', '2012-12-02', 'addr', 'photo'),
+(333, 'name', 'surname', '2012-12-02', 'addr', 'photo'),
+(334, 'name', 'surname', '2012-12-02', 'addr', 'photo');
 
 -- --------------------------------------------------------
 
@@ -214,6 +217,7 @@ ALTER TABLE `criminal_case`
 --
 ALTER TABLE `detective`
   ADD PRIMARY KEY (`detective_id`),
+  ADD UNIQUE KEY `login` (`login`),
   ADD KEY `IXFK_detective_man` (`detective_id`);
 
 --
@@ -253,12 +257,12 @@ ALTER TABLE `participant`
 -- AUTO_INCREMENT для таблицы `crime`
 --
 ALTER TABLE `crime`
-  MODIFY `crime_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `crime_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 --
 -- AUTO_INCREMENT для таблицы `criminal_case`
 --
 ALTER TABLE `criminal_case`
-  MODIFY `criminal_case_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `criminal_case_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 --
 -- AUTO_INCREMENT для таблицы `evidence`
 --
@@ -268,7 +272,7 @@ ALTER TABLE `evidence`
 -- AUTO_INCREMENT для таблицы `man`
 --
 ALTER TABLE `man`
-  MODIFY `man_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `man_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=342;
 --
 -- Ограничения внешнего ключа сохраненных таблиц
 --
