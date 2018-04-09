@@ -13,8 +13,8 @@ public class SQLConnection implements IConnection {
 
     private String url = "jdbc:mysql://localhost:3306/DeadPoolDB";
     private String user = "root";
-    private String password = "uthfkmn";
-    //private String password = "root";
+    //private String password = "uthfkmn";
+    private String password = "root";
 
     private static Connection con;
     private static Statement stmt;
@@ -52,7 +52,7 @@ public class SQLConnection implements IConnection {
 
 
             while (rs.next()) {
-                if (rs.isClosed() || rs.wasNull())
+                if (rs.isClosed())
                     continue;
 
                 HashMap<String, Object> columnList = new HashMap<String, Object>();

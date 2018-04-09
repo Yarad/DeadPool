@@ -8,6 +8,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.*;
 import org.springframework.stereotype.Component;
+import java.awt.Color;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -309,6 +310,7 @@ public class XLSXView implements IReportView {
         sheet.addMergedRegion(new CellRangeAddress(headerRow,headerRow,0,resultColumns-1));
     }
 
+
     private TableBorder addCrimesToSheet(XSSFSheet sheet, int rowNum, List<Crime> crimes,
                                                          boolean withCriminalCase, String title, int columnsCount) {
         int colNum = 0;
@@ -425,6 +427,7 @@ public class XLSXView implements IReportView {
         XSSFSheet sheet = getSheet(workbook,"Отчёт по преступлению");
 
         TableBorder borders = new TableBorder();
+
         borders = addCrimesToSheet(sheet, borders.getRow(), Arrays.asList(crime), true,
                 "Преступление", borders.getColumn());
         borders.setRow(borders.getRow() + 2);
@@ -560,5 +563,15 @@ public class XLSXView implements IReportView {
         fileOut.flush();
         fileOut.close();
         return tempFile.getAbsolutePath();
+    }
+
+    @Override
+    public String generateReportByCrimes(List<Crime> crimes, LocalDate startDate, LocalDate endDate) throws Exception {
+        return null;
+    }
+
+    @Override
+    public String generateReportByCriminalCases(List<CriminalCase> criminalCases, String status) throws Exception {
+        return null;
     }
 }
