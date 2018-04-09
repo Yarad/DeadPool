@@ -3,11 +3,11 @@ package com.views;
 import com.DTO.TableBorder;
 import com.logic.*;
 import com.views.interfaces.IReportView;
+import org.apache.poi.common.usermodel.HyperlinkType;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.*;
 import org.springframework.stereotype.Component;
-import java.awt.Color;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -22,9 +22,11 @@ import static org.springframework.util.StringUtils.isEmpty;
 public class XLSXView implements IReportView {
     private Font fontUsual = null;
     private Font fontBold = null;
+    private Font fontLink = null;
     private Font fontBoldColored = null;
     private XSSFCellStyle styleHeader = null;
     private XSSFCellStyle styleUsual = null;
+    private XSSFCellStyle styleLink = null;
     private XSSFCellStyle styleArea = null;
     private XSSFCreationHelper createHelper = null;
 
@@ -33,6 +35,11 @@ public class XLSXView implements IReportView {
 
         fontUsual = workbook.createFont();
         fontUsual.setFontName("Times New Roman");
+
+        fontLink = workbook.createFont();
+        fontLink.setFontName("Times New Roman");
+        fontLink.setUnderline(Font.U_SINGLE);
+        fontLink.setColor(IndexedColors.BLUE.getIndex());
 
         fontBold = workbook.createFont();
         fontBold.setFontName("Times New Roman");
@@ -73,6 +80,16 @@ public class XLSXView implements IReportView {
         styleUsual.setBorderLeft(BorderStyle.THIN);
         styleUsual.setBorderRight(BorderStyle.THIN);
         styleUsual.setFont(fontUsual);
+
+        styleLink = workbook.createCellStyle();
+        styleLink.setWrapText(true);
+        styleLink.setAlignment(HorizontalAlignment.LEFT);
+        styleLink.setVerticalAlignment(VerticalAlignment.TOP);
+        styleLink.setBorderBottom(BorderStyle.THIN);
+        styleLink.setBorderTop(BorderStyle.THIN);
+        styleLink.setBorderLeft(BorderStyle.THIN);
+        styleLink.setBorderRight(BorderStyle.THIN);
+        styleLink.setFont(fontLink);
     }
 
     private XSSFWorkbook getWorkbook() {
@@ -94,13 +111,13 @@ public class XLSXView implements IReportView {
         cell.setCellStyle(style);
     }
 
-    private void createCellHyperlinked(XSSFRow row, int colNum, String value, String linkURL, XSSFCellStyle style) {
-        /*XSSFCell cell = row.createCell(colNum);
+    private void createCellHyperlinked(XSSFRow row, int colNum, String value, String linkURL) {
+        XSSFCell cell = row.createCell(colNum);
         cell.setCellValue(value);
-        Hyperlink link = createHelper.createHyperlink(XSSFHyperlink.LINK_URL);
-        link.setAddress("http://poi.apache.org/");
+        Hyperlink link = createHelper.createHyperlink(HyperlinkType.URL);
+        link.setAddress(linkURL);
         cell.setHyperlink(link);
-        cell.setCellStyle(style);*/
+        cell.setCellStyle(styleLink);
     }
 
     private void setParamsToFit(XSSFWorkbook workbook, XSSFSheet sheet, int columnCount) {
@@ -259,7 +276,11 @@ public class XLSXView implements IReportView {
         createCell(row, colNum++, !isEmpty(evidenceOfCrime.getDetails()) ?
                 evidenceOfCrime.getDetails() : "отсутствует", styleUsual);
         createCell(row, colNum++, evidenceOfCrime.getDateAdded().format(JSON_FORMATTER_DATETIME), styleUsual);
-        createCell(row, colNum++, evidenceOfCrime.getPhotoPath() != null ? evidenceOfCrime.getPhotoPath(): "отсутствует", styleUsual);
+        if (evidenceOfCrime.getPhotoPath() != null) {
+            createCellHyperlinked(row, colNum++, evidenceOfCrime.getPhotoPath(), evidenceOfCrime.getPhotoPath());
+        } else {
+            createCell(row, colNum++, "отсутствует", styleUsual);
+        }
         return colNum;
     }
 
@@ -268,7 +289,11 @@ public class XLSXView implements IReportView {
         createCell(row, colNum++, man.getSurname(), styleUsual);
         createCell(row, colNum++, man.getBirthDay() != null ? man.getBirthDay().format(JSON_FORMATTER_DATE) : "неизвестно", styleUsual);
         createCell(row, colNum++, !isEmpty(man.getHomeAddress()) ? man.getHomeAddress() : "неизвестен", styleUsual);
-        createCell(row, colNum++, man.getPhotoPath() != null ? man.getPhotoPath(): "отсутствует", styleUsual);
+        if (man.getPhotoPath() != null) {
+            createCellHyperlinked(row, colNum++, man.getPhotoPath(), man.getPhotoPath());
+        } else {
+            createCell(row, colNum++, "отсутствует", styleUsual);
+        }
         return colNum;
     }
 
