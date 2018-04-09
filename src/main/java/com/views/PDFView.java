@@ -200,14 +200,10 @@ public class PDFView implements IReportView {
         document.newPage();
     }
 
-    private String getDetectiveData(Detective detective) {
-        return detective.getSurname() + ", " + detective.getName() + " (" + detective.getLogin() + ")";
-    }
-
     private void addCriminalCaseData(Document document, CriminalCase criminalCase, boolean withDetective, float leftIndent) throws DocumentException {
         document.add(createStandardParagraph("Номер", criminalCase.getCriminalCaseNumber(), leftIndent));
         if (withDetective) {
-            document.add(createStandardParagraph("Детектив", getDetectiveData(criminalCase.getParentDetective()), leftIndent));
+            document.add(createStandardParagraph("Детектив", ReportFunctions.getDetectiveData(criminalCase.getParentDetective()), leftIndent));
         }
         document.add(createStandardParagraph("Дата создания",
                 criminalCase.getCreateDate().format(JSON_FORMATTER_DATE), leftIndent));
@@ -255,7 +251,7 @@ public class PDFView implements IReportView {
             addCrimeData(document, evidenceOfCrime.getParentCrime(), true,leftIndent+15);
         }
         document.add(createStandardParagraph("Тип улики", evidenceOfCrime.getEvidenceType().getName(), leftIndent));
-        document.add(createStandardParagraph("Детальная иннормация", !isEmpty(evidenceOfCrime.getDetails()) ?
+        document.add(createStandardParagraph("Детальная информация", !isEmpty(evidenceOfCrime.getDetails()) ?
                 evidenceOfCrime.getDetails() : "отсутствует", leftIndent));
         document.add(createStandardParagraph("Дата добавления",
                 evidenceOfCrime.getDateAdded().format(JSON_FORMATTER_DATETIME), leftIndent));

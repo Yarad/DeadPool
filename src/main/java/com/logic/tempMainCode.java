@@ -1,16 +1,31 @@
 package com.logic;
 
+import com.DAO.DAOCrime;
 import com.DAO.DAOEvidenceOfCrime;
+import com.DAO.DAOParticipant;
+import com.views.CSVView;
+
+import java.util.List;
 
 public class tempMainCode {
     public static void main(String[] args) {
 
+        CSVView csvView = new CSVView();
+
+        DAOCrime daoCrime = new DAOCrime();
         DAOEvidenceOfCrime daoEvidenceOfCrime = new DAOEvidenceOfCrime();
+        DAOParticipant daoParticipant = new DAOParticipant();
 
-        EvidenceOfCrime evidenceOfCrime = daoEvidenceOfCrime.getEvidenceOfCrime(3, 2);
-        evidenceOfCrime.setDetails("From Yarad");
-        boolean f = daoEvidenceOfCrime.updateEvidenceOfCrime(evidenceOfCrime);
+        Crime crime = daoCrime.getCrimeById(3);
+        List<Participant> participantList = daoParticipant.getAllParticipantsByCrime(3);
+        List<EvidenceOfCrime> evidenceOfCrimes = daoEvidenceOfCrime.getAllEvidencesOfCrimeByCrimeId(3);
 
+        String str;
+        try {
+            str = csvView.generateReportByCrime(crime, evidenceOfCrimes, participantList);
+        } catch (Exception e) {
+
+        }
         /*
         DAOEvidenceOfCrime daoEvidenceOfCrime = new DAOEvidenceOfCrime();
 
