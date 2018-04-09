@@ -328,23 +328,10 @@ public class PDFView implements IReportView {
         return tempFile.getAbsolutePath();
     }
 
-    private String getTitleForCriminalCases(String status) {
-        switch(status) {
-            case "open":
-                return "Расследуемые уголовные дела";
-            case "solved":
-                return "Раскрытые уголовные дела";
-            case "unsolved":
-                return "Нераскрытые уголовные дела";
-            default:
-                return "Все уголовные дела";
-        }
-    }
-
     @Override
     public String generateReportByCriminalCases(List<CriminalCase> criminalCases, String status) throws Exception {
         File tempFile = File.createTempFile("report", ".pdf");
-        Document document = getTypicalDocument(tempFile, getTitleForCriminalCases(status));
+        Document document = getTypicalDocument(tempFile, ReportFunctions.getTitleForCriminalCases(status));
 
         document.add(createHeader1Paragraph("Уголовные дела"));
         for (CriminalCase criminalCase : criminalCases) {
