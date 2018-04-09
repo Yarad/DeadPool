@@ -24,6 +24,11 @@ public class SQLConnection implements IConnection {
 
     private SQLConnection() {/*оставлю пустой конструктор, дабы можно было оставить изначально инициализированные значения*/}
 
+    @Override
+    protected void finalize() throws Throwable {
+        disconnect();
+    }
+
     public static SQLConnection getInstance() {
         if (instance == null) {
             instance = new SQLConnection();
@@ -45,7 +50,11 @@ public class SQLConnection implements IConnection {
             int amountOfColumns = rs.getMetaData().getColumnCount();
             String currColumnName;
 
+
             while (rs.next()) {
+                if (rs.isClosed() || rs.wasNull())
+                    continue;
+
                 HashMap<String, Object> columnList = new HashMap<String, Object>();
                 for (int i = 1; i <= amountOfColumns; i++) {
                     currColumnName = rs.getMetaData().getColumnName(i);
@@ -54,14 +63,15 @@ public class SQLConnection implements IConnection {
                 list.add(columnList);
             }
 
-        } catch (SQLException sqlEx) {
+        } catch (Exception sqlEx) {
             sqlEx.printStackTrace();
         } finally {
-            //close connection ,stmt and resultset here
-            try {
-                if (rs != null)
-                    rs.close();
-            } catch (SQLException se) { /*can't do anything  */}
+            //NOT !!! close connection ,stmt and resultset here
+            //Всё ломается, если закрывать ResultSet, т.к. его нельзя использовать повторно
+            //try {
+            //    if (rs != null)
+            //        rs.close();
+            //} catch (SQLException se) { /*can't do anything  */}
         }
         return list;
     }
