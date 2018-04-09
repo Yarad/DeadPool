@@ -47,10 +47,6 @@ public class Participant extends Man {
         this.crimeId = crime.getCrimeId();
     }
 
-    public Crime getCrime() {
-        return parentCrime;
-    }
-
     public long getCrimeId() {
         return crimeId;
     }
