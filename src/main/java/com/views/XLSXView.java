@@ -564,14 +564,4 @@ public class XLSXView implements IReportView {
         fileOut.close();
         return tempFile.getAbsolutePath();
     }
-
-    @Override
-    public String generateReportByCrimes(List<Crime> crimes, LocalDate startDate, LocalDate endDate) throws Exception {
-        return null;
-    }
-
-    @Override
-    public String generateReportByCriminalCases(List<CriminalCase> criminalCases, String status) throws Exception {
-        return null;
-    }
 }

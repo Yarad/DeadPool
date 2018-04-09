@@ -13,8 +13,8 @@ public class SQLConnection implements IConnection {
 
     private String url = "jdbc:mysql://localhost:3306/DeadPoolDB";
     private String user = "root";
-    //private String password = "uthfkmn";
-    private String password = "root";
+    private String password = "uthfkmn";
+    //private String password = "root";
 
     private static Connection con;
     private static Statement stmt;
