@@ -149,8 +149,14 @@ public class DocumentController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
         Crime crime = crimeService.getCrimeById(crimeId);
-        List<EvidenceOfCrime> evidenceOfCrimes = evidenceOfCrimeService.getEvidencesOfCrimeByCrimeId(crimeId);
-        List<Participant> participants = participantService.getParticipantsByCrimeId(crimeId);
+        List<EvidenceOfCrime> evidenceOfCrimes;
+        List<Participant> participants;
+        if (crime != null) {
+            evidenceOfCrimes = evidenceOfCrimeService.getEvidencesOfCrimeByCrimeId(crimeId);
+            participants = participantService.getParticipantsByCrimeId(crimeId);
+        } else {
+            return new ResponseEntity<>(HttpStatus.valueOf(418));
+        }
         try {
             path = view.generateReportByCrime(crime, evidenceOfCrimes, participants);
         } catch (Exception e) {
@@ -176,7 +182,12 @@ public class DocumentController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
         Man man = manService.getFullManInfo(manId);
-        List<Participant> participants = participantService.getParticipantsByManId(manId);
+        List<Participant> participants;
+        if (man != null) {
+            participants = participantService.getParticipantsByManId(manId);
+        } else {
+            return new ResponseEntity<>(HttpStatus.valueOf(418));
+        }
         try {
             path = view.generateReportByMan(man, participants);
         } catch (Exception e) {
@@ -202,7 +213,12 @@ public class DocumentController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
         CriminalCase criminalCase = criminalCaseService.getCriminalCaseById(criminalCaseId);
-        List<Crime> crimes = crimeService.getCrimesByCriminalCase(criminalCaseId);
+        List<Crime> crimes;
+        if (criminalCase != null) {
+            crimes = crimeService.getCrimesByCriminalCase(criminalCaseId);
+        } else {
+            return new ResponseEntity<>(HttpStatus.valueOf(418));
+        }
         try {
             path = view.generateReportByCriminalCase(criminalCase, crimes);
         } catch (Exception e) {
@@ -228,7 +244,12 @@ public class DocumentController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
         Evidence evidence = evidenceService.getEvidenceById(evidenceId);
-        List<EvidenceOfCrime> evidenceOfCrimes = evidenceOfCrimeService.getEvidencesOfCrimeByEvidenceId(evidenceId);
+        List<EvidenceOfCrime> evidenceOfCrimes;
+        if (evidence != null) {
+            evidenceOfCrimes = evidenceOfCrimeService.getEvidencesOfCrimeByEvidenceId(evidenceId);
+        } else {
+            return new ResponseEntity<>(HttpStatus.valueOf(418));
+        }
         try {
             path = view.generateReportByEvidence(evidence, evidenceOfCrimes);
         } catch (Exception e) {
@@ -254,7 +275,12 @@ public class DocumentController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
         Detective detective = detectiveService.getDetectiveById(detectiveId);
-        List<CriminalCase> criminalCases = criminalCaseService.getCriminalCasesByDetectiveId(detectiveId);
+        List<CriminalCase> criminalCases;
+        if (detective != null) {
+            criminalCases = criminalCaseService.getCriminalCasesByDetectiveId(detectiveId);
+        } else {
+            return new ResponseEntity<>(HttpStatus.valueOf(418));
+        }
         try {
             path = view.generateReportByDetective(detective, criminalCases);
         } catch (Exception e) {

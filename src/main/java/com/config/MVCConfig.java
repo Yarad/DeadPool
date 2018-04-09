@@ -28,7 +28,9 @@ import java.util.List;
 import java.util.Map;
 
 import static com.logic.ProjectConstants.*;
-
+//TODO: email
+//автоматическая - например, когда добавляется детектив
+//по времени - например, исткает пароль у вас, надо обновить
 @Configuration
 @EnableWebMvc
 public class MVCConfig extends WebMvcConfigurerAdapter {
@@ -43,7 +45,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**");
-    }
+    }//TODO allowOrigins
 
     @Bean
     public MappingJackson2HttpMessageConverter customJackson2HttpMessageConverter() {
