@@ -5,6 +5,7 @@ import com.DAO.DAOEvidenceOfCrime;
 import com.DAO.DAOParticipant;
 import com.views.CSVView;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class tempMainCode {
@@ -16,13 +17,12 @@ public class tempMainCode {
         DAOEvidenceOfCrime daoEvidenceOfCrime = new DAOEvidenceOfCrime();
         DAOParticipant daoParticipant = new DAOParticipant();
 
-        Crime crime = daoCrime.getCrimeById(3);
-        List<Participant> participantList = daoParticipant.getAllParticipantsByCrime(3);
-        List<EvidenceOfCrime> evidenceOfCrimes = daoEvidenceOfCrime.getAllEvidencesOfCrimeByCrimeId(3);
+
+        List<Participant> participantList = daoParticipant.getAllParticipantsByMan(2);
 
         String str;
         try {
-            str = csvView.generateReportByCrime(crime, evidenceOfCrimes, participantList);
+            str = csvView.generateReportByMan(participantList.get(0),participantList);
         } catch (Exception e) {
 
         }

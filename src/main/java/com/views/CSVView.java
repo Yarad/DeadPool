@@ -18,9 +18,23 @@ public class CSVView implements IReportView {
     private static char newLine = '\n';
     private static String deaultNullStr = "неизвестно";
 
-    @Override
+    @Override //Done
     public String generateReportByCrimes(List<Crime> crimes, LocalDate startDate, LocalDate endDate) throws Exception {
-        return null;
+        File file = File.createTempFile("report_" + startDate.toString() + "-" + endDate.toString(), ".csv");
+
+        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
+            writer.write('\uFEFF');
+            //Crime report
+            writer.append(getCrimeCsvHeader() + newLine);
+            for (int i = 0; i < crimes.size(); i++)
+                writer.append(getCsvStringOfCrimeObject(crimes.get(i)) + newLine);
+
+            writer.flush();
+        } catch (Exception e) {
+            return null;
+        }
+
+        return file.getAbsolutePath();
     }
 
     @Override
@@ -28,10 +42,9 @@ public class CSVView implements IReportView {
         return null;
     }
 
-    @Override
+    @Override //Done
     public String generateReportByCrime(Crime crime, List<EvidenceOfCrime> evidencesOfCrime, List<Participant> participants) throws Exception {
         File file = File.createTempFile("report", ".csv");
-
 
         try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
             writer.write('\uFEFF');
@@ -64,7 +77,27 @@ public class CSVView implements IReportView {
 
     @Override
     public String generateReportByMan(Man man, List<Participant> participants) throws Exception {
-        return null;
+        File file = File.createTempFile("report", ".csv");
+
+        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
+            writer.write('\uFEFF');
+
+            //Man report
+            writer.append(getManCsvHeader() + newLine);
+            writer.append(getCsvStringOfManObject(man) + newLine);
+
+            writer.append(newLine);
+
+            //Participants report
+            writer.append(getPartcipanceManInCrimeHeader() + newLine);
+            for (int i = 0; i < participants.size(); i++)
+                writer.append(getCsvStringOfPartcipanceManInCrime(participants.get(i)) + newLine);
+            writer.flush();
+        } catch (Exception e) {
+            return null;
+        }
+
+        return file.getAbsolutePath();
     }
 
     @Override
@@ -109,6 +142,56 @@ public class CSVView implements IReportView {
                 escapeNullException(participant.getDateAdded());
     }
 
+    private String getPartcipanceManInCrimeHeader() {
+        return "Номер уголовного дела" + delimiter +
+                "Тип" + delimiter +
+                "Дата совершения" + delimiter +
+                "Время совершения" + delimiter +
+                "Место совершения" + delimiter +
+                "Описание" + delimiter +
+                "Статус" + delimiter +
+                "Алиби" + delimiter +
+                "Отчёт (показания человека)" + delimiter +
+                "Дата добавления";
+    }
+
+    private String getCsvStringOfPartcipanceManInCrime(Participant participant) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append(escapeNullException(participant.getParentCrime().getParentCriminalCase().getCriminalCaseNumber()) + delimiter);
+        stringBuilder.append(escapeNullException(participant.getParentCrime().getCrimeType()) + delimiter);
+        stringBuilder.append(escapeNullException(participant.getParentCrime().getCrimeDate()) + delimiter);
+        stringBuilder.append(escapeNullException(participant.getParentCrime().getCrimeTime()) + delimiter);
+        stringBuilder.append(escapeNullException(participant.getParentCrime().getCrimePlace()) + delimiter);
+        stringBuilder.append(escapeNullException(participant.getParentCrime().getDescription()) + delimiter);
+        stringBuilder.append(escapeNullException(participant.getParticipantStatus()) + delimiter);
+        stringBuilder.append(escapeNullException(participant.getAlibi()) + delimiter);
+        stringBuilder.append(escapeNullException(participant.getWitnessReport()) + delimiter);
+        stringBuilder.append(escapeNullException(participant.getDateAdded()) + delimiter);
+
+        return stringBuilder.toString();
+    }
+
+    private String getManCsvHeader() {
+        return "Имя" + delimiter +
+                "Фамилия" + delimiter +
+                "Дата рождения" + delimiter +
+                "Домашний адрес" + delimiter +
+                "Фотография";
+    }
+
+    private String getCsvStringOfManObject(Man man) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append(escapeNullException(man.getName()) + delimiter);
+        stringBuilder.append(escapeNullException(man.getSurname()) + delimiter);
+        stringBuilder.append(escapeNullException(man.getBirthDay()) + delimiter);
+        stringBuilder.append(escapeNullException(man.getHomeAddress()) + delimiter);
+        stringBuilder.append(escapeNullException(man.getPhotoPath()) + delimiter);
+
+        return stringBuilder.toString();
+    }
+
     private String getCrimeCsvHeader() {
         return "Номер уголовного дела" + delimiter +
                 "Тип" + delimiter +
@@ -147,6 +230,6 @@ public class CSVView implements IReportView {
     }
 
     private String escapeNullException(Object inputObj) {
-        return inputObj != null ? inputObj.toString() : deaultNullStr;
+        return inputObj != null && !inputObj.toString().equals("") ? inputObj.toString() : deaultNullStr;
     }
 }
