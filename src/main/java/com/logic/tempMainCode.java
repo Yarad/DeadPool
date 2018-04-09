@@ -1,9 +1,6 @@
 package com.logic;
 
-import com.DAO.DAOCrime;
-import com.DAO.DAOCriminalCase;
-import com.DAO.DAOEvidenceOfCrime;
-import com.DAO.DAOParticipant;
+import com.DAO.*;
 import com.views.CSVView;
 
 import java.util.List;
@@ -17,12 +14,13 @@ public class tempMainCode {
         DAOEvidenceOfCrime daoEvidenceOfCrime = new DAOEvidenceOfCrime();
         DAOParticipant daoParticipant = new DAOParticipant();
         DAOCriminalCase daoCriminalCase = new DAOCriminalCase();
+        DAODetective daoDetective = new DAODetective();
 
         List<CriminalCase> criminalCases = daoCriminalCase.getAllCriminalCases();
 
         String str;
         try {
-            str = csvView.generateReportByCriminalCase(criminalCases.get(0), daoCrime.getCrimesByCriminalCase(criminalCases.get(0).getCriminalCaseId()));
+            str = csvView.generateReportByDetective(daoDetective.getDetectiveById(1), daoCriminalCase.getAllCrimesOfDetective(1));
         } catch (Exception e) {
 
         }

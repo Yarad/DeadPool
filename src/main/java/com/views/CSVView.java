@@ -147,11 +147,49 @@ public class CSVView implements IReportView {
 
     @Override
     public String generateReportByDetective(Detective detective, List<CriminalCase> criminalCases) throws Exception {
-        return null;
+        File file = File.createTempFile("report", ".csv");
+
+        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
+            writer.write('\uFEFF');
+
+            //Man report
+            writer.append(getDetectiveCsvHeader() + newLine);
+            writer.append(getCsvStringOfDetectiveObject(detective) + newLine);
+
+            writer.append(newLine);
+
+            //criminal cases report
+            writer.append(getCriminalCaseCsvHeader() + newLine);
+            for (int i = 0; i < criminalCases.size(); i++)
+                writer.append(getCsvStringOfCriminalCaseObj(criminalCases.get(i)) + newLine);
+            writer.flush();
+        } catch (Exception e) {
+            return null;
+        }
+
+        return file.getAbsolutePath();
     }
 
-
     //Drawers
+    private String getDetectiveCsvHeader() {
+        return "Имя" + delimiter +
+                "Фамилия" + delimiter +
+                "Дата рождения" + delimiter +
+                "Домашний адрес" + delimiter +
+                "Фотография" + delimiter +
+                "Логин" + delimiter +
+                "Адрес электронной почты";
+    }
+
+    private String getCsvStringOfDetectiveObject(Detective detective) {
+        return escapeNullException(detective.getName()) + delimiter +
+                escapeNullException(detective.getSurname()) + delimiter +
+                escapeNullException(detective.getBirthDay()) + delimiter +
+                escapeNullException(detective.getHomeAddress()) + delimiter +
+                escapeNullException(detective.getPhotoPath()) + delimiter +
+                escapeNullException(detective.getLogin()) + delimiter +
+                escapeNullException(detective.getEmail());
+    }
 
     private String getCriminalCaseCsvHeader() {
         return "Номер" + delimiter +
