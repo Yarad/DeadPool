@@ -16,11 +16,10 @@ public class tempMainCode {
         DAOCriminalCase daoCriminalCase = new DAOCriminalCase();
         DAODetective daoDetective = new DAODetective();
 
-        List<CriminalCase> criminalCases = daoCriminalCase.getAllCriminalCases();
-
+        EvidenceOfCrime evidenceOfCrime = daoEvidenceOfCrime.getEvidenceOfCrime(3,2);
         String str;
         try {
-            str = csvView.generateReportByDetective(daoDetective.getDetectiveById(1), daoCriminalCase.getAllCrimesOfDetective(1));
+            str = csvView.generateReportByEvidence(evidenceOfCrime.getParentEvidence(), daoEvidenceOfCrime.getAllEvidencesOfCrimeByEvidenceId(2));
         } catch (Exception e) {
 
         }

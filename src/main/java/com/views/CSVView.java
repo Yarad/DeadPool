@@ -140,12 +140,32 @@ public class CSVView implements IReportView {
         return file.getAbsolutePath();
     }
 
-    @Override
+    @Override //Done
     public String generateReportByEvidence(Evidence evidence, List<EvidenceOfCrime> evidenceOfCrimes) throws Exception {
-        return null;
+        File file = File.createTempFile("report", ".csv");
+
+        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
+            writer.write('\uFEFF');
+
+
+            writer.append(getEvidenceHeader() + newLine);
+            writer.append(getCsvStringOfEvidenceObject(evidence) + newLine);
+
+            writer.append(newLine);
+
+            writer.append(getEvidencesOfCrimeCsvHeader() + newLine);
+            for (int i = 0; i < evidenceOfCrimes.size(); i++)
+                writer.append(getCsvStringOfEvidenceOfCrimeObject(evidenceOfCrimes.get(i)) + newLine);
+            writer.flush();
+        } catch (Exception e) {
+            return null;
+        }
+
+        return file.getAbsolutePath();
+
     }
 
-    @Override
+    @Override //Done
     public String generateReportByDetective(Detective detective, List<CriminalCase> criminalCases) throws Exception {
         File file = File.createTempFile("report", ".csv");
 
@@ -171,6 +191,15 @@ public class CSVView implements IReportView {
     }
 
     //Drawers
+    private String getEvidenceHeader() {
+        return "Название" + delimiter + "Описание";
+    }
+
+    private String getCsvStringOfEvidenceObject(Evidence evidence) {
+        return escapeNullException(evidence.getName()) + delimiter +
+                escapeNullException(evidence.getDescription());
+    }
+
     private String getDetectiveCsvHeader() {
         return "Имя" + delimiter +
                 "Фамилия" + delimiter +
