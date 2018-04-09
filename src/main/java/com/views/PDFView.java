@@ -1,9 +1,7 @@
 package com.views;
 
 import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.*;
 import com.logic.*;
 import com.views.interfaces.IReportView;
 import org.springframework.http.HttpStatus;
@@ -202,14 +200,10 @@ public class PDFView implements IReportView {
         document.newPage();
     }
 
-    private String getDetectiveData(Detective detective) {
-        return detective.getSurname() + ", " + detective.getName() + " (" + detective.getLogin() + ")";
-    }
-
     private void addCriminalCaseData(Document document, CriminalCase criminalCase, boolean withDetective, float leftIndent) throws DocumentException {
         document.add(createStandardParagraph("Номер", criminalCase.getCriminalCaseNumber(), leftIndent));
         if (withDetective) {
-            document.add(createStandardParagraph("Детектив", getDetectiveData(criminalCase.getParentDetective()), leftIndent));
+            document.add(createStandardParagraph("Детектив", ReportFunctions.getDetectiveData(criminalCase.getParentDetective()), leftIndent));
         }
         document.add(createStandardParagraph("Дата создания",
                 criminalCase.getCreateDate().format(JSON_FORMATTER_DATE), leftIndent));
@@ -257,7 +251,7 @@ public class PDFView implements IReportView {
             addCrimeData(document, evidenceOfCrime.getParentCrime(), true,leftIndent+15);
         }
         document.add(createStandardParagraph("Тип улики", evidenceOfCrime.getEvidenceType().getName(), leftIndent));
-        document.add(createStandardParagraph("Детальная иннормация", !isEmpty(evidenceOfCrime.getDetails()) ?
+        document.add(createStandardParagraph("Детальная информация", !isEmpty(evidenceOfCrime.getDetails()) ?
                 evidenceOfCrime.getDetails() : "отсутствует", leftIndent));
         document.add(createStandardParagraph("Дата добавления",
                 evidenceOfCrime.getDateAdded().format(JSON_FORMATTER_DATETIME), leftIndent));
@@ -489,5 +483,23 @@ public class PDFView implements IReportView {
 
         document.close();
         return tempFile.getAbsolutePath();
+    }
+
+    public String encryptPDF(String oldFile) throws Exception {
+        try {
+            File tempFile = File.createTempFile("report", ".pdf");
+            PdfReader reader = new PdfReader(oldFile);
+            PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(tempFile));
+            stamper.setEncryption(null, "deadpoll_created_deadppol_deasallowed".getBytes(),
+                    ~(PdfWriter.ALLOW_COPY) | PdfWriter.ALLOW_PRINTING | PdfWriter.ALLOW_SCREENREADERS,
+                    PdfWriter.ENCRYPTION_AES_256 | PdfWriter.DO_NOT_ENCRYPT_METADATA);
+            stamper.close();
+            return tempFile.getAbsolutePath();
+        } finally {
+            File prevFile = new File(oldFile);
+            if (prevFile.exists()) {
+                prevFile.delete();
+            }
+        }
     }
 }

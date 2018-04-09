@@ -16,11 +16,16 @@ public class AuthenticationToken extends AbstractAuthenticationToken {
     }
 
     public AuthenticationToken(String token, Detective user) {
-        super(user.roles);
+        super(user != null ? user.roles : null);
 
         this.token = token;
         this.user = user;
-        setAuthenticated(true);
+        if (user != null && user.roles != null) {
+            setAuthenticated(true);
+        } else {
+            setAuthenticated(false);
+        }
+
     }
 
     @Override
