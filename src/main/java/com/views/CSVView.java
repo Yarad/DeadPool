@@ -37,9 +37,23 @@ public class CSVView implements IReportView {
         return file.getAbsolutePath();
     }
 
-    @Override
+    @Override //Done
     public String generateReportByCriminalCases(List<CriminalCase> criminalCases, String status) throws Exception {
-        return null;
+        File file = File.createTempFile("report_criminal_cases_" + status, ".csv");
+
+        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
+            writer.write('\uFEFF');
+            //Crime report
+            writer.append(getCriminalCaseCsvHeader() + newLine);
+            for (int i = 0; i < criminalCases.size(); i++)
+                writer.append(getCsvStringOfCriminalCaseObj(criminalCases.get(i)) + newLine);
+
+            writer.flush();
+        } catch (Exception e) {
+            return null;
+        }
+
+        return file.getAbsolutePath();
     }
 
     @Override //Done
@@ -75,7 +89,7 @@ public class CSVView implements IReportView {
         return file.getAbsolutePath();
     }
 
-    @Override
+    @Override //Done
     public String generateReportByMan(Man man, List<Participant> participants) throws Exception {
         File file = File.createTempFile("report", ".csv");
 
@@ -100,9 +114,30 @@ public class CSVView implements IReportView {
         return file.getAbsolutePath();
     }
 
-    @Override
+    @Override //Done
     public String generateReportByCriminalCase(CriminalCase criminalCase, List<Crime> crimes) throws Exception {
-        return null;
+        File file = File.createTempFile("report", ".csv");
+
+        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
+            writer.write('\uFEFF');
+            //Criminal case report
+            writer.append(getCriminalCaseCsvHeader() + newLine);
+            writer.append(getCsvStringOfCriminalCaseObj(criminalCase) + newLine);
+
+            writer.write(newLine);
+
+            //Crimes
+
+            writer.append(getCrimeCsvHeader() + newLine);
+            for (int i = 0; i < crimes.size(); i++)
+                writer.write(getCsvStringOfCrimeObject(crimes.get(i)) + newLine);
+
+            writer.flush();
+        } catch (Exception e) {
+            return null;
+        }
+
+        return file.getAbsolutePath();
     }
 
     @Override
@@ -117,6 +152,22 @@ public class CSVView implements IReportView {
 
 
     //Drawers
+
+    private String getCriminalCaseCsvHeader() {
+        return "Номер" + delimiter +
+                "Детектив" + delimiter +
+                "Дата создания" + delimiter +
+                "Статус" + delimiter +
+                "Дата закрытия";
+    }
+
+    private String getCsvStringOfCriminalCaseObj(CriminalCase criminalCase) {
+        return escapeNullException(criminalCase.getCriminalCaseNumber()) + delimiter +
+                escapeNullException(criminalCase.getParentDetective().getSurname() + " " + criminalCase.getParentDetective().getName()) + delimiter +
+                escapeNullException(criminalCase.getCreateDate()) + delimiter +
+                escapeNullException(criminalCase.isClosed() ? "закрыто" : "не закрыто") + delimiter +
+                escapeNullException(criminalCase.getCloseDate());
+    }
 
     private String getParticipantsCsvHeader() {
         return "Имя" + delimiter +

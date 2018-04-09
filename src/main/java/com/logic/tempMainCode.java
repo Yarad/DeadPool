@@ -1,11 +1,11 @@
 package com.logic;
 
 import com.DAO.DAOCrime;
+import com.DAO.DAOCriminalCase;
 import com.DAO.DAOEvidenceOfCrime;
 import com.DAO.DAOParticipant;
 import com.views.CSVView;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public class tempMainCode {
@@ -16,13 +16,13 @@ public class tempMainCode {
         DAOCrime daoCrime = new DAOCrime();
         DAOEvidenceOfCrime daoEvidenceOfCrime = new DAOEvidenceOfCrime();
         DAOParticipant daoParticipant = new DAOParticipant();
+        DAOCriminalCase daoCriminalCase = new DAOCriminalCase();
 
-
-        List<Participant> participantList = daoParticipant.getAllParticipantsByMan(2);
+        List<CriminalCase> criminalCases = daoCriminalCase.getAllCriminalCases();
 
         String str;
         try {
-            str = csvView.generateReportByMan(participantList.get(0),participantList);
+            str = csvView.generateReportByCriminalCase(criminalCases.get(0), daoCrime.getCrimesByCriminalCase(criminalCases.get(0).getCriminalCaseId()));
         } catch (Exception e) {
 
         }
