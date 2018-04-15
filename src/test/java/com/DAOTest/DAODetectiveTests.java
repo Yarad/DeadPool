@@ -182,7 +182,7 @@ public class DAODetectiveTests {
             throw new Exception();
 
         try {
-            List<Man> men = daoDetective.getAllDetectives();
+            List<Detective> men = daoDetective.getAllDetectives();
 
             assertNotNull(men);
             assertFalse(men.isEmpty());

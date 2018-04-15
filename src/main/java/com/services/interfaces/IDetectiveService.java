@@ -15,5 +15,5 @@ public interface IDetectiveService {
     Detective getDetectiveByLogin(String login);
     Detective getDetectiveById(long id);
     boolean existDetectiveWithLogin(String login);
-    List<Man> getAllDetectives();
+    List<Detective> getAllDetectives();
 }

@@ -202,6 +202,13 @@ public final class LogicAdditionals {
         return man;
     }
 
+    public static List<Detective> getDetectiveList() {
+        List<Detective> list = new ArrayList<>();
+        list.add(getCustomDetective());
+        list.add(getCustomDetective());
+        return list;
+    }
+
     public static Detective getDetectiveWithDates() {
         Detective man = getCustomDetective();
         man.setBirthDay(localDateAdd);

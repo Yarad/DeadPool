@@ -2,6 +2,7 @@ package com.controller;
 
 import com.DTO.*;
 import com.DTO.parsers.ManParser;
+import com.logic.Detective;
 import com.logic.Man;
 import com.security.annotations.IsDetective;
 import com.services.interfaces.IDetectiveService;
@@ -56,7 +57,7 @@ public class DetectiveController {
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
     public GenericDTO<ListMenShortedDTO> getAllDetectives() {
-        List<Man> inputDetectives = detectiveService.getAllDetectives();
+        List<Detective> inputDetectives = detectiveService.getAllDetectives();
         List<ManShortedDTO> results = inputDetectives.stream()
                 .map(man -> ManParser.parseManShorted(man))
                 .collect(Collectors.toList());
