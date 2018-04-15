@@ -18,6 +18,7 @@ export class Participant {
             this.status = object.status;
             this.photoPath = object.photoPath;
             this.dateAdded = object.dateAdded;
+            this.timeAdded = object.timeAdded;
             this.alibi = object.alibi;
             this.witnessReport = object.witnessReport;
         } else {

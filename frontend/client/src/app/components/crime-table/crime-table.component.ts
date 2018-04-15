@@ -7,11 +7,12 @@ import {Input, Component, OnInit } from '@angular/core';
 })
 export class CrimeTableComponent implements OnInit {
   @Input() crimes;
-  @Input() criminalCaseNumber;
 
-  constructor() { }
+  constructor() { 
+  }
 
   ngOnInit() {
+    console.log(this.crimes);
   }
 
 }

@@ -4,7 +4,9 @@ import { Enum } from './enum';
 export class Crime {
 
     criminalCase = {
-        id: -1
+        id: -1,
+        number: "",
+        type: ""
     };
     id: string;
     type: Enum;
@@ -16,20 +18,21 @@ export class Crime {
     participants= [];
     
     constructor(object) {
-        console.log('con',object)
-        this.id = object.id || -1;
-        if (object.type) 
-            this.type = new Enum (object.type);
-        this.date = object.date;
-        this.time = object.time;
-        this.place = object.place;
-        this.criminalCase = object.criminalCase ? new CriminalCase(object.criminalCase) : new CriminalCase({
-            id: 1,
-            number: "asdf",
-            type: "открыто"
-        });
-        this.description = object.description;
-        this.evidencesOfCrime = object.evidencesOfCrime;
-        this.participants = object.participants;
+        if(object) {
+            this.id = object.id || -1;
+            if (object.type) 
+                this.type = new Enum (object.type);
+            this.date = object.date;
+            this.time = object.time;
+            this.place = object.place;
+            this.criminalCase = object.criminalCase ? new CriminalCase(object.criminalCase) : new CriminalCase({
+                id: 1,
+                number: "asdf",
+                type: "открыто"
+            });
+            this.description = object.description;
+            this.evidencesOfCrime = object.evidencesOfCrime;
+            this.participants = object.participants;
+        }
     }
 }

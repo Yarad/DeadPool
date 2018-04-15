@@ -1,0 +1,87 @@
+<app-navbar></app-navbar> 
+<div class="container">
+  <div class="row">
+    <div class="col-lg-3" >
+      <div class="list-group" id="menu">
+        <h3 class="list-group-item bg-dark">
+          Действия
+        </h3>
+        <p class="list-group-item list-group-item-action"  (click)="switchMode(false)" >Редактировать данные</p>
+        <!--p class="list-group-item list-group-item-action" >Удалить улику преступления</p-->
+      </div>
+    </div>
+    
+    <div class="col-lg-9">  
+      <fieldset *ngIf="man">
+        <legend><h2>Человек</h2></legend>         
+        
+        <div class="form-group row">
+          <label for="man-name" class="col-sm-4 col-form-label" required>Имя</label>
+          <div class="col-sm-8 col-md-8">
+            <input type="text" id="man-name" class="form-control" [(ngModel)]="man.name"
+              [ngClass]="{'is-invalid':(!man.name)}"
+              [readonly]="readMode" [class.form-control-plaintext]="readMode">          
+          </div>
+        </div> 
+        <div class="form-group row">
+          <label for="man-surname" class="col-sm-4 col-form-label" required>Фамилия</label>
+          <div class="col-sm-8 col-md-8">
+            <input type="text" id="man-surname" class="form-control" [(ngModel)]="man.surname"
+              [ngClass]="{'is-invalid':(!man.surname)}" 
+              [readonly]="readMode" [class.form-control-plaintext]="readMode">          
+          </div>
+        </div> 
+        <div class="form-group row">
+          <label for="man-birthday" class="col-sm-4 col-form-label">Дата рождения</label>
+          <div class="col-sm-8 col-md-8">
+            <input id="man-birthday" class="form-control" type="date" [(ngModel)]="man.birthday"
+            [ngClass]="{'is-invalid':(!man.birthday)}"
+            [readonly]="readMode" [class.form-control-plaintext]="readMode">         
+          </div>
+        </div>  
+        <div class="form-group row">
+          <label for="man-address" class="col-sm-4 col-form-label">Домашний адрес</label>
+          <div class="col-sm-8 col-md-8">
+            <input type="text" id="man-address" class="form-control" [(ngModel)]="man.homeAddress"
+            [readonly]="readMode" [class.form-control-plaintext]="readMode">          
+          </div>
+        </div> 
+        <div class="form-group row">
+          <label for="man-photo" class="col-sm-4 col-form-label">Фото</label>
+          <div class="col-sm-8 col-md-8" *ngIf="!readMode">
+            <input type="file" (change)="uploadFile($event)" > 
+          </div>
+          <label for="man-image" class="col-sm-4 col-form-label" *ngIf="!readMode"></label>
+          <div class="col-sm-8 col-md-8">
+            <div class="man-image">
+              <img id='man-image' src="{{man.photoPath}}">
+            </div>
+          </div>
+        </div> 
+        <label>Участник в преступлениях</label>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Номер дела</th>
+              <th scope="col">Тип преступления</th>
+              <th scope="col">Статус</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let participantCrime of man.crimesWithParticipant" 
+              [ngClass]="{'table-primary':(participantCrime.status ==='Закрыто')}"
+              routerLink="/crime/{{participantCrime.crime.id}}">
+              <th scope="row">{{participantCrime.crime.criminalCase.number}}</th>
+              <td>{{participantCrime.crime.type.name}}</td>
+              <td>{{participantCrime.status.name}}</td>
+            </tr>
+          </tbody>
+        </table> 
+        <div class="my-3" *ngIf="!readMode">
+          <button class="btn btn-secondary" (click)="saveChanges()">Сохранить изменения</button>
+          <button class="btn btn-secondary" (click)="cancellationOfChanges()">Отмена</button>
+        </div> 
+      </fieldset> 
+    </div> 
+  </div>
+</div>

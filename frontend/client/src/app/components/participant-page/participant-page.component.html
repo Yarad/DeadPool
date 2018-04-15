@@ -1,0 +1,86 @@
+<app-navbar></app-navbar> 
+<div class="container">
+  <div class="row">
+    <div class="col-lg-3" >
+      <div class="list-group" id="menu">
+        <h3 class="list-group-item bg-dark">
+          Действия
+        </h3>
+        <p class="list-group-item list-group-item-action"  (click)="switchMode(false)" >Редактировать данные</p>
+        <!--p class="list-group-item list-group-item-action" >Удалить улику преступления</p-->
+      </div>
+    </div>
+    
+    <div class="col-lg-9">  
+      <fieldset *ngIf="participant">
+        <legend><h2>Участник преступления</h2></legend> 
+         
+        <div class="form-group row">
+          <label for="criminal-case-number" class="col-sm-4 col-form-label">Дело</label>
+          <div class="col-sm-8 col-md-8">
+            <label id="criminal-case-number" class="mt-2" routerLink="/criminal_case/{{participant.crime.criminalCase.id}}">{{participant.crime.criminalCase.number}}</label>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="crime" class="col-sm-4 col-form-label">Преступление</label>
+          <div class="col-sm-8 col-md-8">
+            <label id="crime" class="mt-2" routerLink="/crime/{{participant.crime.id}}">{{participant.crime.type.name}}</label>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="man-name" class="col-sm-4 col-form-label">Человек</label>
+          <div class="col-sm-8">
+            <label id="man-name" class="mt-2" routerLink="/man/{{participant.man.id}}">{{participant.man.name}} {{participant.man.surname}}</label>
+          </div>
+        </div>        
+      
+        <div class="form-group row">
+          <label for="participant-status" class="col-sm-4 col-form-label">Статус</label>
+          <div class="col-sm-8">
+            <input *ngIf="readMode" 
+              type="text" [readonly]="readMode" class="form-control"
+              [class.form-control-plaintext]="readMode"
+              id="evidence-type"  [(ngModel)]="participant.status.name">
+            <select  *ngIf="!readMode" class="form-control col-sm-12 col-md-12" id="participant-statuse" (change)="changeSelectedarticipanStatus($event)">
+              <option *ngFor="let status of participantStatuses" value="{{status.enumValue}}">{{status.name}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="participant-alibi" class="col-sm-4 col-form-label" required>Алиби</label>
+          <div class="col-sm-8 col-md-8">
+            <textarea type="text" id="participant-alibi" class="form-control" [(ngModel)]="participant.alibi"
+              rows="3" [readonly]="readMode" [class.form-control-plaintext]="readMode"></textarea>         
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="participant-date" class="col-sm-4 col-form-label">Дата добавления</label>
+          <div class="col-sm-8 col-md-8">
+            <input id="participant-date" class="form-control" type="date" [(ngModel)]="participant.dateAdded"
+            readonly="" [class.form-control-plaintext]="true">         
+          </div>
+        </div> 
+        <div class="form-group row">
+          <label for="participant-time" class="col-sm-4 col-form-label">Время добавления</label>
+          <div class="col-sm-8 col-md-8">
+            <input id="participant-time" class="form-control" type="time" [(ngModel)]="participant.timeAdded"
+            readonly="" [class.form-control-plaintext]="true">         
+          </div>
+        </div>  
+        <div class="form-group row">
+          <label for="participant-witness-report" class="col-sm-4 col-form-label" required>Показания</label>
+          <div class="col-sm-8 col-md-8">
+            <textarea type="text" id="participant-witness-report" class="form-control" [(ngModel)]="participant.witnessReport"
+              rows="3" [readonly]="readMode" [class.form-control-plaintext]="readMode"></textarea>         
+          </div>
+        </div>
+             <div class="my-3" *ngIf="!readMode">
+          <button class="btn btn-secondary" (click)="saveChanges()">Сохранить изменения</button>
+          <button class="btn btn-secondary" (click)="cancellationOfChanges()">Отмена</button>
+        </div> 
+      </fieldset> 
+    </div> 
+  </div>
+</div>

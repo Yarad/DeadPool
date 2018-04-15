@@ -32,7 +32,8 @@ export class AddCrimePageComponent implements OnInit {
     //this.routeSubscription = route.params.subscribe(params => this.criminalCaseId = params['criminal_case']);
     route.queryParams.subscribe(params => console.log(+params['criminal_case']))
 
-    this.routeSubscription = route.queryParams.subscribe(params => this.crime.criminalCase.id = +params['criminal_case']);
+    this.routeSubscription = route.queryParams.subscribe(params => this.criminalCaseId = +params['criminal_case']);
+    this.crime.criminalCase.id = this.criminalCaseId;
     this.crimeService.getCrimeTypes()
     .subscribe(
       data => {

@@ -1,0 +1,49 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <div class="form-horizontal">
+    <fieldset class="col-md-offset-2 col-md-8">
+      <legend class="my-3"><h2>Отчеты</h2></legend>
+      <div class="form-group row">
+        <label for="crime-type" class="col-sm-4 col-form-label">Тип</label>
+        <div class="col-sm-8">
+          <select class="form-control col-sm-12 col-md-12" id="crime-type" (change)="changeSelectedSubject($event)">
+            <option *ngFor="let type of subjects" value="{{type.value}}">{{type.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="crime-type" class="col-sm-4 col-form-label">Данные</label>
+        <div class="col-sm-8">
+          <select class="form-control col-sm-12 col-md-12" id="crime-type" (change)="changeSelectedData($event)">
+            <option *ngFor="let element of data" value="{{element.id}}">{{element.value}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="crime-type" class="col-sm-4 col-form-label">Формат</label>
+        <div class="col-sm-8">
+          <select class="form-control col-sm-12 col-md-12" id="crime-type" (change)="changeSelectedFormat($event)">
+            <option *ngFor="let format of formats" value="{{format.value}}">{{format.name}}</option>
+          </select>
+        </div>
+      </div>
+
+    
+      <div class="form-group row" *ngIf="subject === 'crimes_between_dates'">
+        <label for="crime-date" class="col-sm-4 col-form-label">От</label>
+        <div class="col-sm-8 col-md-8">
+          <input id="crime-date" class="form-control" type="date" [(ngModel)]="params.dateStart"
+          [ngClass]="{'is-invalid':(!params.dateStart)}">         
+        </div>
+        <label for="crime-date" class="col-sm-4 col-form-label">До</label>
+        <div class="col-sm-8 col-md-8">
+          <input id="crime-date" class="form-control" type="date" [(ngModel)]="params.dateEnd"
+          [ngClass]="{'is-invalid':(!params.dateEnd)}">         
+        </div>
+      </div> 
+      <div class="col-md-9 mx-auto mt-4">
+        <button type="submit" role="submit" class="btn col-sm-4 col-md-5 mt-4 btn-secondary" (click)="generationReport()">Сгенерировать</button>
+      </div>
+    </fieldset>
+  </div>
+</div>

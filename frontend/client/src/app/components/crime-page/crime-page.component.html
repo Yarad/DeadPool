@@ -9,13 +9,21 @@
         <p class="list-group-item list-group-item-action" routerLink="/add_evidence" [queryParams]="{'crime':crimeId}">Добавить улику</p>
         <p class="list-group-item list-group-item-action" routerLink="/add_participant" [queryParams]="{'crime':crimeId}">Добавить участника</p>
         <p class="list-group-item list-group-item-action"  (click)="switchMode(false)" >Редактировать данные</p>
-        <p class="list-group-item list-group-item-action" >Удалить преступление</p>
+        
       </div>
     </div>
     
     <div class="col-lg-9">  
       <fieldset *ngIf="crime">
         <legend><h2>Преступление</h2></legend> 
+
+        <div class="form-group row">
+          <label for="criminal-case-number" class="col-sm-2 col-form-label">Дело</label>
+          <div class="col-sm-8 col-md-8">
+            <label id="criminal-case-number" class="mt-2" routerLink="/criminal_case/{{crime.criminalCase.id}}">{{crime.criminalCase.number}}</label>
+          </div>
+        </div>
+
         <div class="form-group row">
           <label for="crime-type" class="col-sm-2 col-form-label">Тип</label>
           <div class="col-sm-8 col-md-8">
@@ -71,7 +79,7 @@
               Участники
             </span>
             <div >
-              <app-participants-table [participants]="crime.participants" [tableType]="crimePage"></app-participants-table>                  
+              <app-participants-table [participants]="crime.participants" [tableType]="crimePage" [crimeId]="crimeId"></app-participants-table>                  
             </div>
           </tab>         
         </tabset>

@@ -16,6 +16,7 @@ import { EvidenceService } from './services/evidence.service';
 import { EvidenceOfCrimeService } from './services/evidence-of-crime.service';
 import { ParticipantService } from './services/participant.service';
 import { ManService } from './services/man.service';
+import { DocumentationGenerationService } from './services/documentation-generation.service';
 
 import { SecurityGuard }   from './components/security.guard';
 
@@ -38,6 +39,9 @@ import { NotFoundPageComponent } from './components/not-found-page/not-found-pag
 import { AddManPageComponent } from './components/add-man-page/add-man-page.component';
 import { EvidencePageComponent } from './components/evidence-page/evidence-page.component';
 import { AddParticipantPageComponent } from './components/add-participant-page/add-participant-page.component';
+import { ParticipantPageComponent } from './components/participant-page/participant-page.component';
+import { DocumentationDenerationPageComponent } from './components/documentation-deneration-page/documentation-deneration-page.component';
+import { ManPageComponent } from './components/man-page/man-page.component';
 
 const appRoutes: Routes = [
   {path: '', component: MainPageComponent, canActivate: [SecurityGuard], pathMatch:'full'},
@@ -50,7 +54,10 @@ const appRoutes: Routes = [
   {path: 'add_crime', component: AddCrimePageComponent, canActivate: [SecurityGuard], pathMatch:'full'},
   {path: 'evidence', component: EvidencePageComponent, canActivate: [SecurityGuard], pathMatch:'full'},
   {path: 'add_participant', component: AddParticipantPageComponent, canActivate: [SecurityGuard], pathMatch:'full'},  
-  {path: '**', component: NotFoundPageComponent},
+  {path: 'documentation', component: DocumentationDenerationPageComponent, canActivate: [SecurityGuard], pathMatch:'full'}, 
+  {path: 'participant', component: ParticipantPageComponent, canActivate: [SecurityGuard], pathMatch:'full'},    
+  {path: 'man/:id', component: ManPageComponent, canActivate: [SecurityGuard], pathMatch:'full'},    
+ // {path: '**', component: NotFoundPageComponent},
 ];
 
 
@@ -73,7 +80,10 @@ const appRoutes: Routes = [
     NotFoundPageComponent,
     AddManPageComponent,
     EvidencePageComponent,
-    AddParticipantPageComponent
+    AddParticipantPageComponent,
+    ParticipantPageComponent,
+    DocumentationDenerationPageComponent,
+    ManPageComponent
   ],
   imports: [
     BrowserModule,
@@ -94,6 +104,7 @@ const appRoutes: Routes = [
     ParticipantService,
     ManService,
     SecurityGuard,
+    DocumentationGenerationService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,8 +1,8 @@
 <table class="table table-hover">
   <thead>
-    <tr>
-      <th scope="col">Номер дела</th>
+    <tr>      
       <th scope="col">Дата преступления</th>
+      <th scope="col">Тип</th>
       <th scope="col">Место преступления</th>
     </tr>
   </thead>
@@ -10,8 +10,8 @@
     <tr *ngFor="let crime of crimes" 
       [ngClass]="{'table-primary':(crime.criminalCaseStatus ==='Закрыто')}"
       routerLink="/crime/{{crime.id}}">
-      <th scope="row">{{criminalCaseNumber}}</th>
       <td>{{crime.date}}</td>
+      <td>{{crime.type.name}}</td>
       <td>{{crime.place}}</td>
     </tr>
   </tbody>

@@ -2,9 +2,9 @@ textarea{
     resize: none;
 }
 
-#evidence-image{
-    height: 100px; 
-    text-align: center;   
+#man-name{
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 #criminal-case-number{

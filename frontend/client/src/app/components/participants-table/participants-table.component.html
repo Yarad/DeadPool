@@ -8,8 +8,8 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let participant of participants">
-      <th scope="row"> <img class="img" src="{{participant.photoPath}}" alt=""></th>
+    <tr *ngFor="let participant of participants" routerLink="/participant" [queryParams]="{'crime_id':crimeId, 'man_id': participant.man.id}">
+      <th scope="row"> <img class="img" src="{{participant.man.photoPath}}" alt=""></th>
       <td>{{participant.man.name}} {{participant.man.surname}}</td>
       <td *ngIf="tableType == crimePage">{{participant.status.name}}</td>
     </tr>

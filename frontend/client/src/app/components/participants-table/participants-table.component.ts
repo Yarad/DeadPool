@@ -9,6 +9,7 @@ export class ParticipantsTableComponent implements OnInit {
 
   @Input() participants;
   @Input() tableType;
+  @Input() crimeId;
 
   constructor() { 
     console.log('ParticipantsTableComponent',this.participants)

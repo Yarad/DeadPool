@@ -6,6 +6,7 @@ export class Man {
     birthday: string;
     homeAddress: string;
     crimesPartAmount: number;
+    crimesWithParticipant = [];
     
     constructor(object) {
         if (object) {
@@ -16,6 +17,7 @@ export class Man {
             this.birthday = object.birthday;
             this.homeAddress = object.homeAddress;
             this.crimesPartAmount = object.crimesPartAmount;
+            this.crimesWithParticipant = object.crimesWithParticipant;
         }
     }
     

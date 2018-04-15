@@ -49,13 +49,6 @@ export class AddEvidencePageComponent implements OnInit {
       error => console.log('error', error)
     );
 
-    this.evidenceOfCrimeService.getAllEvidences()
-    .subscribe(
-      data => {
-      },
-      error => console.log('error', error)
-    );
-
     this.evidenceService.getEvidenceTypes()
     .subscribe(
       data => {

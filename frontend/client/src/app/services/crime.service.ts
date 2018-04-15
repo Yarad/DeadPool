@@ -65,7 +65,8 @@ export class CrimeService {
 
   updateCrime(crime): Observable<Boolean> {
     console.log(crime);
-    return this.mainService.postAuthorizedRequest("/crimes/update", { 
+    return this.mainService.postAuthorizedRequest("/crimes/update", {
+      id: crime.id, 
       criminalCase: {
         id: crime.criminalCase.id
       },

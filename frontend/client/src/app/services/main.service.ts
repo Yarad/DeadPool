@@ -72,28 +72,19 @@ export class MainService {
       });
   }
 
-  public uploadFile(file) { 
-    
-    const xhr = new XMLHttpRequest(); 
-    const fd = new FormData(); 
-    
-    xhr.open('POST', CLOUDYNARY_URL, true); 
-    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest'); 
-    
-    xhr.onreadystatechange = (e) => { 
-      if (xhr.readyState === 4 && xhr.status === 200) { 
-        console.log(JSON.parse(xhr.responseText)); 
-        const response = JSON.parse(xhr.responseText); 
-        const imgs = document.getElementsByTagName('img'); 
-        for (let i = 0; i < imgs.length; i++) { 
-          const img = imgs[i]; 
-          if (img.id === 'user-image') { 
-          } 
-        } 
-      } 
-    };
-    fd.append('upload_preset', CLOUDYNARY_UPLOAD_PRESET ); 
-    fd.append('file', file); 
-    xhr.send(fd);  
+  public getAuthorizedFormatedRequest(urlPattern) {
+    if (this.isCurrentUserAuthorized()) {
+      const headers = new Headers();
+      this.addAuthorizationHeaders(headers);
+      headers.append("Accept", "text/csv, application/pdf, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+      return this.http.get(this.serverUrl + urlPattern, {headers})          
+          .map(res => {
+            console.log("main",res);
+            return res;
+          });
+    }
+    return null;
   }
+
+ 
 }

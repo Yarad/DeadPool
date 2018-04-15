@@ -57,13 +57,7 @@ export class CrimePageComponent implements OnInit {
   }
 
   changeSelectedCrimeType($event) {
-    // const index = this.allDetectives.map(detective => detective.id).indexOf(+$event.target.value);
-    // if (index > -1) {
-    //   this.criminalCase.detective = this.allDetectives[index];
-    // }
-    console.log(this.crimeEnumTypes[this.crimeEnumTypes.map(type=> type.enumValue).indexOf($event.target.value)])
     this.crime.type = this.crimeEnumTypes[this.crimeEnumTypes.map(type=> type.enumValue).indexOf($event.target.value)];
-
   }
 
   ngOnInit() {
