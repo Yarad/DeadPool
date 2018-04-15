@@ -5,6 +5,8 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import { MainService } from './main.service';
+import 'rxjs/Rx' ;
+import * as FileSaver from 'file-saver';
 
 @Injectable()
 export class DocumentationGenerationService {
@@ -24,11 +26,11 @@ export class DocumentationGenerationService {
     }
     return this.mainService.getAuthorizedFormatedRequest("/reports/"+subject+"/"+type+"/"+p)
     .map(res => {
-      const blob = new Blob([res], { type: 'application/pdf' });
-      const url= window.URL.createObjectURL(blob);
-      console.log('blob',url);
-      window.open(url);
-     return url; 
+      const content_type = res.headers.get('Content-type');
+      const blob = new Blob([res._body], { type: content_type });
+      const x_filename = res.headers.get('x-filename');
+      saveAs(blob, x_filename);
+      return true; 
     })
     .catch((error: any)=> { 
       return Observable.throw(error);

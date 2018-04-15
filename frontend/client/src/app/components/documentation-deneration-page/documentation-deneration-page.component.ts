@@ -56,7 +56,7 @@ export class DocumentationDenerationPageComponent implements OnInit {
     },
     {
       name: "Улика",
-      value: " evidence"
+      value: "evidence"
     },
     {
       name: "Преступления за период",

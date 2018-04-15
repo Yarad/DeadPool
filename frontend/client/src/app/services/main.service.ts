@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Http, Headers} from '@angular/http';
+import {Http, Headers, RequestOptions, ResponseContentType} from '@angular/http';
 import 'rxjs/add/operator/map';
 
 const CLOUDYNARY_URL = 'https://api.cloudinary.com/v1_1/dkdzgw7kp/image/upload';
@@ -76,8 +76,11 @@ export class MainService {
     if (this.isCurrentUserAuthorized()) {
       const headers = new Headers();
       this.addAuthorizationHeaders(headers);
+
+      let options = new RequestOptions({ headers: headers, responseType: ResponseContentType.Blob });
+
       headers.append("Accept", "text/csv, application/pdf, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-      return this.http.get(this.serverUrl + urlPattern, {headers})          
+      return this.http.get(this.serverUrl + urlPattern, options)          
           .map(res => {
             console.log("main",res);
             return res;
