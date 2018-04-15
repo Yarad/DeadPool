@@ -7,6 +7,7 @@ import com.DTO.parsers.ManParser;
 import com.config.CORSFilter;
 import com.controller.DetectiveController;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.logic.Detective;
 import com.logic.Man;
 import com.services.interfaces.IDetectiveService;
 import org.junit.Before;
@@ -94,7 +95,7 @@ public class DetectiveControllerTest {
 
     @Test
     public void getAllDetectives() throws Exception {
-        List<Man> men = LogicAdditionals.getManList();
+        List<Detective> men = LogicAdditionals.getDetectiveList();
         List<ManShortedDTO> results = men.stream()
                 .map(man -> ManParser.parseManShorted(man))
                 .collect(Collectors.toList());

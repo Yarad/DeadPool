@@ -52,7 +52,6 @@ public class DAODetective extends DAOMan implements IDAODetective {
             log.error(e.toString());
             return false;
         }
-
         return currConnection.queryDataEdit(preparedStatement);
     }
 
@@ -112,13 +111,13 @@ public class DAODetective extends DAOMan implements IDAODetective {
     }
 
     @Override
-    public List<Man> getAllDetectives() {
+    public List<Detective> getAllDetectives() {
         //Все люди, которым есть эквивалент в таблице `Detective`
         PreparedStatement preparedStatement = currConnection.prepareStatement("SELECT * FROM detective JOIN man ON detective_id = man_id");
 
         List<HashMap<String, Object>> retArray = currConnection.queryFind(preparedStatement);
 
-        List<Man> manList = new ArrayList<>();
+        List<Detective> manList = new ArrayList<>();
 
         if (retArray.isEmpty()) return manList;
 

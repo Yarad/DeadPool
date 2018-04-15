@@ -7,6 +7,7 @@ import com.logic.Detective;
 import com.logic.Man;
 import com.services.DetectiveService;
 import com.services.HashService;
+import com.services.interfaces.IEMailService;
 import com.services.interfaces.IHashService;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -29,6 +30,9 @@ public class DetectiveServiceTest {
     @Mock
     private IHashService hashService;
 
+    @Mock
+    private IEMailService eMailService;
+
     @InjectMocks
     private DetectiveService service;
 
@@ -46,10 +50,10 @@ public class DetectiveServiceTest {
 
     @Test
     public void getAllDetectives() throws Exception {
-        List<Man> men = LogicAdditionals.getManList();
+        List<Detective> men = LogicAdditionals.getDetectiveList();
         when(daoDetective.getAllDetectives()).thenReturn(men);
 
-        List<Man> actualMen = service.getAllDetectives();
+        List<Detective> actualMen = service.getAllDetectives();
 
         assertEquals(men, actualMen);
     }
@@ -90,6 +94,7 @@ public class DetectiveServiceTest {
         boolean expectedResult = true;
         when(daoDetective.addDetective(any(Detective.class))).thenReturn(expectedResult);
         when(hashService.getMD5Hash(anyString())).thenReturn(realHashService.getMD5Hash("anyMd5Hash"));
+
 
         AddResult actualResult = service.addDetective(detective.getName(), detective.getSurname(), detective.getBirthDay(), detective.getHomeAddress(), detective.getPhotoPath(), detective.getLogin(), detective.getHashOfPassword(), detective.getEmail());
 

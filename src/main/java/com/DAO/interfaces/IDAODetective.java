@@ -11,5 +11,5 @@ public interface IDAODetective {
     boolean updateDetective(Detective detectiveToUpdate);
     Detective getDetectiveByLogin(String login);
     boolean existDetectiveWithLogin(String login);
-    List<Man> getAllDetectives();
+    List<Detective> getAllDetectives();
 }

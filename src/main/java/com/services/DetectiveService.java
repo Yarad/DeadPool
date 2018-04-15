@@ -5,6 +5,7 @@ import com.DTO.AddResult;
 import com.logic.Detective;
 import com.logic.Man;
 import com.services.interfaces.IDetectiveService;
+import com.services.interfaces.IEMailService;
 import com.services.interfaces.IHashService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,9 @@ import java.util.List;
 
 @Service
 public class DetectiveService implements IDetectiveService {
+    @Autowired
+    private IEMailService eMailService;
+
     @Autowired
     private IDAODetective daoDetective;
 
@@ -34,7 +38,14 @@ public class DetectiveService implements IDetectiveService {
         detective.setLogin(login);
         detective.setHashOfPassword(hashService.getMD5Hash(password));
         detective.setEmail(email);
-        return new AddResult(daoDetective.addDetective(detective), detective.getManId());
+        boolean result = daoDetective.addDetective(detective);
+        if (result) {
+            eMailService.sendTextEMailToAllDetectivesExceptId(detective.getManId(), "Приветствуем в системе нового коллегу!",
+                    "Здравствуйте!\n" + "\n" +
+                            "Доступ к системе получил новый сотрудник - " + detective.getSurname() + ", " + detective.getName() + "\n" +
+                            "Теперь вы можете общаться с коллегой в нашей системе!");
+        }
+        return new AddResult(result, detective.getManId());
     }
 
     @Transactional
@@ -73,7 +84,7 @@ public class DetectiveService implements IDetectiveService {
 
     @Transactional
     @Override
-    public List<Man> getAllDetectives() {
+    public List<Detective> getAllDetectives() {
         return daoDetective.getAllDetectives();
     }
 }
